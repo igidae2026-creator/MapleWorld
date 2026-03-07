@@ -170,8 +170,13 @@ local function requireWorldConfig()
             persistedDropsPerMap = 120,
             persistedJournalEntries = 2000,
             journalMaxEntries = 5000,
+            journalMaxPayloadBytes = 2048,
             worldStateSaveDebounceSec = 5,
+            worldStateMaxPendingReasons = 200,
             worldRevisionRetention = 32,
+            worldCommitRetention = 64,
+            playerRevisionRetention = 16,
+            worldWriterLeaseSec = 30,
             worldWriterOwnerId = 'default',
             worldWriterEpoch = 0,
             autoPickupDrops = true,
@@ -385,6 +390,7 @@ function ServerBootstrap.boot(basePath, config)
                 storageName = worldConfig.runtime and worldConfig.runtime.playerStorageName,
                 key = worldConfig.runtime and worldConfig.runtime.playerStorageKey,
                 slotCount = worldConfig.runtime and worldConfig.runtime.playerProfileSlotCount,
+                maxRevisions = worldConfig.runtime and worldConfig.runtime.playerRevisionRetention,
             })
         else
             playerRepository = PlayerRepository.newMemory({ metrics = metrics, logger = logger })
@@ -404,6 +410,8 @@ function ServerBootstrap.boot(basePath, config)
                 maxRevisions = worldConfig.runtime and worldConfig.runtime.worldRevisionRetention,
                 writerOwnerId = worldConfig.runtime and worldConfig.runtime.worldWriterOwnerId,
                 writerEpoch = worldConfig.runtime and worldConfig.runtime.worldWriterEpoch,
+                writerLeaseSec = worldConfig.runtime and worldConfig.runtime.worldWriterLeaseSec,
+                maxCommits = worldConfig.runtime and worldConfig.runtime.worldCommitRetention,
             })
         else
             worldRepository = WorldRepository.newMemory({ metrics = metrics, logger = logger })
@@ -411,7 +419,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     local rng = config.rng or math.random
-    local journal = config.eventJournal or EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries })
+    local journal = config.eventJournal or EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries, maxPayloadBytes = worldConfig.runtime and worldConfig.runtime.journalMaxPayloadBytes })
     local actionGuard = config.actionGuard or ActionGuard.new({
         limits = worldConfig.actionRateLimits,
         time = runtimeClock,
@@ -434,7 +442,15 @@ function ServerBootstrap.boot(basePath, config)
         maxActivePerMap = worldConfig.runtime and worldConfig.runtime.maxWorldDropsPerMap,
     })
     local expSystem = ExpSystem.new({ curve = buildExpCurve(expRaw), metrics = metrics, logger = logger })
-    local economySystem = EconomySystem.new({ itemSystem = itemSystem, metrics = metrics, logger = logger, npcSellRate = config.npcSellRate, maxMesos = config.maxMesos })
+    local economySystem = EconomySystem.new({
+        itemSystem = itemSystem,
+        metrics = metrics,
+        logger = logger,
+        npcSellRate = config.npcSellRate,
+        maxMesos = config.maxMesos,
+        suspiciousTransactionMesos = worldConfig.runtime and worldConfig.runtime.suspiciousTransactionMesos,
+        maxPlayerLedgerEntries = worldConfig.runtime and worldConfig.runtime.maxPlayerEconomyLedgerEntries,
+    })
     local bossSystem = BossSystem.new({ bossTable = buildBoss(bossRaw, worldConfig), dropSystem = dropSystem, metrics = metrics, logger = logger, time = runtimeClock })
     local questSystem = QuestSystem.new({ quests = buildQuests(questRaw), itemSystem = itemSystem, economySystem = economySystem, expSystem = expSystem, metrics = metrics, logger = logger })
     local spawnSystem = SpawnSystem.new({ mobs = mobs, scheduler = scheduler, metrics = metrics, logger = logger, rng = rng, maxSpawnPerTick = config.maxSpawnPerTick })
@@ -463,6 +479,9 @@ function ServerBootstrap.boot(basePath, config)
         runtimeHooks = config.runtimeHooks or {},
         worldConfig = worldConfig,
         _pendingWorldSaveReason = nil,
+        _pendingWorldSaveReasons = {},
+        _pendingWorldSaveCount = 0,
+        _worldStateDirty = false,
         _lastWorldSaveAt = nil,
         actionGuard = actionGuard,
         journal = journal,
@@ -480,6 +499,11 @@ function ServerBootstrap.boot(basePath, config)
         world.autoPickupDrops = worldConfig.runtime and worldConfig.runtime.autoPickupDrops ~= false
     end
     healthcheck.world = world
+
+    economySystem.auditSink = function(entry)
+        if not world or not world.journal then return end
+        world.journal:append('economy_mutation', entry)
+    end
 
     function world:_now()
         return math.floor(tonumber(self.clock()) or os.time())
@@ -634,6 +658,10 @@ function ServerBootstrap.boot(basePath, config)
         if ok then
             self._lastWorldSaveAt = now
             self._pendingWorldSaveReason = nil
+            self._pendingWorldSaveReasons = {}
+            self._pendingWorldSaveCount = 0
+            self._worldStateDirty = false
+            if self.metrics then self.metrics:gauge('world_state.pending_events', 0) end
         end
         if not ok and self.metrics then
             self.metrics:increment('world_state.save_error', 1, { reason = tostring(reason) })
@@ -642,16 +670,43 @@ function ServerBootstrap.boot(basePath, config)
         return ok, err
     end
 
-    function world:requestWorldSave(reason)
+    function world:markWorldStateDirty(reason)
+        local runtimeCfg = self.worldConfig.runtime or {}
+        local maxReasons = math.max(1, math.floor(tonumber(runtimeCfg.worldStateMaxPendingReasons) or 200))
+        self._worldStateDirty = true
+        self._pendingWorldSaveReason = reason or self._pendingWorldSaveReason or 'unspecified'
+        self._pendingWorldSaveCount = (self._pendingWorldSaveCount or 0) + 1
+        local reasons = self._pendingWorldSaveReasons or {}
+        reasons[#reasons + 1] = tostring(reason or 'unspecified')
+        while #reasons > maxReasons do table.remove(reasons, 1) end
+        self._pendingWorldSaveReasons = reasons
+        if self.metrics then
+            self.metrics:increment('world_state.marked_dirty', 1, { reason = tostring(reason or 'unspecified') })
+            self.metrics:gauge('world_state.pending_reasons', #reasons)
+            self.metrics:gauge('world_state.pending_events', self._pendingWorldSaveCount)
+        end
+    end
+
+    function world:requestWorldSave(reason, options)
+        local opts = options or {}
+        self:markWorldStateDirty(reason)
+        if opts.immediate == true then
+            return self:saveWorldState(reason)
+        end
+        if self.metrics then self.metrics:increment('world_state.save_deferred', 1, { reason = tostring(reason) }) end
+        return true, 'deferred'
+    end
+
+    function world:flushPendingWorldSave(reason)
+        if not self._worldStateDirty then return true, 'clean' end
         local runtimeCfg = self.worldConfig.runtime or {}
         local debounceSec = math.max(0, tonumber(runtimeCfg.worldStateSaveDebounceSec) or 0)
         local now = self:_now()
-        self._pendingWorldSaveReason = reason or self._pendingWorldSaveReason or 'unspecified'
-        if debounceSec <= 0 or not self._lastWorldSaveAt or (now - self._lastWorldSaveAt) >= debounceSec then
-            return self:saveWorldState(self._pendingWorldSaveReason)
+        if debounceSec > 0 and self._lastWorldSaveAt and (now - self._lastWorldSaveAt) < debounceSec then
+            if self.metrics then self.metrics:increment('world_state.save_debounced', 1, { reason = tostring(reason or self._pendingWorldSaveReason) }) end
+            return true, 'debounced'
         end
-        if self.metrics then self.metrics:increment('world_state.save_debounced', 1, { reason = tostring(reason) }) end
-        return true, 'debounced'
+        return self:saveWorldState(reason or self._pendingWorldSaveReason)
     end
 
     function world:restoreWorldState()
@@ -683,7 +738,7 @@ function ServerBootstrap.boot(basePath, config)
 
     journal.onAppend = function(entry)
         if world._restoringWorldState then return end
-        world:requestWorldSave('journal:' .. tostring(entry and entry.event))
+        world:markWorldStateDirty('journal:' .. tostring(entry and entry.event))
     end
 
     spawnSystem.callbacks = {
@@ -1214,10 +1269,8 @@ function ServerBootstrap.boot(basePath, config)
     local runtimeCfg = worldConfig.runtime or {}
     scheduler:every('spawn_tick', tonumber(runtimeCfg.spawnTickSec) or 5, function() spawnSystem:tick() end)
     scheduler:every('boss_tick', tonumber(runtimeCfg.bossTickSec) or 15, function() world:tickBosses() end)
-    scheduler:every('autosave_tick', tonumber(runtimeCfg.autosaveTickSec) or 30, function() world:flushDirtyPlayers() end)
-    scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:saveWorldState(world._pendingWorldSaveReason or 'periodic') end)
     scheduler:every('autosave_tick', tonumber(runtimeCfg.autosaveTickSec) or 30, function() world:flushDirtyPlayers({ requireWorldSave = world.strictRuntimeBoundary }) end)
-    scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:saveWorldState('periodic') end)
+    scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:flushPendingWorldSave(world._pendingWorldSaveReason or 'periodic') end)
     scheduler:every('health_tick', tonumber(runtimeCfg.healthTickSec) or 30, function() healthcheck:run() end)
     scheduler:every('drop_expire_tick', tonumber(runtimeCfg.dropExpireTickSec) or 5, function() world:expireDrops() end)
 

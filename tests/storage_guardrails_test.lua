@@ -14,6 +14,13 @@ local entries = journal:snapshot()
 assert(#entries == 3, 'journal cap did not trim to 3 entries')
 assert(entries[1].seq == 3 and entries[3].seq == 5, 'journal cap did not preserve tail entries')
 
+
+-- journal payload clamp
+local payloadJournal = EventJournal.new({ maxEntries = 5, maxPayloadBytes = 32, time = function() return 0 end })
+payloadJournal:append('evt', { massive = string.rep('x', 400), keep = 'ok' })
+local clamped = payloadJournal:latest()
+assert(clamped.payload.truncated == true, 'journal payload should be truncated under payload cap')
+
 -- save amplification reduction via debounce
 local saveCount = 0
 local saveRepo = {
@@ -56,10 +63,10 @@ local world = ServerBootstrap.boot('.', {
 for i = 1, 10 do
     world.journal:append('hot_evt', { i = i })
 end
-assert(saveCount == 1, 'journal append path still saves world for every append')
+assert(saveCount == 0, 'journal append path should defer world saves in hot paths')
 now = now + 16
 world.scheduler:tick(16)
-assert(saveCount >= 2, 'periodic autosave did not flush pending state')
+assert(saveCount >= 1, 'periodic autosave did not flush pending state')
 
 -- writer owner guard + revision retention cap
 local previousStorage = rawget(_G, '_DataStorageService')
@@ -103,6 +110,8 @@ local repoA = WorldRepository.newMapleWorldsDataStorage({
     maxRevisions = 2,
     writerOwnerId = 'instanceA',
     writerEpoch = 1,
+    writerLeaseSec = 20,
+    maxCommits = 2,
 })
 local repoB = WorldRepository.newMapleWorldsDataStorage({
     runtimeAdapter = adapter,
@@ -111,6 +120,20 @@ local repoB = WorldRepository.newMapleWorldsDataStorage({
     maxRevisions = 2,
     writerOwnerId = 'instanceB',
     writerEpoch = 1,
+    writerLeaseSec = 20,
+    maxCommits = 2,
+})
+
+
+local repoC = WorldRepository.newMapleWorldsDataStorage({
+    runtimeAdapter = adapter,
+    storageName = 'TestWorldState',
+    key = 'state',
+    maxRevisions = 2,
+    writerOwnerId = 'instanceC',
+    writerEpoch = 0,
+    writerLeaseSec = 20,
+    maxCommits = 2,
 })
 
 for i = 1, 4 do
@@ -120,9 +143,13 @@ end
 
 local rawStore = _G._DataStorageService._stores['TestWorldState']
 assert(rawStore['state__rev_1'] == '', 'old world revision was not trimmed under maxRevisions cap')
+assert(rawStore['state__commit_1'] == '', 'old world commit marker was not trimmed under maxCommits cap')
 
 local okB, errB = repoB:save({ version = 'from_b' })
-assert(okB == false and errB == 'world_owner_conflict', 'writer owner guard did not reject competing writer')
+assert(okB == false and (errB == 'world_owner_conflict' or errB == 'world_owner_epoch_conflict'), 'writer owner guard did not reject competing writer')
+
+local okC, errC = repoC:save({ version = 'from_c' })
+assert(okC == false and errC == 'world_owner_epoch_stale', 'stale writer epoch was not rejected')
 
 _G._DataStorageService = previousStorage
 print('storage_guardrails_test: ok')

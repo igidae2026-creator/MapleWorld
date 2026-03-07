@@ -10,4 +10,15 @@ assert(player.mesos == 420, 'mesos accounting mismatch')
 local snapshot = world.economySystem:snapshot()
 assert(snapshot.faucets.seed == 500, 'faucet tracking failed')
 assert(snapshot.sinks.npc_buy == 100, 'sink tracking failed')
+assert(type(player.economyLedger) == 'table' and #player.economyLedger >= 3, 'player economy ledger did not capture mutations')
+local auditEvents = world.journal:snapshot()
+local foundAudit = false
+for _, evt in ipairs(auditEvents) do
+    if evt.event == 'economy_mutation' then
+        foundAudit = true
+        assert(evt.payload.txId ~= nil, 'economy mutation audit payload missing txId')
+        break
+    end
+end
+assert(foundAudit, 'economy mutation events were not journaled for auditability')
 print('economy_test: ok')
