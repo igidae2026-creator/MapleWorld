@@ -104,16 +104,16 @@ Entry.TurnInQuest = TurnInQuest
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
-function BuyFromNpc(requestContext, itemId, quantity)
-    return dispatch('buyFromNpc', requestContext, itemId, quantity)
+function BuyFromNpc(requestContext, npcId, itemId, quantity)
+    return dispatch('buyFromNpc', requestContext, npcId, itemId, quantity)
 end
 --@ EndMethod
 Entry.BuyFromNpc = BuyFromNpc
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
-function SellToNpc(requestContext, itemId, quantity)
-    return dispatch('sellToNpc', requestContext, itemId, quantity)
+function SellToNpc(requestContext, npcId, itemId, quantity)
+    return dispatch('sellToNpc', requestContext, npcId, itemId, quantity)
 end
 --@ EndMethod
 Entry.SellToNpc = SellToNpc
@@ -136,8 +136,8 @@ Entry.UnequipItem = UnequipItem
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
-function ChangeMap(requestContext, mapId)
-    return dispatch('changeMap', requestContext, mapId)
+function ChangeMap(requestContext, mapId, sourceMapId)
+    return dispatch('changeMap', requestContext, mapId, sourceMapId)
 end
 --@ EndMethod
 Entry.ChangeMap = ChangeMap

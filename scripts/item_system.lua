@@ -297,14 +297,17 @@ function ItemSystem:equip(player, itemId, instanceId)
     if not slot then return false, 'item_not_equippable' end
     if itemDef.requiredLevel and player.level < itemDef.requiredLevel then return false, 'level_too_low' end
 
+    local removed, instanceOrError = self:_takeEquipInstance(player, itemId, instanceId)
+    if not removed then return false, instanceOrError end
+
     local current = player.equipment[slot]
     if current then
         local ok, err = self:addItem(player, current.itemId, 1, { instances = { current } })
-        if not ok then return false, err end
+        if not ok then
+            self:addItem(player, itemId, 1, { instances = { instanceOrError } })
+            return false, err
+        end
     end
-
-    local removed, instanceOrError = self:_takeEquipInstance(player, itemId, instanceId)
-    if not removed then return false, instanceOrError end
 
     player.equipment[slot] = {
         itemId = itemId,

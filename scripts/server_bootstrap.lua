@@ -282,16 +282,45 @@ local function tailEntries(entries, maxEntries)
 end
 
 local function limitDropSnapshot(snapshot, maxPerMap)
-    if type(snapshot) ~= 'table' then return {} end
+    if type(snapshot) ~= 'table' then return { nextDropId = 1, drops = {} } end
     local cap = math.floor(tonumber(maxPerMap) or 0)
-    if cap <= 0 then return deepcopy(snapshot) end
-
-    local trimmed = { byMap = {}, nextDropId = tonumber(snapshot.nextDropId) or 1 }
-    local byMap = snapshot.byMap or {}
-    for mapId, entries in pairs(byMap) do
-        trimmed.byMap[mapId] = tailEntries(entries, cap)
+    local drops = snapshot.drops or {}
+    if cap <= 0 then
+        return {
+            nextDropId = tonumber(snapshot.nextDropId) or 1,
+            drops = deepcopy(drops),
+        }
     end
-    return trimmed
+
+    local byMap = {}
+    for _, record in ipairs(drops) do
+        local mapId = record and record.mapId
+        if mapId then
+            local bucket = byMap[mapId]
+            if not bucket then
+                bucket = {}
+                byMap[mapId] = bucket
+            end
+            bucket[#bucket + 1] = record
+        end
+    end
+
+    local trimmedDrops = {}
+    for _, records in pairs(byMap) do
+        local entries = tailEntries(records, cap)
+        for _, entry in ipairs(entries) do
+            trimmedDrops[#trimmedDrops + 1] = entry
+        end
+    end
+
+    table.sort(trimmedDrops, function(a, b)
+        return (tonumber(a.dropId) or 0) < (tonumber(b.dropId) or 0)
+    end)
+
+    return {
+        nextDropId = tonumber(snapshot.nextDropId) or 1,
+        drops = deepcopy(trimmedDrops),
+    }
 end
 
 function ServerBootstrap.boot(basePath, config)
@@ -538,6 +567,37 @@ function ServerBootstrap.boot(basePath, config)
         }
     end
 
+    function world:_resolveNpcBinding(npcId)
+        if npcId == nil or npcId == '' then return nil, 'invalid_npc' end
+        local bindings = self.worldConfig.quests and self.worldConfig.quests.npcBindings or {}
+        local binding = bindings[npcId]
+        if type(binding) ~= 'table' then return nil, 'npc_not_found' end
+        local mapId = binding.mapId
+        if not mapId or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return nil, 'invalid_map' end
+        local position = self:_normalizePosition(binding) or self:_defaultMapPosition(mapId)
+        return {
+            npcId = npcId,
+            mapId = mapId,
+            position = position,
+            shopId = binding.shopId,
+            catalog = binding.catalog,
+            items = binding.items,
+        }
+    end
+
+    function world:_validateNpcShop(npc)
+        if not npc then return false, 'invalid_npc' end
+        if npc.shopId ~= nil and npc.shopId == '' then return false, 'invalid_npc_shop' end
+        local catalog = npc.catalog or npc.items
+        if type(catalog) ~= 'table' then return false, 'invalid_npc_shop' end
+        return true
+    end
+
+    function world:_isNpcItemAllowed(npc, itemId)
+        local catalog = npc and (npc.catalog or npc.items) or nil
+        return type(catalog) == 'table' and catalog[itemId] == true
+    end
+
     function world:snapshotWorldState()
         local runtimeCfg = self.worldConfig.runtime or {}
         local persistedJournalEntries = tonumber(runtimeCfg.persistedJournalEntries) or 0
@@ -570,7 +630,14 @@ function ServerBootstrap.boot(basePath, config)
     function world:restoreWorldState()
         if not self.worldRepository then return false end
         local snapshot, err = self.worldRepository:load()
-        if not snapshot then return false, err end
+        if err then
+            if self.metrics then
+                self.metrics:increment('world_state.load_error', 1)
+                self.metrics:error('world_state_load_failed', { error = tostring(err) })
+            end
+            return false, err
+        end
+        if not snapshot then return false end
 
         self._restoringWorldState = true
         self.journal:restore(snapshot.journal)
@@ -622,6 +689,7 @@ function ServerBootstrap.boot(basePath, config)
     function world:setPlayerMap(player, mapId)
         if not player then return false, 'invalid_player' end
         if not mapId or mapId == '' then return false, 'invalid_map' end
+        if not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
 
         if player.currentMapId == mapId then
             if not player.position then self:_setPlayerPosition(player, self:_defaultMapPosition(mapId), not self.strictRuntimeBoundary) end
@@ -664,7 +732,14 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:createPlayer(playerId)
         if self.players[playerId] then return self.players[playerId] end
-        local loaded = self.playerRepository:load(playerId)
+        local loaded, loadErr = self.playerRepository:load(playerId)
+        if loadErr then
+            if self.metrics then
+                self.metrics:increment('player_state.load_error', 1)
+                self.metrics:error('player_state_load_failed', { playerId = tostring(playerId), error = tostring(loadErr) })
+            end
+            return nil, loadErr
+        end
         local player = self.itemSystem:sanitizePlayerProfile(loaded, playerId)
         player.currentMapId = player.currentMapId or (self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId) or 'henesys_hunting_ground'
         if loaded then player.dirty = false else player.dirty = true end
@@ -677,8 +752,12 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:onPlayerEnter(playerId, mapId, position)
-        local player = self:createPlayer(playerId)
-        if mapId then self:setPlayerMap(player, mapId) end
+        local player, loadErr = self:createPlayer(playerId)
+        if not player then return nil, loadErr or 'player_load_failed' end
+        if mapId then
+            local mapOk, mapErr = self:setPlayerMap(player, mapId)
+            if not mapOk then return nil, mapErr end
+        end
         self:updatePlayerRuntimeState(player, mapId, position, self.strictRuntimeBoundary)
         self:_emit('onPlayerEnter', player)
         self:publishPlayerSnapshot(player)
@@ -957,26 +1036,40 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:buyFromNpc(player, itemId, quantity)
+    function world:buyFromNpc(player, npcId, itemId, quantity)
         if not player then return false, 'invalid_player' end
+        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        if not npc then return false, npcErr end
+        local shopOk, shopErr = self:_validateNpcShop(npc)
+        if not shopOk then return false, shopErr end
+        local boundaryOk, boundaryErr = self:_requireActionBoundary(player, npc.mapId, npc.position, 'questNpcRange')
+        if not boundaryOk then return false, boundaryErr end
+        if not self:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
         local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity)
         if not ok then return false, err end
         self.questSystem:onItemAcquired(player, itemId, quantity)
-        self.journal:append('npc_buy', { playerId = player.id, itemId = itemId, quantity = quantity })
+        self.journal:append('npc_buy', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
         self:publishPlayerSnapshot(player)
         return true
     end
 
-    function world:sellToNpc(player, itemId, quantity)
+    function world:sellToNpc(player, npcId, itemId, quantity)
         if not player then return false, 'invalid_player' end
+        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        if not npc then return false, npcErr end
+        local shopOk, shopErr = self:_validateNpcShop(npc)
+        if not shopOk then return false, shopErr end
+        local boundaryOk, boundaryErr = self:_requireActionBoundary(player, npc.mapId, npc.position, 'questNpcRange')
+        if not boundaryOk then return false, boundaryErr end
+        if not self:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
         local ok, err = self.economySystem:sellToNpc(player, itemId, quantity)
         if not ok then return false, err end
         self.questSystem:onItemRemoved(player, itemId, quantity)
-        self.journal:append('npc_sell', { playerId = player.id, itemId = itemId, quantity = quantity })
+        self.journal:append('npc_sell', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -1003,8 +1096,10 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:changeMap(player, mapId)
+    function world:changeMap(player, mapId, sourceMapId)
         if not player then return false, 'invalid_player' end
+        if not mapId or mapId == '' or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
+        if sourceMapId ~= nil and sourceMapId ~= '' and player.currentMapId ~= sourceMapId then return false, 'wrong_map' end
         local actionOk, actionErr = self:_checkAction(player, 'map_change', 1)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)

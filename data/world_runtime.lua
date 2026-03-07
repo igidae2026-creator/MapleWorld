@@ -124,9 +124,21 @@ return {
     },
     quests = {
         npcBindings = {
-            Rina = { mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0 },
-            Sera = { mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0 },
-            Chief_Stan = { mapId = 'forest_edge', x = 80, y = 0, z = 0 },
+            Rina = {
+                mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0,
+                shopId = 'henesys_general',
+                catalog = { hp_potion = true, red_potion = true, snail_shell = true, mushroom_spore = true },
+            },
+            Sera = {
+                mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0,
+                shopId = 'henesys_general',
+                catalog = { hp_potion = true, red_potion = true, snail_shell = true, mushroom_spore = true },
+            },
+            Chief_Stan = {
+                mapId = 'forest_edge', x = 80, y = 0, z = 0,
+                shopId = 'forest_trade',
+                catalog = { hp_potion = true, red_potion = true, mano_shell = true },
+            },
         },
     },
 }

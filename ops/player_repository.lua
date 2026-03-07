@@ -195,11 +195,14 @@ function PlayerRepository:_loadFromStorage(playerId)
     end
 
     local seen = {}
+    local loadErr = nil
     for _, key in ipairs(prioritized) do
         if not seen[key] then
             seen[key] = true
-            local envelope = self:_readEnvelope(storage, key)
-            if envelope and envelope.value ~= nil then
+            local envelope, err = self:_readEnvelope(storage, key)
+            if err then
+                loadErr = loadErr or err
+            elseif envelope and envelope.value ~= nil then
                 if not bestEnvelope or (tonumber(envelope.revision) or 0) > (tonumber(bestEnvelope.revision) or 0) then
                     bestEnvelope = envelope
                     bestKey = key
@@ -209,6 +212,10 @@ function PlayerRepository:_loadFromStorage(playerId)
     end
 
     if not bestEnvelope then
+        if loadErr then
+            if self.metrics then self.metrics:increment('repository.load', 1, { status = 'error', kind = 'msw' }) end
+            return nil, loadErr
+        end
         if self.metrics then self.metrics:increment('repository.load', 1, { status = 'miss', kind = 'msw' }) end
         return nil
     end
