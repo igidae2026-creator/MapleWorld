@@ -725,6 +725,104 @@ function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
+function WorldServerBridge:allocateStat(requestContext, stat, amount)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:allocateStat(player, stat, tonumber(amount))
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, result)
+end
+
+function WorldServerBridge:promoteJob(requestContext, jobId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:promoteJob(player, jobId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, result)
+end
+
+function WorldServerBridge:learnSkill(requestContext, skillId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:learnSkill(player, skillId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, result)
+end
+
+function WorldServerBridge:castSkill(requestContext, skillId, target)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:castSkill(player, skillId, target)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, { result = result, player = self.world:publishPlayerSnapshot(player) })
+end
+
+function WorldServerBridge:enhanceEquipment(requestContext, slot)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:enhanceEquipment(player, slot)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, { enhancement = result, player = self.world:publishPlayerSnapshot(player) })
+end
+
+function WorldServerBridge:createParty(requestContext)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, self.world:createParty(player))
+end
+
+function WorldServerBridge:createGuild(requestContext, name)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, self.world:createGuild(player, name))
+end
+
+function WorldServerBridge:addFriend(requestContext, otherId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok = self.world:addFriend(player, otherId)
+    return response(self.runtimeAdapter, ok, self.world:publishPlayerSnapshot(player), ok and nil or 'friend_add_failed')
+end
+
+function WorldServerBridge:tradeMesos(requestContext, targetPlayerId, amount)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local target = self.world:createPlayer(targetPlayerId)
+    local ok, result = self.world:tradeMesos(player, target, tonumber(amount))
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, { player = self.world:publishPlayerSnapshot(player), target = self.world:publishPlayerSnapshot(target) })
+end
+
+function WorldServerBridge:listAuction(requestContext, itemId, quantity, price)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, listing = self.world:listAuction(player, itemId, tonumber(quantity), tonumber(price))
+    return response(self.runtimeAdapter, ok, listing, ok and nil or 'auction_list_failed')
+end
+
+function WorldServerBridge:craftItem(requestContext, recipeId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:craftItem(player, recipeId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:openDialogue(npcId)
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world:openDialogue(npcId))
+end
+
+function WorldServerBridge:channelTransfer(requestContext, mapId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:channelTransfer(player, mapId)
+    return response(self.runtimeAdapter, ok, result, ok and nil or result)
+end
+
 function WorldServerBridge:getRuntimeStatus()
     if not self.world then
         local world, err = self:bootstrap()
@@ -754,7 +852,7 @@ function WorldServerBridge:getControlPlaneReport()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world.adminTools:getControlPlaneReport(self.world))
+    return response(self.runtimeAdapter, true, self.world:getControlPlaneReport())
 end
 
 function WorldServerBridge:getEventTruth()
@@ -763,6 +861,46 @@ function WorldServerBridge:getEventTruth()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
     return response(self.runtimeAdapter, true, self.world.adminTools:getEventTruth(self.world, {}))
+end
+
+function WorldServerBridge:getEconomyReport()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world:getEconomyReport())
+end
+
+function WorldServerBridge:adminStatus()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world:adminStatus())
+end
+
+function WorldServerBridge:getBuildRecommendation(requestContext)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, self.world.buildRecommendationSystem:recommend(player))
+end
+
+function WorldServerBridge:getTutorialState(requestContext)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, { tutorial = player.tutorial, current = self.world.tutorialSystem:getCurrent(player) })
+end
+
+function WorldServerBridge:listPartyFinder(requestContext)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, self.world:findParties({ mapId = player.currentMapId }))
+end
+
+function WorldServerBridge:createRaid(requestContext, bossId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    return response(self.runtimeAdapter, true, self.world:createRaid(player, bossId))
 end
 
 return WorldServerBridge

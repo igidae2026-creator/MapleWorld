@@ -147,4 +147,156 @@ end
 --@ EndMethod
 Entry.ChangeMap = ChangeMap
 
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function AllocateStat(requestContext, stat, amount, component)
+    return dispatch('allocateStat', component, requestContext, stat, amount)
+end
+--@ EndMethod
+Entry.AllocateStat = AllocateStat
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function PromoteJob(requestContext, jobId, component)
+    return dispatch('promoteJob', component, requestContext, jobId)
+end
+--@ EndMethod
+Entry.PromoteJob = PromoteJob
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function LearnSkill(requestContext, skillId, component)
+    return dispatch('learnSkill', component, requestContext, skillId)
+end
+--@ EndMethod
+Entry.LearnSkill = LearnSkill
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function CastSkill(requestContext, skillId, target, component)
+    return dispatch('castSkill', component, requestContext, skillId, target)
+end
+--@ EndMethod
+Entry.CastSkill = CastSkill
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function EnhanceEquipment(requestContext, slot, component)
+    return dispatch('enhanceEquipment', component, requestContext, slot)
+end
+--@ EndMethod
+Entry.EnhanceEquipment = EnhanceEquipment
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function CreateParty(requestContext, component)
+    return dispatch('createParty', component, requestContext)
+end
+--@ EndMethod
+Entry.CreateParty = CreateParty
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function CreateGuild(requestContext, name, component)
+    return dispatch('createGuild', component, requestContext, name)
+end
+--@ EndMethod
+Entry.CreateGuild = CreateGuild
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function AddFriend(requestContext, otherId, component)
+    return dispatch('addFriend', component, requestContext, otherId)
+end
+--@ EndMethod
+Entry.AddFriend = AddFriend
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function TradeMesos(requestContext, targetPlayerId, amount, component)
+    return dispatch('tradeMesos', component, requestContext, targetPlayerId, amount)
+end
+--@ EndMethod
+Entry.TradeMesos = TradeMesos
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function ListAuction(requestContext, itemId, quantity, price, component)
+    return dispatch('listAuction', component, requestContext, itemId, quantity, price)
+end
+--@ EndMethod
+Entry.ListAuction = ListAuction
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function CraftItem(requestContext, recipeId, component)
+    return dispatch('craftItem', component, requestContext, recipeId)
+end
+--@ EndMethod
+Entry.CraftItem = CraftItem
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function OpenDialogue(npcId, component)
+    return dispatch('openDialogue', component, npcId)
+end
+--@ EndMethod
+Entry.OpenDialogue = OpenDialogue
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function ChannelTransfer(requestContext, mapId, component)
+    return dispatch('channelTransfer', component, requestContext, mapId)
+end
+--@ EndMethod
+Entry.ChannelTransfer = ChannelTransfer
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function GetEconomyReport(component)
+    return dispatch('getEconomyReport', component)
+end
+--@ EndMethod
+Entry.GetEconomyReport = GetEconomyReport
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function AdminStatus(component)
+    return dispatch('adminStatus', component)
+end
+--@ EndMethod
+Entry.AdminStatus = AdminStatus
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function GetBuildRecommendation(requestContext, component)
+    return dispatch('getBuildRecommendation', component, requestContext)
+end
+--@ EndMethod
+Entry.GetBuildRecommendation = GetBuildRecommendation
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function GetTutorialState(requestContext, component)
+    return dispatch('getTutorialState', component, requestContext)
+end
+--@ EndMethod
+Entry.GetTutorialState = GetTutorialState
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function ListPartyFinder(requestContext, component)
+    return dispatch('listPartyFinder', component, requestContext)
+end
+--@ EndMethod
+Entry.ListPartyFinder = ListPartyFinder
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function CreateRaid(requestContext, bossId, component)
+    return dispatch('createRaid', component, requestContext, bossId)
+end
+--@ EndMethod
+Entry.CreateRaid = CreateRaid
+
 return Entry

@@ -64,6 +64,12 @@ function BossSystem:spawnEncounter(bossId, mapId)
         alive = true,
         enraged = false,
         resolved = false,
+        mechanics = deepcopy(def.mechanics or {
+            [1] = { pattern = 'summon_wave', hazard = 'frontal_slam' },
+            [2] = { pattern = 'arena_pulse', hazard = 'meteor_lane' },
+            [3] = { pattern = 'desperation', hazard = 'mapwide_burst' },
+        }),
+        raid = def.raid == true,
         triggeredAt = self:_now(),
         updatedAt = self:_now(),
         contributors = {},
@@ -119,9 +125,18 @@ function BossSystem:damage(mapId, player, amount)
         encounter.contributors[player.id] = (encounter.contributors[player.id] or 0) + damage
     end
 
+    local ratio = encounter.hp / math.max(1, encounter.maxHp)
+    if ratio <= 0.7 and encounter.phase < 2 then
+        encounter.phase = 2
+        encounter.currentMechanic = encounter.mechanics[2]
+    end
+    if ratio <= 0.35 and encounter.phase < 3 then
+        encounter.phase = 3
+        encounter.currentMechanic = encounter.mechanics[3]
+    end
     if encounter.hp <= encounter.maxHp * 0.4 and not encounter.enraged then
         encounter.enraged = true
-        encounter.phase = 2
+        encounter.currentMechanic = encounter.mechanics[encounter.phase]
         if self.metrics then self.metrics:increment('boss.enrage', 1, { boss = encounter.bossId }) end
     end
 
@@ -139,8 +154,10 @@ function BossSystem:damage(mapId, player, amount)
         local drops = self.dropSystem and self.dropSystem:rollDrops(bossLikeMob, player or { id = 'system' }) or {}
         if self.metrics then self.metrics:increment('boss.kill', 1, { boss = encounter.bossId }) end
         if self.logger and self.logger.info then self.logger:info('boss_killed', { bossId = encounter.bossId, playerId = player and player.id or nil }) end
+        encounter.currentMechanic = encounter.mechanics[encounter.phase]
         return true, drops, encounter
     end
+    encounter.currentMechanic = encounter.mechanics[encounter.phase]
     return true, nil, encounter
 end
 

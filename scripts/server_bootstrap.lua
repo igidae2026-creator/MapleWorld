@@ -5,6 +5,33 @@ local ItemSystem = require('scripts.item_system')
 local BossSystem = require('scripts.boss_system')
 local QuestSystem = require('scripts.quest_system')
 local EconomySystem = require('scripts.economy_system')
+local StatSystem = require('scripts.stat_system')
+local JobSystem = require('scripts.job_system')
+local BuffSystem = require('scripts.buff_debuff_system')
+local CombatResolution = require('scripts.combat_resolution')
+local SkillSystem = require('scripts.skill_system')
+local EquipmentProgression = require('scripts.equipment_progression')
+local InventoryExpansion = require('scripts.inventory_expansion')
+local PartySystem = require('scripts.party_system')
+local GuildSystem = require('scripts.guild_system')
+local SocialSystem = require('scripts.social_system')
+local TradingSystem = require('scripts.trading_system')
+local AuctionHouse = require('scripts.auction_house')
+local CraftingSystem = require('scripts.crafting_system')
+local DialogueSystem = require('scripts.npc_dialogue_system')
+local MapEventSystem = require('scripts.map_event_system')
+local WorldEventSystem = require('scripts.world_event_system')
+local ProgressionSystem = require('scripts.progression_system')
+local DailyWeeklySystem = require('scripts.daily_weekly_system')
+local AchievementsSystem = require('scripts.achievements_system')
+local BossMechanicsSystem = require('scripts.boss_mechanics_system')
+local LootDistribution = require('scripts.loot_distribution')
+local AntiAbuseHooks = require('scripts.anti_abuse_gameplay_hooks')
+local TutorialSystem = require('scripts.tutorial_system')
+local BuildRecommendationSystem = require('scripts.build_recommendation_system')
+local PartyFinder = require('scripts.party_finder')
+local CombatFeedback = require('scripts.combat_feedback')
+local RaidSystem = require('scripts.raid_system')
 local Metrics = require('ops.metrics')
 local Scheduler = require('ops.event_scheduler')
 local AdminTools = require('ops.admin_tools')
@@ -18,6 +45,31 @@ local RuntimePolicyBundle = require('ops.runtime_policy_bundle')
 local RuntimeKernel = require('ops.runtime_kernel')
 local RecoveryKernel = require('ops.recovery_kernel')
 local EventTruth = require('ops.event_truth')
+local ContentLoader = require('data.content_loader')
+local WorldCluster = require('ops.world_cluster')
+local ChannelRouter = require('ops.channel_router')
+local ShardRegistry = require('ops.shard_registry')
+local WorldFailover = require('ops.world_failover')
+local SessionOrchestrator = require('ops.session_orchestrator')
+local SnapshotManager = require('ops.snapshot_manager')
+local ReplayEngine = require('ops.replay_engine')
+local DeterministicReplayValidator = require('ops.deterministic_replay_validator')
+local ConsistencyValidator = require('ops.consistency_validator')
+local TelemetryPipeline = require('ops.telemetry_pipeline')
+local MetricsAggregator = require('ops.metrics_aggregator')
+local RuntimeProfiler = require('ops.runtime_profiler')
+local AdminConsole = require('ops.admin_console')
+local GMCommandService = require('ops.gm_command_service')
+local CheatDetection = require('ops.cheat_detection')
+local ExploitMonitor = require('ops.exploit_monitor')
+local AnomalyScoring = require('ops.anomaly_scoring')
+local DistributedRateLimit = require('ops.distributed_rate_limit')
+local AuditLog = require('ops.audit_log')
+local PolicyEngine = require('ops.policy_engine')
+local BootstrapProfiles = require('ops.bootstrap_profiles')
+local EntityIndex = require('ops.entity_index')
+local EventBatcher = require('ops.event_batcher')
+local PerformanceCounters = require('ops.performance_counters')
 
 local ServerBootstrap = {}
 
@@ -86,6 +138,7 @@ local function buildDrops(rows)
             maxQty = tonumber(row.max_qty),
             rarity = row.rarity,
             bindOnPickup = row.bind_on_pickup == 'true',
+            anticipation = row.anticipation,
         }
     end
     return out
@@ -143,6 +196,9 @@ local function buildQuests(rows)
             rewardItems = rewardItems,
             startNpc = row.start_npc,
             endNpc = row.end_npc,
+            narrative = row.narrative,
+            rewardSummary = row.reward_summary,
+            guidance = row.guidance,
         }
     end
     return out
@@ -260,6 +316,11 @@ local function requireWorldConfig()
 end
 
 local function loadRows(basePath, relativePath, providerKey, dataProvider, warnings, dataSources)
+    if dataProvider and dataProvider[providerKey] then
+        dataSources[providerKey] = 'runtime_tables'
+        return cloneRows(dataProvider[providerKey])
+    end
+
     if basePath and io and io.open then
         local ok, rows = pcall(parseCsv, basePath .. '/' .. relativePath)
         if ok then
@@ -267,11 +328,6 @@ local function loadRows(basePath, relativePath, providerKey, dataProvider, warni
             return rows
         end
         warnings[#warnings + 1] = 'csv_fallback:' .. relativePath
-    end
-
-    if dataProvider and dataProvider[providerKey] then
-        dataSources[providerKey] = 'runtime_tables'
-        return cloneRows(dataProvider[providerKey])
     end
 
     error('Missing data source for ' .. tostring(providerKey))
@@ -443,6 +499,7 @@ function ServerBootstrap.boot(basePath, config)
     local logger = config.logger or metrics
     local dataProvider = config.dataProvider or requireRuntimeTables()
     local worldConfig = config.worldConfig or requireWorldConfig()
+    local contentBundle = config.contentBundle or ContentLoader.load()
     local warnings, dataSources = {}, {}
     local runtimeAdapter = config.runtimeAdapter or RuntimeAdapter.new({ metrics = metrics, logger = logger })
     local runtimeClock = config.time or function() return runtimeAdapter:now() end
@@ -473,6 +530,10 @@ function ServerBootstrap.boot(basePath, config)
         item.stackable = item.stackable == 'true'
         item.npcPrice = tonumber(item.npc_price)
         item.assetKey = item.asset_key
+        item.progressionTier = tonumber(item.progression_tier) or item.requiredLevel or 1
+        item.desirability = item.desirability
+        item.upgradePath = item.upgrade_path
+        item.excitement = item.excitement
     end
 
     local playerRepository = config.playerRepository
@@ -549,6 +610,33 @@ function ServerBootstrap.boot(basePath, config)
     local bossSystem = BossSystem.new({ bossTable = buildBoss(bossRaw, worldConfig), dropSystem = dropSystem, metrics = metrics, logger = logger, time = runtimeClock })
     local questSystem = QuestSystem.new({ quests = buildQuests(questRaw), itemSystem = itemSystem, economySystem = economySystem, expSystem = expSystem, metrics = metrics, logger = logger })
     local spawnSystem = SpawnSystem.new({ mobs = mobs, scheduler = scheduler, metrics = metrics, logger = logger, rng = rng, maxSpawnPerTick = config.maxSpawnPerTick })
+    local statSystem = StatSystem.new({ jobs = contentBundle.content.jobs, metrics = metrics })
+    local jobSystem = JobSystem.new({ jobs = contentBundle.content.jobs, metrics = metrics })
+    local buffSystem = BuffSystem.new({ time = runtimeClock })
+    local combatResolution = CombatResolution.new({ statSystem = statSystem, buffSystem = buffSystem, itemSystem = itemSystem })
+    local skillSystem = SkillSystem.new({ skillTrees = contentBundle.content.skills, buffSystem = buffSystem, combat = combatResolution, time = runtimeClock })
+    local equipmentProgression = EquipmentProgression.new({ itemSystem = itemSystem })
+    local inventoryExpansion = InventoryExpansion.new()
+    local partySystem = PartySystem.new()
+    local guildSystem = GuildSystem.new()
+    local socialSystem = SocialSystem.new()
+    local tradingSystem = TradingSystem.new({ itemSystem = itemSystem, economySystem = economySystem })
+    local auctionHouse = AuctionHouse.new({ economy = contentBundle.content.economy })
+    local craftingSystem = CraftingSystem.new({ itemSystem = itemSystem })
+    local dialogueSystem = DialogueSystem.new({ dialogues = contentBundle.content.dialogues })
+    local mapEventSystem = MapEventSystem.new({ maps = contentBundle.content.maps })
+    local worldEventSystem = WorldEventSystem.new({ definitions = contentBundle.content.events })
+    local progressionSystem = ProgressionSystem.new({ jobSystem = jobSystem, statSystem = statSystem, inventoryExpansion = inventoryExpansion })
+    local dailyWeeklySystem = DailyWeeklySystem.new()
+    local achievementsSystem = AchievementsSystem.new()
+    local bossMechanicsSystem = BossMechanicsSystem.new()
+    local lootDistribution = LootDistribution.new()
+    local antiAbuseHooks = AntiAbuseHooks.new()
+    local tutorialSystem = TutorialSystem.new()
+    local buildRecommendationSystem = BuildRecommendationSystem.new({ jobs = contentBundle.content.jobs, skills = contentBundle.content.skills })
+    local partyFinder = PartyFinder.new()
+    local combatFeedback = CombatFeedback.new()
+    local raidSystem = RaidSystem.new()
     local healthcheck = Healthcheck.new({ metrics = metrics, scheduler = scheduler })
     local adminTools = AdminTools.new({ metrics = metrics, scheduler = scheduler })
 
@@ -574,6 +662,33 @@ function ServerBootstrap.boot(basePath, config)
         bossSystem = bossSystem,
         questSystem = questSystem,
         economySystem = economySystem,
+        statSystem = statSystem,
+        jobSystem = jobSystem,
+        buffSystem = buffSystem,
+        skillSystem = skillSystem,
+        combatResolution = combatResolution,
+        equipmentProgression = equipmentProgression,
+        inventoryExpansion = inventoryExpansion,
+        partySystem = partySystem,
+        guildSystem = guildSystem,
+        socialSystem = socialSystem,
+        tradingSystem = tradingSystem,
+        auctionHouse = auctionHouse,
+        craftingSystem = craftingSystem,
+        dialogueSystem = dialogueSystem,
+        mapEventSystem = mapEventSystem,
+        worldEventSystem = worldEventSystem,
+        progressionSystem = progressionSystem,
+        dailyWeeklySystem = dailyWeeklySystem,
+        achievementsSystem = achievementsSystem,
+        bossMechanicsSystem = bossMechanicsSystem,
+        lootDistribution = lootDistribution,
+        antiAbuseHooks = antiAbuseHooks,
+        tutorialSystem = tutorialSystem,
+        buildRecommendationSystem = buildRecommendationSystem,
+        partyFinder = partyFinder,
+        combatFeedback = combatFeedback,
+        raidSystem = raidSystem,
         adminTools = adminTools,
         healthcheck = healthcheck,
         players = {},
@@ -584,6 +699,7 @@ function ServerBootstrap.boot(basePath, config)
         worldRepository = worldRepository,
         runtimeAdapter = runtimeAdapter,
         runtimeHooks = config.runtimeHooks or {},
+        content = contentBundle,
         worldConfig = worldConfig,
         runtimeIdentity = runtimeIdentity,
         policyBundle = policyBundle,
@@ -723,7 +839,41 @@ function ServerBootstrap.boot(basePath, config)
             dataSources = dataSources,
             warnings = warnings,
         },
+        gameplay = {
+            recipes = {
+                bronze_reforge = {
+                    ingredients = { { itemId = 'henesys_material_01', quantity = 2 } },
+                    result = { itemId = 'henesys_bronze_blade', quantity = 1 },
+                },
+            },
+        },
     }
+    world.cluster = WorldCluster.new({ worldId = runtimeIdentity.worldId })
+    world.cluster:registerChannel(runtimeIdentity.channelId, {})
+    world.shardRegistry = ShardRegistry.new()
+    world.shardRegistry:register('shard-main', { worldId = runtimeIdentity.worldId, channelId = runtimeIdentity.channelId })
+    world.channelRouter = ChannelRouter.new({ cluster = world.cluster })
+    world.failover = WorldFailover.new({ cluster = world.cluster })
+    world.sessionOrchestrator = SessionOrchestrator.new()
+    world.snapshotManager = SnapshotManager.new()
+    world.entityIndex = EntityIndex.new()
+    world.eventBatcher = EventBatcher.new({ maxBatch = 24 })
+    world.performanceCounters = PerformanceCounters.new()
+    world.replayEngine = ReplayEngine.new()
+    world.deterministicReplayValidator = DeterministicReplayValidator.new({ replayEngine = world.replayEngine })
+    world.consistencyValidator = ConsistencyValidator.new()
+    world.telemetryPipeline = TelemetryPipeline.new()
+    world.metricsAggregator = MetricsAggregator.new()
+    world.runtimeProfiler = RuntimeProfiler.new()
+    world.cheatDetection = CheatDetection.new()
+    world.exploitMonitor = ExploitMonitor.new({ detector = world.cheatDetection })
+    world.anomalyScoring = AnomalyScoring.new()
+    world.distributedRateLimit = DistributedRateLimit.new()
+    world.auditLog = AuditLog.new()
+    world.policyEngine = PolicyEngine.new({ thresholds = { safeMode = 10, channelLoad = 75 } })
+    world.bootstrapProfiles = BootstrapProfiles
+    world.adminConsole = AdminConsole.new({ world = world })
+    world.gmCommandService = GMCommandService.new({ world = world })
     itemSystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
     economySystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
 
@@ -742,6 +892,57 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_now()
         return math.floor(tonumber(self.clock()) or os.time())
+    end
+
+    function world:_ensurePlayerSystems(player)
+        self.statSystem:ensurePlayer(player)
+        self.jobSystem:ensurePlayer(player)
+        self.skillSystem:ensurePlayer(player)
+        self.inventoryExpansion:ensurePlayer(player)
+        self.socialSystem:ensurePlayer(player)
+        self.progressionSystem:ensurePlayer(player)
+        self.dailyWeeklySystem:ensurePlayer(player)
+        self.achievementsSystem:ensurePlayer(player)
+        self.buffSystem:ensurePlayer(player)
+        self.tutorialSystem:ensurePlayer(player)
+        player.huntingLoop = player.huntingLoop or { streak = 0, rareSince = 0, recentDrops = {} }
+        return player
+    end
+
+    function world:_nextQuestGuidance(player)
+        local lowestId, lowestQuest = nil, nil
+        for questId, quest in pairs(self.questSystem.quests or {}) do
+            local state = player.questState[questId]
+            if not state or not state.completed then
+                if (quest.requiredLevel or 1) <= (player.level or 1) and (lowestQuest == nil or (quest.requiredLevel or 1) < (lowestQuest.requiredLevel or 1) or questId < lowestId) then
+                    lowestId, lowestQuest = questId, quest
+                end
+            end
+        end
+        if not lowestQuest then return nil end
+        return {
+            questId = lowestId,
+            title = lowestQuest.name,
+            narrative = lowestQuest.narrative,
+            guidance = lowestQuest.guidance,
+            rewardSummary = lowestQuest.rewardSummary,
+        }
+    end
+
+    function world:_recommendedRoute(player)
+        local current = self.worldConfig.maps[player.currentMapId or self.worldConfig.runtime.defaultMapId] or {}
+        local nextMapId = nil
+        for candidateId in pairs((self.worldConfig.mapTransitions or {})[player.currentMapId or self.worldConfig.runtime.defaultMapId] or {}) do
+            local candidate = self.worldConfig.maps[candidateId] or {}
+            if not nextMapId or (candidate.recommended_level or 0) > (current.recommended_level or 0) then
+                nextMapId = candidateId
+            end
+        end
+        return {
+            currentMapId = player.currentMapId,
+            nextMapId = nextMapId,
+            tutorial = self.tutorialSystem:getCurrent(player),
+        }
     end
 
     function world:_policy()
@@ -2424,6 +2625,7 @@ function ServerBootstrap.boot(basePath, config)
         return nil, loadErr
     end
         local player = self.itemSystem:sanitizePlayerProfile(loaded, playerId)
+        self:_ensurePlayerSystems(player)
         player.runtimeScope = player.runtimeScope or {}
         player.runtimeScope.worldId = self.runtimeIdentity.worldId
         player.runtimeScope.channelId = self.runtimeIdentity.channelId
@@ -2438,6 +2640,7 @@ function ServerBootstrap.boot(basePath, config)
         if loaded then player.dirty = false else player.dirty = true end
         if not player.position then self:_setPlayerPosition(player, self:_defaultMapPosition(player.currentMapId), not self.strictRuntimeBoundary) end
         self.players[playerId] = player
+        self.sessionOrchestrator:bind(playerId, { channelId = self.runtimeIdentity.channelId, runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId })
         self.mapPlayers[player.currentMapId] = self.mapPlayers[player.currentMapId] or {}
         self.mapPlayers[player.currentMapId][playerId] = true
         self:_recordTruthEvent('player_loaded', { playerId = playerId, loaded = loaded ~= nil, scope = deepcopy(player.runtimeScope) }, {
@@ -2487,10 +2690,26 @@ function ServerBootstrap.boot(basePath, config)
             expToNext = self.expSystem:requiredFor(player.level),
             mesos = player.mesos,
             power = self.itemSystem:getPower(player),
+            derivedStats = self.statSystem:derived(player, self.itemSystem, player.activeEffects),
             currentMapId = player.currentMapId,
             position = deepcopy(player.position),
             runtimeScope = deepcopy(player.runtimeScope),
             stats = player.stats,
+            jobId = player.jobId,
+            skills = player.skills,
+            activeEffects = player.activeEffects,
+            inventoryLimits = player.inventoryLimits,
+            social = player.social,
+            progression = player.progression,
+            achievements = player.achievements,
+            tutorial = player.tutorial,
+            buildRecommendation = self.buildRecommendationSystem:recommend(player),
+            questGuidance = self:_nextQuestGuidance(player),
+            recommendedRoute = self:_recommendedRoute(player),
+            huntingLoop = player.huntingLoop,
+            setBonuses = player.setBonuses,
+            lastCombatFeedback = player.lastCombatFeedback,
+            lastLootFeedback = player.lastLootFeedback,
             inventory = self.itemSystem:exportInventory(player),
             equipment = player.equipment,
             quests = self.questSystem:snapshotPlayer(player),
@@ -2498,6 +2717,7 @@ function ServerBootstrap.boot(basePath, config)
             dirty = player.dirty,
             version = player.version,
         }
+        self.entityIndex:index('player', player.currentMapId or 'global', player.id, snapshot)
         self:_emit('onPlayerSnapshot', player, snapshot)
         return snapshot
     end
@@ -2515,12 +2735,22 @@ function ServerBootstrap.boot(basePath, config)
                     x = mob.x,
                     y = mob.y,
                     groupId = mob.spawnGroupId,
+                    ai = mob.ai,
+                    rare = mob.rare == true,
                 }
+                self.entityIndex:index('mob', mapId, spawnId, mobsOut[#mobsOut])
             end
             table.sort(mobsOut, function(a, b) return a.spawnId < b.spawnId end)
         end
         local encounter = self.bossSystem:getEncounter(mapId)
         local bossOut = nil
+        local dropsOut = self.dropSystem:listDrops(mapId)
+        for _, drop in ipairs(dropsOut) do
+            local itemDef = self.items[drop.itemId] or {}
+            drop.progressionTier = itemDef.progressionTier
+            drop.desirability = itemDef.desirability
+            drop.excitement = drop.excitement or itemDef.excitement
+        end
         if encounter then
             local position = self:_bossPosition(encounter)
             bossOut = {
@@ -2533,14 +2763,21 @@ function ServerBootstrap.boot(basePath, config)
                 x = position and position.x or 0,
                 y = position and position.y or 0,
                 z = position and position.z or 0,
+                mechanic = encounter.currentMechanic,
+                raid = encounter.raid == true,
             }
+            self.entityIndex:index('boss', mapId, encounter.bossId, bossOut)
         end
         return {
             mapId = mapId,
             population = self:getMapPopulation(mapId),
             mobs = mobsOut,
-            drops = self.dropSystem:listDrops(mapId),
+            drops = dropsOut,
             boss = bossOut,
+            regionalEvent = self.worldEventSystem:regional(mapId),
+            metadata = deepcopy((self.worldConfig.maps[mapId] or {}).metadata),
+            recommendedLevel = (self.worldConfig.maps[mapId] or {}).recommended_level,
+            socialDensity = math.max(0, self:getMapPopulation(mapId) + #mobsOut + (#dropsOut > 0 and 1 or 0)),
             now = self:_now(),
         }
     end
@@ -2599,6 +2836,13 @@ function ServerBootstrap.boot(basePath, config)
             for _, drop in ipairs(rawDrops) do
                 self.itemSystem:addItem(player, drop.itemId, drop.quantity, nil, { source = ctx.source or 'auto_drop_pickup', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, boss_id = ctx.bossId })
                 self.questSystem:onItemAcquired(player, drop.itemId, drop.quantity)
+                player.lastLootFeedback = self.combatFeedback:lootDrop(drop)
+                player.huntingLoop.recentDrops[#player.huntingLoop.recentDrops + 1] = {
+                    itemId = drop.itemId,
+                    rarity = drop.rarity,
+                    excitement = drop.excitement,
+                }
+                while #player.huntingLoop.recentDrops > 5 do table.remove(player.huntingLoop.recentDrops, 1) end
                 self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, map_id = mapId, boss_id = ctx.bossId, item_id = drop.itemId, quantity = drop.quantity, idempotency_key = string.format('reward:auto:%s:%s:%s', tostring(player.id), tostring(drop.itemId), tostring(ctx.correlationId or os.time())), lineage_reference = self:_lineageReference('drop_auto', drop.itemId), metadata = { mode = 'auto_pickup', reason = ctx.source } })
             end
             return rawDrops
@@ -2629,9 +2873,14 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_applyMobRewards(player, mob, forceAutoPickup)
         self:_recordFarmSignal(player, mob.mobId)
-        self.expSystem:grant(player, mob.template.exp or 0)
+        player.huntingLoop.streak = (player.huntingLoop.streak or 0) + 1
+        player.huntingLoop.rareSince = (player.huntingLoop.rareSince or 0) + 1
         local correlationId = string.format('mob_reward:%s:%s:%s', tostring(player.id), tostring(mob.spawnId), tostring(self:_now()))
-        self.economySystem:grantMesos(player, self:_rollMesos(mob.template.mesos_min, mob.template.mesos_max), 'mob_drop', { correlationId = correlationId, mapId = mob.mapId })
+        local mesosReward = self:_rollMesos(mob.template.mesos_min, mob.template.mesos_max)
+        local expReward = mob.template.exp or 0
+        local beforeLevel = player.level
+        local beneficiaries = self.partySystem:shareRewards(self, player, expReward, mesosReward)
+        if player.level > beforeLevel then self.progressionSystem:onLevelUp(player) end
         local rawDrops = self.dropSystem:rollDrops(mob, player)
         local delivered = self:_processDropAcquisition(player, mob.mapId, mob, rawDrops, forceAutoPickup, { source = 'mob_drop', correlationId = correlationId, sourceEventId = tostring(mob.spawnId) })
         self.questSystem:onKill(player, mob.mobId, 1)
@@ -2643,6 +2892,9 @@ function ServerBootstrap.boot(basePath, config)
             mapId = mob.mapId,
             spawnId = mob.spawnId,
         })
+        if mob.rare then self.achievementsSystem:unlock(player, 'rare_hunter') end
+        if mob.rare then player.huntingLoop.rareSince = 0 end
+        if player.huntingLoop.streak >= 10 then self.tutorialSystem:advance(player, 'move') end
         self:_emit('onMobKilled', player, mob, delivered)
         self:publishPlayerSnapshot(player)
         return delivered
@@ -2758,9 +3010,11 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_applyBossRewards(player, encounter, rawDrops)
         local bossDef = self.mobs[encounter.bossId] or {}
-        self.expSystem:grant(player, bossDef.exp or 0)
         local correlationId = string.format('boss_reward:%s:%s:%s', tostring(player.id), tostring(encounter.bossId), tostring(self:_now()))
-        self.economySystem:grantMesos(player, self:_rollMesos(bossDef.mesos_min, bossDef.mesos_max), 'boss_drop', { bossId = encounter.bossId, mapId = encounter.mapId, correlationId = correlationId })
+        local mesosReward = self:_rollMesos(bossDef.mesos_min, bossDef.mesos_max)
+        local beforeLevel = player.level
+        local beneficiaries = self.partySystem:shareRewards(self, player, bossDef.exp or 0, mesosReward)
+        if player.level > beforeLevel then self.progressionSystem:onLevelUp(player) end
         local position = self:_bossPosition(encounter)
         local delivered = self:_processDropAcquisition(player, encounter.mapId, position, rawDrops, self.autoPickupDrops == true, { source = 'boss_drop', correlationId = correlationId, bossId = encounter.bossId, sourceEventId = tostring(encounter.bossId) })
         local claimKey = self:_bossRewardClaimKey(player.id, encounter)
@@ -2778,6 +3032,8 @@ function ServerBootstrap.boot(basePath, config)
         self.questSystem:onKill(player, encounter.bossId, 1)
         player.killLog[encounter.bossId] = (player.killLog[encounter.bossId] or 0) + 1
         player.dirty = true
+        if player.guildId then self.guildSystem:grantXp(player.guildId, 150) end
+        self.achievementsSystem:unlock(player, 'raid_clear')
         self:_recordTruthEvent('boss_killed', { playerId = player.id, mapId = encounter.mapId, bossId = encounter.bossId }, {
             truthType = 'boss.clear',
             playerId = player.id,
@@ -2786,7 +3042,7 @@ function ServerBootstrap.boot(basePath, config)
         })
         self:_emit('onBossKilled', encounter, player, delivered)
         self:publishPlayerSnapshot(player)
-        return delivered
+        return { delivered = delivered, party = beneficiaries, mechanic = encounter.currentMechanic }
     end
 
     function world:damageBoss(player, mapId, bossId, amount, validatedEncounter)
@@ -3019,10 +3275,12 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)
         if not ok then return false, err end
+        local routedChannel = self.channelRouter:route(mapId)
         self:_recordRuntimeEvent('map_route_committed', {
             playerId = player.id,
             fromMapId = source,
             toMapId = mapId,
+            routedChannelId = routedChannel and routedChannel.id or self.runtimeIdentity.channelId,
             source_scope = deepcopy(player.runtimeScope),
             target_scope = {
                 worldId = self.runtimeIdentity.worldId,
@@ -3084,8 +3342,169 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
+    function world:allocateStat(player, stat, amount)
+        local ok, err = self.statSystem:allocate(player, stat, amount)
+        if not ok then return false, err end
+        return true, self:publishPlayerSnapshot(player)
+    end
+
+    function world:promoteJob(player, jobId)
+        local ok, err = self.jobSystem:promote(player, jobId)
+        if not ok then return false, err end
+        self.skillSystem:ensurePlayer(player)
+        return true, self:publishPlayerSnapshot(player)
+    end
+
+    function world:learnSkill(player, skillId)
+        local ok, err = self.skillSystem:learn(player, skillId)
+        if not ok then return false, err end
+        return true, self:publishPlayerSnapshot(player)
+    end
+
+    function world:castSkill(player, skillId, target)
+        local actionOk, actionErr = self:_checkAction(player, 'skill_cast', 1)
+        if not actionOk then return false, actionErr end
+        local allowed, bucket = self.distributedRateLimit:check(tostring(player.id) .. ':skill', 1)
+        if not allowed then
+            self.exploitMonitor:flag(player.id, 'skill_rate')
+            return false, 'distributed_rate_limited'
+        end
+        local ok, payload = self.skillSystem:cast(player, skillId, target)
+        if not ok then return false, payload end
+        player.lastCombatFeedback = self.combatFeedback:skillCast(player, { id = skillId, visual = payload.visual, role = payload.role }, payload)
+        if payload.area then self.tutorialSystem:advance(player, 'combat') end
+        self.eventBatcher:push({ event = 'skill_cast', playerId = player.id, skillId = skillId, result = payload.type })
+        self.telemetryPipeline:emit('skill_cast', { playerId = player.id, skillId = skillId, bucket = bucket })
+        return true, payload
+    end
+
+    function world:enhanceEquipment(player, slot)
+        return self.equipmentProgression:enhance(player, slot)
+    end
+
+    function world:createParty(player)
+        local party = self.partySystem:create(player)
+        self.tutorialSystem:advance(player, 'party')
+        return party
+    end
+
+    function world:createGuild(player, name)
+        return self.guildSystem:create(player, name)
+    end
+
+    function world:listPartyFinder(player, detail)
+        return self.partyFinder:list(player, detail)
+    end
+
+    function world:findParties(filter)
+        return self.partyFinder:find(filter)
+    end
+
+    function world:addFriend(player, otherId)
+        return self.socialSystem:addFriend(player, otherId)
+    end
+
+    function world:tradeMesos(fromPlayer, toPlayer, amount)
+        local ok, err = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
+        if not ok then return false, err end
+        self.auditLog:append('player_trade', { fromPlayerId = fromPlayer.id, toPlayerId = toPlayer.id, amount = amount })
+        return true
+    end
+
+    function world:listAuction(player, itemId, quantity, price)
+        return true, self.auctionHouse:listItem(player, itemId, quantity, price)
+    end
+
+    function world:craftItem(player, recipeId)
+        local recipe = self.gameplay.recipes[recipeId]
+        if not recipe then return false, 'unknown_recipe' end
+        return self.craftingSystem:craft(player, recipe)
+    end
+
+    function world:openDialogue(npcId)
+        return self.dialogueSystem:get(npcId)
+    end
+
+    function world:activateMapEvent(mapId, eventId, payload)
+        return self.mapEventSystem:activate(mapId, eventId, payload)
+    end
+
+    function world:activateWorldEvent(kind, eventId)
+        return self.worldEventSystem:activate(kind, eventId)
+    end
+
+    function world:createRaid(player, bossId)
+        local partyId = player.partyId or (self.partySystem:create(player).id)
+        return self.raidSystem:create(bossId, player, partyId)
+    end
+
+    function world:channelTransfer(player, destinationMapId)
+        local channel = self.channelRouter:route(destinationMapId)
+        if not channel then return false, 'channel_not_found' end
+        self.sessionOrchestrator:bind(player.id, { channelId = channel.id, pendingMapId = destinationMapId })
+        return true, { channelId = channel.id, mapId = destinationMapId }
+    end
+
+    function world:validateContent()
+        return self.content.validation
+    end
+
+    function world:replayDeterminismReport()
+        local events = self.journal and self.journal:snapshot() or {}
+        local ok, detail = self.deterministicReplayValidator:validate(events)
+        return { ok = ok, detail = detail }
+    end
+
+    function world:adminStatus()
+        local status = self.adminConsole:status()
+        local consistent, issues = self.consistencyValidator:validateWorld(self)
+        local anomalyScore = self.anomalyScoring:score({
+            duplicateRisk = self.pressure.duplicateRiskPressure or 0,
+            replay = self.pressure.replayPressure or 0,
+            exploit = #(self.exploitMonitor.incidents or {}),
+        })
+        local policy = self.policyEngine:evaluate({
+            anomalyScore = anomalyScore,
+            channelLoad = self:getActivePlayerCount(),
+        })
+        return {
+            runtime = status,
+            consistent = consistent,
+            issues = issues,
+            policy = policy,
+            replay = self:replayDeterminismReport(),
+            performance = self.performanceCounters:snapshot(),
+            batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
+        }
+    end
+
+    function world:getControlPlaneReport()
+        return {
+            cluster = self.cluster,
+            shards = self.shardRegistry.shards,
+            sessions = self.sessionOrchestrator.sessions,
+            failover = self.failover.history,
+            audit = self.auditLog.entries,
+            telemetry = self.telemetryPipeline.events,
+            performance = self.performanceCounters:snapshot(),
+            batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
+        }
+    end
+
+    function world:getEconomyReport()
+        return {
+            faucets = deepcopy(self.economySystem.faucets),
+            sinks = deepcopy(self.economySystem.sinks),
+            auctionListings = deepcopy(self.auctionHouse.listings),
+            priceHistory = deepcopy(self.auctionHouse.priceHistory),
+            priceSignals = deepcopy(self.economySystem.priceSignals),
+            sinkPressure = self.economySystem.sinkPressure,
+        }
+    end
+
     for mapId, mapConfig in pairs(worldConfig.maps or {}) do
         spawnSystem:registerMap(mapId, mapConfig.spawnGroups or {})
+        world.cluster.channels[runtimeIdentity.channelId].maps[mapId] = true
     end
 
     local restoredWorldState, restoreErr = world:restoreWorldState()
@@ -3100,6 +3519,18 @@ function ServerBootstrap.boot(basePath, config)
     scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:flushPendingWorldSave(world._pendingWorldSaveReason or 'periodic') end)
     scheduler:every('health_tick', tonumber(runtimeCfg.healthTickSec) or 30, function() healthcheck:run() end)
     scheduler:every('drop_expire_tick', tonumber(runtimeCfg.dropExpireTickSec) or 5, function() world:expireDrops() end)
+    scheduler:every('world_ops_tick', 10, function()
+        local activeEntities = world.dropSystem:activeCount() + countTableKeys(world.players) + countTableKeys(world.bossSystem.encounters)
+        world.runtimeProfiler:sample('players', world:getActivePlayerCount())
+        world.runtimeProfiler:sample('entities', activeEntities)
+        world.metricsAggregator:add('players_seen', world:getActivePlayerCount())
+        world.performanceCounters:record('entity_count', activeEntities)
+        world.performanceCounters:record('combat_throughput', #world.telemetryPipeline.events)
+        world.performanceCounters:record('batch_queue_depth', #world.eventBatcher.queue)
+        world.performanceCounters:record('memory_kb', collectgarbage and collectgarbage('count') or 0)
+        world.snapshotManager:capture(world:snapshotWorldState())
+        world.eventBatcher:flush()
+    end)
 
     return world
 end

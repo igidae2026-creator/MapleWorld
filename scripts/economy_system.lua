@@ -27,6 +27,8 @@ function EconomySystem.new(config)
         nextTransactionId = 1,
         maxPlayerLedgerEntries = cfg.maxPlayerLedgerEntries or 64,
         suspiciousTransactionMesos = cfg.suspiciousTransactionMesos or 5000000,
+        priceSignals = {},
+        sinkPressure = 0,
     }
     setmetatable(self, { __index = EconomySystem })
     return self
@@ -131,6 +133,10 @@ function EconomySystem:_record(kind, player, amount, meta)
     if #self.transactions > self.maxTransactions then table.remove(self.transactions, 1) end
     self:_appendPlayerLedger(player, entry)
     self:_emitAudit(entry)
+    if entry.meta and entry.meta.itemId and tonumber(entry.meta.unitPrice) then
+        self.priceSignals[entry.meta.itemId] = self.priceSignals[entry.meta.itemId] or {}
+        self.priceSignals[entry.meta.itemId][#self.priceSignals[entry.meta.itemId] + 1] = tonumber(entry.meta.unitPrice)
+    end
 
     local delta = kind == 'spend' and -amount or amount
     self:_emitLedgerEvent(player, 'mesos_' .. tostring(kind), delta, {
@@ -191,6 +197,7 @@ function EconomySystem:spendMesos(player, amount, reason, meta)
     local before = player.mesos
     player.mesos = player.mesos - mesos
     self.sinks[reason or 'unknown'] = (self.sinks[reason or 'unknown'] or 0) + mesos
+    self.sinkPressure = self.sinkPressure + mesos
     local details = meta or {}
     details.reason = reason
     details.beforeMesos = before
@@ -236,7 +243,7 @@ function EconomySystem:sellToNpc(player, itemId, quantity, context)
         npc_id = ctx.npcId,
     })
     if not removed then return false, removeErr end
-    local ok, grantErr = self:grantMesos(player, payout, 'npc_sell', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId })
+    local ok, grantErr = self:grantMesos(player, payout, 'npc_sell', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId, unitPrice = math.max(1, math.floor(payout / math.max(1, amount))) })
     if not ok then
         self.itemSystem:addItem(player, itemId, amount, nil, { source = 'shop_sell_rollback', correlation_id = ctx.correlationId })
         return false, grantErr
@@ -252,7 +259,7 @@ function EconomySystem:buyFromNpc(player, itemId, quantity, context)
     if totalPrice == nil then return false, err end
 
     local ctx = type(context) == 'table' and context or {}
-    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId })
+    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId, unitPrice = math.max(1, math.floor(totalPrice / math.max(1, amount))) })
     if not spent then return false, spendErr end
     local added, addErr = self.itemSystem:addItem(player, itemId, amount, nil, {
         source = 'shop_buy',
@@ -273,6 +280,8 @@ function EconomySystem:snapshot()
         faucets = self.faucets,
         transactions = self.transactions,
         nextTransactionId = self.nextTransactionId,
+        priceSignals = self.priceSignals,
+        sinkPressure = self.sinkPressure,
     }
 end
 

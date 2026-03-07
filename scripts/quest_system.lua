@@ -39,6 +39,9 @@ function QuestSystem:snapshotPlayer(player)
             completed = state.completed == true,
             progress = state.progress,
             ready = self:isComplete(player, questId),
+            narrative = self.quests[questId] and self.quests[questId].narrative or nil,
+            guidance = self.quests[questId] and self.quests[questId].guidance or nil,
+            rewardSummary = self.quests[questId] and self.quests[questId].rewardSummary or nil,
         }
     end
     return out

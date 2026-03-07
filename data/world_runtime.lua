@@ -1,47 +1,57 @@
-return {
+local ContentLoader = require('data.content_loader')
+
+local loaded = ContentLoader.load()
+local content = loaded.content
+
+local runtime = {
     runtime = {
-        defaultMapId = 'henesys_hunting_ground',
+        defaultMapId = 'henesys_town',
         componentAttachPath = '/server_runtime',
-        spawnTickSec = 5,
-        bossTickSec = 15,
-        autosaveTickSec = 30,
-        healthTickSec = 30,
+        spawnTickSec = 4,
+        bossTickSec = 12,
+        autosaveTickSec = 20,
+        healthTickSec = 20,
         dropExpireTickSec = 5,
-        dropExpireSec = 90,
-        dropOwnerWindowSec = 2,
-        maxWorldDropsPerMap = 250,
-        worldStateAutosaveTickSec = 15,
-        playerStorageName = 'GenesisPlayerState',
+        dropExpireSec = 120,
+        dropOwnerWindowSec = 3,
+        maxWorldDropsPerMap = 400,
+        worldStateAutosaveTickSec = 12,
+        playerStorageName = 'MapleWorldPlayerState',
         playerStorageKey = 'profile',
-        playerProfileSlotCount = 2,
-        worldStorageName = 'GenesisWorldState',
+        playerProfileSlotCount = 3,
+        worldStorageName = 'MapleWorldState',
         worldStorageKey = 'state',
-        worldStateSlotCount = 3,
-        persistedDropsPerMap = 120,
-        persistedJournalEntries = 1000,
-        journalMaxEntries = 5000,
-        worldStateSaveDebounceSec = 5,
+        worldStateSlotCount = 5,
+        persistedDropsPerMap = 180,
+        persistedJournalEntries = 4000,
+        journalMaxEntries = 12000,
+        journalMaxPayloadBytes = 4096,
+        ledgerMaxEntries = 40000,
+        worldStateSaveDebounceSec = 3,
         saveReplayAnchorThreshold = 1,
-        worldRevisionRetention = 32,
-        worldWriterOwnerId = 'default',
-        worldWriterEpoch = 0,
-        coordinatorEpoch = 0,
-        worldId = 'world-1',
+        worldRevisionRetention = 64,
+        worldCommitRetention = 128,
+        playerRevisionRetention = 24,
+        worldWriterLeaseSec = 45,
+        worldWriterOwnerId = 'control-plane',
+        worldWriterEpoch = 2,
+        coordinatorEpoch = 2,
+        worldId = 'world-alpha',
         channelId = 'channel-1',
-        runtimeInstanceId = 'runtime-main',
-        topologyMode = 'single_instance_compatibility',
-        policyBundleId = 'genesis.default',
-        policyBundleVersion = '1.0.0',
-        policyBundleClass = 'stable',
-        pressureDensityThreshold = 0.85,
-        pressureSaveBacklogThreshold = 50,
-        pressureRewardInflationThreshold = 12,
+        runtimeInstanceId = 'runtime-alpha-1',
+        topologyMode = 'world_cluster_capable',
+        policyBundleId = 'mapleworld.upper-bound',
+        policyBundleVersion = '2.0.0',
+        policyBundleClass = 'expansion',
+        pressureDensityThreshold = 0.9,
+        pressureSaveBacklogThreshold = 80,
+        pressureRewardInflationThreshold = 16,
         pressureReplayThreshold = 1,
         pressureInstabilityThreshold = 3,
-        pressureLowDiversityThreshold = 4,
+        pressureLowDiversityThreshold = 6,
         pressureOwnershipConflictThreshold = 1,
         pressureDuplicateRiskThreshold = 1,
-        pressureFarmRepetitionThreshold = 8,
+        pressureFarmRepetitionThreshold = 10,
         safeModeSeverityThreshold = 3,
         rewardQuarantineSeverityThreshold = 2,
         migrationBlockSeverityThreshold = 2,
@@ -49,133 +59,112 @@ return {
         replayOnlySeverityThreshold = 4,
         autoPickupDrops = true,
         defaultBossUniquenessScope = 'channel_unique',
+        suspiciousTransactionMesos = 7500000,
+        maxPlayerEconomyLedgerEntries = 96,
     },
     combat = {
         minimumDamage = 1,
-        mobDamageCapFactor = 6.0,
-        bossDamageCapFactor = 4.0,
-        bossDamageMaxHpFactor = 0.1,
-        mobDamageMinCap = 12,
+        mobDamageCapFactor = 7.0,
+        bossDamageCapFactor = 4.5,
+        bossDamageMaxHpFactor = 0.12,
+        mobDamageMinCap = 14,
         bossDamageMinCap = 0,
         mobDamageFloorPerLevel = 4,
-        bossDamageFloorPerLevel = 8,
+        bossDamageFloorPerLevel = 9,
     },
     actionBoundaries = {
-        mobAttackRange = 48,
-        bossAttackRange = 64,
-        dropPickupRange = 32,
-        questNpcRange = 28,
+        mobAttackRange = 56,
+        bossAttackRange = 72,
+        dropPickupRange = 40,
+        questNpcRange = 36,
     },
-
-    mapTransitions = {
-        henesys_hunting_ground = { ant_tunnel_1 = true, forest_edge = true },
-        ant_tunnel_1 = { henesys_hunting_ground = true },
-        forest_edge = { henesys_hunting_ground = true, perion_rocky = true },
-        perion_rocky = { forest_edge = true },
-    },
+    mapTransitions = {},
     actionRateLimits = {
-        mob_attack = { tokens = 12, recharge = 8 },
-        boss_attack = { tokens = 24, recharge = 8 },
-        drop_pickup = { tokens = 8, recharge = 6 },
-        equip = { tokens = 6, recharge = 4 },
-        shop = { tokens = 4, recharge = 2 },
-        quest = { tokens = 4, recharge = 2 },
-        map_change = { tokens = 4, recharge = 1.5 },
+        mob_attack = { tokens = 14, recharge = 8 },
+        boss_attack = { tokens = 28, recharge = 8 },
+        drop_pickup = { tokens = 10, recharge = 6 },
+        equip = { tokens = 8, recharge = 5 },
+        shop = { tokens = 6, recharge = 3 },
+        quest = { tokens = 6, recharge = 3 },
+        map_change = { tokens = 6, recharge = 2 },
+        skill_cast = { tokens = 12, recharge = 8 },
+        social = { tokens = 20, recharge = 12 },
+        market = { tokens = 10, recharge = 8 },
     },
-    maps = {
-        henesys_hunting_ground = {
-            spawnPosition = { x = 20, y = 0, z = 0 },
-            spawnGroups = {
-                { id='group_snail', mobId='snail', maxAlive=12, points={{x=10,y=0},{x=35,y=0},{x=60,y=0}} },
-                { id='group_mushroom', mobId='orange_mushroom', maxAlive=8, points={{x=120,y=0},{x=145,y=0}} },
-            },
-            runtime = {
-                mobParentPath = '/server_runtime/henesys_hunting_ground/mobs',
-                dropParentPath = '/server_runtime/henesys_hunting_ground/drops',
-                mobModelIds = {
-                    snail = 'mob/snail',
-                    orange_mushroom = 'mob/orange_mushroom',
-                },
-            },
-        },
-        ant_tunnel_1 = {
-            spawnPosition = { x = 28, y = 0, z = 0 },
-            spawnGroups = {
-                { id='group_horny', mobId='horny_mushroom', maxAlive=10, points={{x=20,y=0},{x=90,y=0}} },
-                { id='group_zombie', mobId='zombie_mushroom', maxAlive=6, points={{x=130,y=0},{x=190,y=0}} },
-            },
-            runtime = {
-                mobParentPath = '/server_runtime/ant_tunnel_1/mobs',
-                dropParentPath = '/server_runtime/ant_tunnel_1/drops',
-                mobModelIds = {
-                    horny_mushroom = 'mob/horny_mushroom',
-                    zombie_mushroom = 'mob/zombie_mushroom',
-                },
-            },
-        },
-        forest_edge = {
-            spawnPosition = { x = 80, y = 0, z = 0 },
-            spawnGroups = {},
-            runtime = {
-                bossParentPath = '/server_runtime/forest_edge/bosses',
-                dropParentPath = '/server_runtime/forest_edge/drops',
-            },
-        },
-        perion_rocky = {
-            spawnPosition = { x = 110, y = 0, z = 0 },
-            spawnGroups = {},
-            runtime = {
-                bossParentPath = '/server_runtime/perion_rocky/bosses',
-                dropParentPath = '/server_runtime/perion_rocky/drops',
-            },
-        },
-    },
-    bosses = {
-        mano = {
-            modelId = 'boss/mano',
-            parentPath = '/server_runtime/forest_edge/bosses',
-            spawnPosition = { x = 80, y = 0, z = 0 },
-            uniqueness = 'channel_unique',
-        },
-        stumpy = {
-            modelId = 'boss/stumpy',
-            parentPath = '/server_runtime/perion_rocky/bosses',
-            spawnPosition = { x = 110, y = 0, z = 0 },
-            uniqueness = 'channel_unique',
-        },
-    },
+    maps = {},
+    bosses = {},
     drops = {
         defaultModelId = 'item/red_potion',
-        modelIds = {
-            snail_shell = 'item/snail_shell',
-            mushroom_spore = 'item/mushroom_spore',
-            red_potion = 'item/red_potion',
-            hp_potion = 'item/hp_potion',
-            wooden_armor = 'item/wooden_armor',
-            mushcap_hat = 'item/mushcap_hat',
-            zombie_glove = 'item/zombie_glove',
-            mano_shell = 'item/mano_shell',
-            sword_bronze = 'item/sword_bronze',
-            stumpy_axe = 'item/stumpy_axe',
-        },
+        modelIds = {},
     },
     quests = {
-        npcBindings = {
-            Rina = {
-                mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0,
-                shopId = 'henesys_general',
-                catalog = { hp_potion = true, red_potion = true, snail_shell = true, mushroom_spore = true },
-            },
-            Sera = {
-                mapId = 'henesys_hunting_ground', x = 20, y = 0, z = 0,
-                shopId = 'henesys_general',
-                catalog = { hp_potion = true, red_potion = true, snail_shell = true, mushroom_spore = true },
-            },
-            Chief_Stan = {
-                mapId = 'forest_edge', x = 80, y = 0, z = 0,
-                shopId = 'forest_trade',
-                catalog = { hp_potion = true, red_potion = true, mano_shell = true },
-            },
-        },
+        npcBindings = {},
     },
 }
+
+for mapId, map in pairs(content.maps or {}) do
+    runtime.mapTransitions[mapId] = map.transitions or {}
+    runtime.maps[mapId] = {
+        recommended_level = map.recommended_level,
+        spawnPosition = map.spawnPosition,
+        spawnGroups = {},
+        metadata = {
+            huntingRole = map.huntingRole,
+            terrainStrategy = map.terrainStrategy,
+            verticalLayers = map.verticalLayers,
+            movementRoutes = map.movementRoutes,
+            socialHotspots = map.socialHotspots,
+            lore = map.lore,
+        },
+        runtime = {
+            mobParentPath = '/server_runtime/' .. mapId .. '/mobs',
+            bossParentPath = '/server_runtime/' .. mapId .. '/bosses',
+            dropParentPath = '/server_runtime/' .. mapId .. '/drops',
+            mobModelIds = {},
+        },
+    }
+end
+
+for mobId, mob in pairs(content.mobs or {}) do
+    local map = runtime.maps[mob.map_pool]
+    if map then
+        map.spawnGroups[#map.spawnGroups + 1] = {
+            id = mobId .. '_group',
+            mobId = mobId,
+            maxAlive = mob.role == 'elite' and 5 or 10,
+            points = {
+                { x = 18 + (#map.spawnGroups * 28), y = (#map.spawnGroups % 3) * 12 },
+                { x = 42 + (#map.spawnGroups * 32), y = ((#map.spawnGroups + 1) % 3) * 12 },
+                { x = 68 + (#map.spawnGroups * 20), y = ((#map.spawnGroups + 2) % 3) * 12 },
+            },
+            terrainRole = mob.role == 'elite' and 'anchor' or 'lane_clear',
+        }
+        map.runtime.mobModelIds[mobId] = mob.asset_key
+    end
+end
+
+for bossId, boss in pairs(content.bosses or {}) do
+    runtime.bosses[bossId] = {
+        modelId = boss.asset_key,
+        parentPath = '/server_runtime/' .. boss.map_id .. '/bosses',
+        spawnPosition = { x = 96, y = 0, z = 0 },
+        uniqueness = boss.uniqueness or 'channel_unique',
+    }
+end
+
+for itemId, item in pairs(content.items or {}) do
+    runtime.drops.modelIds[itemId] = item.asset_key
+end
+
+for npcId, npc in pairs(content.npcs or {}) do
+    runtime.quests.npcBindings[npcId] = {
+        mapId = npc.map_id,
+        x = npc.x,
+        y = npc.y,
+        z = npc.z,
+        shopId = npc.shopId,
+        catalog = npc.catalog,
+    }
+end
+
+return runtime

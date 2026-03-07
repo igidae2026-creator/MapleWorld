@@ -12,6 +12,7 @@ function SpawnSystem.new(config)
         nextSpawnId = 1,
         maxSpawnPerTick = cfg.maxSpawnPerTick or 4,
         callbacks = cfg.callbacks or {},
+        rareMobModulo = cfg.rareMobModulo or 7,
     }
     setmetatable(self, { __index = SpawnSystem })
     return self
@@ -111,7 +112,13 @@ function SpawnSystem:_spawnOne(mapState, group)
         spawnedAt = self:_now(),
         template = mobDef,
         spawnGroupId = group.id,
+        ai = mobDef.role == 'elite' and 'pursue_and_burst' or 'wander_and_pounce',
+        rare = spawnId % self.rareMobModulo == 0,
     }
+    if mob.rare then
+        mob.maxHp = math.floor(mob.maxHp * 1.8)
+        mob.hp = mob.maxHp
+    end
     mapState.active[spawnId] = mob
     mapState.activeByMobId[mob.mobId] = (mapState.activeByMobId[mob.mobId] or 0) + 1
     mapState.activeByGroupId[group.id] = (mapState.activeByGroupId[group.id] or 0) + 1

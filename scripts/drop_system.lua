@@ -62,6 +62,8 @@ function DropSystem:rollDrops(mob, player)
                 sourceMob = mobId,
                 bindOnPickup = entry.bindOnPickup or false,
                 rarity = entry.rarity or 'common',
+                anticipation = entry.anticipation or 'steady',
+                excitement = itemDef.excitement or (entry.rarity == 'epic' and 'jackpot' or entry.rarity == 'rare' and 'surge' or 'steady'),
             }
             if self.metrics then self.metrics:increment('drop.item', quantity, { item = entry.itemId, mob = tostring(mobId) }) end
         end

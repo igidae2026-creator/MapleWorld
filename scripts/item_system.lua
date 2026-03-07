@@ -27,6 +27,12 @@ local function observeInstanceId(player, instanceId)
     end
 end
 
+local function setIdFor(itemId)
+    if type(itemId) ~= 'string' then return nil end
+    local prefix = itemId:match('^([^_]+)_')
+    return prefix
+end
+
 function ItemSystem.new(config)
     local cfg = config or {}
     local self = {
@@ -562,14 +568,26 @@ end
 function ItemSystem:getPower(player)
     local power = (tonumber(player and player.level) or 1) * 5
     local equipment = (player and player.equipment) or {}
+    local setCounts = {}
     for _, equipped in pairs(equipment) do
         if equipped then
             local itemDef = self.items[equipped.itemId]
             if itemDef then
                 power = power + (tonumber(itemDef.attack) or 0) + (tonumber(itemDef.defense) or 0) + (tonumber(equipped.enhancement) or 0)
+                local setId = setIdFor(equipped.itemId)
+                if setId then setCounts[setId] = (setCounts[setId] or 0) + 1 end
             end
         end
     end
+    local bonuses = {}
+    for setId, count in pairs(setCounts) do
+        if count >= 2 then
+            local bonus = (count >= 4) and 18 or 8
+            power = power + bonus
+            bonuses[#bonuses + 1] = { setId = setId, count = count, bonus = bonus }
+        end
+    end
+    if player then player.setBonuses = bonuses end
     return power
 end
 
