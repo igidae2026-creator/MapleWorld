@@ -1,5 +1,12 @@
 local WorldRepository = {}
 
+local NOT_FOUND_ERROR_CODES = {
+    [404] = true,
+    [1004] = true,
+    [1005] = true,
+    [1010] = true,
+}
+
 local function deepcopy(value, seen)
     if type(value) ~= 'table' then return value end
     local visited = seen or {}
@@ -24,6 +31,9 @@ local function readStorage(storage, key)
         encoded = first
     end
     if type(errorCode) == 'number' and errorCode ~= 0 then
+        if NOT_FOUND_ERROR_CODES[math.floor(errorCode)] then
+            return true, nil
+        end
         return false, nil, 'error_code_' .. tostring(errorCode)
     end
     return true, encoded
