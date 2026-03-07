@@ -611,6 +611,30 @@ function ServerBootstrap.boot(basePath, config)
         return type(catalog) == 'table' and catalog[itemId] == true
     end
 
+    function world:_resolveValidatedNpc(npcId, validatedNpc)
+        if validatedNpc ~= nil then
+            if type(validatedNpc) ~= 'table' then return nil, 'invalid_npc' end
+            if validatedNpc.npcId ~= npcId then return nil, 'npc_context_mismatch' end
+            local mapId = validatedNpc.mapId
+            if not mapId or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return nil, 'invalid_map' end
+            return validatedNpc
+        end
+        return self:_resolveNpcBinding(npcId)
+    end
+
+    function world:_isAllowedMapTransition(sourceMapId, destinationMapId)
+        local transitions = (self.worldConfig and self.worldConfig.mapTransitions)
+            or (self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.mapTransitions)
+        if type(transitions) ~= 'table' then return false end
+        local source = transitions[sourceMapId]
+        if type(source) ~= 'table' then return false end
+        if source[destinationMapId] == true then return true end
+        for _, candidate in ipairs(source) do
+            if candidate == destinationMapId then return true end
+        end
+        return false
+    end
+
     function world:snapshotWorldState()
         local runtimeCfg = self.worldConfig.runtime or {}
         local persistedDropsPerMap = tonumber(runtimeCfg.persistedDropsPerMap) or 0
@@ -957,6 +981,7 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:attackMob(player, mapId, spawnId, requestedDamage)
         if not player then return false, 'invalid_player' end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
         local mob = self.spawnSystem:getMob(targetMapId, spawnId)
         if not mob and mapId and mapId ~= targetMapId and self.spawnSystem:getMob(mapId, spawnId) then
@@ -989,8 +1014,10 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:pickupDrop(player, mapId, dropId)
         if not player then return false, 'invalid_player' end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local record = self.dropSystem:getDrop(dropId)
         if not record then return false, 'drop_not_found' end
+        if mapId ~= nil and mapId ~= '' and record.mapId ~= mapId then return false, 'wrong_map' end
         local boundaryOk, boundaryErr = self:_requireActionBoundary(player, record.mapId, { x = record.x, y = record.y, z = record.z or 0 }, 'dropPickupRange')
         if not boundaryOk then return false, boundaryErr end
         local actionOk, actionErr = self:_checkAction(player, 'drop_pickup', 1)
@@ -1031,14 +1058,20 @@ function ServerBootstrap.boot(basePath, config)
         return delivered
     end
 
-    function world:damageBoss(player, mapId, amount)
+    function world:damageBoss(player, mapId, bossId, amount)
         if not player then return false, 'invalid_player' end
+        if amount == nil and bossId ~= nil and type(bossId) ~= 'string' then
+            amount = bossId
+            bossId = nil
+        end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
         local encounter = self.bossSystem:getEncounter(targetMapId)
         if not encounter and mapId and mapId ~= targetMapId and self.bossSystem:getEncounter(mapId) then
             return false, 'wrong_map'
         end
         if not encounter then return false, 'no_active_encounter' end
+        if bossId ~= nil and bossId ~= '' and encounter.bossId ~= bossId then return false, 'boss_not_found' end
 
         local boundaryOk, boundaryErr = self:_requireActionBoundary(player, encounter.mapId, self:_bossPosition(encounter), 'bossAttackRange')
         if not boundaryOk then return false, boundaryErr end
@@ -1097,9 +1130,9 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:buyFromNpc(player, npcId, itemId, quantity)
+    function world:buyFromNpc(player, npcId, itemId, quantity, validatedNpc)
         if not player then return false, 'invalid_player' end
-        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        local npc, npcErr = self:_resolveValidatedNpc(npcId, validatedNpc)
         if not npc then return false, npcErr end
         local shopOk, shopErr = self:_validateNpcShop(npc)
         if not shopOk then return false, shopErr end
@@ -1116,9 +1149,9 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:sellToNpc(player, npcId, itemId, quantity)
+    function world:sellToNpc(player, npcId, itemId, quantity, validatedNpc)
         if not player then return false, 'invalid_player' end
-        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        local npc, npcErr = self:_resolveValidatedNpc(npcId, validatedNpc)
         if not npc then return false, npcErr end
         local shopOk, shopErr = self:_validateNpcShop(npc)
         if not shopOk then return false, shopErr end
@@ -1161,6 +1194,9 @@ function ServerBootstrap.boot(basePath, config)
         if not player then return false, 'invalid_player' end
         if not mapId or mapId == '' or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
         if sourceMapId ~= nil and sourceMapId ~= '' and player.currentMapId ~= sourceMapId then return false, 'wrong_map' end
+        local source = sourceMapId
+        if source == nil or source == '' then source = player.currentMapId end
+        if source ~= mapId and not self:_isAllowedMapTransition(source, mapId) then return false, 'invalid_map_transition' end
         local actionOk, actionErr = self:_checkAction(player, 'map_change', 1)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)
