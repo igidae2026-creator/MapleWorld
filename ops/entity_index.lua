@@ -17,4 +17,15 @@ function EntityIndex:remove(kind, mapId, id)
     if self.byType[kind] then self.byType[kind][id] = nil end
 end
 
+function EntityIndex:mapSummary(mapId)
+    local kinds = self.byMap[mapId] or {}
+    local summary = {}
+    for kind, entries in pairs(kinds) do
+        local count = 0
+        for _ in pairs(entries or {}) do count = count + 1 end
+        summary[kind] = count
+    end
+    return summary
+end
+
 return EntityIndex

@@ -14,3 +14,7 @@ Tracked runtime signals:
 - entity count
 - combat throughput proxy
 - batch queue depth
+- scheduler job count
+- exploit incident count
+- world-ops tick timing
+- memory pressure state through `ops/memory_guard.lua`

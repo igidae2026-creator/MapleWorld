@@ -7,6 +7,8 @@ function TutorialSystem.new(config)
             { id = 'combat', title = 'Clear the First Hunt', hint = 'Use your core skill and loot the drop beam.' },
             { id = 'equip', title = 'Equip an Upgrade', hint = 'Open equipment and equip the recommended weapon.' },
             { id = 'party', title = 'Join a Party', hint = 'Party play shares progression and improves survival.' },
+            { id = 'economy', title = 'Use the Market', hint = 'Sell excess drops, watch prices, and keep mesos flowing.' },
+            { id = 'boss', title = 'Prepare for a Boss', hint = 'Bring potions, learn mechanics, and join a group before entering.' },
         },
     }
     setmetatable(self, { __index = TutorialSystem })

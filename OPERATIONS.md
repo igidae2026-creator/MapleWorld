@@ -14,3 +14,10 @@ Primary operator surfaces:
 - `world:getControlPlaneReport()`
 - `world:getEconomyReport()`
 - `world:activateWorldEvent()`
+
+Live safeguards reflected in operator output:
+
+- memory guard state and load-shedding thresholds
+- duplication inspection and duplicate-claim hotspots
+- inflation inspection using faucet/sink pressure plus auction spread
+- world-ops timing, queue depth, scheduler job count, and exploit incident counts

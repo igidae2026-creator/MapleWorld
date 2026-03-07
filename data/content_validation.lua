@@ -1,5 +1,8 @@
 local ContentValidation = {}
 
+local RegionalProgression = require('data.regional_progression_tables')
+local RareSpawnTables = require('data.rare_spawn_tables')
+
 function ContentValidation.validate(content)
     local errors, warnings = {}, {}
     local function err(message) errors[#errors + 1] = message end
@@ -16,6 +19,12 @@ function ContentValidation.validate(content)
             if not maps[transitionId] then
                 err('missing_map_transition:' .. tostring(mapId) .. '->' .. tostring(transitionId))
             end
+        end
+        if type(map.verticalLayers) ~= 'table' or #map.verticalLayers < 2 then
+            warn('map_verticality_sparse:' .. tostring(mapId))
+        end
+        if type(map.movementRoutes) ~= 'table' or #map.movementRoutes < 2 then
+            warn('map_routes_sparse:' .. tostring(mapId))
         end
     end
 
@@ -70,6 +79,26 @@ function ContentValidation.validate(content)
         if totalChance < 0.2 then warn('drop_table_sparse:' .. tostring(mobId)) end
     end
 
+    for regionId, region in pairs(RegionalProgression) do
+        for _, mapId in ipairs(region.maps or {}) do
+            if not maps[mapId] then err('regional_map_missing:' .. tostring(regionId) .. ':' .. tostring(mapId)) end
+        end
+        if type(region.milestoneRewards) ~= 'table' or #region.milestoneRewards < 2 then
+            warn('regional_milestones_sparse:' .. tostring(regionId))
+        end
+    end
+
+    for mapId, rareTable in pairs(RareSpawnTables) do
+        if not maps[mapId] then err('rare_spawn_map_missing:' .. tostring(mapId)) end
+        if not (rareTable.elite and mobs[rareTable.elite.mobId]) then
+            err('rare_spawn_elite_missing:' .. tostring(mapId))
+        end
+        for _, rare in ipairs(rareTable.rares or {}) do
+            if not mobs[rare.mobId] then err('rare_spawn_mob_missing:' .. tostring(mapId) .. ':' .. tostring(rare.mobId)) end
+            if not items[rare.reward] then err('rare_spawn_reward_missing:' .. tostring(mapId) .. ':' .. tostring(rare.reward)) end
+        end
+    end
+
     return {
         ok = #errors == 0,
         errors = errors,
@@ -77,6 +106,8 @@ function ContentValidation.validate(content)
         summary = {
             errors = #errors,
             warnings = #warnings,
+            regions = 6,
+            rareSpawnMaps = 6,
         },
     }
 end

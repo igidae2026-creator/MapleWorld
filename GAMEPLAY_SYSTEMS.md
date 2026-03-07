@@ -5,3 +5,7 @@
 - Social: parties with shared rewards, party finder, guild leveling and benefits, raids, friends, and cooperative boss incentives.
 - Player guidance: tutorial steps, build recommendations, visible loot feedback, and dialogue-driven NPC guidance.
 - Late game loops: boss clears, raid setup, set-bonus chasing, guild progression, and rotating world-event bonuses.
+- Map density: layered routes, vertical platform metadata, regional hunt previews, elite pockets, and clash zones.
+- Hunting feel: rare spawn cadence, loot anticipation markers, route-specific materials, and boss-signature item chase.
+- Regional progression: each region exposes level bands, milestone rewards, valued drops, social loop identity, and next-step guidance.
+- World events: daily, weekly, seasonal, invasion, and world-boss cycles now feed regional loot, rare spawn, and boss pressure.

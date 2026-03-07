@@ -18,6 +18,8 @@ function ContentIndex.build(content)
         questsByArc = {},
         dropsByItem = {},
         skillsById = {},
+        mapsByRole = {},
+        regions = {},
     }
 
     for sectionName, section in pairs(content or {}) do
@@ -32,6 +34,9 @@ function ContentIndex.build(content)
                     local theme = entry.tags[1] or 'misc'
                     index.mapsByTheme[theme] = index.mapsByTheme[theme] or {}
                     index.mapsByTheme[theme][#index.mapsByTheme[theme] + 1] = id
+                    local role = entry.huntingRole or 'misc'
+                    index.mapsByRole[role] = index.mapsByRole[role] or {}
+                    index.mapsByRole[role][#index.mapsByRole[role] + 1] = id
                 elseif sectionName == 'quests' and type(entry) == 'table' then
                     local arc = entry.arc or 'misc'
                     index.questsByArc[arc] = index.questsByArc[arc] or {}
@@ -49,6 +54,11 @@ function ContentIndex.build(content)
             end
             index.counts[sectionName] = count
         end
+    end
+
+    local regionalProgression = require('data.regional_progression_tables')
+    for regionId, region in pairs(regionalProgression) do
+        index.regions[regionId] = clone(region)
     end
 
     return index

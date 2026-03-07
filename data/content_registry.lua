@@ -101,6 +101,18 @@ local registry = {
             boss_rush = { cadence = 'weekly', rewardPoints = 900 },
             guild_supply = { cadence = 'weekly', rewardPoints = 750 },
         },
+        seasonal = {
+            lantern_festival = { cadence = 'seasonal', rewardPoints = 1400, buff = 'bonus_loot', tone = 'celebration' },
+            harvest_storm = { cadence = 'seasonal', rewardPoints = 1600, buff = 'rare_spawn', tone = 'dangerous_abundance' },
+        },
+        invasion = {
+            shadow_breach = { cadence = 'world_rotation', rewardPoints = 1800, pressure = 'elite_swarm' },
+            dragon_descent = { cadence = 'world_rotation', rewardPoints = 2200, pressure = 'boss_route' },
+        },
+        world_boss = {
+            clockwork_colossus = { cadence = 'scheduled', rewardPoints = 3200, map = 'ludibrium_boss' },
+            sky_tyrant = { cadence = 'scheduled', rewardPoints = 3600, map = 'leafre_boss' },
+        },
     },
 }
 
@@ -348,6 +360,143 @@ for themeIndex, theme in ipairs(themes) do
             narrative = string.format('The %s frontier is destabilizing. Campaign step %d pushes the player deeper into the regional threat.', theme.id, questIndex),
             reward_summary = 'story gear + region materials + route unlock pressure',
             guidance = questIndex == 1 and 'Start in the field loop, then step into the dungeon once potion flow stabilizes.' or 'Push the harder route and prepare for the boss map.',
+        }
+    end
+end
+
+for themeIndex, theme in ipairs(themes) do
+    local upperId = theme.id .. '_upper_route'
+    local clashId = theme.id .. '_clash_zone'
+    local townId = theme.id .. '_town'
+    local fieldsId = theme.id .. '_fields'
+    local dungeonId = theme.id .. '_dungeon'
+    local bossId = theme.id .. '_overseer'
+
+    registry.maps[upperId] = {
+        map_id = upperId,
+        name = theme.id:gsub('^%l', string.upper) .. ' Upper Route',
+        recommended_level = theme.level + 8,
+        tags = { theme.tags[1], 'vertical', 'hunt' },
+        transitions = { [fieldsId] = true, [dungeonId] = true },
+        spawnPosition = { x = 64, y = 24, z = 0 },
+        channels = 10,
+        layer = 'field_upper',
+        eventHooks = { 'rare_patrol', 'route_bonus' },
+        huntingRole = 'vertical burst route',
+        terrainStrategy = 'two fast vertical loops reward mobility and ranged tagging',
+        verticalLayers = { 'lower rope', 'center canopy', 'upper ledge', 'far platform' },
+        movementRoutes = { 'rope chain sprint', 'counter-clockwise burst route', 'elite drop lane' },
+        socialHotspots = { 'mid rope perch', 'upper elite shelf' },
+        lore = 'Hunters climb above the main route where the region reveals its sharper identity.',
+    }
+
+    registry.maps[clashId] = {
+        map_id = clashId,
+        name = theme.id:gsub('^%l', string.upper) .. ' Clash Zone',
+        recommended_level = theme.level + 16,
+        tags = { theme.tags[1], 'event', 'elite' },
+        transitions = { [dungeonId] = true, [theme.id .. '_boss'] = true, [upperId] = true },
+        spawnPosition = { x = 88, y = 12, z = 0 },
+        channels = 8,
+        layer = 'clash',
+        eventHooks = { 'invasion_route', 'world_boss_signal', 'party_hunt' },
+        huntingRole = 'party grind and invasion defense',
+        terrainStrategy = 'dense elites at three elevations force coordinated pulls and shared burst windows',
+        verticalLayers = { 'frontline', 'mid barricade', 'rear high ground' },
+        movementRoutes = { 'defense sweep', 'boss intercept lane', 'loot beacon return' },
+        socialHotspots = { 'party banner point', 'boss alarm center' },
+        lore = 'This is where each region breaks into open conflict during invasions and world-boss windows.',
+    }
+
+    registry.maps[townId].transitions[upperId] = true
+    registry.maps[dungeonId].transitions[clashId] = true
+
+    for variant = 5, 6 do
+        local mobId = string.format('%s_mob_%02d', theme.id, variant)
+        local materialId = string.format('%s_material_%02d', theme.id, variant)
+        local level = theme.level + 10 + ((variant - 5) * 6)
+        registry.mobs[mobId] = {
+            mob_id = mobId,
+            name = string.format('%s Specialist %d', theme.id:gsub('^%l', string.upper), variant - 4),
+            identity = variant == 5 and 'route-breaker elites that lock down vertical movement' or 'rare captains that anchor invasion pushes',
+            hitReaction = 'heavy_recoil',
+            level = level,
+            hp = 180 + (themeIndex * 140) + (variant * 80),
+            exp = 70 + (themeIndex * 30) + (variant * 16),
+            mesos_min = 30 + (themeIndex * 18),
+            mesos_max = 48 + (themeIndex * 20),
+            map_pool = variant == 5 and upperId or clashId,
+            respawn_sec = variant == 5 and 6 or 8,
+            asset_key = 'mob/' .. mobId,
+            family = theme.id,
+            role = variant == 5 and 'elite' or 'captain',
+        }
+
+        registry.items[materialId] = {
+            item_id = materialId,
+            name = string.format('%s Sigil %d', theme.id:gsub('^%l', string.upper), variant - 4),
+            type = 'material',
+            required_level = level - 4,
+            attack = 0,
+            defense = 0,
+            stackable = true,
+            npc_price = 20 + (themeIndex * 8) + variant,
+            rarity = variant == 6 and 'rare' or 'uncommon',
+            asset_key = 'item/' .. materialId,
+            progression_tier = themeIndex + variant,
+            excitement = variant == 6 and 'boss_prep' or 'route_upgrade',
+        }
+
+        registry.drop_tables[mobId] = {
+            { item_id = materialId, chance = 0.62, min_qty = 1, max_qty = 3, rarity = variant == 6 and 'rare' or 'uncommon', bind_on_pickup = false, anticipation = 'notable' },
+            { item_id = string.format('%s_%s', theme.id, itemArchetypes[((variant - 5) % #itemArchetypes) + 1].id), chance = 0.12, min_qty = 1, max_qty = 1, rarity = 'rare', bind_on_pickup = false, anticipation = 'route_chase' },
+        }
+    end
+
+    local minibossId = theme.id .. '_warden'
+    registry.bosses[minibossId] = {
+        boss_id = minibossId,
+        name = theme.id:gsub('^%l', string.upper) .. ' Warden',
+        map_id = clashId,
+        hp = 1800 + (themeIndex * 2200),
+        trigger = 'scheduled_window',
+        cooldown_sec = 720 + (themeIndex * 180),
+        rare_drop_group = minibossId .. '_rares',
+        asset_key = 'boss/' .. minibossId,
+        uniqueness = 'channel_unique',
+        raid = themeIndex >= 3,
+        mechanics = {
+            [1] = { pattern = 'telegraph_sweep', hazard = 'cone_break', text = 'The warden marks a lane before bursting through it.' },
+            [2] = { pattern = 'summon_totems', hazard = 'zone_lock', text = 'Safe space shifts and forces party repositioning.' },
+            [3] = { pattern = 'last_stand', hazard = 'platform_break', text = 'Burst windows open between heavy telegraphed hits.' },
+        },
+    }
+    registry.drop_tables[minibossId] = {
+        { item_id = string.format('%s_%s', theme.id, itemArchetypes[1].id), chance = 0.25, min_qty = 1, max_qty = 1, rarity = 'rare', bind_on_pickup = false, anticipation = 'mini_jackpot' },
+        { item_id = string.format('%s_material_%02d', theme.id, 6), chance = 1.0, min_qty = 2, max_qty = 5, rarity = 'rare', bind_on_pickup = false, anticipation = 'boss_prep' },
+    }
+
+    for questIndex = 5, 6 do
+        local questId = string.format('%s_story_%02d', theme.id, questIndex)
+        registry.quests[questId] = {
+            quest_id = questId,
+            name = string.format('%s Campaign %d', theme.id:gsub('^%l', string.upper), questIndex),
+            required_level = theme.level + ((questIndex - 1) * 5),
+            objectives = {
+                { type = 'kill', targetId = questIndex == 5 and (theme.id .. '_mob_05') or minibossId, required = questIndex == 5 and 8 or 1 },
+                { type = 'collect', targetId = theme.id .. '_material_06', required = questIndex == 5 and 3 or 4 },
+            },
+            reward_exp = 360 + (themeIndex * 120) + (questIndex * 80),
+            reward_mesos = 800 + (themeIndex * 260) + (questIndex * 120),
+            reward_items = {
+                { itemId = string.format('%s_%s', theme.id, itemArchetypes[((questIndex + 1) % #itemArchetypes) + 1].id), quantity = 1 },
+            },
+            start_npc = theme.id .. '_guide',
+            end_npc = theme.id .. '_guide',
+            arc = theme.id,
+            narrative = string.format('The %s route escalates into open conflict. Campaign step %d introduces elite route control and regional command threats.', theme.id, questIndex),
+            reward_summary = 'high-value route gear + boss prep materials',
+            guidance = questIndex == 5 and 'Rotate through the upper route before pushing into the clash zone.' or 'Form a party and clear the warden during telegraphed safe windows.',
         }
     end
 end

@@ -2,6 +2,8 @@ local ContentLoader = require('data.content_loader')
 
 local loaded = ContentLoader.load()
 local content = loaded.content
+local regionalProgression = loaded.regionalProgression or {}
+local rareSpawns = loaded.rareSpawns or {}
 
 local runtime = {
     runtime = {
@@ -115,6 +117,8 @@ for mapId, map in pairs(content.maps or {}) do
             movementRoutes = map.movementRoutes,
             socialHotspots = map.socialHotspots,
             lore = map.lore,
+            regionProgression = regionalProgression[map.tags and map.tags[1] or ''],
+            rareSpawnTable = rareSpawns[mapId],
         },
         runtime = {
             mobParentPath = '/server_runtime/' .. mapId .. '/mobs',

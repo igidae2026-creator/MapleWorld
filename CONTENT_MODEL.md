@@ -18,3 +18,9 @@ Supported content domains:
 - NPC dialogues
 - drop tables
 - economy and world-event definitions
+
+Runtime-connected support tables:
+
+- `data/regional_progression_tables.lua`: region ladder, milestone rewards, valued drops, and social-loop identity.
+- `data/rare_spawn_tables.lua`: map-by-map elite cadence, reward bias, and rare behavior definitions.
+- `data/world_runtime.lua`: spawn placement, route metadata, and map runtime bindings derived from loaded content.

@@ -8,6 +8,7 @@ local EconomySystem = require('scripts.economy_system')
 local StatSystem = require('scripts.stat_system')
 local JobSystem = require('scripts.job_system')
 local BuffSystem = require('scripts.buff_debuff_system')
+local PlayerClassSystem = require('scripts.player_class_system')
 local CombatResolution = require('scripts.combat_resolution')
 local SkillSystem = require('scripts.skill_system')
 local EquipmentProgression = require('scripts.equipment_progression')
@@ -70,6 +71,10 @@ local BootstrapProfiles = require('ops.bootstrap_profiles')
 local EntityIndex = require('ops.entity_index')
 local EventBatcher = require('ops.event_batcher')
 local PerformanceCounters = require('ops.performance_counters')
+local MemoryGuard = require('ops.memory_guard')
+local DuplicationGuard = require('ops.duplication_guard')
+local InflationGuard = require('ops.inflation_guard')
+local LiveEventController = require('ops.live_event_controller')
 
 local ServerBootstrap = {}
 
@@ -634,6 +639,7 @@ function ServerBootstrap.boot(basePath, config)
     local antiAbuseHooks = AntiAbuseHooks.new()
     local tutorialSystem = TutorialSystem.new()
     local buildRecommendationSystem = BuildRecommendationSystem.new({ jobs = contentBundle.content.jobs, skills = contentBundle.content.skills })
+    local playerClassSystem = PlayerClassSystem.new({ jobSystem = jobSystem, statSystem = statSystem, buildRecommendationSystem = buildRecommendationSystem })
     local partyFinder = PartyFinder.new()
     local combatFeedback = CombatFeedback.new()
     local raidSystem = RaidSystem.new()
@@ -686,6 +692,7 @@ function ServerBootstrap.boot(basePath, config)
         antiAbuseHooks = antiAbuseHooks,
         tutorialSystem = tutorialSystem,
         buildRecommendationSystem = buildRecommendationSystem,
+        playerClassSystem = playerClassSystem,
         partyFinder = partyFinder,
         combatFeedback = combatFeedback,
         raidSystem = raidSystem,
@@ -865,6 +872,9 @@ function ServerBootstrap.boot(basePath, config)
     world.telemetryPipeline = TelemetryPipeline.new()
     world.metricsAggregator = MetricsAggregator.new()
     world.runtimeProfiler = RuntimeProfiler.new()
+    world.memoryGuard = MemoryGuard.new({ softLimitKb = 196608, hardLimitKb = 262144 })
+    world.duplicationGuard = DuplicationGuard.new()
+    world.inflationGuard = InflationGuard.new({ ratioThreshold = 2.0 })
     world.cheatDetection = CheatDetection.new()
     world.exploitMonitor = ExploitMonitor.new({ detector = world.cheatDetection })
     world.anomalyScoring = AnomalyScoring.new()
@@ -874,6 +884,7 @@ function ServerBootstrap.boot(basePath, config)
     world.bootstrapProfiles = BootstrapProfiles
     world.adminConsole = AdminConsole.new({ world = world })
     world.gmCommandService = GMCommandService.new({ world = world })
+    world.liveEventController = LiveEventController.new({ world = world })
     itemSystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
     economySystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
 
@@ -905,6 +916,7 @@ function ServerBootstrap.boot(basePath, config)
         self.achievementsSystem:ensurePlayer(player)
         self.buffSystem:ensurePlayer(player)
         self.tutorialSystem:ensurePlayer(player)
+        self.playerClassSystem:ensurePlayer(player)
         player.huntingLoop = player.huntingLoop or { streak = 0, rareSince = 0, recentDrops = {} }
         return player
     end
@@ -942,6 +954,29 @@ function ServerBootstrap.boot(basePath, config)
             currentMapId = player.currentMapId,
             nextMapId = nextMapId,
             tutorial = self.tutorialSystem:getCurrent(player),
+        }
+    end
+
+    function world:_playerJourneyPlan(player)
+        local build = self.buildRecommendationSystem:recommend(player)
+        local nextQuest = self:_nextQuestGuidance(player)
+        local route = self:_recommendedRoute(player)
+        local economy = self:getEconomyReport()
+        local mapMeta = self.worldConfig.maps[player.currentMapId or self.worldConfig.runtime.defaultMapId] or {}
+        return {
+            nextObjective = nextQuest and nextQuest.title or 'Continue hunting toward the next map milestone.',
+            whereToLevel = build.levelingMaps,
+            gearFocus = build.equipmentFocus,
+            gearTierTarget = math.max(1, math.floor((player.level or 1) / 20) + 1),
+            howToJoinGroupPlay = 'Use party finder, then move into dungeon and boss routes once your level matches the map guidance.',
+            howToEarnCurrency = 'Sell surplus drops, clear quests, and list high-demand rares on the auction house.',
+            howToFightBosses = 'Check route progression, stock consumables, and watch telegraphed phase changes.',
+            currentRegionLore = mapMeta.metadata and mapMeta.metadata.lore or nil,
+            recommendedRoute = route,
+            marketFocus = {
+                hottestTrackedItem = next(economy.priceHistory or {}) or nil,
+                sinkPressure = economy.sinkPressure,
+            },
         }
     end
 
@@ -1248,6 +1283,45 @@ function ServerBootstrap.boot(basePath, config)
         end
     end
 
+    function world:_emitOpsTelemetry(kind, payload)
+        self.telemetryPipeline:emit(kind, payload)
+        self.eventBatcher:push({ event = kind, payload = payload, at = self:_now() })
+    end
+
+    function world:_runStabilityGuards()
+        local memoryKb = collectgarbage and collectgarbage('count') or 0
+        local memory = self.memoryGuard:inspect(memoryKb)
+        if memory.action == 'collect' and collectgarbage then
+            collectgarbage('step', 200)
+        elseif memory.action == 'shed_load' then
+            self:_escalate('memory_pressure', { memoryKb = memoryKb, limitKb = memory.hardLimitKb })
+            self.containment.safeMode = true
+        end
+
+        local duplication = self.duplicationGuard:inspect(self)
+        if not duplication.ok then
+            self.exploitMonitor:flag('system', 'duplication_risk')
+            self.pressure.duplicateRisk = math.max(self.pressure.duplicateRisk or 0, #duplication.issues)
+            self.pressure.duplicateRiskPressure = self.pressure.duplicateRisk
+        end
+
+        local inflation = self.inflationGuard:inspect(self.economySystem, self.auctionHouse)
+        if not inflation.ok then
+            self.exploitMonitor:flag('economy', 'inflation_risk')
+        end
+
+        self:_emitOpsTelemetry('stability_tick', {
+            memory = memory.state,
+            duplicateIssues = #duplication.issues,
+            inflationOk = inflation.ok,
+        })
+        return {
+            memory = memory,
+            duplication = duplication,
+            inflation = inflation,
+        }
+    end
+
     function world:appendLedgerEvent(event)
         if not self.journal or type(self.journal.appendLedgerEvent) ~= 'function' then return nil end
         local enriched = self:_ledgerContext(event)
@@ -1255,6 +1329,8 @@ function ServerBootstrap.boot(basePath, config)
         if duplicate then
             self.pressure.duplicateRisk = math.max(0, (self.pressure.duplicateRisk or 0) + 1)
             self.pressure.duplicateRiskPressure = self.pressure.duplicateRisk
+            self.duplicationGuard:recordClaim(enriched.idempotency_key or enriched.lineage_reference or enriched.source_event_id)
+            self.exploitMonitor:flag(enriched.actor_id or enriched.player_id or 'system', 'ledger_duplicate')
         else
             self.pressure.rewardInflation = math.max(0, (self.pressure.rewardInflation or 0) + 1)
             self.pressure.rewardInflationPressure = self.pressure.rewardInflation
@@ -2704,8 +2780,10 @@ function ServerBootstrap.boot(basePath, config)
             achievements = player.achievements,
             tutorial = player.tutorial,
             buildRecommendation = self.buildRecommendationSystem:recommend(player),
+            classProfile = self.playerClassSystem:refresh(player),
             questGuidance = self:_nextQuestGuidance(player),
             recommendedRoute = self:_recommendedRoute(player),
+            journeyPlan = self:_playerJourneyPlan(player),
             huntingLoop = player.huntingLoop,
             setBonuses = player.setBonuses,
             lastCombatFeedback = player.lastCombatFeedback,
@@ -2778,6 +2856,17 @@ function ServerBootstrap.boot(basePath, config)
             metadata = deepcopy((self.worldConfig.maps[mapId] or {}).metadata),
             recommendedLevel = (self.worldConfig.maps[mapId] or {}).recommended_level,
             socialDensity = math.max(0, self:getMapPopulation(mapId) + #mobsOut + (#dropsOut > 0 and 1 or 0)),
+            huntPreview = {
+                routeCount = type(((self.worldConfig.maps[mapId] or {}).metadata or {}).movementRoutes) == 'table' and #(((self.worldConfig.maps[mapId] or {}).metadata or {}).movementRoutes) or 0,
+                verticality = type(((self.worldConfig.maps[mapId] or {}).metadata or {}).verticalLayers) == 'table' and #(((self.worldConfig.maps[mapId] or {}).metadata or {}).verticalLayers) or 0,
+                eliteCount = (function()
+                    local count = 0
+                    for _, mob in ipairs(mobsOut) do
+                        if mob.rare or tostring(mob.ai or ''):find('pursue', 1, true) then count = count + 1 end
+                    end
+                    return count
+                end)(),
+            },
             now = self:_now(),
         }
     end
@@ -2894,6 +2983,7 @@ function ServerBootstrap.boot(basePath, config)
         })
         if mob.rare then self.achievementsSystem:unlock(player, 'rare_hunter') end
         if mob.rare then player.huntingLoop.rareSince = 0 end
+        if mob.rare then player.lastCombatFeedback = { kind = 'rare_spawn_clear', message = 'Rare route spike cleared', impact = 'elevated_drop_tension' } end
         if player.huntingLoop.streak >= 10 then self.tutorialSystem:advance(player, 'move') end
         self:_emit('onMobKilled', player, mob, delivered)
         self:publishPlayerSnapshot(player)
@@ -2962,12 +3052,15 @@ function ServerBootstrap.boot(basePath, config)
         end
         local claimKey = self:_dropClaimKey(record)
         if self.recoveryInvariants.claimedDrops[claimKey] then
+            self.duplicationGuard:recordClaim(claimKey)
+            self.exploitMonitor:flag(player.id, 'duplicate_drop_claim')
             self:_escalate('duplicate_drop_claim_attempt', { dropId = dropId, playerId = player.id })
             return false, 'duplicate_drop_claim'
         end
         local ok, recordOrErr = self.dropSystem:pickupDrop(player, record.mapId, dropId, self.itemSystem, { now = self:_now() })
         if not ok then return false, recordOrErr end
         self.recoveryInvariants.claimedDrops[claimKey] = true
+        self.duplicationGuard:recordClaim(claimKey)
         self.questSystem:onItemAcquired(player, recordOrErr.itemId, recordOrErr.quantity)
         self:_recordTruthEvent('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId }, {
             truthType = 'drop.pick',
@@ -3373,8 +3466,7 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, payload end
         player.lastCombatFeedback = self.combatFeedback:skillCast(player, { id = skillId, visual = payload.visual, role = payload.role }, payload)
         if payload.area then self.tutorialSystem:advance(player, 'combat') end
-        self.eventBatcher:push({ event = 'skill_cast', playerId = player.id, skillId = skillId, result = payload.type })
-        self.telemetryPipeline:emit('skill_cast', { playerId = player.id, skillId = skillId, bucket = bucket })
+        self:_emitOpsTelemetry('skill_cast', { playerId = player.id, skillId = skillId, bucket = bucket, result = payload.type })
         return true, payload
     end
 
@@ -3396,6 +3488,11 @@ function ServerBootstrap.boot(basePath, config)
         return self.partyFinder:list(player, detail)
     end
 
+    function world:getPlayerJourney(player)
+        if not player then return nil, 'invalid_player' end
+        return self:_playerJourneyPlan(player)
+    end
+
     function world:findParties(filter)
         return self.partyFinder:find(filter)
     end
@@ -3405,14 +3502,32 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:tradeMesos(fromPlayer, toPlayer, amount)
+        if not fromPlayer or not toPlayer then return false, 'invalid_player' end
+        if fromPlayer.id == toPlayer.id then
+            self.exploitMonitor:flag(fromPlayer.id, 'self_trade')
+            return false, 'self_trade_blocked'
+        end
         local ok, err = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
         if not ok then return false, err end
         self.auditLog:append('player_trade', { fromPlayerId = fromPlayer.id, toPlayerId = toPlayer.id, amount = amount })
+        if (tonumber(amount) or 0) >= math.max(1, math.floor(tonumber(self.economySystem.suspiciousTransactionMesos) or 1)) then
+            self.exploitMonitor:flag(fromPlayer.id, 'high_value_trade')
+        end
+        self:_emitOpsTelemetry('player_trade', { fromPlayerId = fromPlayer.id, toPlayerId = toPlayer.id, amount = amount })
         return true
     end
 
     function world:listAuction(player, itemId, quantity, price)
-        return true, self.auctionHouse:listItem(player, itemId, quantity, price)
+        if not player then return false, 'invalid_player' end
+        local listing = self.auctionHouse:listItem(player, itemId, quantity, price)
+        self:_emitOpsTelemetry('auction_listing', {
+            playerId = player.id,
+            itemId = itemId,
+            quantity = quantity,
+            price = price,
+            listingId = listing.id,
+        })
+        return true, listing
     end
 
     function world:craftItem(player, recipeId)
@@ -3455,6 +3570,31 @@ function ServerBootstrap.boot(basePath, config)
         return { ok = ok, detail = detail }
     end
 
+    function world:getStabilityReport()
+        local memoryKb = collectgarbage and collectgarbage('count') or 0
+        local memory = self.memoryGuard:inspect(memoryKb)
+        local duplication = self.duplicationGuard:inspect(self)
+        local inflation = self.inflationGuard:inspect(self.economySystem, self.auctionHouse)
+        local telemetry = self.telemetryPipeline:snapshot()
+        local scheduler = {
+            now = self.scheduler.now,
+            jobs = countTableKeys(self.scheduler.jobs),
+            maxRunsPerTick = self.scheduler.maxRunsPerTick,
+        }
+        return {
+            deterministicReplay = self:replayDeterminismReport(),
+            memory = memory,
+            duplication = duplication,
+            inflation = inflation,
+            telemetry = { counters = telemetry.counters, events = #telemetry.events },
+            profiler = self.runtimeProfiler:snapshot(),
+            performance = self.performanceCounters:snapshot(),
+            scheduler = scheduler,
+            exploitIncidents = #(self.exploitMonitor.incidents or {}),
+            entityIndex = self.entityIndex:mapSummary(self.worldConfig.runtime.defaultMapId),
+        }
+    end
+
     function world:adminStatus()
         local status = self.adminConsole:status()
         local consistent, issues = self.consistencyValidator:validateWorld(self)
@@ -3473,6 +3613,7 @@ function ServerBootstrap.boot(basePath, config)
             issues = issues,
             policy = policy,
             replay = self:replayDeterminismReport(),
+            stability = self:getStabilityReport(),
             performance = self.performanceCounters:snapshot(),
             batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
         }
@@ -3488,6 +3629,8 @@ function ServerBootstrap.boot(basePath, config)
             telemetry = self.telemetryPipeline.events,
             performance = self.performanceCounters:snapshot(),
             batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
+            liveEvents = self.liveEventController:status(),
+            stability = self:getStabilityReport(),
         }
     end
 
@@ -3520,16 +3663,24 @@ function ServerBootstrap.boot(basePath, config)
     scheduler:every('health_tick', tonumber(runtimeCfg.healthTickSec) or 30, function() healthcheck:run() end)
     scheduler:every('drop_expire_tick', tonumber(runtimeCfg.dropExpireTickSec) or 5, function() world:expireDrops() end)
     scheduler:every('world_ops_tick', 10, function()
+        local startedAt = os.clock()
         local activeEntities = world.dropSystem:activeCount() + countTableKeys(world.players) + countTableKeys(world.bossSystem.encounters)
+        local guardReport = world:_runStabilityGuards()
         world.runtimeProfiler:sample('players', world:getActivePlayerCount())
         world.runtimeProfiler:sample('entities', activeEntities)
+        world.runtimeProfiler:sample('scheduler_jobs', countTableKeys(world.scheduler.jobs))
+        world.runtimeProfiler:sample('event_queue_depth', #world.eventBatcher.queue)
         world.metricsAggregator:add('players_seen', world:getActivePlayerCount())
         world.performanceCounters:record('entity_count', activeEntities)
         world.performanceCounters:record('combat_throughput', #world.telemetryPipeline.events)
         world.performanceCounters:record('batch_queue_depth', #world.eventBatcher.queue)
         world.performanceCounters:record('memory_kb', collectgarbage and collectgarbage('count') or 0)
+        world.performanceCounters:record('scheduler_jobs', countTableKeys(world.scheduler.jobs))
+        world.performanceCounters:record('duplication_issues', #(guardReport.duplication.issues or {}))
+        world.performanceCounters:record('exploit_incidents', #(world.exploitMonitor.incidents or {}))
         world.snapshotManager:capture(world:snapshotWorldState())
         world.eventBatcher:flush()
+        world.runtimeProfiler:time('world_ops_tick_ms', math.floor((os.clock() - startedAt) * 1000))
     end)
 
     return world

@@ -14,3 +14,6 @@ Stability controls:
 - price signal history
 - audit events for trades and shop actions
 - player-driven pricing through auction listings
+- inflation guardrails using faucet/sink ratio and market spread checks
+- duplicate reward and duplicate item-instance detection through runtime guards
+- high-value trade incident surfacing and self-trade blocking

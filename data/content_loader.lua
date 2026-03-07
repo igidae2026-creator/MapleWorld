@@ -3,6 +3,8 @@ local ContentIndex = require('data.content_index')
 local ContentValidation = require('data.content_validation')
 local BalanceTables = require('data.balance_tables')
 local Seeds = require('data.content_generation_seed_sets')
+local RegionalProgression = require('data.regional_progression_tables')
+local RareSpawnTables = require('data.rare_spawn_tables')
 
 local Loader = {}
 
@@ -29,8 +31,10 @@ function Loader.load(options)
         validation = validation,
         balance = clone(BalanceTables),
         seeds = clone(Seeds),
+        regionalProgression = clone(RegionalProgression),
+        rareSpawns = clone(RareSpawnTables),
         meta = {
-            version = '2.0.0',
+            version = '2.1.0',
             generation = 'upper-bound-expansion-pass',
         },
     }
