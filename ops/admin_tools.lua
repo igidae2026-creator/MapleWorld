@@ -42,7 +42,12 @@ end
 function AdminTools:getReplayStatus(world)
     local status, err = self:getRuntimeStatus(world)
     if not status then return nil, err end
-    return status.health
+    return {
+        recovery = status.recovery,
+        health = status.health,
+        watermark = status.watermark,
+        savePlan = status.savePlan,
+    }
 end
 
 function AdminTools:getOwnershipTopology(world)
@@ -57,7 +62,11 @@ end
 function AdminTools:getRepairHistory(world)
     local status, err = self:getRuntimeStatus(world)
     if not status then return nil, err end
-    return status.repairs
+    return {
+        repairs = status.repairs,
+        escalation = status.escalation,
+        governance = status.governance,
+    }
 end
 
 function AdminTools:getPolicyVersions(world)
@@ -66,16 +75,73 @@ function AdminTools:getPolicyVersions(world)
     return {
         active = status.policy,
         version = status.policyVersion,
+        history = status.policyHistory,
+    }
+end
+
+function AdminTools:getCheckpointLineage(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        checkpointLineage = status.health and status.health.checkpointLineage or {},
+        replay = status.recovery,
+        savePlan = status.savePlan,
+    }
+end
+
+function AdminTools:getPressureMatrix(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        pressure = status.pressure,
+        governance = status.governance,
+        containment = status.containment,
+    }
+end
+
+function AdminTools:getRuntimeHealthSummary(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        runtimeIdentity = status.runtimeIdentity,
+        health = status.health,
+        governance = status.governance,
+        escalation = status.escalation,
+        pendingSave = status.pendingSave,
     }
 end
 
 function AdminTools:replacePolicyBundle(world, bundle)
     if not world or type(world.replacePolicyBundle) ~= 'function' then return false, 'policy_replace_unavailable' end
-    local ok, err = world:replacePolicyBundle(bundle)
+    local ok, err = world:replacePolicyBundle(bundle, {
+        adoptionSource = 'admin_tools',
+        adoptionReason = bundle and bundle.adoptionReason or 'admin_replace',
+        adoptionWindow = 'runtime',
+    })
     if self.metrics then
         if ok then self.metrics:increment('admin.policy_replace', 1) else self.metrics:error('admin_policy_replace_failed', { error = tostring(err) }) end
     end
     return ok, err
+end
+
+function AdminTools:rollbackPolicyBundle(world, reason)
+    if not world or type(world.rollbackPolicyBundle) ~= 'function' then return false, 'policy_rollback_unavailable' end
+    return world:rollbackPolicyBundle(reason or 'admin_rollback')
+end
+
+function AdminTools:getArtifactLineage(world, kind)
+    if not world or type(world.getRuntimeStatus) ~= 'function' then return nil, 'world_status_unavailable' end
+    local entries = world.artifacts and world.artifacts.entries or {}
+    local out = {}
+    for _, artifact in ipairs(entries) do
+        if kind == nil or tostring(artifact.kind) == tostring(kind) then
+            out[#out + 1] = artifact
+        end
+    end
+    return {
+        artifacts = out,
+        total = #out,
+    }
 end
 
 return AdminTools

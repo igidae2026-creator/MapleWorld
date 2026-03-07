@@ -28,6 +28,8 @@ function Healthcheck:run()
         player_count_valid = playerCount >= 0,
         recovery_valid = runtimeStatus == nil or (runtimeStatus.recovery and runtimeStatus.recovery.valid ~= false),
         containment_safe_mode = runtimeStatus == nil or (runtimeStatus.containment and runtimeStatus.containment.safeMode ~= true),
+        replay_only_visible = runtimeStatus == nil or runtimeStatus.governance ~= nil,
+        checkpoint_lineage_visible = runtimeStatus == nil or (runtimeStatus.health and runtimeStatus.health.checkpointLineage ~= nil),
     }
 
     local ok = true

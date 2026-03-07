@@ -725,4 +725,28 @@ function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
+function WorldServerBridge:getRuntimeStatus()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world:getRuntimeStatus())
+end
+
+function WorldServerBridge:getReplayStatus()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world.adminTools:getReplayStatus(self.world))
+end
+
+function WorldServerBridge:getOwnershipTopology()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world.adminTools:getOwnershipTopology(self.world))
+end
+
 return WorldServerBridge
