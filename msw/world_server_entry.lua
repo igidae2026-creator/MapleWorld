@@ -85,8 +85,8 @@ Entry.PickupDrop = PickupDrop
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
-function DamageBoss(requestContext, mapId, requestedDamage, component)
-    return dispatch('damageBoss', component, requestContext, mapId, requestedDamage)
+function DamageBoss(requestContext, mapId, bossId, requestedDamage, component)
+    return dispatch('damageBoss', component, requestContext, mapId, bossId, requestedDamage)
 end
 --@ EndMethod
 Entry.DamageBoss = DamageBoss

@@ -70,6 +70,29 @@ entities.bridge_guard = runtimeEntity('bridge_guard', 'forest_edge', { x = 80, y
 local buyInRange = decode(bridge:buyFromNpc(entities.bridge_guard, 'Chief_Stan', 'hp_potion', 1))
 assert(buyInRange.ok, 'in-range npc buy on authoritative bridge failed')
 
+local mapState = decode(bridge:getMapState(entities.bridge_guard, 'forest_edge'))
+assert(mapState.ok, 'bridge map state fetch failed')
+
+entities.bridge_guard = runtimeEntity('bridge_guard', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })
+local homeState = decode(bridge:getMapState(entities.bridge_guard, 'henesys_hunting_ground'))
+assert(homeState.ok and #homeState.data.mobs >= 1, 'expected mob in henesys for targeting checks')
+local remoteMobAttack = decode(bridge:attackMob(entities.bridge_guard, 'forest_edge', homeState.data.mobs[1].spawnId, 50))
+assert(not remoteMobAttack.ok and remoteMobAttack.error == 'wrong_map', 'cross-map mob attack unexpectedly allowed')
+
+local player = bridge.world.players.bridge_guard
+local syntheticDrops = bridge.world.dropSystem:registerDrops('henesys_hunting_ground', { x = 20, y = 0, z = 0 }, { { itemId = 'hp_potion', quantity = 1 } }, { ownerId = player.id, now = bridge.runtimeAdapter:now() })
+assert(#syntheticDrops == 1, 'failed to register synthetic drop for authority checks')
+entities.bridge_guard = runtimeEntity('bridge_guard', 'forest_edge', { x = 80, y = 0, z = 0 })
+local remoteDropPickup = decode(bridge:pickupDrop(entities.bridge_guard, 'forest_edge', syntheticDrops[1].dropId))
+assert(not remoteDropPickup.ok and remoteDropPickup.error == 'wrong_map', 'cross-map drop pickup unexpectedly allowed')
+
+local encounter = bridge.world:spawnBoss('mano', 'forest_edge')
+assert(type(encounter) == 'table' and encounter.alive, 'failed to spawn boss for authority checks')
+local wrongBossTarget = decode(bridge:damageBoss(entities.bridge_guard, 'forest_edge', 'stumpy', 200))
+assert(not wrongBossTarget.ok and wrongBossTarget.error == 'boss_not_found', 'wrong boss target unexpectedly allowed')
+local missingBossTarget = decode(bridge:damageBoss(entities.bridge_guard, 'forest_edge', 'missing_boss', 200))
+assert(not missingBossTarget.ok and missingBossTarget.error == 'boss_not_found', 'nonexistent boss target unexpectedly allowed')
+
 _G._DataStorageService = previousStorage
 _G._UserService = previousUserService
 
