@@ -19,12 +19,15 @@ function Healthcheck:run()
         for _ in pairs(self.world.players) do playerCount = playerCount + 1 end
     end
 
+    local runtimeStatus = self.world and self.world.getRuntimeStatus and self.world:getRuntimeStatus() or nil
     local checks = {
         scheduler_available = self.scheduler ~= nil,
         scheduler_advancing = self.scheduler and self.scheduler.now >= 0 or false,
         jobs_registered = jobsRegistered,
         metrics_available = self.metrics ~= nil,
         player_count_valid = playerCount >= 0,
+        recovery_valid = runtimeStatus == nil or (runtimeStatus.recovery and runtimeStatus.recovery.valid ~= false),
+        containment_safe_mode = runtimeStatus == nil or (runtimeStatus.containment and runtimeStatus.containment.safeMode ~= true),
     }
 
     local ok = true
@@ -32,7 +35,7 @@ function Healthcheck:run()
         if not value then ok = false break end
     end
 
-    self.latest = { ok = ok, checks = checks, at = os.time(), playerCount = playerCount }
+    self.latest = { ok = ok, checks = checks, at = os.time(), playerCount = playerCount, runtimeStatus = runtimeStatus }
     if self.metrics then
         self.metrics:gauge('health.ok', ok and 1 or 0)
         self.metrics:gauge('health.players', playerCount)

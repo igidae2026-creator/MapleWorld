@@ -189,6 +189,35 @@ function WorldServerBridge:_defaultMapId()
     return self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId or 'henesys_hunting_ground'
 end
 
+function WorldServerBridge:_actorScope(actor)
+    actor = actor or {}
+    local runtimeIdentity = self.world and self.world.runtimeIdentity or {}
+    return {
+        worldId = actor.worldId or runtimeIdentity.worldId,
+        channelId = actor.channelId or runtimeIdentity.channelId,
+        runtimeInstanceId = actor.runtimeInstanceId or runtimeIdentity.runtimeInstanceId,
+    }
+end
+
+function WorldServerBridge:_validateActorScope(player, actor)
+    if not player then return false, 'invalid_player' end
+    local scope = self:_actorScope(actor)
+    local ps = player.runtimeScope or {}
+    if ps.worldId and scope.worldId and tostring(ps.worldId) ~= tostring(scope.worldId) then
+        if self.world and self.world._recordRuntimeEvent then
+            self.world:_recordRuntimeEvent('runtime_scope_conflict', { playerId = player.id, field = 'worldId', expected = ps.worldId, actual = scope.worldId })
+        end
+        return false, 'runtime_world_conflict'
+    end
+    if ps.channelId and scope.channelId and tostring(ps.channelId) ~= tostring(scope.channelId) then
+        if self.world and self.world._recordRuntimeEvent then
+            self.world:_recordRuntimeEvent('runtime_scope_conflict', { playerId = player.id, field = 'channelId', expected = ps.channelId, actual = scope.channelId })
+        end
+        return false, 'runtime_channel_conflict'
+    end
+    return true
+end
+
 function WorldServerBridge:_rootAttachPath()
     return normalizePath(self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.componentAttachPath) or '/server_runtime'
 end
@@ -411,6 +440,8 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
         local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, true)
         if not ok then return nil, updateErr end
         session.lastSeenAt = self.runtimeAdapter:now()
+        local scopeOk, scopeErr = self:_validateActorScope(player, actor)
+        if not scopeOk then return nil, scopeErr end
         return player, nil, actor
     end
 
@@ -425,6 +456,8 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
     local mapId = actor.mapId or player.currentMapId or requestedMapId or self:_defaultMapId()
     local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, false)
     if not ok then return nil, updateErr end
+    local scopeOk, scopeErr = self:_validateActorScope(player, actor)
+    if not scopeOk then return nil, scopeErr end
     return player, nil, actor
 end
 
@@ -669,6 +702,9 @@ function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local contextOk, contextErr = self:_validateChangeMapContext(player, actor, mapId, sourceMapId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
+    if self.world and self.world.containment and self.world.containment.migrationBlocked then
+        return response(self.runtimeAdapter, false, nil, 'migration_blocked')
+    end
     local ok, result = self.world:changeMap(player, mapId, sourceMapId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))

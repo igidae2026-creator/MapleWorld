@@ -31,4 +31,21 @@ function AdminTools:grantMesos(world, playerId, amount)
     return world.economySystem:grantMesos(player, amount, 'admin')
 end
 
+
+function AdminTools:getRuntimeStatus(world)
+    if not world or type(world.getRuntimeStatus) ~= 'function' then return nil, 'world_status_unavailable' end
+    local status = world:getRuntimeStatus()
+    if self.metrics then self.metrics:info('admin_runtime_status', { escalation = status.escalation and status.escalation.level or 0 }) end
+    return status
+end
+
+function AdminTools:replacePolicyBundle(world, bundle)
+    if not world or type(world.replacePolicyBundle) ~= 'function' then return false, 'policy_replace_unavailable' end
+    local ok, err = world:replacePolicyBundle(bundle)
+    if self.metrics then
+        if ok then self.metrics:increment('admin.policy_replace', 1) else self.metrics:error('admin_policy_replace_failed', { error = tostring(err) }) end
+    end
+    return ok, err
+end
+
 return AdminTools

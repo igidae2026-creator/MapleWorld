@@ -87,6 +87,9 @@ function WorldRepository.newMapleWorldsDataStorage(config)
         writerEpoch = math.max(0, math.floor(tonumber(cfg.writerEpoch) or 0)),
         writerLeaseSec = math.max(1, math.floor(tonumber(cfg.writerLeaseSec) or 30)),
         maxCommits = math.max(0, math.floor(tonumber(cfg.maxCommits) or (math.max(0, math.floor(tonumber(cfg.maxRevisions) or 32)) * 2))),
+        loadedRevision = 0,
+        savedRevision = 0,
+        loadedCheckpointId = nil,
     }
     setmetatable(self, { __index = WorldRepository })
     return self
@@ -321,6 +324,10 @@ function WorldRepository:load()
         return nil
     end
 
+    self.loadedRevision = normalizeRevision(bestEnvelope.revision) or 0
+    if type(bestEnvelope.value) == 'table' and type(bestEnvelope.value.checkpoint) == 'table' then
+        self.loadedCheckpointId = bestEnvelope.value.checkpoint.checkpoint_id
+    end
     if self.metrics then
         self.metrics:increment('world_repository.load', 1, { status = 'hit', kind = 'msw' })
         self.metrics:gauge('world_repository.revision', tonumber(bestEnvelope.revision) or 0)
@@ -424,6 +431,7 @@ function WorldRepository:save(state)
         if self.metrics then self.metrics:increment('world_repository.trimmed_commit', 1) end
     end
 
+    self.savedRevision = nextRevision
     if self.metrics then
         self.metrics:increment('world_repository.save', 1, { status = 'ok', kind = 'msw' })
         self.metrics:gauge('world_repository.revision', nextRevision)
@@ -431,6 +439,18 @@ function WorldRepository:save(state)
         self.metrics:gauge('world_repository.retained_commits', math.min(nextRevision, math.max(1, self.maxCommits)))
     end
     return true
+end
+
+function WorldRepository:lastLoadedRevision()
+    return normalizeRevision(self.loadedRevision) or 0
+end
+
+function WorldRepository:lastSavedRevision()
+    return normalizeRevision(self.savedRevision) or 0
+end
+
+function WorldRepository:lastLoadedCheckpointId()
+    return self.loadedCheckpointId
 end
 
 return WorldRepository
