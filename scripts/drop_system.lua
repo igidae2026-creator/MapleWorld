@@ -132,6 +132,11 @@ function DropSystem:registerDrops(mapId, source, drops, context)
             z = z,
             createdAt = now,
             expiresAt = now + self.dropExpireSec,
+            sourceSystem = cfg.sourceSystem or 'drop_system',
+            sourceEventId = cfg.sourceEventId,
+            correlationId = cfg.correlationId,
+            sourceBossId = cfg.bossId,
+            sourceQuestId = cfg.questId,
         }
         self.activeDrops[dropId] = record
         mapDrops[dropId] = record
@@ -189,7 +194,13 @@ function DropSystem:pickupDrop(player, mapId, dropId, itemSystem, context)
     if record.ownerId and record.ownerUntil and now < record.ownerUntil and player and player.id ~= record.ownerId then
         return false, 'drop_reserved'
     end
-    local added, err = itemSystem:addItem(player, record.itemId, record.quantity)
+    local added, err = itemSystem:addItem(player, record.itemId, record.quantity, nil, {
+        source = 'drop_pickup',
+        correlation_id = record.correlationId or cfg.correlationId,
+        source_event_id = record.sourceEventId,
+        boss_id = record.sourceBossId,
+        quest_id = record.sourceQuestId,
+    })
     if not added then return false, err end
     record.pickedBy = player and player.id or nil
     record.pickedAt = now

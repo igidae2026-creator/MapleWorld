@@ -18,3 +18,10 @@ assert(world.questSystem:isComplete(player, 'q_snail_cleanup'), 'quest progress 
 assert(world.questSystem:turnIn(player, 'q_snail_cleanup'), 'turn in failed')
 assert(player.mesos >= 100, 'quest reward mesos missing')
 print('quest_test: ok')
+
+local ledger = world.journal:ledgerSnapshot()
+local foundQuestMesos = false
+for _, evt in ipairs(ledger) do
+    if evt.event_type == 'mesos_grant' and evt.metadata and evt.metadata.reason == 'quest_reward' then foundQuestMesos = true end
+end
+assert(foundQuestMesos, 'quest turn-in mesos reward missing in ledger')
