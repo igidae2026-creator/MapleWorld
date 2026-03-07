@@ -262,6 +262,8 @@ function ItemSystem:_takeEquipInstance(player, itemId, instanceId)
     if not entry or entry.quantity <= 0 then return false, 'item_not_in_inventory' end
     local itemDef = self.items[itemId]
     if not itemDef or itemDef.stackable then return false, 'item_not_equippable' end
+    if type(entry.instances) ~= 'table' then return false, 'inventory_state_invalid' end
+    if #entry.instances ~= math.floor(tonumber(entry.quantity) or 0) then return false, 'inventory_state_invalid' end
 
     local chosen = nil
     if type(entry.instances) == 'table' then
@@ -280,9 +282,29 @@ function ItemSystem:_takeEquipInstance(player, itemId, instanceId)
         entry.quantity = #entry.instances
     end
 
+    if not chosen then return false, 'instance_not_found' end
     if entry.quantity <= 0 then player.inventory[itemId] = nil end
-    if not chosen then chosen = self:_makeInstance(player, itemId, {}) end
     return true, chosen
+end
+
+function ItemSystem:_peekEquipInstance(player, itemId, instanceId)
+    local entry = player.inventory[itemId]
+    if not entry or entry.quantity <= 0 then return false, 'item_not_in_inventory' end
+    local itemDef = self.items[itemId]
+    if not itemDef or itemDef.stackable then return false, 'item_not_equippable' end
+    if type(entry.instances) ~= 'table' then return false, 'inventory_state_invalid' end
+    if #entry.instances ~= math.floor(tonumber(entry.quantity) or 0) then return false, 'inventory_state_invalid' end
+
+    if instanceId then
+        for _, instance in ipairs(entry.instances) do
+            if instance.instanceId == instanceId then return true, instance end
+        end
+        return false, 'instance_not_found'
+    end
+
+    local selected = entry.instances[#entry.instances]
+    if not selected then return false, 'instance_not_found' end
+    return true, selected
 end
 
 function ItemSystem:equip(player, itemId, instanceId)
@@ -297,7 +319,11 @@ function ItemSystem:equip(player, itemId, instanceId)
     if not slot then return false, 'item_not_equippable' end
     if itemDef.requiredLevel and player.level < itemDef.requiredLevel then return false, 'level_too_low' end
 
-    local removed, instanceOrError = self:_takeEquipInstance(player, itemId, instanceId)
+    local previewOk, previewOrErr = self:_peekEquipInstance(player, itemId, instanceId)
+    if not previewOk then return false, previewOrErr end
+    local targetInstanceId = previewOrErr.instanceId
+
+    local removed, instanceOrError = self:_takeEquipInstance(player, itemId, targetInstanceId)
     if not removed then return false, instanceOrError end
 
     local current = player.equipment[slot]
@@ -324,6 +350,10 @@ function ItemSystem:unequip(player, slot)
     if not player then return false, 'invalid_player' end
     local equipped = player.equipment[slot]
     if not equipped then return false, 'slot_empty' end
+    local itemDef = self.items[equipped.itemId]
+    if not itemDef or itemDef.stackable then return false, 'invalid_equipment_state' end
+    local expectedSlot = self:_slotFor(itemDef)
+    if expectedSlot ~= slot then return false, 'invalid_equipment_state' end
 
     local ok, err = self:addItem(player, equipped.itemId, 1, { instances = { equipped } })
     if not ok then return false, err end
