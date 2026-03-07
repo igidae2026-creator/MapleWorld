@@ -44,6 +44,20 @@ for _, entry in pairs(inventoryAfter) do
 end
 assert(not seen[integrity.equipment.weapon.instanceId], 'equipped instance also present in inventory after failed equip')
 
+assert(world.itemSystem:validatePlayerItemTopology(integrity), 'item topology invariant failed after failed equip guard')
+
+-- successful swap equip keeps topology and does not duplicate old equipment instance
+local swapPlayer = world:createPlayer('p0_swap')
+assert(world.itemSystem:addItem(swapPlayer, 'sword_bronze', 1), 'seed swap bronze failed')
+assert(world.itemSystem:addItem(swapPlayer, 'stumpy_axe', 1), 'seed swap axe failed')
+local bronzeSwapId = swapPlayer.inventory.sword_bronze.instances[1].instanceId
+local axeSwapId = swapPlayer.inventory.stumpy_axe.instances[1].instanceId
+assert(world:equipItem(swapPlayer, 'sword_bronze', bronzeSwapId), 'swap initial equip failed')
+assert(world:equipItem(swapPlayer, 'stumpy_axe', axeSwapId), 'swap second equip failed')
+assert(swapPlayer.equipment.weapon and swapPlayer.equipment.weapon.instanceId == axeSwapId, 'swap did not install target instance')
+assert(swapPlayer.inventory.sword_bronze and swapPlayer.inventory.sword_bronze.quantity == 1, 'previous weapon not restored to inventory')
+assert(world.itemSystem:validatePlayerItemTopology(swapPlayer), 'topology invariant failed after successful swap equip')
+
 -- authority boundaries for map and npc actions
 local traveler = world:createPlayer('p0_authority')
 local changed, changedErr = world:changeMap(traveler, 'forest_edge', 'henesys_hunting_ground')

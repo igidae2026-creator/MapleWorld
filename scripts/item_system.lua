@@ -70,6 +70,99 @@ function ItemSystem:_emitLedger(event)
     return self.ledgerSink(event)
 end
 
+function ItemSystem:_ensureInventoryEntry(player, itemId)
+    local entry = player.inventory[itemId]
+    if not entry then
+        entry = { itemId = itemId, quantity = 0, enhancement = 0 }
+        player.inventory[itemId] = entry
+    end
+    return entry
+end
+
+function ItemSystem:_insertInventoryInstance(player, instance)
+    if not player or not instance or not instance.itemId then return false, 'invalid_instance' end
+    local entry = self:_ensureInventoryEntry(player, instance.itemId)
+    entry.instances = type(entry.instances) == 'table' and entry.instances or {}
+    entry.instances[#entry.instances + 1] = instance
+    entry.quantity = #entry.instances
+    return true
+end
+
+function ItemSystem:validatePlayerItemTopology(player)
+    if type(player) ~= 'table' then return false, 'invalid_player' end
+    local seen = {}
+
+    local function track(instanceId, location)
+        if not instanceId then return true end
+        local existing = seen[instanceId]
+        if existing and existing ~= location then
+            return false, 'duplicate_instance:' .. tostring(instanceId)
+        end
+        seen[instanceId] = location
+        return true
+    end
+
+    for itemId, entry in pairs(player.inventory or {}) do
+        local itemDef = self.items[itemId]
+        if itemDef and itemDef.stackable == false then
+            if type(entry.instances) ~= 'table' then return false, 'inventory_state_invalid' end
+            if #entry.instances ~= math.floor(tonumber(entry.quantity) or 0) then return false, 'inventory_quantity_mismatch' end
+            for idx, instance in ipairs(entry.instances) do
+                if type(instance) ~= 'table' or instance.itemId ~= itemId then
+                    return false, 'inventory_instance_invalid'
+                end
+                local ok, err = track(instance.instanceId, 'inventory:' .. tostring(itemId) .. ':' .. tostring(idx))
+                if not ok then return false, err end
+            end
+        end
+    end
+
+    for slot, equipped in pairs(player.equipment or {}) do
+        if equipped and equipped.instanceId then
+            local ok, err = track(equipped.instanceId, 'equipment:' .. tostring(slot))
+            if not ok then return false, err end
+        end
+    end
+    return true
+end
+
+function ItemSystem:beginMutation(player, context)
+    local tx = {
+        player = player,
+        context = type(context) == 'table' and context or {},
+        committed = false,
+        compensations = {},
+    }
+
+    function tx:step(fn)
+        local ok, err = fn()
+        if ok then return true end
+        self:rollback(err)
+        return false, err
+    end
+
+    function tx:defer(fn)
+        self.compensations[#self.compensations + 1] = fn
+    end
+
+    function tx:rollback(reason)
+        if self.committed then return end
+        for i = #self.compensations, 1, -1 do
+            pcall(self.compensations[i])
+        end
+        self.compensations = {}
+        return false, reason
+    end
+
+    function tx:commit()
+        self.committed = true
+        self.compensations = {}
+        return true
+    end
+
+    return tx
+end
+
 function ItemSystem:_makeInstance(player, itemId, template)
     template = template or {}
     local instanceId = template.instanceId
@@ -386,19 +479,33 @@ function ItemSystem:equip(player, itemId, instanceId, context)
     if not previewOk then return false, previewOrErr end
     local targetInstanceId = previewOrErr.instanceId
 
+    local tx = self:beginMutation(player, context)
     local removed, instanceOrError = self:_takeEquipInstance(player, itemId, targetInstanceId)
     if not removed then return false, instanceOrError end
+    tx:defer(function()
+        self:_insertInventoryInstance(player, instanceOrError)
+    end)
 
     local current = player.equipment[slot]
+    local newEquipment = { itemId = itemId, instanceId = instanceOrError.instanceId, enhancement = tonumber(instanceOrError.enhancement) or 0, lineage = instanceOrError.lineage }
+    player.equipment[slot] = newEquipment
+    tx:defer(function() player.equipment[slot] = current end)
+
     if current then
-        local ok, err = self:addItem(player, current.itemId, 1, { instances = { current } }, { source = 'unequip_swap' })
-        if not ok then
-            self:addItem(player, itemId, 1, { instances = { instanceOrError } }, { source = 'equip_rollback' })
-            return false, err
+        local restored, restoreErr = self:_insertInventoryInstance(player, current)
+        if not restored then
+            tx:rollback(restoreErr)
+            return false, restoreErr
         end
     end
 
-    player.equipment[slot] = { itemId = itemId, instanceId = instanceOrError.instanceId, enhancement = tonumber(instanceOrError.enhancement) or 0, lineage = instanceOrError.lineage }
+    local invariantOk, invariantErr = self:validatePlayerItemTopology(player)
+    if not invariantOk then
+        tx:rollback(invariantErr)
+        return false, invariantErr
+    end
+
+    tx:commit()
     local ledgerEntry = self:_emitLedger({
         event_type = 'item_transfer', actor_id = player.id, player_id = player.id, source_system = 'item_system',
         correlation_id = context and context.correlation_id, item_id = itemId, item_instance_id = instanceOrError.instanceId, quantity = 1,
@@ -424,9 +531,20 @@ function ItemSystem:unequip(player, slot, context)
     local expectedSlot = self:_slotFor(itemDef)
     if expectedSlot ~= slot then return false, 'invalid_equipment_state' end
 
-    local ok, err = self:addItem(player, equipped.itemId, 1, { instances = { equipped } }, { source = 'unequip', correlation_id = context and context.correlation_id })
+    local tx = self:beginMutation(player, context)
+    local ok, err = self:_insertInventoryInstance(player, equipped)
     if not ok then return false, err end
+    tx:defer(function() self:_takeEquipInstance(player, equipped.itemId, equipped.instanceId) end)
     player.equipment[slot] = nil
+    tx:defer(function() player.equipment[slot] = equipped end)
+
+    local invariantOk, invariantErr = self:validatePlayerItemTopology(player)
+    if not invariantOk then
+        tx:rollback(invariantErr)
+        return false, invariantErr
+    end
+
+    tx:commit()
     local ledgerEntry = self:_emitLedger({
         event_type = 'item_transfer', actor_id = player.id, player_id = player.id, source_system = 'item_system',
         correlation_id = context and context.correlation_id, item_id = equipped.itemId, item_instance_id = equipped.instanceId, quantity = 1,
