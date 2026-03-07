@@ -57,7 +57,7 @@ assert(state.ok and state.data.playerId == 'runtime_user', 'authoritative sender
 assert(state.data.currentMapId == 'henesys_hunting_ground', 'authoritative map was not preserved')
 
 local spoofed = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({ UserId = 'runtime_user' }))
-assert(not spoofed.ok and spoofed.error == 'player_not_active', 'spoofed sender created or resolved a ghost player')
+assert(not spoofed.ok and spoofed.error == 'invalid_user', 'spoofed sender created or resolved a ghost player')
 
 assert(bridge:onUserLeave(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })), 'authoritative leave failed')
 local afterLeave = bridge.runtimeAdapter:decodeData(bridge:getPlayerState(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })))

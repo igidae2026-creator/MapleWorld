@@ -305,16 +305,32 @@ function RuntimeAdapter:resolveActorContext(source, options)
         if source == nil or not self:isAuthoritativeSource(source) then
             return nil, 'invalid_user'
         end
+        if not self.services.UserService then
+            return nil, 'authoritative_identity_unavailable'
+        end
 
         local userId = self:getUserId(source, { authoritativeOnly = true })
         local entity = userId and self:getUserEntityByUserId(userId) or nil
         if not userId and entity then
             userId = self:getUserId(entity, { authoritativeOnly = true })
         end
-        if not userId then return nil, 'invalid_user' end
+        if not userId or entity == nil then return nil, 'authoritative_identity_unavailable' end
 
-        local mapId = self:getMapId(entity, { authoritativeOnly = true }) or self:getMapId(source, { authoritativeOnly = true })
-        local position = self:getPosition(entity, { authoritativeOnly = true }) or self:getPosition(source, { authoritativeOnly = true })
+        local sourceEntity = self:getUserId(source, { authoritativeOnly = true }) and self:getUserEntityByUserId(self:getUserId(source, { authoritativeOnly = true })) or nil
+        if source ~= entity and source ~= sourceEntity and sourceEntity ~= entity then
+            local nestedEntity = first(source, {
+                { 'Entity' },
+                { 'UserEntity' },
+                { 'Player' },
+                { 'User' },
+            })
+            if nestedEntity ~= entity then
+                return nil, 'authoritative_identity_unavailable'
+            end
+        end
+
+        local mapId = self:getMapId(entity, { authoritativeOnly = true })
+        local position = self:getPosition(entity, { authoritativeOnly = true })
         return {
             userId = userId,
             entity = entity,

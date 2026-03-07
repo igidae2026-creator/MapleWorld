@@ -48,5 +48,16 @@ assert(type(loaded) == 'table', 'msw storage load returned nil')
 assert(loaded.level == 7 and loaded.mesos == 321, 'msw storage roundtrip corrupted player state')
 assert(loaded.inventory.hp_potion.quantity == 3, 'msw storage roundtrip lost inventory')
 
+player.level = 8
+assert(repo:save(player), 'msw storage second save failed')
+
+local storageKey = 'TestStorage:msw_user'
+local rawStore = _G._DataStorageService._stores[storageKey]
+assert(type(rawStore) == 'table', 'test storage unavailable')
+rawStore['profile__head'] = nil
+
+local recovered = repo:load('msw_user')
+assert(type(recovered) == 'table' and recovered.level == 8, 'msw storage failed to recover from head history')
+
 _G._DataStorageService = previousStorage
 print('msw_repository_test: ok')

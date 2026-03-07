@@ -85,6 +85,25 @@ function WorldRepository:_shadowHeadKey()
     return tostring(self.key) .. '__head_shadow'
 end
 
+function WorldRepository:_headHistoryKey(index)
+    return tostring(self.key) .. '__head_history_' .. tostring(index)
+end
+
+function WorldRepository:_headHistorySize()
+    return math.max(2, self.slotCount)
+end
+
+function WorldRepository:_headCandidates(storage)
+    local candidates = { self:_headKey(), self:_shadowHeadKey() }
+    for i = 1, self:_headHistorySize() do
+        local head = self:_readHead(storage, self:_headHistoryKey(i))
+        if type(head) == 'table' then
+            candidates[#candidates + 1] = head
+        end
+    end
+    return candidates
+end
+
 function WorldRepository:_decodeEnvelope(encoded)
     if encoded == nil or encoded == '' then return nil end
     local decoded = self.runtimeAdapter:decodeData(encoded)
@@ -129,15 +148,12 @@ function WorldRepository:load()
     if not storage then return nil, 'storage_unavailable' end
 
     local bestEnvelope = nil
-    local directHead = self:_readHead(storage, self:_headKey())
-    local shadowHead = self:_readHead(storage, self:_shadowHeadKey())
 
     local prioritized = {}
-    if type(directHead) == 'table' and tonumber(directHead.slot) then
-        prioritized[#prioritized + 1] = self:_slotKey(math.floor(tonumber(directHead.slot)))
-    end
-    if type(shadowHead) == 'table' and tonumber(shadowHead.slot) then
-        prioritized[#prioritized + 1] = self:_slotKey(math.floor(tonumber(shadowHead.slot)))
+    for _, head in ipairs(self:_headCandidates(storage)) do
+        if type(head) == 'table' and tonumber(head.slot) then
+            prioritized[#prioritized + 1] = self:_slotKey(math.floor(tonumber(head.slot)))
+        end
     end
     for i = 1, self.slotCount do
         prioritized[#prioritized + 1] = self:_slotKey(i)
@@ -201,8 +217,13 @@ function WorldRepository:save(state)
     }
 
     writeStorage(storage, self:_shadowHeadKey(), self.runtimeAdapter:encodeData(currentHead))
+    local historySlot = ((nextRevision - 1) % self:_headHistorySize()) + 1
+    writeStorage(storage, self:_headHistoryKey(historySlot), self.runtimeAdapter:encodeData(headSnapshot))
     ok, err = writeStorage(storage, self:_headKey(), self.runtimeAdapter:encodeData(headSnapshot))
-    if not ok then return false, err end
+    if not ok then
+        writeStorage(storage, self:_headKey(), self.runtimeAdapter:encodeData(currentHead))
+        return false, err
+    end
 
     if self.metrics then
         self.metrics:increment('world_repository.save', 1, { status = 'ok', kind = 'msw' })
