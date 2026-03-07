@@ -12,16 +12,28 @@ local function deepcopy(value, seen)
     return copy
 end
 
+local function shallowSize(value)
+    if type(value) ~= 'table' then return #tostring(value) end
+    local total = 2
+    for k, v in pairs(value) do
+        total = total + #tostring(k) + #tostring(v)
+    end
+    return total
+end
+
 function EventJournal.new(config)
     local cfg = config or {}
     local self = {
         entries = {},
         nextSeq = 1,
         maxEntries = math.max(0, math.floor(tonumber(cfg.maxEntries) or 0)),
+        maxPayloadBytes = math.max(0, math.floor(tonumber(cfg.maxPayloadBytes) or 0)),
         time = cfg.time or os.time,
         metrics = cfg.metrics,
         logger = cfg.logger,
         onAppend = cfg.onAppend,
+        droppedEntries = 0,
+        droppedPayloadBytes = 0,
     }
     setmetatable(self, { __index = EventJournal })
     return self
@@ -35,7 +47,37 @@ function EventJournal:_trim()
     for _ = 1, excess do
         table.remove(self.entries, 1)
     end
+    self.droppedEntries = self.droppedEntries + excess
     if self.metrics then self.metrics:increment('journal.trimmed', excess) end
+end
+
+function EventJournal:_clampPayload(payload)
+    local cloned = deepcopy(payload or {})
+    local cap = math.max(0, math.floor(tonumber(self.maxPayloadBytes) or 0))
+    if cap <= 0 then return cloned end
+    local bytes = shallowSize(cloned)
+    if bytes <= cap then return cloned end
+
+    self.droppedPayloadBytes = self.droppedPayloadBytes + math.max(0, bytes - cap)
+    local sanitized = {
+        truncated = true,
+        estimateBytes = bytes,
+    }
+
+    for key, value in pairs(cloned) do
+        if shallowSize(sanitized) >= cap then break end
+        if type(value) ~= 'table' then
+            local trimmed = tostring(value)
+            local remaining = cap - shallowSize(sanitized) - #tostring(key)
+            if remaining > 0 then
+                if #trimmed > remaining then trimmed = string.sub(trimmed, 1, remaining) end
+                sanitized[key] = trimmed
+            end
+        end
+    end
+
+    if self.metrics then self.metrics:increment('journal.payload_truncated', 1) end
+    return sanitized
 end
 
 function EventJournal:append(eventType, payload)
@@ -43,13 +85,18 @@ function EventJournal:append(eventType, payload)
         seq = self.nextSeq,
         at = self.time(),
         event = eventType,
-        payload = deepcopy(payload or {}),
+        payload = self:_clampPayload(payload),
     }
     self.entries[#self.entries + 1] = entry
     self.nextSeq = self.nextSeq + 1
     self:_trim()
 
-    if self.metrics then self.metrics:increment('journal.append', 1, { event = tostring(eventType) }) end
+    if self.metrics then
+        self.metrics:increment('journal.append', 1, { event = tostring(eventType) })
+        self.metrics:gauge('journal.entries', #self.entries)
+        self.metrics:gauge('journal.dropped_entries', self.droppedEntries)
+        self.metrics:gauge('journal.dropped_payload_bytes', self.droppedPayloadBytes)
+    end
     if self.logger and self.logger.info then self.logger:info('journal_append', { event = eventType, seq = entry.seq }) end
     if type(self.onAppend) == 'function' then
         pcall(self.onAppend, entry)
@@ -71,6 +118,8 @@ function EventJournal:serialize()
         entries = self:snapshot(),
         nextSeq = self.nextSeq,
         maxEntries = self.maxEntries,
+        droppedEntries = self.droppedEntries,
+        droppedPayloadBytes = self.droppedPayloadBytes,
     }
 end
 
@@ -85,6 +134,8 @@ function EventJournal:restore(snapshot)
         entries = snapshot.entries
         nextSeq = tonumber(snapshot.nextSeq)
         maxEntries = tonumber(snapshot.maxEntries)
+        self.droppedEntries = math.max(0, math.floor(tonumber(snapshot.droppedEntries) or 0))
+        self.droppedPayloadBytes = math.max(0, math.floor(tonumber(snapshot.droppedPayloadBytes) or 0))
     end
 
     if maxEntries ~= nil then

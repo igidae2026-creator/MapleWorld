@@ -85,6 +85,8 @@ function WorldRepository.newMapleWorldsDataStorage(config)
         maxRevisions = math.max(0, math.floor(tonumber(cfg.maxRevisions) or 32)),
         writerOwnerId = cfg.writerOwnerId,
         writerEpoch = math.max(0, math.floor(tonumber(cfg.writerEpoch) or 0)),
+        writerLeaseSec = math.max(1, math.floor(tonumber(cfg.writerLeaseSec) or 30)),
+        maxCommits = math.max(0, math.floor(tonumber(cfg.maxCommits) or (math.max(0, math.floor(tonumber(cfg.maxRevisions) or 32)) * 2))),
     }
     setmetatable(self, { __index = WorldRepository })
     return self
@@ -195,6 +197,18 @@ function WorldRepository:_oldRevisionKey(revision)
     return self:_revisionKey(normalized - maxRevisions)
 end
 
+function WorldRepository:_oldCommitKey(revision)
+    local maxCommits = math.max(0, math.floor(tonumber(self.maxCommits) or 0))
+    local normalized = normalizeRevision(revision)
+    if maxCommits <= 0 or normalized == nil or normalized <= maxCommits then return nil end
+    return self:_commitKey(normalized - maxCommits)
+end
+
+function WorldRepository:_leaseNow()
+    if self.runtimeAdapter and self.runtimeAdapter.now then return self.runtimeAdapter:now() end
+    return os.time()
+end
+
 function WorldRepository:_writerFingerprint()
     return tostring(self.writerOwnerId or 'default') .. ':' .. tostring(self.writerEpoch or 0)
 end
@@ -202,10 +216,34 @@ end
 function WorldRepository:_validateWriter(storage)
     local owner = self:_readHead(storage, self:_ownerKey())
     local fingerprint = self:_writerFingerprint()
+    local now = self:_leaseNow()
     if owner == nil then return true, nil, fingerprint end
     if type(owner) ~= 'table' then return false, 'world_owner_conflict', fingerprint end
-    local existing = tostring(owner.ownerId or 'default') .. ':' .. tostring(math.max(0, math.floor(tonumber(owner.epoch) or 0)))
-    if existing ~= fingerprint then return false, 'world_owner_conflict', fingerprint end
+
+    local existingEpoch = math.max(0, math.floor(tonumber(owner.epoch) or 0))
+    local existingOwnerId = tostring(owner.ownerId or 'default')
+    local existing = existingOwnerId .. ':' .. tostring(existingEpoch)
+    local leaseExpiresAt = tonumber(owner.leaseExpiresAt) or 0
+
+    if existing == fingerprint then return true, nil, fingerprint end
+    if leaseExpiresAt > now then return false, 'world_owner_conflict', fingerprint end
+
+    if existingEpoch > self.writerEpoch then
+        return false, 'world_owner_epoch_stale', fingerprint
+    end
+    if existingEpoch == self.writerEpoch and existingOwnerId ~= tostring(self.writerOwnerId or 'default') then
+        return false, 'world_owner_epoch_conflict', fingerprint
+    end
+
+    if self.metrics then self.metrics:increment('world_repository.writer_takeover', 1) end
+    if self.logger and self.logger.info then
+        self.logger:info('world_writer_takeover', {
+            previousOwnerId = existingOwnerId,
+            previousEpoch = existingEpoch,
+            newOwnerId = self.writerOwnerId,
+            newEpoch = self.writerEpoch,
+        })
+    end
     return true, nil, fingerprint
 end
 
@@ -332,6 +370,12 @@ function WorldRepository:save(state)
         return false, 'world_head_conflict'
     end
 
+    local stillOk, stillErr = self:_validateWriter(storage)
+    if not stillOk then
+        if self.metrics then self.metrics:increment('world_repository.save', 1, { status = 'owner_conflict', kind = 'msw' }) end
+        return false, stillErr
+    end
+
     local headSnapshot = {
         revision = nextRevision,
         slot = nextSlot,
@@ -355,6 +399,7 @@ function WorldRepository:save(state)
         revision = nextRevision,
         slot = nextSlot,
         savedAt = envelope.savedAt,
+        leaseExpiresAt = envelope.savedAt + math.max(1, self.writerLeaseSec),
     }
     ok, err = writeStorage(storage, self:_ownerKey(), self.runtimeAdapter:encodeData(ownerSnapshot))
     if not ok then return false, err end
@@ -370,11 +415,20 @@ function WorldRepository:save(state)
     local trimKey = self:_oldRevisionKey(nextRevision)
     if trimKey ~= nil then
         writeStorage(storage, trimKey, '')
+        if self.metrics then self.metrics:increment('world_repository.trimmed_revision', 1) end
+    end
+
+    local oldCommitKey = self:_oldCommitKey(nextRevision)
+    if oldCommitKey ~= nil then
+        writeStorage(storage, oldCommitKey, '')
+        if self.metrics then self.metrics:increment('world_repository.trimmed_commit', 1) end
     end
 
     if self.metrics then
         self.metrics:increment('world_repository.save', 1, { status = 'ok', kind = 'msw' })
         self.metrics:gauge('world_repository.revision', nextRevision)
+        self.metrics:gauge('world_repository.retained_revisions', math.min(nextRevision, math.max(1, self.maxRevisions)))
+        self.metrics:gauge('world_repository.retained_commits', math.min(nextRevision, math.max(1, self.maxCommits)))
     end
     return true
 end

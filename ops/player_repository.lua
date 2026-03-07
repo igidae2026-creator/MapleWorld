@@ -70,6 +70,7 @@ function PlayerRepository.newMapleWorldsDataStorage(config)
         storageName = cfg.storageName,
         key = cfg.key or 'profile',
         slotCount = math.max(2, math.floor(tonumber(cfg.slotCount) or 2)),
+        maxRevisions = math.max(0, math.floor(tonumber(cfg.maxRevisions) or 16)),
     }
     setmetatable(self, { __index = PlayerRepository })
     return self
@@ -164,6 +165,14 @@ function PlayerRepository:_readHead(storage, key)
         return envelope
     end
     return type(envelope) == 'table' and envelope.legacy == true and envelope.value or nil
+end
+
+
+function PlayerRepository:_oldRevisionKey(revision)
+    local maxRevisions = math.max(0, math.floor(tonumber(self.maxRevisions) or 0))
+    local normalized = math.max(0, math.floor(tonumber(revision) or 0))
+    if maxRevisions <= 0 or normalized <= maxRevisions then return nil end
+    return self:_revisionKey(normalized - maxRevisions)
 end
 
 function PlayerRepository:_candidateKeys()
@@ -305,9 +314,16 @@ function PlayerRepository:_saveToStorage(player)
         return false, err
     end
 
+    local trimKey = self:_oldRevisionKey(nextRevision)
+    if trimKey ~= nil then
+        writeStorage(storage, trimKey, '')
+        if self.metrics then self.metrics:increment('repository.trimmed_revision', 1, { kind = 'msw' }) end
+    end
+
     if self.metrics then
         self.metrics:increment('repository.save', 1, { status = 'ok', kind = 'msw' })
         self.metrics:gauge('repository.save_revision', nextRevision)
+        self.metrics:gauge('repository.retained_revisions', math.min(nextRevision, math.max(1, self.maxRevisions)))
     end
     return true
 end
