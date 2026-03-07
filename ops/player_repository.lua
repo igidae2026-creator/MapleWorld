@@ -50,6 +50,15 @@ local function writeStorage(storage, key, encoded)
     return true
 end
 
+
+local function classifyLoadError(err)
+    local msg = tostring(err or '')
+    if msg == '' then return 'unknown_error' end
+    if msg:find('storage_unavailable', 1, true) then return 'storage_unavailable' end
+    if msg:find('decode', 1, true) or msg:find('json', 1, true) then return 'corrupted_envelope' end
+    if msg:find('error_code_', 1, true) then return 'storage_error' end
+    return 'storage_error'
+end
 function PlayerRepository.newMemory(config)
     local cfg = config or {}
     local self = {
@@ -352,6 +361,17 @@ end
 
 function PlayerRepository:loadMapleWorlds(playerId)
     return self:_loadFromStorage(playerId)
+end
+
+function PlayerRepository:loadDetailed(playerId)
+    local value, err = self:load(playerId)
+    if err then
+        return nil, classifyLoadError(err), err
+    end
+    if value == nil then
+        return nil, 'not_found', nil
+    end
+    return deepcopy(value), 'ok', nil
 end
 
 function PlayerRepository:saveMapleWorlds(player)

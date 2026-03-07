@@ -1256,8 +1256,10 @@ function ServerBootstrap.boot(basePath, config)
             previousPersisted = loadedPrevious
         end
 
+        self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_begin' })
         local ok, err = self.playerRepository:save(player)
         if not ok then
+            self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_failed', error = tostring(err) })
             if self.metrics then
                 self.metrics:increment('player_state.save_error', 1)
                 self.metrics:error('player_state_save_failed', { playerId = tostring(player.id), error = tostring(err) })
@@ -1269,6 +1271,7 @@ function ServerBootstrap.boot(basePath, config)
             local worldSaved, worldErr = self:saveWorldState('player_save:' .. tostring(player.id))
             if not worldSaved then
                 player.dirty = true
+                self.journal:append('player_save_staged', { playerId = player.id, phase = 'world_save_failed', error = tostring(worldErr) })
                 local rollbackOk = true
                 local rollbackErr = nil
                 if previousPersisted then
@@ -1283,14 +1286,17 @@ function ServerBootstrap.boot(basePath, config)
                     })
                 end
                 if not rollbackOk then
+                    self.journal:append('player_save_staged', { playerId = player.id, phase = 'rollback_failed', error = tostring(rollbackErr) })
                     return false, 'world_state_save_failed:' .. tostring(worldErr) .. ';rollback_failed:' .. tostring(rollbackErr)
                 end
+                self.journal:append('player_save_staged', { playerId = player.id, phase = 'rollback_completed' })
                 return false, worldErr or 'world_state_save_failed'
             end
         end
 
         player.dirty = false
         player.lastSavedAt = self:_now()
+        self.journal:append('player_save_staged', { playerId = player.id, phase = 'commit_complete' })
         self.journal:append('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt })
         return true
     end
@@ -1321,12 +1327,20 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:createPlayer(playerId)
         if self.players[playerId] then return self.players[playerId] end
-        local loaded, loadErr = self.playerRepository:load(playerId)
+        local loaded, loadErr = nil, nil
+        local loadStatus = 'unknown'
+        if self.playerRepository and type(self.playerRepository.loadDetailed) == 'function' then
+            loaded, loadStatus, loadErr = self.playerRepository:loadDetailed(playerId)
+        else
+            loaded, loadErr = self.playerRepository:load(playerId)
+            if loadErr then loadStatus = 'storage_error' elseif loaded then loadStatus = 'ok' else loadStatus = 'not_found' end
+        end
         if loadErr then
             if self.metrics then
-                self.metrics:increment('player_state.load_error', 1)
-                self.metrics:error('player_state_load_failed', { playerId = tostring(playerId), error = tostring(loadErr) })
+                self.metrics:increment('player_state.load_error', 1, { status = tostring(loadStatus) })
+                self.metrics:error('player_state_load_failed', { playerId = tostring(playerId), error = tostring(loadErr), status = tostring(loadStatus) })
             end
+            self:_recordRuntimeEvent('player_load_failed', { playerId = playerId, status = loadStatus, error = tostring(loadErr) })
             return nil, loadErr
         end
         local player = self.itemSystem:sanitizePlayerProfile(loaded, playerId)

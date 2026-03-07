@@ -30,6 +30,9 @@ local loadedPlayer, playerErr = playerRepo:load('u1')
 assert(loadedPlayer == nil and playerErr == nil, 'not-found player read should be a miss, not an error')
 local loadedWorld, worldErr = worldRepo:load()
 assert(loadedWorld == nil and worldErr == nil, 'not-found world read should be a miss, not an error')
+
+local detailValue, detailStatus, detailErr = playerRepo:loadDetailed('u1')
+assert(detailValue == nil and detailStatus == 'not_found' and detailErr == nil, 'loadDetailed miss classification incorrect')
 _G._DataStorageService = previousStorage
 
 -- boot fails closed on world restore load errors (not only in strict-live mode)
