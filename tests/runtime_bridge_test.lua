@@ -19,4 +19,8 @@ local attack = bridge.runtimeAdapter:decodeData(bridge:attackMob('bridge_user', 
 assert(attack.ok, 'bridge mob attack failed')
 assert(attack.data.player.playerId == 'bridge_user', 'bridge attack response missing player snapshot')
 
+local deltas = bridge.runtimeAdapter:decodeData(bridge:getStateDelta('bridge_user', 'henesys_hunting_ground', 0))
+assert(deltas.ok, 'bridge state delta request failed')
+assert(type(deltas.data.deltas) == 'table' and #deltas.data.deltas >= 1, 'bridge state delta missing payload')
+
 print('runtime_bridge_test: ok')

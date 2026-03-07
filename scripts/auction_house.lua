@@ -7,6 +7,7 @@ function AuctionHouse.new(config)
         nextId = 1,
         priceHistory = {},
         monitors = {},
+        scarcity = {},
     }
     setmetatable(self, { __index = AuctionHouse })
     return self
@@ -21,9 +22,11 @@ function AuctionHouse:listItem(player, itemId, quantity, price)
         itemId = itemId,
         quantity = math.max(1, math.floor(tonumber(quantity) or 1)),
         price = math.max(1, math.floor(tonumber(price) or 1)),
+        listedAt = os.time(),
     }
     self.priceHistory[itemId] = self.priceHistory[itemId] or {}
     self.priceHistory[itemId][#self.priceHistory[itemId] + 1] = self.listings[id].price
+    self.scarcity[itemId] = math.max(0, (self.scarcity[itemId] or 0) + self.listings[id].quantity)
     return self.listings[id]
 end
 
@@ -41,6 +44,7 @@ function AuctionHouse:marketSnapshot(itemId)
         high = high or 0,
         average = #history > 0 and math.floor(sum / #history) or 0,
         samples = #history,
+        scarcity = self.scarcity[itemId] or 0,
     }
 end
 

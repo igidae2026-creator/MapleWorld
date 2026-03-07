@@ -44,6 +44,9 @@ function SpawnSystem:registerMap(mapId, spawnGroups)
             points = group.points or {},
             respawnSec = tonumber(group.respawnSec or mobDef.respawn_sec) or 5,
             disabled = false,
+            clusterRole = group.clusterRole or mobDef.role or 'lane',
+            chokePoint = group.chokePoint,
+            mobilityAdvantage = group.mobilityAdvantage,
         }
         groups[#groups + 1] = normalized
         groupIndex[normalized.id] = normalized
@@ -114,10 +117,17 @@ function SpawnSystem:_spawnOne(mapState, group)
         spawnGroupId = group.id,
         ai = mobDef.role == 'elite' and 'pursue_and_burst' or 'wander_and_pounce',
         rare = spawnId % self.rareMobModulo == 0,
+        tacticalRole = group.clusterRole or mobDef.role or 'lane',
+        chokePoint = group.chokePoint,
+        mobilityAdvantage = group.mobilityAdvantage,
+        hitReaction = mobDef.hitReaction or 'light_flinch',
+        staggerThreshold = mobDef.role == 'elite' and 0.18 or 0.1,
     }
     if mob.rare then
         mob.maxHp = math.floor(mob.maxHp * 1.8)
         mob.hp = mob.maxHp
+        mob.ai = mobDef.role == 'captain' and 'telegraph_and_burst' or 'rare_pursuit'
+        mob.staggerThreshold = mob.staggerThreshold + 0.08
     end
     mapState.active[spawnId] = mob
     mapState.activeByMobId[mob.mobId] = (mapState.activeByMobId[mob.mobId] or 0) + 1
@@ -203,6 +213,7 @@ function SpawnSystem:damageMob(mapId, spawnId, amount)
 
     mob.hp = math.max(0, mob.hp - damage)
     mob.lastDamagedAt = self:_now()
+    mob.lastHitReaction = damage >= math.max(1, math.floor(mob.maxHp * mob.staggerThreshold)) and 'heavy_stagger' or (mob.hitReaction or 'light_flinch')
     if self.metrics then self.metrics:increment('spawn.mob_damage', damage, { map = mapId, mob = mob.mobId }) end
     if mob.hp == 0 then
         local killed = self:_removeMob(mapState, mob, 'damage')

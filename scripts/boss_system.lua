@@ -75,7 +75,13 @@ function BossSystem:spawnEncounter(bossId, mapId)
         contributors = {},
         position = deepcopy(def.position),
         uniqueness = def.uniqueness or 'channel_unique',
+        telegraphState = {
+            pattern = (def.mechanics and def.mechanics[1] and def.mechanics[1].pattern) or 'opening_read',
+            text = (def.mechanics and def.mechanics[1] and def.mechanics[1].text) or 'Read the opening pattern.',
+            punishWindow = (def.mechanics and def.mechanics[1] and def.mechanics[1].punishWindow) or 'short',
+        },
     }
+    encounter.currentMechanic = encounter.mechanics[1]
     self.encounters[mapId] = encounter
     if self.metrics then self.metrics:increment('boss.spawn', 1, { boss = bossId, map = mapId }) end
     if self.logger and self.logger.info then self.logger:info('boss_spawned', { bossId = bossId, mapId = mapId }) end
@@ -129,14 +135,29 @@ function BossSystem:damage(mapId, player, amount)
     if ratio <= 0.7 and encounter.phase < 2 then
         encounter.phase = 2
         encounter.currentMechanic = encounter.mechanics[2]
+        encounter.telegraphState = {
+            pattern = encounter.currentMechanic.pattern,
+            text = encounter.currentMechanic.text,
+            punishWindow = encounter.currentMechanic.punishWindow or 'medium',
+        }
     end
     if ratio <= 0.35 and encounter.phase < 3 then
         encounter.phase = 3
         encounter.currentMechanic = encounter.mechanics[3]
+        encounter.telegraphState = {
+            pattern = encounter.currentMechanic.pattern,
+            text = encounter.currentMechanic.text,
+            punishWindow = encounter.currentMechanic.punishWindow or 'short',
+        }
     end
     if encounter.hp <= encounter.maxHp * 0.4 and not encounter.enraged then
         encounter.enraged = true
         encounter.currentMechanic = encounter.mechanics[encounter.phase]
+        encounter.telegraphState = {
+            pattern = encounter.currentMechanic.pattern,
+            text = encounter.currentMechanic.text,
+            punishWindow = 'tight',
+        }
         if self.metrics then self.metrics:increment('boss.enrage', 1, { boss = encounter.bossId }) end
     end
 

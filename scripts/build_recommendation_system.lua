@@ -29,6 +29,7 @@ function BuildRecommendationSystem:recommend(player)
         equipmentFocus = primary == 'int' and 'magic amplification' or 'weapon attack',
         levelingMaps = {},
         milestoneHints = {},
+        branches = {},
     }
     build.suggestedStats[primary] = 0.7
     for _, stat in ipairs({ 'str', 'dex', 'int', 'luk' }) do
@@ -36,6 +37,8 @@ function BuildRecommendationSystem:recommend(player)
     end
     for _, skill in ipairs(skills) do
         build.suggestedSkills[#build.suggestedSkills + 1] = skill.id
+        local branch = skill.branch or 'general'
+        build.branches[branch] = (build.branches[branch] or 0) + 1
     end
     build.levelingMaps = ({
         beginner = { 'henesys_fields', 'henesys_dungeon' },

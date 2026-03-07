@@ -34,8 +34,8 @@ function Loader.load(options)
         regionalProgression = clone(RegionalProgression),
         rareSpawns = clone(RareSpawnTables),
         meta = {
-            version = '2.1.0',
-            generation = 'upper-bound-expansion-pass',
+            version = '3.0.0',
+            generation = 'content-volume-expansion-pass',
         },
     }
     return clone(cache)

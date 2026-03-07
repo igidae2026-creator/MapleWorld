@@ -1,76 +1,41 @@
-local RegionalProgression = {
-    henesys = {
-        tier = 'starter',
-        recommendedRange = { min = 1, max = 22 },
-        primaryLoop = 'quest-led hunting with potion-backed field grinding',
-        maps = { 'henesys_town', 'henesys_fields', 'henesys_dungeon', 'henesys_boss' },
-        milestoneRewards = {
-            { level = 8, reward = 'beginner_route_cache', guidance = 'Unlock your first field loop and consumable economy.' },
-            { level = 15, reward = 'henesys_class_trial', guidance = 'Transition into first-job identity and route-specific gear.' },
-        },
-        valuedDrops = { 'red_potion', 'henesys_bronze_blade', 'henesys_material_01' },
-        socialLoop = 'party onboarding, newbie trading, and tutorial-assisted grouping',
-    },
-    ellinia = {
-        tier = 'growth',
-        recommendedRange = { min = 22, max = 48 },
-        primaryLoop = 'vertical casting routes, mana sustain, and quest-chain momentum',
-        maps = { 'ellinia_town', 'ellinia_fields', 'ellinia_dungeon', 'ellinia_boss' },
-        milestoneRewards = {
-            { level = 30, reward = 'ellinia_spell_manual', guidance = 'Commit to sustained AoE or support pressure.' },
-            { level = 42, reward = 'ellinia_arcane_set', guidance = 'Start building set bonuses and dungeon loops.' },
-        },
-        valuedDrops = { 'mana_elixir', 'ellinia_arcane_focus', 'ellinia_material_02' },
-        socialLoop = 'scroll trade, support pairing, and party quest staging',
-    },
-    perion = {
-        tier = 'midgame',
-        recommendedRange = { min = 40, max = 68 },
-        primaryLoop = 'durable melee grinding, elite camps, and bruiser boss prep',
-        maps = { 'perion_town', 'perion_fields', 'perion_dungeon', 'perion_boss' },
-        milestoneRewards = {
-            { level = 50, reward = 'perion_forge_access', guidance = 'Convert field drops into durable combat sets.' },
-            { level = 60, reward = 'perion_warlord_trial', guidance = 'Push boss mechanics with tank and damage pairings.' },
-        },
-        valuedDrops = { 'perion_obsidian_armor', 'perion_material_03', 'white_potion' },
-        socialLoop = 'guild-oriented hunting squads and bruiser gearing',
-    },
-    kerning = {
-        tier = 'advanced',
-        recommendedRange = { min = 60, max = 88 },
-        primaryLoop = 'high-mobility farming, jackpot rare mobs, and price-sensitive drops',
-        maps = { 'kerning_town', 'kerning_fields', 'kerning_dungeon', 'kerning_boss' },
-        milestoneRewards = {
-            { level = 70, reward = 'kerning_black_market_badge', guidance = 'Open higher-value trading and stealth-centric routes.' },
-            { level = 82, reward = 'kerning_strike_set', guidance = 'Blend burst builds with cooperative boss play.' },
-        },
-        valuedDrops = { 'kerning_shadow_claw', 'kerning_material_04', 'rogue_emblem' },
-        socialLoop = 'party finder adoption, market flipping, and cooperative burst clears',
-    },
-    ludibrium = {
-        tier = 'endgame_entry',
-        recommendedRange = { min = 85, max = 118 },
-        primaryLoop = 'party-synced routes, raid telegraphs, and clockwork event pressure',
-        maps = { 'ludibrium_town', 'ludibrium_fields', 'ludibrium_dungeon', 'ludibrium_boss' },
-        milestoneRewards = {
-            { level = 95, reward = 'ludibrium_clock_pass', guidance = 'Enter synchronized dungeon and raid loops.' },
-            { level = 110, reward = 'clockwork_colossus_emblem', guidance = 'Anchor your first serious world-boss build.' },
-        },
-        valuedDrops = { 'ludibrium_clock_blade', 'ludibrium_material_05', 'party_raid_token' },
-        socialLoop = 'raid prep, party queueing, and clockwork world events',
-    },
-    leafre = {
-        tier = 'endgame',
-        recommendedRange = { min = 115, max = 160 },
-        primaryLoop = 'dangerous vertical maps, boss-exclusive chase items, and late-game progression loops',
-        maps = { 'leafre_town', 'leafre_fields', 'leafre_dungeon', 'leafre_boss' },
-        milestoneRewards = {
-            { level = 125, reward = 'leafre_dragon_hunt', guidance = 'Build boss-readiness through rare spawn and elite routes.' },
-            { level = 145, reward = 'sky_tyrant_sigil', guidance = 'Push optimized endgame gearing and guild boss racing.' },
-        },
-        valuedDrops = { 'leafre_dragon_mail', 'leafre_material_06', 'dragon_scale_core' },
-        socialLoop = 'endgame boss calls, guild competition, and prestige crafting',
-    },
+local regions = {
+    { id = 'henesys', range = { 1, 24 }, loop = 'introductory hunting, potion sustain, and first-job setup' },
+    { id = 'lith_harbor', range = { 8, 28 }, loop = 'trade-heavy progression, route onboarding, and mobility practice' },
+    { id = 'ellinia', range = { 18, 42 }, loop = 'vertical casting routes and support-heavy grinds' },
+    { id = 'ant_tunnel', range = { 28, 48 }, loop = 'dense cave funnels and attrition-heavy material farming' },
+    { id = 'perion', range = { 34, 60 }, loop = 'frontline melee pressure and bruiser gearing' },
+    { id = 'sleepywood', range = { 42, 72 }, loop = 'undead control, sustain checks, and support play' },
+    { id = 'kerning', range = { 48, 78 }, loop = 'tempo farming, rare-hunt routing, and market-value drops' },
+    { id = 'dungeon', range = { 58, 92 }, loop = 'party routing, key-room clears, and miniboss preparation' },
+    { id = 'forest', range = { 72, 108 }, loop = 'rare beast hunts, hidden grove routes, and set building' },
+    { id = 'desert', range = { 90, 140 }, loop = 'late-game endurance routes, elemental bosses, and raid prep' },
 }
+
+local suffixes = { 'town', 'outskirts', 'fields', 'upper_route', 'lower_route', 'grove', 'ruins', 'tunnel', 'dungeon', 'sanctum', 'clash_zone', 'boss' }
+local RegionalProgression = {}
+
+for _, region in ipairs(regions) do
+    local maps = {}
+    for _, suffix in ipairs(suffixes) do
+        maps[#maps + 1] = region.id .. '_' .. suffix
+    end
+    RegionalProgression[region.id] = {
+        tier = region.range[2] >= 90 and 'late_game' or region.range[1] >= 50 and 'midgame' or 'early_game',
+        recommendedRange = { min = region.range[1], max = region.range[2] },
+        primaryLoop = region.loop,
+        maps = maps,
+        milestoneRewards = {
+            { level = region.range[1] + 6, reward = region.id .. '_route_cache', guidance = 'Stabilize your local route and first gear steps.' },
+            { level = region.range[1] + 14, reward = region.id .. '_dungeon_pass', guidance = 'Move from open-field farming into structured dungeon loops.' },
+            { level = math.min(region.range[2], region.range[1] + 24), reward = region.id .. '_boss_writ', guidance = 'Prepare for miniboss and boss progression.' },
+        },
+        valuedDrops = {
+            region.id .. '_material_05',
+            region.id .. '_bronze_blade',
+            region.id .. '_artifact_03',
+        },
+        socialLoop = 'Use party finder, route overlap, and regional boss calls to maintain social density.',
+    }
+end
 
 return RegionalProgression

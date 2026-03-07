@@ -115,4 +115,67 @@ for _, quest in pairs(content.quests or {}) do
 end
 table.sort(runtime.quests, function(a, b) return a.quest_id < b.quest_id end)
 
+runtime.region_level_ranges = {
+    starter_fields = { min = 1, max = 18, hub = 'starter_fields_town_01', entry = 'forest_edge' },
+    henesys_plains = { min = 6, max = 28, hub = 'henesys_town', entry = 'henesys_hunting_ground' },
+    ellinia_forest = { min = 18, max = 42, hub = 'ellinia_forest_town_01', entry = 'ellinia_forest_combat_01' },
+    perion_rocklands = { min = 28, max = 56, hub = 'perion_rocklands_town_01', entry = 'perion_rocky' },
+    sleepywood_depths = { min = 35, max = 68, hub = 'sleepywood_depths_town_01', entry = 'ant_tunnel_1' },
+    kerning_city_shadow = { min = 32, max = 70, hub = 'kerning_city_shadow_town_01', entry = 'kerning_city_shadow_combat_01' },
+    orbis_skyrealm = { min = 48, max = 82, hub = 'orbis_skyrealm_town_01', entry = 'orbis_skyrealm_combat_01' },
+    ludibrium_clockwork = { min = 55, max = 92, hub = 'ludibrium_clockwork_town_01', entry = 'ludibrium_clockwork_combat_01' },
+    elnath_snowfield = { min = 68, max = 106, hub = 'elnath_snowfield_town_01', entry = 'elnath_snowfield_combat_01' },
+    minar_mountain = { min = 78, max = 118, hub = 'minar_mountain_town_01', entry = 'minar_mountain_combat_01' },
+    coastal_harbors = { min = 22, max = 60, hub = 'coastal_harbors_town_01', entry = 'coastal_harbors_combat_01' },
+    ancient_hidden_domains = { min = 88, max = 132, hub = 'ancient_hidden_domains_town_01', entry = 'ancient_hidden_domains_combat_01' },
+}
+
+runtime.drop_probability_tables = {
+    field = { common = 0.48, support = 0.26, regional = 0.18, rare = 0.04, chase = 0.03 },
+    dungeon = { common = 0.39, support = 0.22, regional = 0.22, rare = 0.09, chase = 0.05 },
+    hidden = { common = 0.30, support = 0.15, regional = 0.24, rare = 0.12, chase = 0.08 },
+    boss = { signature = 0.70, armor = 0.62, accessory = 0.55, crafting = 1.00, trophy = 1.00 },
+}
+
+runtime.rarity_weights = {
+    common = 100,
+    uncommon = 56,
+    rare = 21,
+    epic = 7,
+    legendary = 2,
+}
+
+runtime.boss_respawn_groups = {
+    starter_rotation = { 'mano', 'dbexp_starter_fields_boss_001', 'dbexp_starter_fields_boss_002' },
+    frontier_rotation = { 'stumpy', 'dbexp_henesys_plains_boss_001', 'dbexp_perion_rocklands_boss_001', 'dbexp_coastal_harbors_boss_001' },
+    dungeon_rotation = { 'dbexp_sleepywood_depths_boss_001', 'dbexp_kerning_city_shadow_boss_003', 'dbexp_ludibrium_clockwork_boss_003', 'dbexp_ancient_hidden_domains_boss_003' },
+    apex_rotation = { 'dbexp_orbis_skyrealm_boss_005', 'dbexp_elnath_snowfield_boss_005', 'dbexp_minar_mountain_boss_005', 'dbexp_ancient_hidden_domains_boss_005' },
+}
+
+runtime.quest_difficulty_scaling = {
+    beginner_cleanup = { objective = 1.0, reward = 1.0, travel = 0.8 },
+    collection = { objective = 1.1, reward = 1.05, travel = 0.9 },
+    hunt_elimination = { objective = 1.2, reward = 1.15, travel = 1.0 },
+    delivery_travel = { objective = 0.9, reward = 1.1, travel = 1.25 },
+    npc_story_chain = { objective = 1.0, reward = 1.2, travel = 1.1 },
+    boss_intro = { objective = 1.5, reward = 1.6, travel = 1.0 },
+    repeatable = { objective = 1.15, reward = 0.95, travel = 0.95 },
+    hidden_trigger = { objective = 1.65, reward = 1.75, travel = 1.35 },
+}
+
+runtime.region_equipment_weights = {
+    starter_fields = { weapon = 1.25, armor = 1.1, accessory = 0.8, consumable = 1.3 },
+    henesys_plains = { weapon = 1.3, armor = 1.15, accessory = 0.85, consumable = 1.25 },
+    ellinia_forest = { weapon = 1.05, armor = 1.0, accessory = 1.2, consumable = 1.1 },
+    perion_rocklands = { weapon = 1.35, armor = 1.25, accessory = 0.75, consumable = 1.0 },
+    sleepywood_depths = { weapon = 1.2, armor = 1.3, accessory = 0.9, consumable = 1.15 },
+    kerning_city_shadow = { weapon = 1.15, armor = 0.95, accessory = 1.1, consumable = 1.05 },
+    orbis_skyrealm = { weapon = 1.1, armor = 1.0, accessory = 1.25, consumable = 1.0 },
+    ludibrium_clockwork = { weapon = 1.2, armor = 1.15, accessory = 1.05, consumable = 1.0 },
+    elnath_snowfield = { weapon = 1.25, armor = 1.3, accessory = 0.95, consumable = 1.1 },
+    minar_mountain = { weapon = 1.35, armor = 1.2, accessory = 1.0, consumable = 1.05 },
+    coastal_harbors = { weapon = 1.1, armor = 1.0, accessory = 1.15, consumable = 1.2 },
+    ancient_hidden_domains = { weapon = 1.3, armor = 1.25, accessory = 1.35, consumable = 0.95 },
+}
+
 return runtime

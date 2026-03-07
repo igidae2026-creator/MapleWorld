@@ -13,6 +13,8 @@ end
 function JobSystem:ensurePlayer(player)
     player.jobId = player.jobId or 'beginner'
     player.jobHistory = player.jobHistory or { player.jobId }
+    player.jobTier = player.jobTier or 0
+    player.classMechanics = player.classMechanics or {}
     return player
 end
 
@@ -27,6 +29,14 @@ function JobSystem:promote(player, jobId)
     if not allowed then return false, 'job_transition_blocked' end
     player.jobId = jobId
     player.jobHistory[#player.jobHistory + 1] = jobId
+    player.jobTier = math.max(tonumber(player.jobTier) or 0, #player.jobHistory - 1)
+    player.classMechanics = ({
+        warrior = { resource = 'guard', synergy = 'stagger' },
+        magician = { resource = 'mana_flow', synergy = 'control' },
+        bowman = { resource = 'focus', synergy = 'range' },
+        thief = { resource = 'combo', synergy = 'bleed' },
+        pirate = { resource = 'tempo', synergy = 'mobility' },
+    })[jobId] or { resource = 'spirit', synergy = 'general' }
     player.sp = (tonumber(player.sp) or 0) + 3
     player.version = (tonumber(player.version) or 0) + 1
     player.dirty = true

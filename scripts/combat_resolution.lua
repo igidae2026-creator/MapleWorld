@@ -22,7 +22,10 @@ function CombatResolution:resolveSkillDamage(player, target, skill)
         skill = skill,
         critical = (tonumber(player.level) or 1) % 5 == 0,
     })
-    local scaling = 1.0 + math.min(0.8, math.max(0, (tonumber(player.progression and player.progression.mastery) or 0) * 0.015))
+    local chainBonus = math.max(0, tonumber(skill.comboChain) or 1) - 1
+    local scaling = 1.0
+        + math.min(0.8, math.max(0, (tonumber(player.progression and player.progression.mastery) or 0) * 0.015))
+        + math.min(0.25, chainBonus * 0.04)
     return math.max(1, math.floor(outgoing * scaling))
 end
 

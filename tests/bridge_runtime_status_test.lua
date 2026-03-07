@@ -25,4 +25,8 @@ local eventResp = bridge:getEventTruth()
 local eventTruth = bridge.runtimeAdapter:decodeData(eventResp)
 assert(eventTruth and eventTruth.ok == true and eventTruth.data and eventTruth.data.events ~= nil, 'bridge event truth missing')
 
+local diagnosticsResp = bridge:getBridgeDiagnostics()
+local diagnostics = bridge.runtimeAdapter:decodeData(diagnosticsResp)
+assert(diagnostics and diagnostics.ok == true and diagnostics.data and diagnostics.data.metrics, 'bridge diagnostics missing')
+
 print('bridge_runtime_status_test: ok')

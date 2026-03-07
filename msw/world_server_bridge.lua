@@ -30,6 +30,37 @@ local function normalizePath(path)
     return normalized
 end
 
+local function deepCopy(value, depth)
+    local level = depth or 0
+    if type(value) ~= 'table' or level > 6 then return value end
+    local out = {}
+    for key, current in pairs(value) do
+        out[key] = deepCopy(current, level + 1)
+    end
+    return out
+end
+
+local function clamp(value, minValue, maxValue)
+    local numeric = tonumber(value) or 0
+    if numeric < minValue then return minValue end
+    if numeric > maxValue then return maxValue end
+    return numeric
+end
+
+local function arrayCount(value)
+    if type(value) ~= 'table' then return 0 end
+    return #value
+end
+
+local function tableCount(value)
+    if type(value) ~= 'table' then return 0 end
+    local total = 0
+    for _, _ in pairs(value) do
+        total = total + 1
+    end
+    return total
+end
+
 function WorldServerBridge.new(config)
     local cfg = config or {}
     local self = {
@@ -43,8 +74,70 @@ function WorldServerBridge.new(config)
         dropEntities = {},
         bossEntities = {},
         activeSessions = {},
+        playerVersions = {},
+        mapVersions = {},
+        entityVersions = {},
+        deltaSequence = 0,
+        syncHistoryLimit = 256,
+        deltaQueue = {},
+        eventSequence = 0,
+        eventHistory = {},
+        lifecycleHistory = {},
+        metrics = {
+            bridgeTicks = 0,
+            syncPushes = 0,
+            playerSyncs = 0,
+            mapSyncs = 0,
+            entitySpawns = 0,
+            entityDestroys = 0,
+            entityUpdates = 0,
+            desyncCorrections = 0,
+            reconciliationRuns = 0,
+            latencySamples = 0,
+            totalLatencyMs = 0,
+            maxLatencyMs = 0,
+            throughputEvents = 0,
+            routedPlayerActions = 0,
+            mobBehaviorTicks = 0,
+            combatTicks = 0,
+            eventQueueDepth = 0,
+        },
+        latency = {
+            byPlayerId = {},
+            byMapId = {},
+            lastDeltaFlushAt = 0,
+            rateLimitSeconds = 1,
+        },
+        frameState = {
+            tickId = 0,
+            lastTickAt = 0,
+            schedulerLagMs = 0,
+            schedulerBudgetMs = 75,
+        },
+        desyncIncidents = {},
+        orphanEntities = {
+            mob = {},
+            drop = {},
+            boss = {},
+        },
+        eventRouters = {},
     }
     setmetatable(self, WorldServerBridge)
+    self.eventRouters = {
+        runtime = function(bridge, eventName, payload)
+            return bridge:_recordEvent('runtime', eventName, payload)
+        end,
+        entity = function(bridge, eventName, payload)
+            return bridge:_recordEvent('entity', eventName, payload)
+        end,
+        world = function(bridge, eventName, payload)
+            return bridge:_recordEvent('world', eventName, payload)
+        end,
+        player_action = function(bridge, eventName, payload)
+            bridge.metrics.routedPlayerActions = bridge.metrics.routedPlayerActions + 1
+            return bridge:_recordEvent('player_action', eventName, payload)
+        end,
+    }
     return self
 end
 
@@ -60,16 +153,162 @@ function WorldServerBridge:_setComponentField(name, value)
     pcall(function() self.component[name] = value end)
 end
 
-function WorldServerBridge:_cachePlayerState(playerId, snapshot)
-    self.playerStateById[playerId] = snapshot
-    self:_setComponentField('LastSyncUserId', tostring(playerId))
-    self:_setComponentField('LastPlayerStateJson', self.runtimeAdapter:encodeData(snapshot))
+function WorldServerBridge:_setEncodedComponentField(name, value)
+    self:_setComponentField(name, self.runtimeAdapter:encodeData(value))
 end
 
-function WorldServerBridge:_cacheMapState(mapId, state)
+function WorldServerBridge:_nextVersion(store, key)
+    local current = tonumber(store[key] or 0) or 0
+    current = current + 1
+    store[key] = current
+    return current
+end
+
+function WorldServerBridge:_nextDeltaSequence()
+    self.deltaSequence = self.deltaSequence + 1
+    return self.deltaSequence
+end
+
+function WorldServerBridge:_nextEventSequence()
+    self.eventSequence = self.eventSequence + 1
+    return self.eventSequence
+end
+
+function WorldServerBridge:_recordMetric(name, amount)
+    if self.metrics[name] == nil then
+        self.metrics[name] = 0
+    end
+    self.metrics[name] = self.metrics[name] + (tonumber(amount) or 1)
+end
+
+function WorldServerBridge:_appendLimited(list, value, limit)
+    list[#list + 1] = value
+    local maxItems = tonumber(limit) or self.syncHistoryLimit
+    while #list > maxItems do
+        table.remove(list, 1)
+    end
+end
+
+function WorldServerBridge:_recordEvent(router, eventName, payload)
+    local item = {
+        sequence = self:_nextEventSequence(),
+        router = router,
+        event = eventName,
+        at = self.runtimeAdapter:now(),
+        payload = deepCopy(payload),
+    }
+    self:_appendLimited(self.eventHistory, item, self.syncHistoryLimit)
+    self:_recordMetric('throughputEvents', 1)
+    self:_setEncodedComponentField('LastRuntimeEventJson', item)
+    return item
+end
+
+function WorldServerBridge:_recordLifecycle(stage, payload)
+    local item = {
+        stage = stage,
+        at = self.runtimeAdapter:now(),
+        payload = deepCopy(payload),
+    }
+    self:_appendLimited(self.lifecycleHistory, item, 64)
+    self:_setEncodedComponentField('LastLifecycleJson', item)
+    return item
+end
+
+function WorldServerBridge:_recordDesync(kind, id, payload)
+    local key = tostring(kind) .. ':' .. tostring(id)
+    local current = self.desyncIncidents[key] or {
+        kind = kind,
+        id = id,
+        count = 0,
+        lastAt = 0,
+        payload = nil,
+    }
+    current.count = current.count + 1
+    current.lastAt = self.runtimeAdapter:now()
+    current.payload = deepCopy(payload)
+    self.desyncIncidents[key] = current
+    self:_recordMetric('desyncCorrections', 1)
+    self:_recordEvent('runtime', 'desync_detected', current)
+end
+
+function WorldServerBridge:_touchLatency(playerId, mapId)
+    local now = self.runtimeAdapter:now()
+    if playerId then
+        local sample = self.latency.byPlayerId[playerId] or { last = now, observed = 0 }
+        local latencyMs = math.max(0, (now - (sample.last or now)) * 1000)
+        sample.last = now
+        sample.observed = latencyMs
+        self.latency.byPlayerId[playerId] = sample
+        self:_recordMetric('latencySamples', 1)
+        self.metrics.totalLatencyMs = self.metrics.totalLatencyMs + latencyMs
+        self.metrics.maxLatencyMs = math.max(self.metrics.maxLatencyMs, latencyMs)
+    end
+    if mapId then
+        self.latency.byMapId[mapId] = now
+    end
+end
+
+function WorldServerBridge:_queueDelta(scopeKind, scopeId, deltaKind, payload, version)
+    if not scopeId then return nil end
+    local item = {
+        sequence = self:_nextDeltaSequence(),
+        scopeKind = scopeKind,
+        scopeId = tostring(scopeId),
+        deltaKind = deltaKind,
+        version = version or 0,
+        at = self.runtimeAdapter:now(),
+        payload = deepCopy(payload),
+    }
+    self:_appendLimited(self.deltaQueue, item, self.syncHistoryLimit)
+    self.metrics.eventQueueDepth = #self.deltaQueue
+    self:_recordMetric('syncPushes', 1)
+    self:_setEncodedComponentField('LastDeltaJson', item)
+    return item
+end
+
+function WorldServerBridge:_flushDeltaQueue(limit)
+    local maxItems = clamp(limit or 32, 1, self.syncHistoryLimit)
+    local out = {}
+    local index = math.max(1, #self.deltaQueue - maxItems + 1)
+    for i = index, #self.deltaQueue do
+        out[#out + 1] = deepCopy(self.deltaQueue[i])
+    end
+    self.latency.lastDeltaFlushAt = self.runtimeAdapter:now()
+    return out
+end
+
+function WorldServerBridge:_entityVersionKey(kind, id)
+    return tostring(kind) .. ':' .. tostring(id)
+end
+
+function WorldServerBridge:_cachePlayerState(playerId, snapshot, reason)
+    local version = self:_nextVersion(self.playerVersions, playerId)
+    local copied = deepCopy(snapshot)
+    copied.syncVersion = version
+    copied.syncReason = reason or 'player_sync'
+    self.playerStateById[playerId] = copied
+    self:_queueDelta('player', playerId, 'player_state', copied, version)
+    self:_touchLatency(playerId, copied.currentMapId)
+    self:_recordMetric('playerSyncs', 1)
+    self:_setComponentField('LastSyncUserId', tostring(playerId))
+    self:_setEncodedComponentField('LastPlayerStateJson', copied)
+end
+
+function WorldServerBridge:_cacheMapState(mapId, state, reason)
     if not mapId then return end
-    self.mapStateById[mapId] = state
-    self:_setComponentField('LastMapStateJson', self.runtimeAdapter:encodeData(state))
+    local version = self:_nextVersion(self.mapVersions, mapId)
+    local copied = deepCopy(state)
+    copied.syncVersion = version
+    copied.syncReason = reason or 'map_sync'
+    copied.bridgeMeta = copied.bridgeMeta or {}
+    copied.bridgeMeta.mapId = mapId
+    copied.bridgeMeta.population = copied.population
+    copied.bridgeMeta.deltaSequence = self.deltaSequence
+    self.mapStateById[mapId] = copied
+    self:_queueDelta('map', mapId, 'map_state', copied, version)
+    self:_touchLatency(nil, mapId)
+    self:_recordMetric('mapSyncs', 1)
+    self:_setEncodedComponentField('LastMapStateJson', copied)
 end
 
 function WorldServerBridge:_invalidateMapState(mapId)
@@ -81,9 +320,21 @@ function WorldServerBridge:_cachedMapState(mapId)
     local cached = self.mapStateById[mapId]
     if cached == nil then
         cached = self.world:getMapState(mapId)
-        self:_cacheMapState(mapId, cached)
+        self:_cacheMapState(mapId, cached, 'map_fetch')
     end
     return cached
+end
+
+function WorldServerBridge:_queueEntityDelta(kind, id, mapId, action, payload)
+    local key = self:_entityVersionKey(kind, id)
+    local version = self:_nextVersion(self.entityVersions, key)
+    local data = deepCopy(payload) or {}
+    data.entityId = id
+    data.mapId = mapId
+    data.action = action
+    data.version = version
+    self:_queueDelta('entity', key, action, data, version)
+    return version
 end
 
 function WorldServerBridge:_insertCachedMob(mob)
@@ -97,7 +348,11 @@ function WorldServerBridge:_insertCachedMob(mob)
         maxHp = mob.maxHp,
         x = mob.x,
         y = mob.y,
+        z = mob.z or 0,
         groupId = mob.spawnGroupId,
+        aiPattern = mob.aiPattern,
+        elite = mob.elite == true,
+        rare = mob.rare == true,
     }
     for i, current in ipairs(cached.mobs) do
         if tonumber(current.spawnId) == targetId then
@@ -127,13 +382,14 @@ function WorldServerBridge:_insertCachedDrop(drop)
     local cached = drop and drop.mapId and self.mapStateById[drop.mapId] or nil
     if type(cached) ~= 'table' or type(cached.drops) ~= 'table' then return false end
     local targetId = tonumber(drop.dropId)
+    local payload = deepCopy(drop)
     for i, current in ipairs(cached.drops) do
         if tonumber(current.dropId) == targetId then
-            cached.drops[i] = drop
+            cached.drops[i] = payload
             return true
         end
     end
-    cached.drops[#cached.drops + 1] = drop
+    cached.drops[#cached.drops + 1] = payload
     table.sort(cached.drops, function(a, b) return (tonumber(a.dropId) or 0) < (tonumber(b.dropId) or 0) end)
     return true
 end
@@ -156,9 +412,10 @@ function WorldServerBridge:_updateCachedPopulation(mapId)
     if type(cached) ~= 'table' then return false end
     cached.population = self.world:getMapPopulation(mapId)
     cached.now = self.runtimeAdapter:now()
+    cached.bridgeMeta = cached.bridgeMeta or {}
+    cached.bridgeMeta.population = cached.population
     return true
 end
-
 
 function WorldServerBridge:_updateCachedMob(mapId, spawnId, hp)
     local cached = mapId and self.mapStateById[mapId] or nil
@@ -182,6 +439,7 @@ function WorldServerBridge:_updateCachedBoss(mapId, encounter)
     cached.boss.phase = math.max(1, math.floor(tonumber(encounter and encounter.phase) or cached.boss.phase or 1))
     cached.boss.alive = encounter and encounter.alive == true
     cached.boss.enraged = encounter and encounter.enraged == true
+    cached.boss.telegraph = encounter and encounter.telegraph or cached.boss.telegraph
     return true
 end
 
@@ -210,6 +468,7 @@ function WorldServerBridge:_validateActorScope(player, actor)
         if self.world and self.world._recordOwnershipConflict then
             self.world:_recordOwnershipConflict('runtime_world_conflict', { playerId = player.id, expected = ps.worldId, actual = scope.worldId })
         end
+        self:_recordDesync('player_scope', player.id, { field = 'worldId', expected = ps.worldId, actual = scope.worldId })
         return false, 'runtime_world_conflict'
     end
     if ps.channelId and scope.channelId and tostring(ps.channelId) ~= tostring(scope.channelId) then
@@ -219,6 +478,7 @@ function WorldServerBridge:_validateActorScope(player, actor)
         if self.world and self.world._recordOwnershipConflict then
             self.world:_recordOwnershipConflict('runtime_channel_conflict', { playerId = player.id, expected = ps.channelId, actual = scope.channelId })
         end
+        self:_recordDesync('player_scope', player.id, { field = 'channelId', expected = ps.channelId, actual = scope.channelId })
         return false, 'runtime_channel_conflict'
     end
     if ps.runtimeInstanceId and scope.runtimeInstanceId and tostring(ps.runtimeInstanceId) ~= tostring(scope.runtimeInstanceId) then
@@ -228,6 +488,7 @@ function WorldServerBridge:_validateActorScope(player, actor)
         if self.world and self.world._recordOwnershipConflict then
             self.world:_recordOwnershipConflict('runtime_instance_conflict', { playerId = player.id, expected = ps.runtimeInstanceId, actual = scope.runtimeInstanceId })
         end
+        self:_recordDesync('player_scope', player.id, { field = 'runtimeInstanceId', expected = ps.runtimeInstanceId, actual = scope.runtimeInstanceId })
         return false, 'runtime_instance_conflict'
     end
     return true
@@ -265,28 +526,85 @@ function WorldServerBridge:_spawnRuntimeEntity(modelId, name, x, y, z, parentPat
         local existing = self.runtimeAdapter:findEntityByPath(entityPath)
         if existing then
             self.runtimeAdapter:setEntityPosition(existing, { x = x, y = y, z = z or 0 })
-            return existing
+            return existing, true, entityPath
         end
     end
 
     local parent = self:_resolveParentEntity(parentPath)
-    return self.runtimeAdapter:spawnModel(modelId, name, self.runtimeAdapter:makeVector3(x, y, z or 0), parent)
+    local entity = self.runtimeAdapter:spawnModel(modelId, name, self.runtimeAdapter:makeVector3(x, y, z or 0), parent)
+    return entity, false, entityPath
+end
+
+function WorldServerBridge:_trackEntity(kind, id, mapId, entity, entityPath)
+    local target
+    if kind == 'mob' then
+        target = self.mobEntities
+    elseif kind == 'drop' then
+        target = self.dropEntities
+    else
+        target = self.bossEntities
+    end
+    target[id] = {
+        entity = entity,
+        mapId = mapId,
+        path = entityPath,
+        trackedAt = self.runtimeAdapter:now(),
+        kind = kind,
+        id = id,
+    }
+end
+
+function WorldServerBridge:_entityEntry(kind, id)
+    if kind == 'mob' then return self.mobEntities[id] end
+    if kind == 'drop' then return self.dropEntities[id] end
+    return self.bossEntities[id]
+end
+
+function WorldServerBridge:_clearEntityEntry(kind, id)
+    if kind == 'mob' then self.mobEntities[id] = nil return end
+    if kind == 'drop' then self.dropEntities[id] = nil return end
+    self.bossEntities[id] = nil
 end
 
 function WorldServerBridge:_spawnMobEntity(mob)
     local runtime = self:_mapRuntime(mob.mapId)
     local mobDef = self.world and self.world.mobs and self.world.mobs[mob.mobId] or nil
     local modelId = (runtime and runtime.mobModelIds and runtime.mobModelIds[mob.mobId]) or (mobDef and mobDef.assetKey) or nil
-    local entity = self:_spawnRuntimeEntity(modelId, 'mob_' .. tostring(mob.spawnId), mob.x, mob.y, mob.z or 0, runtime and runtime.mobParentPath)
-    if entity then self.mobEntities[mob.spawnId] = entity end
-    if not self:_insertCachedMob(mob) then self:_invalidateMapState(mob.mapId) end
+    local entity, reused, entityPath = self:_spawnRuntimeEntity(modelId, 'mob_' .. tostring(mob.spawnId), mob.x, mob.y, mob.z or 0, runtime and runtime.mobParentPath)
+    if entity then
+        self:_trackEntity('mob', mob.spawnId, mob.mapId, entity, entityPath)
+        self:_recordMetric(reused and 'entityUpdates' or 'entitySpawns', 1)
+    else
+        self.orphanEntities.mob[mob.spawnId] = { mapId = mob.mapId, expectedPath = entityPath, lastSeenAt = self.runtimeAdapter:now() }
+    end
+    self:_queueEntityDelta('mob', mob.spawnId, mob.mapId, reused and 'upsert' or 'spawn', {
+        mobId = mob.mobId,
+        hp = mob.hp,
+        maxHp = mob.maxHp,
+        position = { x = mob.x, y = mob.y, z = mob.z or 0 },
+    })
+    self:_recordEvent('entity', 'mob_spawn', { mapId = mob.mapId, spawnId = mob.spawnId, mobId = mob.mobId, reused = reused == true })
+    if not self:_insertCachedMob(mob) then
+        self:_invalidateMapState(mob.mapId)
+    else
+        self:_queueDelta('map', mob.mapId, 'mob_delta', { action = 'upsert', spawnId = mob.spawnId, hp = mob.hp }, self.mapVersions[mob.mapId] or 0)
+    end
 end
 
 function WorldServerBridge:_destroyMobEntity(mob)
-    local entity = self.mobEntities[mob.spawnId]
-    if entity then self.runtimeAdapter:destroyEntity(entity) end
-    self.mobEntities[mob.spawnId] = nil
-    if not self:_removeCachedMob(mob) then self:_invalidateMapState(mob.mapId) end
+    local entry = self.mobEntities[mob.spawnId]
+    if entry and entry.entity then
+        self.runtimeAdapter:destroyEntity(entry.entity)
+        self:_recordMetric('entityDestroys', 1)
+    end
+    self:_clearEntityEntry('mob', mob.spawnId)
+    self:_queueEntityDelta('mob', mob.spawnId, mob.mapId, 'destroy', { spawnId = mob.spawnId })
+    self:_recordEvent('entity', 'mob_destroy', { mapId = mob.mapId, spawnId = mob.spawnId })
+    if not self:_removeCachedMob(mob) then
+        self:_invalidateMapState(mob.mapId)
+    else
+        self:_queueDelta('map', mob.mapId, 'mob_delta', { action = 'destroy', spawnId = mob.spawnId }, self.mapVersions[mob.mapId] or 0)
+    end
 end
 
 function WorldServerBridge:_spawnDropEntity(drop)
@@ -294,16 +612,36 @@ function WorldServerBridge:_spawnDropEntity(drop)
     local dropCfg = self.worldConfig and self.worldConfig.drops or {}
     local itemDef = self.world and self.world.items and self.world.items[drop.itemId] or nil
     local modelId = (dropCfg.modelIds and dropCfg.modelIds[drop.itemId]) or dropCfg.defaultModelId or (itemDef and itemDef.assetKey) or nil
-    local entity = self:_spawnRuntimeEntity(modelId, 'drop_' .. tostring(drop.dropId), drop.x, drop.y, drop.z or 0, mapRuntime and mapRuntime.dropParentPath)
-    if entity then self.dropEntities[drop.dropId] = entity end
-    if not self:_insertCachedDrop(drop) then self:_invalidateMapState(drop.mapId) end
+    local entity, reused, entityPath = self:_spawnRuntimeEntity(modelId, 'drop_' .. tostring(drop.dropId), drop.x, drop.y, drop.z or 0, mapRuntime and mapRuntime.dropParentPath)
+    if entity then
+        self:_trackEntity('drop', drop.dropId, drop.mapId, entity, entityPath)
+        self:_recordMetric(reused and 'entityUpdates' or 'entitySpawns', 1)
+    else
+        self.orphanEntities.drop[drop.dropId] = { mapId = drop.mapId, expectedPath = entityPath, lastSeenAt = self.runtimeAdapter:now() }
+    end
+    self:_queueEntityDelta('drop', drop.dropId, drop.mapId, reused and 'upsert' or 'spawn', deepCopy(drop))
+    self:_recordEvent('entity', 'drop_spawn', { mapId = drop.mapId, dropId = drop.dropId, itemId = drop.itemId })
+    if not self:_insertCachedDrop(drop) then
+        self:_invalidateMapState(drop.mapId)
+    else
+        self:_queueDelta('map', drop.mapId, 'drop_delta', { action = 'upsert', dropId = drop.dropId }, self.mapVersions[drop.mapId] or 0)
+    end
 end
 
 function WorldServerBridge:_destroyDropEntity(drop)
-    local entity = self.dropEntities[drop.dropId]
-    if entity then self.runtimeAdapter:destroyEntity(entity) end
-    self.dropEntities[drop.dropId] = nil
-    if not self:_removeCachedDrop(drop) then self:_invalidateMapState(drop.mapId) end
+    local entry = self.dropEntities[drop.dropId]
+    if entry and entry.entity then
+        self.runtimeAdapter:destroyEntity(entry.entity)
+        self:_recordMetric('entityDestroys', 1)
+    end
+    self:_clearEntityEntry('drop', drop.dropId)
+    self:_queueEntityDelta('drop', drop.dropId, drop.mapId, 'destroy', { dropId = drop.dropId, itemId = drop.itemId })
+    self:_recordEvent('entity', 'drop_destroy', { mapId = drop.mapId, dropId = drop.dropId, itemId = drop.itemId })
+    if not self:_removeCachedDrop(drop) then
+        self:_invalidateMapState(drop.mapId)
+    else
+        self:_queueDelta('map', drop.mapId, 'drop_delta', { action = 'destroy', dropId = drop.dropId }, self.mapVersions[drop.mapId] or 0)
+    end
 end
 
 function WorldServerBridge:_spawnBossEntity(encounter)
@@ -313,16 +651,148 @@ function WorldServerBridge:_spawnBossEntity(encounter)
     local pos = encounter.position or bossCfg.spawnPosition or (bossDef and bossDef.position) or { x = 0, y = 0, z = 0 }
     local modelId = bossCfg.modelId or (bossDef and bossDef.modelId) or (self.world and self.world.mobs and self.world.mobs[encounter.bossId] and self.world.mobs[encounter.bossId].assetKey) or nil
     local parentPath = bossCfg.parentPath or (bossDef and bossDef.parentPath) or (mapRuntime and mapRuntime.bossParentPath) or self:_rootAttachPath()
-    local entity = self:_spawnRuntimeEntity(modelId, 'boss_' .. tostring(encounter.bossId), pos.x, pos.y, pos.z, parentPath)
-    if entity then self.bossEntities[encounter.mapId] = entity end
+    local entity, reused, entityPath = self:_spawnRuntimeEntity(modelId, 'boss_' .. tostring(encounter.bossId), pos.x, pos.y, pos.z, parentPath)
+    if entity then
+        self:_trackEntity('boss', encounter.mapId, encounter.mapId, entity, entityPath)
+        self:_recordMetric(reused and 'entityUpdates' or 'entitySpawns', 1)
+    else
+        self.orphanEntities.boss[encounter.mapId] = { mapId = encounter.mapId, expectedPath = entityPath, lastSeenAt = self.runtimeAdapter:now() }
+    end
+    self:_queueEntityDelta('boss', encounter.mapId, encounter.mapId, reused and 'upsert' or 'spawn', {
+        bossId = encounter.bossId,
+        hp = encounter.hp,
+        maxHp = encounter.maxHp,
+        phase = encounter.phase,
+        enraged = encounter.enraged == true,
+        telegraph = encounter.telegraph,
+    })
+    self:_recordEvent('entity', 'boss_spawn', { mapId = encounter.mapId, bossId = encounter.bossId, phase = encounter.phase })
     self:_invalidateMapState(encounter.mapId)
 end
 
 function WorldServerBridge:_destroyBossEntity(encounter)
-    local entity = self.bossEntities[encounter.mapId]
-    if entity then self.runtimeAdapter:destroyEntity(entity) end
-    self.bossEntities[encounter.mapId] = nil
+    local entry = self.bossEntities[encounter.mapId]
+    if entry and entry.entity then
+        self.runtimeAdapter:destroyEntity(entry.entity)
+        self:_recordMetric('entityDestroys', 1)
+    end
+    self:_clearEntityEntry('boss', encounter.mapId)
+    self:_queueEntityDelta('boss', encounter.mapId, encounter.mapId, 'destroy', { bossId = encounter.bossId, mapId = encounter.mapId })
+    self:_recordEvent('entity', 'boss_destroy', { mapId = encounter.mapId, bossId = encounter.bossId })
     self:_invalidateMapState(encounter.mapId)
+end
+
+function WorldServerBridge:_reconcileEntityTable(kind, expectedIds)
+    local source
+    if kind == 'mob' then
+        source = self.mobEntities
+    elseif kind == 'drop' then
+        source = self.dropEntities
+    else
+        source = self.bossEntities
+    end
+
+    local expected = {}
+    for _, id in ipairs(expectedIds or {}) do
+        expected[tostring(id)] = true
+    end
+
+    for key, entry in pairs(source) do
+        local compareKey = tostring(kind == 'boss' and (entry.mapId or key) or key)
+        if not expected[compareKey] then
+            self.orphanEntities[kind][key] = {
+                mapId = entry.mapId,
+                expectedPath = entry.path,
+                lastSeenAt = self.runtimeAdapter:now(),
+            }
+            if entry.entity then
+                self.runtimeAdapter:destroyEntity(entry.entity)
+            end
+            source[key] = nil
+            self:_recordDesync(kind, key, { reason = 'orphan_cleanup', mapId = entry.mapId })
+        end
+    end
+end
+
+function WorldServerBridge:_reconcileMapState(mapId)
+    local state = self.world:getMapState(mapId)
+    self:_cacheMapState(mapId, state, 'reconcile')
+    local expectedMobs = {}
+    for _, mob in ipairs(state.mobs or {}) do
+        expectedMobs[#expectedMobs + 1] = mob.spawnId
+    end
+    local expectedDrops = {}
+    for _, drop in ipairs(state.drops or {}) do
+        expectedDrops[#expectedDrops + 1] = drop.dropId
+    end
+    local expectedBosses = {}
+    if state.boss and state.boss.alive ~= false then
+        expectedBosses[#expectedBosses + 1] = mapId
+    end
+    self:_reconcileEntityTable('mob', expectedMobs)
+    self:_reconcileEntityTable('drop', expectedDrops)
+    self:_reconcileEntityTable('boss', expectedBosses)
+    self:_recordMetric('reconciliationRuns', 1)
+    return state
+end
+
+function WorldServerBridge:_cleanupOrphans()
+    for kind, entries in pairs(self.orphanEntities) do
+        for key, entry in pairs(entries) do
+            local now = self.runtimeAdapter:now()
+            if now - (entry.lastSeenAt or now) >= 0 then
+                local tracked = self:_entityEntry(kind, key)
+                if tracked and tracked.entity then
+                    self.runtimeAdapter:destroyEntity(tracked.entity)
+                    self:_clearEntityEntry(kind, key)
+                end
+                entries[key] = nil
+            end
+        end
+    end
+end
+
+function WorldServerBridge:_updateMapDelta(mapId, reason)
+    local state = self.world:getMapState(mapId)
+    self:_cacheMapState(mapId, state, reason or 'map_refresh')
+    return state
+end
+
+function WorldServerBridge:_resolveMapSpawnPoint(mapId)
+    local mapConfig = self.worldConfig and self.worldConfig.maps and self.worldConfig.maps[mapId] or nil
+    local runtime = mapConfig and mapConfig.runtime or {}
+    local spawn = runtime.spawnPosition or mapConfig.spawnPosition or runtime.defaultSpawn or { x = 0, y = 0, z = 0 }
+    return {
+        x = tonumber(spawn.x) or 0,
+        y = tonumber(spawn.y) or 0,
+        z = tonumber(spawn.z) or 0,
+    }
+end
+
+function WorldServerBridge:_validateSpawnPoint(mapId, point)
+    if not mapId or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then
+        return false, 'invalid_map'
+    end
+    local pos = point or self:_resolveMapSpawnPoint(mapId)
+    if type(pos) ~= 'table' then return false, 'invalid_spawn_point' end
+    if tonumber(pos.x) == nil or tonumber(pos.y) == nil then return false, 'invalid_spawn_point' end
+    return true, {
+        x = tonumber(pos.x) or 0,
+        y = tonumber(pos.y) or 0,
+        z = tonumber(pos.z) or 0,
+    }
+end
+
+function WorldServerBridge:_buildMapTransitionPayload(player, sourceMapId, destinationMapId)
+    local okSpawn, spawnOrErr = self:_validateSpawnPoint(destinationMapId)
+    if not okSpawn then return nil, spawnOrErr end
+    return {
+        playerId = player and player.id or nil,
+        sourceMapId = sourceMapId,
+        destinationMapId = destinationMapId,
+        spawn = spawnOrErr,
+        normalizedPath = normalizePath('/maps/' .. tostring(destinationMapId)),
+    }
 end
 
 function WorldServerBridge:bootstrap()
@@ -348,28 +818,41 @@ function WorldServerBridge:bootstrap()
         repository = PlayerRepository.newMemory({})
     end
 
+    self:_recordLifecycle('bootstrap_begin', { persistent = usePersistentStorage == true })
     local runtimeHooks = {
         onPlayerEnter = function(world, player)
+            local now = self.runtimeAdapter:now()
             self.activeSessions[player.id] = {
                 userId = player.id,
-                enteredAt = self.runtimeAdapter:now(),
-                lastSeenAt = self.runtimeAdapter:now(),
+                enteredAt = now,
+                lastSeenAt = now,
             }
-            self:_cachePlayerState(player.id, world:publishPlayerSnapshot(player))
-            if not self:_updateCachedPopulation(player.currentMapId) then self:_invalidateMapState(player.currentMapId) end
+            self:_cachePlayerState(player.id, world:publishPlayerSnapshot(player), 'player_enter')
+            if not self:_updateCachedPopulation(player.currentMapId) then
+                self:_invalidateMapState(player.currentMapId)
+            else
+                self:_queueDelta('map', player.currentMapId, 'population', { population = world:getMapPopulation(player.currentMapId) }, self.mapVersions[player.currentMapId] or 0)
+            end
+            self:_recordLifecycle('player_enter', { playerId = player.id, mapId = player.currentMapId })
         end,
         onPlayerLeave = function(world, player)
             self.playerStateById[player.id] = nil
             self.activeSessions[player.id] = nil
+            self:_queueDelta('player', player.id, 'player_leave', { playerId = player.id }, self.playerVersions[player.id] or 0)
+            self:_recordLifecycle('player_leave', { playerId = player.id })
         end,
         onPlayerSnapshot = function(world, player, snapshot)
             if self.activeSessions[player.id] then
                 self.activeSessions[player.id].lastSeenAt = self.runtimeAdapter:now()
             end
-            self:_cachePlayerState(player.id, snapshot)
+            self:_cachePlayerState(player.id, snapshot, 'snapshot')
         end,
         onPlayerMapChanged = function(world, player, mapId)
-            if not self:_updateCachedPopulation(mapId) then self:_invalidateMapState(mapId) end
+            if not self:_updateCachedPopulation(mapId) then
+                self:_invalidateMapState(mapId)
+            end
+            self:_updateMapDelta(mapId, 'map_changed')
+            self:_recordLifecycle('map_load', { playerId = player.id, mapId = mapId })
         end,
         onMobSpawned = function(world, mob)
             self:_spawnMobEntity(mob)
@@ -380,6 +863,9 @@ function WorldServerBridge:bootstrap()
         onMobDamaged = function(world, player, mob)
             if not self:_updateCachedMob(mob.mapId, mob.spawnId, mob.hp) then
                 self:_invalidateMapState(mob.mapId)
+            else
+                self:_queueEntityDelta('mob', mob.spawnId, mob.mapId, 'damage', { hp = mob.hp, actorId = player and player.id or nil })
+                self:_queueDelta('map', mob.mapId, 'mob_delta', { action = 'damage', spawnId = mob.spawnId, hp = mob.hp }, self.mapVersions[mob.mapId] or 0)
             end
         end,
         onDropSpawned = function(world, drop)
@@ -397,6 +883,14 @@ function WorldServerBridge:bootstrap()
         onBossDamaged = function(world, encounter)
             if not self:_updateCachedBoss(encounter.mapId, encounter) then
                 self:_invalidateMapState(encounter.mapId)
+            else
+                self:_queueEntityDelta('boss', encounter.mapId, encounter.mapId, 'damage', {
+                    bossId = encounter.bossId,
+                    hp = encounter.hp,
+                    maxHp = encounter.maxHp,
+                    phase = encounter.phase,
+                    telegraph = encounter.telegraph,
+                })
             end
         end,
         onBossKilled = function(world, encounter)
@@ -417,18 +911,73 @@ function WorldServerBridge:bootstrap()
         self.bootstrapError = 'world_bootstrap_failed'
         self:_setComponentField('BridgeReady', false)
         self:_setComponentField('BridgeError', tostring(worldOrErr))
+        self:_recordLifecycle('bootstrap_failed', { error = tostring(worldOrErr) })
         return nil, self.bootstrapError
     end
 
     self.world = worldOrErr
     self:_setComponentField('BridgeReady', true)
+    self:_recordLifecycle('bootstrap_ready', { defaultMapId = self:_defaultMapId() })
     return self.world
+end
+
+function WorldServerBridge:_frameTick(delta)
+    self.frameState.tickId = self.frameState.tickId + 1
+    self.frameState.lastTickAt = self.runtimeAdapter:now()
+    self.frameState.delta = tonumber(delta) or 0
+    self:_recordMetric('bridgeTicks', 1)
+    return self.frameState
+end
+
+function WorldServerBridge:_entityUpdateScheduler()
+    local activeEntities = 0
+    for _, _ in pairs(self.mobEntities) do activeEntities = activeEntities + 1 end
+    for _, _ in pairs(self.dropEntities) do activeEntities = activeEntities + 1 end
+    for _, _ in pairs(self.bossEntities) do activeEntities = activeEntities + 1 end
+    self.frameState.activeEntities = activeEntities
+    self.metrics.activeEntities = activeEntities
+    return activeEntities
+end
+
+function WorldServerBridge:_mobBehaviorTick()
+    self:_recordMetric('mobBehaviorTicks', 1)
+end
+
+function WorldServerBridge:_combatTickManager()
+    self:_recordMetric('combatTicks', 1)
+end
+
+function WorldServerBridge:_memoryGuard()
+    local total = arrayCount(self.deltaQueue) + arrayCount(self.eventHistory)
+    if total > self.syncHistoryLimit * 2 then
+        while #self.deltaQueue > self.syncHistoryLimit do
+            table.remove(self.deltaQueue, 1)
+        end
+        while #self.eventHistory > self.syncHistoryLimit do
+            table.remove(self.eventHistory, 1)
+        end
+        self.metrics.eventQueueDepth = #self.deltaQueue
+        self:_recordEvent('runtime', 'memory_guard_trim', { retained = self.syncHistoryLimit })
+    end
 end
 
 function WorldServerBridge:tick(delta)
     local world = self:bootstrap()
     if not world then return false, self.bootstrapError or 'world_bootstrap_failed' end
-    world.scheduler:tick(tonumber(delta) or 0)
+    local numericDelta = tonumber(delta) or 0
+    local frame = self:_frameTick(numericDelta)
+    local tickStartedAt = self.runtimeAdapter:now()
+    world.scheduler:tick(numericDelta)
+    self:_entityUpdateScheduler()
+    self:_mobBehaviorTick()
+    self:_combatTickManager()
+    self:_cleanupOrphans()
+    self:_memoryGuard()
+    local tickFinishedAt = self.runtimeAdapter:now()
+    frame.tickDurationMs = math.max(0, (tickFinishedAt - tickStartedAt) * 1000)
+    frame.schedulerLagMs = math.max(0, frame.tickDurationMs - frame.schedulerBudgetMs)
+    self.frameState.schedulerLagMs = frame.schedulerLagMs
+    self:_setEncodedComponentField('LastFrameTickJson', frame)
     return true
 end
 
@@ -457,6 +1006,7 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
         session.lastSeenAt = self.runtimeAdapter:now()
         local scopeOk, scopeErr = self:_validateActorScope(player, actor)
         if not scopeOk then return nil, scopeErr end
+        self:_touchLatency(player.id, mapId)
         return player, nil, actor
     end
 
@@ -473,6 +1023,7 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
     if not ok then return nil, updateErr end
     local scopeOk, scopeErr = self:_validateActorScope(player, actor)
     if not scopeOk then return nil, scopeErr end
+    self:_touchLatency(player.id, mapId)
     return player, nil, actor
 end
 
@@ -493,7 +1044,7 @@ function WorldServerBridge:_validateChangeMapContext(player, actor, destinationM
     if not destinationMapId or destinationMapId == '' then return false, 'invalid_map' end
     if not self.worldConfig.maps or not self.worldConfig.maps[destinationMapId] then return false, 'invalid_map' end
 
-    if not self.runtimeAdapter:isLive() then return true end
+    if not self.runtimeAdapter:isLive() then return self:_validateSpawnPoint(destinationMapId) end
     if not player then return false, 'invalid_player' end
 
     local playerMapId = player.currentMapId
@@ -502,12 +1053,14 @@ function WorldServerBridge:_validateChangeMapContext(player, actor, destinationM
     if source == nil or source == '' then return false, 'missing_transition_source' end
     if playerMapId and source ~= playerMapId then return false, 'wrong_map' end
     if actorMapId and source ~= actorMapId then return false, 'wrong_map' end
-    if destinationMapId == source then return true end
+    if destinationMapId == source then
+        return self:_validateSpawnPoint(destinationMapId)
+    end
 
     if not self:_isAllowedMapTransition(source, destinationMapId) then
         return false, 'invalid_map_transition'
     end
-    return true
+    return self:_validateSpawnPoint(destinationMapId)
 end
 
 function WorldServerBridge:_validateNpcActionContext(player, npcId, itemId)
@@ -565,6 +1118,14 @@ function WorldServerBridge:_validateBossActionContext(player, requestedMapId, bo
     return true, encounter
 end
 
+function WorldServerBridge:_routeEvent(routerName, eventName, payload)
+    local router = self.eventRouters[routerName]
+    if not router then
+        return nil, 'invalid_router'
+    end
+    return router(self, eventName, payload)
+end
+
 function WorldServerBridge:onUserEnter(event)
     local world, bootstrapErr = self:bootstrap()
     if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
@@ -579,6 +1140,7 @@ function WorldServerBridge:onUserEnter(event)
         enteredAt = self.runtimeAdapter:now(),
         lastSeenAt = self.runtimeAdapter:now(),
     }
+    self:_routeEvent('runtime', 'user_enter', { playerId = actor.userId, mapId = mapId })
     return true
 end
 
@@ -591,6 +1153,7 @@ function WorldServerBridge:onUserLeave(event)
     local ok, leaveErr = self.world:onPlayerLeave(actor.userId)
     if not ok then return false, leaveErr or 'player_save_failed' end
     self.activeSessions[actor.userId] = nil
+    self:_routeEvent('runtime', 'user_leave', { playerId = actor.userId })
     return true
 end
 
@@ -598,6 +1161,7 @@ function WorldServerBridge:getPlayerState(requestContext)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local snapshot = self.world:publishPlayerSnapshot(player)
+    self:_cachePlayerState(player.id, snapshot, 'get_player_state')
     return response(self.runtimeAdapter, true, snapshot)
 end
 
@@ -621,9 +1185,100 @@ function WorldServerBridge:getMapState(requestContext, mapId)
     return response(self.runtimeAdapter, true, cached)
 end
 
+function WorldServerBridge:getStateDelta(requestContext, scopeId, sinceVersion)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local targetScopeId = scopeId or player.currentMapId or player.id
+    local minimumVersion = tonumber(sinceVersion) or 0
+    local deltas = {}
+    for _, item in ipairs(self.deltaQueue) do
+        if item.version > minimumVersion and (item.scopeId == tostring(targetScopeId) or item.scopeId == tostring(player.id) or item.scopeId == self:_entityVersionKey('boss', targetScopeId)) then
+            deltas[#deltas + 1] = deepCopy(item)
+        end
+    end
+    return response(self.runtimeAdapter, true, {
+        playerId = player.id,
+        scopeId = tostring(targetScopeId),
+        sinceVersion = minimumVersion,
+        latestSequence = self.deltaSequence,
+        deltas = deltas,
+    })
+end
+
+function WorldServerBridge:getBridgeDiagnostics()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    local averageLatencyMs = 0
+    if self.metrics.latencySamples > 0 then
+        averageLatencyMs = math.floor(self.metrics.totalLatencyMs / self.metrics.latencySamples)
+    end
+    return response(self.runtimeAdapter, true, {
+        metrics = deepCopy(self.metrics),
+        frameState = deepCopy(self.frameState),
+        queueDepth = #self.deltaQueue,
+        eventDepth = #self.eventHistory,
+        averageLatencyMs = averageLatencyMs,
+        maxLatencyMs = self.metrics.maxLatencyMs,
+        desyncIncidents = deepCopy(self.desyncIncidents),
+        lifecycle = deepCopy(self.lifecycleHistory),
+        recentEvents = self:_flushDeltaQueue(16),
+    })
+end
+
+function WorldServerBridge:getEventStream(limit)
+    return response(self.runtimeAdapter, true, {
+        events = deepCopy(self.eventHistory),
+        deltas = self:_flushDeltaQueue(limit or 32),
+    })
+end
+
+function WorldServerBridge:reconcileRuntimeState(requestContext, mapId)
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    local targetMapId = mapId
+    if targetMapId == nil and requestContext ~= nil then
+        local player, err = self:_resolvePlayer(requestContext, nil)
+        if not player then return response(self.runtimeAdapter, false, nil, err) end
+        targetMapId = player.currentMapId
+    end
+    targetMapId = targetMapId or self:_defaultMapId()
+    local state = self:_reconcileMapState(targetMapId)
+    self:_recordEvent('runtime', 'reconcile_runtime_state', { mapId = targetMapId })
+    return response(self.runtimeAdapter, true, {
+        mapId = targetMapId,
+        state = state,
+        diagnostics = {
+            desyncIncidents = deepCopy(self.desyncIncidents),
+            orphanEntities = deepCopy(self.orphanEntities),
+        },
+    })
+end
+
+function WorldServerBridge:dispatchRuntimeEvent(eventName, payload)
+    local event = self:_routeEvent('runtime', eventName, payload)
+    if not event then return response(self.runtimeAdapter, false, nil, 'invalid_router') end
+    return response(self.runtimeAdapter, true, event)
+end
+
+function WorldServerBridge:routePlayerAction(requestContext, actionName, payload)
+    local player, err = self:_resolvePlayer(requestContext, nil)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local event = self:_routeEvent('player_action', actionName, {
+        playerId = player.id,
+        mapId = player.currentMapId,
+        payload = payload,
+    })
+    return response(self.runtimeAdapter, true, event)
+end
+
 function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'attack_mob', { playerId = player.id, mapId = mapId or player.currentMapId, spawnId = spawnId })
     local contextOk, mobOrErr = self:_validateMobActionContext(player, mapId, spawnId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, mobOrErr) end
     local ok, result, resolvedMob = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage), mobOrErr)
@@ -639,6 +1294,7 @@ end
 function WorldServerBridge:pickupDrop(requestContext, mapId, dropId)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'pickup_drop', { playerId = player.id, mapId = mapId or player.currentMapId, dropId = dropId })
     local contextOk, dropOrErr = self:_validateDropActionContext(player, mapId, dropId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, dropOrErr) end
     local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId), dropOrErr)
@@ -653,6 +1309,7 @@ function WorldServerBridge:damageBoss(requestContext, mapId, bossId, requestedDa
         requestedDamage = bossId
         bossId = nil
     end
+    self:_routeEvent('player_action', 'damage_boss', { playerId = player.id, mapId = mapId or player.currentMapId, bossId = bossId })
     local contextOk, encounterOrErr = self:_validateBossActionContext(player, mapId, bossId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, encounterOrErr) end
     local ok, payload = self.world:damageBoss(player, player.currentMapId, bossId, tonumber(requestedDamage), encounterOrErr)
@@ -663,6 +1320,7 @@ end
 function WorldServerBridge:acceptQuest(requestContext, questId)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'accept_quest', { playerId = player.id, questId = questId })
     local ok, result = self.world:acceptQuest(player, questId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -671,6 +1329,7 @@ end
 function WorldServerBridge:turnInQuest(requestContext, questId)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'turn_in_quest', { playerId = player.id, questId = questId })
     local ok, result = self.world:turnInQuest(player, questId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -679,6 +1338,7 @@ end
 function WorldServerBridge:buyFromNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'buy_from_npc', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
     local contextOk, npcOrErr = self:_validateNpcActionContext(player, npcId, itemId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, npcOrErr) end
     local ok, result = self.world:buyFromNpc(player, npcId, itemId, tonumber(quantity), npcOrErr)
@@ -689,6 +1349,7 @@ end
 function WorldServerBridge:sellToNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'sell_to_npc', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
     local contextOk, npcOrErr = self:_validateNpcActionContext(player, npcId, itemId)
     if not contextOk then return response(self.runtimeAdapter, false, nil, npcOrErr) end
     local ok, result = self.world:sellToNpc(player, npcId, itemId, tonumber(quantity), npcOrErr)
@@ -715,13 +1376,17 @@ end
 function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
     local player, err, actor = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local contextOk, contextErr = self:_validateChangeMapContext(player, actor, mapId, sourceMapId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
+    local contextOk, contextPayloadOrErr = self:_validateChangeMapContext(player, actor, mapId, sourceMapId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextPayloadOrErr) end
     if self.world and self.world.containment and self.world.containment.migrationBlocked then
         return response(self.runtimeAdapter, false, nil, 'migration_blocked')
     end
+    local transitionPayload, transitionErr = self:_buildMapTransitionPayload(player, sourceMapId, mapId)
+    if not transitionPayload then return response(self.runtimeAdapter, false, nil, transitionErr) end
     local ok, result = self.world:changeMap(player, mapId, sourceMapId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    self:_routeEvent('world', 'map_transition', transitionPayload)
+    self:_updateMapDelta(mapId, 'transition')
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
@@ -752,6 +1417,7 @@ end
 function WorldServerBridge:castSkill(requestContext, skillId, target)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    self:_routeEvent('player_action', 'cast_skill', { playerId = player.id, skillId = skillId, target = target })
     local ok, result = self.world:castSkill(player, skillId, target)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, { result = result, player = self.world:publishPlayerSnapshot(player) })
@@ -768,13 +1434,17 @@ end
 function WorldServerBridge:createParty(requestContext)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    return response(self.runtimeAdapter, true, self.world:createParty(player))
+    local payload = self.world:createParty(player)
+    self:_routeEvent('world', 'party_created', { playerId = player.id, mapId = player.currentMapId })
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:createGuild(requestContext, name)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    return response(self.runtimeAdapter, true, self.world:createGuild(player, name))
+    local payload = self.world:createGuild(player, name)
+    self:_routeEvent('world', 'guild_created', { playerId = player.id, name = name })
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:addFriend(requestContext, otherId)
@@ -790,6 +1460,7 @@ function WorldServerBridge:tradeMesos(requestContext, targetPlayerId, amount)
     local target = self.world:createPlayer(targetPlayerId)
     local ok, result = self.world:tradeMesos(player, target, tonumber(amount))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    self:_routeEvent('player_action', 'trade_mesos', { playerId = player.id, targetPlayerId = targetPlayerId, amount = amount })
     return response(self.runtimeAdapter, true, { player = self.world:publishPlayerSnapshot(player), target = self.world:publishPlayerSnapshot(target) })
 end
 
@@ -797,6 +1468,9 @@ function WorldServerBridge:listAuction(requestContext, itemId, quantity, price)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, listing = self.world:listAuction(player, itemId, tonumber(quantity), tonumber(price))
+    if ok then
+        self:_routeEvent('world', 'auction_listing', { playerId = player.id, itemId = itemId, quantity = quantity, price = price })
+    end
     return response(self.runtimeAdapter, ok, listing, ok and nil or 'auction_list_failed')
 end
 
@@ -828,7 +1502,10 @@ function WorldServerBridge:getRuntimeStatus()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world:getRuntimeStatus())
+    local status = self.world:getRuntimeStatus()
+    local diagnostics = self.runtimeAdapter:decodeData(self:getBridgeDiagnostics())
+    status.bridge = diagnostics and diagnostics.data or nil
+    return response(self.runtimeAdapter, true, status)
 end
 
 function WorldServerBridge:getReplayStatus()
@@ -844,7 +1521,14 @@ function WorldServerBridge:getOwnershipTopology()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world.adminTools:getOwnershipTopology(self.world))
+    local payload = self.world.adminTools:getOwnershipTopology(self.world)
+    payload.bridge = {
+        activeSessions = deepCopy(self.activeSessions),
+        trackedMobEntities = tableCount(self.mobEntities),
+        trackedDropEntities = tableCount(self.dropEntities),
+        trackedBossEntities = tableCount(self.bossEntities),
+    }
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:getControlPlaneReport()
@@ -852,7 +1536,9 @@ function WorldServerBridge:getControlPlaneReport()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world:getControlPlaneReport())
+    local payload = self.world:getControlPlaneReport()
+    payload.bridgeDiagnostics = self.runtimeAdapter:decodeData(self:getBridgeDiagnostics()).data
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:getEventTruth()
@@ -860,7 +1546,9 @@ function WorldServerBridge:getEventTruth()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world.adminTools:getEventTruth(self.world, {}))
+    local payload = self.world.adminTools:getEventTruth(self.world, {})
+    payload.bridgeEventHistory = deepCopy(self.eventHistory)
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:getEconomyReport()
@@ -868,7 +1556,12 @@ function WorldServerBridge:getEconomyReport()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world:getEconomyReport())
+    local payload = self.world:getEconomyReport()
+    payload.marketSync = {
+        latestDeltaSequence = self.deltaSequence,
+        queueDepth = #self.deltaQueue,
+    }
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:adminStatus()
@@ -876,7 +1569,9 @@ function WorldServerBridge:adminStatus()
         local world, err = self:bootstrap()
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
-    return response(self.runtimeAdapter, true, self.world:adminStatus())
+    local payload = self.world:adminStatus()
+    payload.bridge = self.runtimeAdapter:decodeData(self:getBridgeDiagnostics()).data
+    return response(self.runtimeAdapter, true, payload)
 end
 
 function WorldServerBridge:getBuildRecommendation(requestContext)
@@ -900,7 +1595,20 @@ end
 function WorldServerBridge:createRaid(requestContext, bossId)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    return response(self.runtimeAdapter, true, self.world:createRaid(player, bossId))
+    local payload = self.world:createRaid(player, bossId)
+    self:_routeEvent('world', 'raid_created', { playerId = player.id, bossId = bossId, mapId = player.currentMapId })
+    return response(self.runtimeAdapter, true, payload)
+end
+
+function WorldServerBridge:shutdown()
+    if self.world and self.world.onShutdown then
+        pcall(function() self.world:onShutdown() end)
+    end
+    self:_recordLifecycle('shutdown', {
+        activeSessions = deepCopy(self.activeSessions),
+        queueDepth = #self.deltaQueue,
+    })
+    return response(self.runtimeAdapter, true, { shutdown = true, lifecycle = deepCopy(self.lifecycleHistory) })
 end
 
 return WorldServerBridge

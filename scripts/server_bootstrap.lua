@@ -917,6 +917,7 @@ function ServerBootstrap.boot(basePath, config)
         self.buffSystem:ensurePlayer(player)
         self.tutorialSystem:ensurePlayer(player)
         self.playerClassSystem:ensurePlayer(player)
+        self.progressionSystem:refresh(player)
         player.huntingLoop = player.huntingLoop or { streak = 0, rareSince = 0, recentDrops = {} }
         return player
     end
@@ -972,10 +973,16 @@ function ServerBootstrap.boot(basePath, config)
             howToEarnCurrency = 'Sell surplus drops, clear quests, and list high-demand rares on the auction house.',
             howToFightBosses = 'Check route progression, stock consumables, and watch telegraphed phase changes.',
             currentRegionLore = mapMeta.metadata and mapMeta.metadata.lore or nil,
+            progressionHints = build.milestoneHints,
             recommendedRoute = route,
             marketFocus = {
                 hottestTrackedItem = next(economy.priceHistory or {}) or nil,
                 sinkPressure = economy.sinkPressure,
+            },
+            longTermGoals = {
+                prestige = (player.progression or {}).prestige or 0,
+                raidTier = (player.progression or {}).raidTier or 0,
+                specialization = (player.progression or {}).specialization,
             },
         }
     end
@@ -2778,6 +2785,7 @@ function ServerBootstrap.boot(basePath, config)
             social = player.social,
             progression = player.progression,
             achievements = player.achievements,
+            achievementRewards = player.achievementRewards,
             tutorial = player.tutorial,
             buildRecommendation = self.buildRecommendationSystem:recommend(player),
             classProfile = self.playerClassSystem:refresh(player),
@@ -2788,6 +2796,16 @@ function ServerBootstrap.boot(basePath, config)
             setBonuses = player.setBonuses,
             lastCombatFeedback = player.lastCombatFeedback,
             lastLootFeedback = player.lastLootFeedback,
+            combatClarity = {
+                combo = player.comboState,
+                bossPrepHint = player.currentMapId and ((self.worldConfig.maps[player.currentMapId] or {}).metadata or {}).sharedFarmingZones or nil,
+            },
+            socialProgression = {
+                partyBuffs = player.partyBuffs,
+                guildId = player.guildId,
+                raidProgress = player.raidProgress,
+            },
+            craftingProfile = player.craftingProfile,
             inventory = self.itemSystem:exportInventory(player),
             equipment = player.equipment,
             quests = self.questSystem:snapshotPlayer(player),
@@ -2815,6 +2833,10 @@ function ServerBootstrap.boot(basePath, config)
                     groupId = mob.spawnGroupId,
                     ai = mob.ai,
                     rare = mob.rare == true,
+                    tacticalRole = mob.tacticalRole,
+                    chokePoint = mob.chokePoint,
+                    mobilityAdvantage = mob.mobilityAdvantage,
+                    hitReaction = mob.lastHitReaction or mob.hitReaction,
                 }
                 self.entityIndex:index('mob', mapId, spawnId, mobsOut[#mobsOut])
             end
@@ -2842,6 +2864,7 @@ function ServerBootstrap.boot(basePath, config)
                 y = position and position.y or 0,
                 z = position and position.z or 0,
                 mechanic = encounter.currentMechanic,
+                telegraph = self.bossMechanicsSystem:telegraph(encounter),
                 raid = encounter.raid == true,
             }
             self.entityIndex:index('boss', mapId, encounter.bossId, bossOut)
@@ -2859,6 +2882,7 @@ function ServerBootstrap.boot(basePath, config)
             huntPreview = {
                 routeCount = type(((self.worldConfig.maps[mapId] or {}).metadata or {}).movementRoutes) == 'table' and #(((self.worldConfig.maps[mapId] or {}).metadata or {}).movementRoutes) or 0,
                 verticality = type(((self.worldConfig.maps[mapId] or {}).metadata or {}).verticalLayers) == 'table' and #(((self.worldConfig.maps[mapId] or {}).metadata or {}).verticalLayers) or 0,
+                chokePoints = type(((self.worldConfig.maps[mapId] or {}).metadata or {}).chokePoints) == 'table' and #(((self.worldConfig.maps[mapId] or {}).metadata or {}).chokePoints) or 0,
                 eliteCount = (function()
                     local count = 0
                     for _, mob in ipairs(mobsOut) do
@@ -2866,6 +2890,16 @@ function ServerBootstrap.boot(basePath, config)
                     end
                     return count
                 end)(),
+            },
+            tacticalMapMeta = {
+                chokePoints = deepcopy((((self.worldConfig.maps[mapId] or {}).metadata or {}).chokePoints) or {}),
+                mobilityAdvantageZones = deepcopy((((self.worldConfig.maps[mapId] or {}).metadata or {}).mobilityAdvantageZones) or {}),
+                sharedFarmingZones = deepcopy((((self.worldConfig.maps[mapId] or {}).metadata or {}).sharedFarmingZones) or {}),
+                environmentStory = (((self.worldConfig.maps[mapId] or {}).metadata or {}).environmentStory),
+            },
+            groupPlay = {
+                recommended = ((self.worldConfig.maps[mapId] or {}).metadata or {}).sharedFarmingZones ~= nil,
+                socialHotspots = deepcopy((((self.worldConfig.maps[mapId] or {}).metadata or {}).socialHotspots) or {}),
             },
             now = self:_now(),
         }
@@ -2930,6 +2964,7 @@ function ServerBootstrap.boot(basePath, config)
                     itemId = drop.itemId,
                     rarity = drop.rarity,
                     excitement = drop.excitement,
+                    dopamine = drop.dopamine,
                 }
                 while #player.huntingLoop.recentDrops > 5 do table.remove(player.huntingLoop.recentDrops, 1) end
                 self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, map_id = mapId, boss_id = ctx.bossId, item_id = drop.itemId, quantity = drop.quantity, idempotency_key = string.format('reward:auto:%s:%s:%s', tostring(player.id), tostring(drop.itemId), tostring(ctx.correlationId or os.time())), lineage_reference = self:_lineageReference('drop_auto', drop.itemId), metadata = { mode = 'auto_pickup', reason = ctx.source } })
@@ -2983,7 +3018,15 @@ function ServerBootstrap.boot(basePath, config)
         })
         if mob.rare then self.achievementsSystem:unlock(player, 'rare_hunter') end
         if mob.rare then player.huntingLoop.rareSince = 0 end
-        if mob.rare then player.lastCombatFeedback = { kind = 'rare_spawn_clear', message = 'Rare route spike cleared', impact = 'elevated_drop_tension' } end
+        if mob.rare then player.lastCombatFeedback = { kind = 'rare_spawn_clear', message = 'Rare route spike cleared', impact = 'elevated_drop_tension', reaction = mob.lastHitReaction or mob.hitReaction } end
+        if not mob.rare then
+            player.lastCombatFeedback = {
+                kind = 'mob_clear',
+                message = mob.template.identity or 'Route target defeated',
+                impact = mob.tacticalRole or 'lane_clear',
+                reaction = mob.lastHitReaction or mob.hitReaction,
+            }
+        end
         if player.huntingLoop.streak >= 10 then self.tutorialSystem:advance(player, 'move') end
         self:_emit('onMobKilled', player, mob, delivered)
         self:publishPlayerSnapshot(player)
@@ -3015,6 +3058,13 @@ function ServerBootstrap.boot(basePath, config)
         if killed then
             return true, self:_applyMobRewards(player, mobOrErr, false), mobOrErr
         end
+        player.lastCombatFeedback = {
+            kind = 'hit_confirm',
+            message = mobOrErr.template.identity or 'Target struck',
+            impact = mobOrErr.lastHitReaction or mobOrErr.hitReaction,
+            remainingHp = mobOrErr.hp,
+            maxHp = mobOrErr.maxHp,
+        }
         self:_emit('onMobDamaged', player, mobOrErr)
         return true, nil, mobOrErr
     end
@@ -3170,12 +3220,24 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, dropsOrError end
         if not dropsOrError then
             self:_emit('onBossDamaged', resolvedEncounter, player, damage)
+            player.lastCombatFeedback = {
+                kind = 'boss_pressure',
+                message = (resolvedEncounter.telegraphState and resolvedEncounter.telegraphState.text) or 'Boss pressure rising',
+                impact = (resolvedEncounter.telegraphState and resolvedEncounter.telegraphState.punishWindow) or 'medium',
+                phase = resolvedEncounter.phase,
+            }
             self:saveWorldState('boss_damage')
             return true, nil
         end
 
         local rewards, rewardErr = self:_applyBossRewards(player, resolvedEncounter, dropsOrError)
         if rewards == false then return false, rewardErr end
+        for raidId, raid in pairs(self.raidSystem.raids or {}) do
+            if raid.bossId == resolvedEncounter.bossId and raid.phase ~= 'cleared' then
+                self.raidSystem:complete(raidId, self)
+                self.progressionSystem:grantRaidProgress(player, raid.rewardTier or 1)
+            end
+        end
         return true, rewards
     end
 
@@ -3467,6 +3529,7 @@ function ServerBootstrap.boot(basePath, config)
         player.lastCombatFeedback = self.combatFeedback:skillCast(player, { id = skillId, visual = payload.visual, role = payload.role }, payload)
         if payload.area then self.tutorialSystem:advance(player, 'combat') end
         self:_emitOpsTelemetry('skill_cast', { playerId = player.id, skillId = skillId, bucket = bucket, result = payload.type })
+        self:publishPlayerSnapshot(player)
         return true, payload
     end
 
@@ -3527,13 +3590,18 @@ function ServerBootstrap.boot(basePath, config)
             price = price,
             listingId = listing.id,
         })
+        self.dailyWeeklySystem:mark(player, 'daily', 'auction:' .. tostring(itemId))
         return true, listing
     end
 
     function world:craftItem(player, recipeId)
         local recipe = self.gameplay.recipes[recipeId]
         if not recipe then return false, 'unknown_recipe' end
-        return self.craftingSystem:craft(player, recipe)
+        local ok, crafted = self.craftingSystem:craft(player, recipe)
+        if not ok then return false, crafted end
+        self.dailyWeeklySystem:mark(player, 'daily', 'craft:' .. tostring(recipeId))
+        self:publishPlayerSnapshot(player)
+        return true, crafted
     end
 
     function world:openDialogue(npcId)
@@ -3545,12 +3613,18 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:activateWorldEvent(kind, eventId)
-        return self.worldEventSystem:activate(kind, eventId)
+        local active = self.worldEventSystem:activate(kind, eventId)
+        for _, player in pairs(self.players or {}) do
+            self.dailyWeeklySystem:mark(player, kind == 'weekly' and 'weekly' or 'daily', 'event:' .. tostring(eventId))
+        end
+        return active
     end
 
     function world:createRaid(player, bossId)
         local partyId = player.partyId or (self.partySystem:create(player).id)
-        return self.raidSystem:create(bossId, player, partyId)
+        local raid = self.raidSystem:create(bossId, player, partyId)
+        self.raidSystem:syncWithParty(raid.id, self)
+        return raid
     end
 
     function world:channelTransfer(player, destinationMapId)

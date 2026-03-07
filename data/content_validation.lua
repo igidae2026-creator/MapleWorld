@@ -99,6 +99,11 @@ function ContentValidation.validate(content)
         end
     end
 
+    local regionCount = 0
+    for _ in pairs(RegionalProgression) do regionCount = regionCount + 1 end
+    local rareSpawnMapCount = 0
+    for _ in pairs(RareSpawnTables) do rareSpawnMapCount = rareSpawnMapCount + 1 end
+
     return {
         ok = #errors == 0,
         errors = errors,
@@ -106,8 +111,8 @@ function ContentValidation.validate(content)
         summary = {
             errors = #errors,
             warnings = #warnings,
-            regions = 6,
-            rareSpawnMaps = 6,
+            regions = regionCount,
+            rareSpawnMaps = rareSpawnMapCount,
         },
     }
 end

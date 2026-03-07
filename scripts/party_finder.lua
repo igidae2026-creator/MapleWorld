@@ -14,6 +14,8 @@ function PartyFinder:list(player, detail)
         role = detail and detail.role or 'open',
         objective = detail and detail.objective or 'questing',
         minLevel = detail and detail.minLevel or 1,
+        raid = detail and detail.raid == true or false,
+        desiredRoles = detail and detail.desiredRoles or {},
     }
     return self.listings[id]
 end

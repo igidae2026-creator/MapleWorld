@@ -11,4 +11,15 @@ function BossMechanicsSystem:phase(encounter)
     return 1
 end
 
+function BossMechanicsSystem:telegraph(encounter)
+    local mechanic = encounter and encounter.currentMechanic or {}
+    return {
+        phase = encounter and encounter.phase or 1,
+        pattern = mechanic.pattern or 'opening_read',
+        hazard = mechanic.hazard or 'single_strike',
+        text = mechanic.text or 'Watch the boss and move before the burst lands.',
+        punishWindow = mechanic.punishWindow or 'medium',
+    }
+end
+
 return BossMechanicsSystem

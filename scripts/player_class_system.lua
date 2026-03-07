@@ -26,6 +26,16 @@ function PlayerClassSystem:refresh(player)
     local profile = self:ensurePlayer(player)
     profile.archetype = player.jobId or 'beginner'
     profile.buildFocus = self.buildRecommendationSystem:recommend(player)
+    local topBranch, topScore = 'generalist', -1
+    for skillId, row in pairs(player.skills or {}) do
+        local branch = row.branch or ((profile.buildFocus.branches and next(profile.buildFocus.branches)) or 'general')
+        local score = tonumber(row.level) or 0
+        if score > topScore then
+            topBranch, topScore = branch, score
+        end
+        if score == 0 and topScore < 0 then topBranch = branch end
+    end
+    profile.specialization = topBranch
     return profile
 end
 

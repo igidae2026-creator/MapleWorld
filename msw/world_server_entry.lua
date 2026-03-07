@@ -69,6 +69,54 @@ Entry.GetMapState = GetMapState
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
+function GetStateDelta(requestContext, scopeId, sinceVersion, component)
+    return dispatch('getStateDelta', component, requestContext, scopeId, sinceVersion)
+end
+--@ EndMethod
+Entry.GetStateDelta = GetStateDelta
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function GetBridgeDiagnostics(component)
+    return dispatch('getBridgeDiagnostics', component)
+end
+--@ EndMethod
+Entry.GetBridgeDiagnostics = GetBridgeDiagnostics
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function ReconcileRuntimeState(requestContext, mapId, component)
+    return dispatch('reconcileRuntimeState', component, requestContext, mapId)
+end
+--@ EndMethod
+Entry.ReconcileRuntimeState = ReconcileRuntimeState
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function DispatchRuntimeEvent(eventName, payload, component)
+    return dispatch('dispatchRuntimeEvent', component, eventName, payload)
+end
+--@ EndMethod
+Entry.DispatchRuntimeEvent = DispatchRuntimeEvent
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function RoutePlayerAction(requestContext, actionName, payload, component)
+    return dispatch('routePlayerAction', component, requestContext, actionName, payload)
+end
+--@ EndMethod
+Entry.RoutePlayerAction = RoutePlayerAction
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
+function GetEventStream(limit, component)
+    return dispatch('getEventStream', component, limit)
+end
+--@ EndMethod
+Entry.GetEventStream = GetEventStream
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
 function AttackMob(requestContext, mapId, spawnId, requestedDamage, component)
     return dispatch('attackMob', component, requestContext, mapId, spawnId, requestedDamage)
 end
@@ -298,5 +346,13 @@ function CreateRaid(requestContext, bossId, component)
 end
 --@ EndMethod
 Entry.CreateRaid = CreateRaid
+
+--@ BeginMethod
+--@ MethodExecSpace=ServerOnly
+function OnEndPlay(component)
+    return dispatch('shutdown', component)
+end
+--@ EndMethod
+Entry.OnEndPlay = OnEndPlay
 
 return Entry

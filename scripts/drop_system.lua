@@ -47,6 +47,8 @@ function DropSystem:rollDrops(mob, player)
     local drops = {}
     for _, entry in ipairs(entries) do
         local chance = tonumber(entry.chance) or 0
+        local pity = math.min(0.06, math.max(0, tonumber(player and player.huntingLoop and player.huntingLoop.rareSince) or 0) * 0.002)
+        if entry.rarity == 'rare' or entry.rarity == 'epic' then chance = math.min(1, chance + pity) end
         local minQty = math.floor(tonumber(entry.minQty) or 1)
         local maxQty = math.floor(tonumber(entry.maxQty) or minQty)
         local itemDef = self.items[entry.itemId]
@@ -64,6 +66,7 @@ function DropSystem:rollDrops(mob, player)
                 rarity = entry.rarity or 'common',
                 anticipation = entry.anticipation or 'steady',
                 excitement = itemDef.excitement or (entry.rarity == 'epic' and 'jackpot' or entry.rarity == 'rare' and 'surge' or 'steady'),
+                dopamine = itemDef.dopamineTier or (entry.rarity == 'epic' and 'peak' or entry.rarity == 'rare' and 'high' or 'steady'),
             }
             if self.metrics then self.metrics:increment('drop.item', quantity, { item = entry.itemId, mob = tostring(mobId) }) end
         end

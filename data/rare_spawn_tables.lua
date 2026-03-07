@@ -1,58 +1,44 @@
-local RareSpawns = {
-    henesys_fields = {
-        cadence = 'frequent',
-        baselineChance = 0.05,
-        elite = { mobId = 'henesys_mob_04', rewardBias = 'starter_upgrade', trigger = 'route_streak' },
-        rares = {
-            { mobId = 'henesys_mob_03', chance = 0.05, reward = 'henesys_material_01', behavior = 'rushdown' },
-            { mobId = 'henesys_mob_04', chance = 0.03, reward = 'henesys_bronze_blade', behavior = 'anchor' },
-        },
-    },
-    ellinia_fields = {
-        cadence = 'frequent',
-        baselineChance = 0.055,
-        elite = { mobId = 'ellinia_mob_04', rewardBias = 'mana_route', trigger = 'combo_chain' },
-        rares = {
-            { mobId = 'ellinia_mob_03', chance = 0.04, reward = 'ellinia_material_02', behavior = 'teleport' },
-            { mobId = 'ellinia_mob_04', chance = 0.025, reward = 'ellinia_arcane_focus', behavior = 'caster_anchor' },
-        },
-    },
-    perion_fields = {
-        cadence = 'steady',
-        baselineChance = 0.06,
-        elite = { mobId = 'perion_mob_04', rewardBias = 'defense_upgrade', trigger = 'dense_pull' },
-        rares = {
-            { mobId = 'perion_mob_03', chance = 0.045, reward = 'perion_material_03', behavior = 'slam' },
-            { mobId = 'perion_mob_04', chance = 0.03, reward = 'perion_obsidian_armor', behavior = 'juggernaut' },
-        },
-    },
-    kerning_fields = {
-        cadence = 'volatile',
-        baselineChance = 0.07,
-        elite = { mobId = 'kerning_mob_04', rewardBias = 'market_spike', trigger = 'stealth_clear' },
-        rares = {
-            { mobId = 'kerning_mob_03', chance = 0.055, reward = 'kerning_material_04', behavior = 'ambush' },
-            { mobId = 'kerning_mob_04', chance = 0.035, reward = 'kerning_shadow_claw', behavior = 'assassin' },
-        },
-    },
-    ludibrium_fields = {
-        cadence = 'scheduled',
-        baselineChance = 0.065,
-        elite = { mobId = 'ludibrium_mob_04', rewardBias = 'party_upgrade', trigger = 'party_presence' },
-        rares = {
-            { mobId = 'ludibrium_mob_03', chance = 0.05, reward = 'ludibrium_material_05', behavior = 'phase_shift' },
-            { mobId = 'ludibrium_mob_04', chance = 0.03, reward = 'ludibrium_clock_blade', behavior = 'clock_anchor' },
-        },
-    },
-    leafre_fields = {
-        cadence = 'scheduled',
-        baselineChance = 0.075,
-        elite = { mobId = 'leafre_mob_04', rewardBias = 'boss_readiness', trigger = 'high_altitude_clear' },
-        rares = {
-            { mobId = 'leafre_mob_03', chance = 0.055, reward = 'leafre_material_06', behavior = 'dive' },
-            { mobId = 'leafre_mob_04', chance = 0.035, reward = 'dragon_scale_core', behavior = 'predator' },
-        },
-    },
+local regions = {
+    'henesys', 'ellinia', 'perion', 'kerning', 'lith_harbor',
+    'ant_tunnel', 'sleepywood', 'dungeon', 'forest', 'desert',
 }
+
+local mapSuffixes = {
+    { suffix = 'fields', cadence = 'steady', bias = 'route_material' },
+    { suffix = 'upper_route', cadence = 'volatile', bias = 'vertical_chase' },
+    { suffix = 'clash_zone', cadence = 'scheduled', bias = 'party_upgrade' },
+}
+
+local RareSpawns = {}
+
+for regionIndex, regionId in ipairs(regions) do
+    for tableIndex, entry in ipairs(mapSuffixes) do
+        local mapId = regionId .. '_' .. entry.suffix
+        local base = ((regionIndex - 1) * 20) + (tableIndex * 2)
+        RareSpawns[mapId] = {
+            cadence = entry.cadence,
+            baselineChance = 0.04 + (regionIndex * 0.003) + (tableIndex * 0.01),
+            elite = {
+                mobId = string.format('%s_mob_%02d', regionId, math.min(20, base + 1)),
+                rewardBias = entry.bias,
+                trigger = tableIndex == 3 and 'party_presence' or 'route_streak',
+            },
+            rares = {
+                {
+                    mobId = string.format('%s_mob_%02d', regionId, math.min(20, base + 2)),
+                    chance = 0.03 + (tableIndex * 0.01),
+                    reward = regionId .. '_material_' .. string.format('%02d', math.min(20, 10 + tableIndex + regionIndex)),
+                    behavior = tableIndex == 1 and 'rushdown' or tableIndex == 2 and 'telegraph_dash' or 'anchor_push',
+                },
+                {
+                    mobId = string.format('%s_mob_%02d', regionId, math.min(20, base + 3)),
+                    chance = 0.02 + (regionIndex * 0.002),
+                    reward = tableIndex == 3 and (regionId .. '_artifact_0' .. tostring(math.min(9, tableIndex + 2))) or (regionId .. '_scroll_' .. string.format('%02d', math.min(10, tableIndex + 4))),
+                    behavior = tableIndex == 3 and 'captain_pressure' or 'rare_patrol',
+                },
+            },
+        }
+    end
+end
 
 return RareSpawns

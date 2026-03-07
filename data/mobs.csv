@@ -1,7 +1,962 @@
 mob_id,name,level,hp,exp,mesos_min,mesos_max,map_pool,respawn_sec,asset_key
+henesys_mob_01,henesys crawler,2,64,16,4,10,henesys_outskirts,5,mob/henesys_mob_01
+henesys_mob_02,henesys shellling,3,98,21,5,12,henesys_fields,5,mob/henesys_mob_02
+henesys_mob_03,henesys sporeling,4,132,27,6,14,henesys_fields,5,mob/henesys_mob_03
+henesys_mob_04,henesys fungal guard,5,166,32,7,16,henesys_upper_route,5,mob/henesys_mob_04
+henesys_mob_05,henesys twig stalker,6,200,38,8,18,henesys_lower_route,5,mob/henesys_mob_05
+henesys_mob_06,henesys thorn howler,7,234,43,9,20,henesys_grove,5,mob/henesys_mob_06
+henesys_mob_07,henesys grave sentry,8,268,49,10,22,henesys_ruins,5,mob/henesys_mob_07
+henesys_mob_08,henesys wraith lancer,9,302,54,11,24,henesys_tunnel,7,mob/henesys_mob_08
+henesys_mob_09,henesys sand beast,10,336,60,12,26,henesys_tunnel,7,mob/henesys_mob_09
+henesys_mob_10,henesys dune alpha,11,370,65,13,28,henesys_clash_zone,7,mob/henesys_mob_10
+henesys_mob_11,henesys ember sprite,12,404,71,14,30,henesys_fields,7,mob/henesys_mob_11
+henesys_mob_12,henesys storm wisp,13,438,76,15,32,henesys_sanctum,7,mob/henesys_mob_12
+henesys_mob_13,henesys vault golem,14,472,82,16,34,henesys_dungeon,7,mob/henesys_mob_13
+henesys_mob_14,henesys chain keeper,15,506,87,17,36,henesys_dungeon,7,mob/henesys_mob_14
+henesys_mob_15,henesys elite hunter,16,540,93,18,38,henesys_ruins,9,mob/henesys_mob_15
+henesys_mob_16,henesys elite bruiser,17,574,98,19,40,henesys_clash_zone,9,mob/henesys_mob_16
+henesys_mob_17,henesys rare marauder,18,608,104,20,42,henesys_grove,9,mob/henesys_mob_17
+henesys_mob_18,henesys rare oracle,19,642,109,21,44,henesys_clash_zone,9,mob/henesys_mob_18
+henesys_mob_19,henesys guardian,20,676,115,22,46,henesys_sanctum,9,mob/henesys_mob_19
+henesys_mob_20,henesys champion,21,710,120,23,48,henesys_boss,9,mob/henesys_mob_20
+ellinia_mob_01,ellinia crawler,19,166,24,8,14,ellinia_outskirts,5,mob/ellinia_mob_01
+ellinia_mob_02,ellinia shellling,20,200,30,9,16,ellinia_fields,5,mob/ellinia_mob_02
+ellinia_mob_03,ellinia sporeling,21,234,35,10,18,ellinia_fields,5,mob/ellinia_mob_03
+ellinia_mob_04,ellinia fungal guard,22,268,41,11,20,ellinia_upper_route,5,mob/ellinia_mob_04
+ellinia_mob_05,ellinia twig stalker,23,302,46,12,22,ellinia_lower_route,5,mob/ellinia_mob_05
+ellinia_mob_06,ellinia thorn howler,24,336,52,13,24,ellinia_grove,5,mob/ellinia_mob_06
+ellinia_mob_07,ellinia grave sentry,25,370,57,14,26,ellinia_ruins,5,mob/ellinia_mob_07
+ellinia_mob_08,ellinia wraith lancer,26,404,63,15,28,ellinia_tunnel,7,mob/ellinia_mob_08
+ellinia_mob_09,ellinia sand beast,27,438,68,16,30,ellinia_tunnel,7,mob/ellinia_mob_09
+ellinia_mob_10,ellinia dune alpha,28,472,74,17,32,ellinia_clash_zone,7,mob/ellinia_mob_10
+ellinia_mob_11,ellinia ember sprite,29,506,79,18,34,ellinia_fields,7,mob/ellinia_mob_11
+ellinia_mob_12,ellinia storm wisp,30,540,85,19,36,ellinia_sanctum,7,mob/ellinia_mob_12
+ellinia_mob_13,ellinia vault golem,31,574,90,20,38,ellinia_dungeon,7,mob/ellinia_mob_13
+ellinia_mob_14,ellinia chain keeper,32,608,96,21,40,ellinia_dungeon,7,mob/ellinia_mob_14
+ellinia_mob_15,ellinia elite hunter,33,642,101,22,42,ellinia_ruins,9,mob/ellinia_mob_15
+ellinia_mob_16,ellinia elite bruiser,34,676,107,23,44,ellinia_clash_zone,9,mob/ellinia_mob_16
+ellinia_mob_17,ellinia rare marauder,35,710,112,24,46,ellinia_grove,9,mob/ellinia_mob_17
+ellinia_mob_18,ellinia rare oracle,36,744,118,25,48,ellinia_clash_zone,9,mob/ellinia_mob_18
+ellinia_mob_19,ellinia guardian,37,778,123,26,50,ellinia_sanctum,9,mob/ellinia_mob_19
+ellinia_mob_20,ellinia champion,38,812,129,27,52,ellinia_boss,9,mob/ellinia_mob_20
+perion_mob_01,perion crawler,35,262,32,12,18,perion_outskirts,5,mob/perion_mob_01
+perion_mob_02,perion shellling,36,296,38,13,20,perion_fields,5,mob/perion_mob_02
+perion_mob_03,perion sporeling,37,330,43,14,22,perion_fields,5,mob/perion_mob_03
+perion_mob_04,perion fungal guard,38,364,49,15,24,perion_upper_route,5,mob/perion_mob_04
+perion_mob_05,perion twig stalker,39,398,54,16,26,perion_lower_route,5,mob/perion_mob_05
+perion_mob_06,perion thorn howler,40,432,60,17,28,perion_grove,5,mob/perion_mob_06
+perion_mob_07,perion grave sentry,41,466,65,18,30,perion_ruins,5,mob/perion_mob_07
+perion_mob_08,perion wraith lancer,42,500,71,19,32,perion_tunnel,7,mob/perion_mob_08
+perion_mob_09,perion sand beast,43,534,76,20,34,perion_tunnel,7,mob/perion_mob_09
+perion_mob_10,perion dune alpha,44,568,82,21,36,perion_clash_zone,7,mob/perion_mob_10
+perion_mob_11,perion ember sprite,45,602,87,22,38,perion_fields,7,mob/perion_mob_11
+perion_mob_12,perion storm wisp,46,636,93,23,40,perion_sanctum,7,mob/perion_mob_12
+perion_mob_13,perion vault golem,47,670,98,24,42,perion_dungeon,7,mob/perion_mob_13
+perion_mob_14,perion chain keeper,48,704,104,25,44,perion_dungeon,7,mob/perion_mob_14
+perion_mob_15,perion elite hunter,49,738,109,26,46,perion_ruins,9,mob/perion_mob_15
+perion_mob_16,perion elite bruiser,50,772,115,27,48,perion_clash_zone,9,mob/perion_mob_16
+perion_mob_17,perion rare marauder,51,806,120,28,50,perion_grove,9,mob/perion_mob_17
+perion_mob_18,perion rare oracle,52,840,126,29,52,perion_clash_zone,9,mob/perion_mob_18
+perion_mob_19,perion guardian,53,874,131,30,54,perion_sanctum,9,mob/perion_mob_19
+perion_mob_20,perion champion,54,908,137,31,56,perion_boss,9,mob/perion_mob_20
+kerning_mob_01,kerning crawler,49,346,39,16,22,kerning_outskirts,5,mob/kerning_mob_01
+kerning_mob_02,kerning shellling,50,380,45,17,24,kerning_fields,5,mob/kerning_mob_02
+kerning_mob_03,kerning sporeling,51,414,50,18,26,kerning_fields,5,mob/kerning_mob_03
+kerning_mob_04,kerning fungal guard,52,448,56,19,28,kerning_upper_route,5,mob/kerning_mob_04
+kerning_mob_05,kerning twig stalker,53,482,61,20,30,kerning_lower_route,5,mob/kerning_mob_05
+kerning_mob_06,kerning thorn howler,54,516,67,21,32,kerning_grove,5,mob/kerning_mob_06
+kerning_mob_07,kerning grave sentry,55,550,72,22,34,kerning_ruins,5,mob/kerning_mob_07
+kerning_mob_08,kerning wraith lancer,56,584,78,23,36,kerning_tunnel,7,mob/kerning_mob_08
+kerning_mob_09,kerning sand beast,57,618,83,24,38,kerning_tunnel,7,mob/kerning_mob_09
+kerning_mob_10,kerning dune alpha,58,652,89,25,40,kerning_clash_zone,7,mob/kerning_mob_10
+kerning_mob_11,kerning ember sprite,59,686,94,26,42,kerning_fields,7,mob/kerning_mob_11
+kerning_mob_12,kerning storm wisp,60,720,100,27,44,kerning_sanctum,7,mob/kerning_mob_12
+kerning_mob_13,kerning vault golem,61,754,105,28,46,kerning_dungeon,7,mob/kerning_mob_13
+kerning_mob_14,kerning chain keeper,62,788,111,29,48,kerning_dungeon,7,mob/kerning_mob_14
+kerning_mob_15,kerning elite hunter,63,822,116,30,50,kerning_ruins,9,mob/kerning_mob_15
+kerning_mob_16,kerning elite bruiser,64,856,122,31,52,kerning_clash_zone,9,mob/kerning_mob_16
+kerning_mob_17,kerning rare marauder,65,890,127,32,54,kerning_grove,9,mob/kerning_mob_17
+kerning_mob_18,kerning rare oracle,66,924,133,33,56,kerning_clash_zone,9,mob/kerning_mob_18
+kerning_mob_19,kerning guardian,67,958,138,34,58,kerning_sanctum,9,mob/kerning_mob_19
+kerning_mob_20,kerning champion,68,992,144,35,60,kerning_boss,9,mob/kerning_mob_20
+lith_harbor_mob_01,lith harbor crawler,9,106,19,6,12,lith_harbor_outskirts,5,mob/lith_harbor_mob_01
+lith_harbor_mob_02,lith harbor shellling,10,140,25,7,14,lith_harbor_fields,5,mob/lith_harbor_mob_02
+lith_harbor_mob_03,lith harbor sporeling,11,174,30,8,16,lith_harbor_fields,5,mob/lith_harbor_mob_03
+lith_harbor_mob_04,lith harbor fungal guard,12,208,36,9,18,lith_harbor_upper_route,5,mob/lith_harbor_mob_04
+lith_harbor_mob_05,lith harbor twig stalker,13,242,41,10,20,lith_harbor_lower_route,5,mob/lith_harbor_mob_05
+lith_harbor_mob_06,lith harbor thorn howler,14,276,47,11,22,lith_harbor_grove,5,mob/lith_harbor_mob_06
+lith_harbor_mob_07,lith harbor grave sentry,15,310,52,12,24,lith_harbor_ruins,5,mob/lith_harbor_mob_07
+lith_harbor_mob_08,lith harbor wraith lancer,16,344,58,13,26,lith_harbor_tunnel,7,mob/lith_harbor_mob_08
+lith_harbor_mob_09,lith harbor sand beast,17,378,63,14,28,lith_harbor_tunnel,7,mob/lith_harbor_mob_09
+lith_harbor_mob_10,lith harbor dune alpha,18,412,69,15,30,lith_harbor_clash_zone,7,mob/lith_harbor_mob_10
+lith_harbor_mob_11,lith harbor ember sprite,19,446,74,16,32,lith_harbor_fields,7,mob/lith_harbor_mob_11
+lith_harbor_mob_12,lith harbor storm wisp,20,480,80,17,34,lith_harbor_sanctum,7,mob/lith_harbor_mob_12
+lith_harbor_mob_13,lith harbor vault golem,21,514,85,18,36,lith_harbor_dungeon,7,mob/lith_harbor_mob_13
+lith_harbor_mob_14,lith harbor chain keeper,22,548,91,19,38,lith_harbor_dungeon,7,mob/lith_harbor_mob_14
+lith_harbor_mob_15,lith harbor elite hunter,23,582,96,20,40,lith_harbor_ruins,9,mob/lith_harbor_mob_15
+lith_harbor_mob_16,lith harbor elite bruiser,24,616,102,21,42,lith_harbor_clash_zone,9,mob/lith_harbor_mob_16
+lith_harbor_mob_17,lith harbor rare marauder,25,650,107,22,44,lith_harbor_grove,9,mob/lith_harbor_mob_17
+lith_harbor_mob_18,lith harbor rare oracle,26,684,113,23,46,lith_harbor_clash_zone,9,mob/lith_harbor_mob_18
+lith_harbor_mob_19,lith harbor guardian,27,718,118,24,48,lith_harbor_sanctum,9,mob/lith_harbor_mob_19
+lith_harbor_mob_20,lith harbor champion,28,752,124,25,50,lith_harbor_boss,9,mob/lith_harbor_mob_20
+ant_tunnel_mob_01,ant tunnel crawler,29,226,29,11,17,ant_tunnel_outskirts,5,mob/ant_tunnel_mob_01
+ant_tunnel_mob_02,ant tunnel shellling,30,260,35,12,19,ant_tunnel_fields,5,mob/ant_tunnel_mob_02
+ant_tunnel_mob_03,ant tunnel sporeling,31,294,40,13,21,ant_tunnel_fields,5,mob/ant_tunnel_mob_03
+ant_tunnel_mob_04,ant tunnel fungal guard,32,328,46,14,23,ant_tunnel_upper_route,5,mob/ant_tunnel_mob_04
+ant_tunnel_mob_05,ant tunnel twig stalker,33,362,51,15,25,ant_tunnel_lower_route,5,mob/ant_tunnel_mob_05
+ant_tunnel_mob_06,ant tunnel thorn howler,34,396,57,16,27,ant_tunnel_grove,5,mob/ant_tunnel_mob_06
+ant_tunnel_mob_07,ant tunnel grave sentry,35,430,62,17,29,ant_tunnel_ruins,5,mob/ant_tunnel_mob_07
+ant_tunnel_mob_08,ant tunnel wraith lancer,36,464,68,18,31,ant_tunnel_tunnel,7,mob/ant_tunnel_mob_08
+ant_tunnel_mob_09,ant tunnel sand beast,37,498,73,19,33,ant_tunnel_tunnel,7,mob/ant_tunnel_mob_09
+ant_tunnel_mob_10,ant tunnel dune alpha,38,532,79,20,35,ant_tunnel_clash_zone,7,mob/ant_tunnel_mob_10
+ant_tunnel_mob_11,ant tunnel ember sprite,39,566,84,21,37,ant_tunnel_fields,7,mob/ant_tunnel_mob_11
+ant_tunnel_mob_12,ant tunnel storm wisp,40,600,90,22,39,ant_tunnel_sanctum,7,mob/ant_tunnel_mob_12
+ant_tunnel_mob_13,ant tunnel vault golem,41,634,95,23,41,ant_tunnel_dungeon,7,mob/ant_tunnel_mob_13
+ant_tunnel_mob_14,ant tunnel chain keeper,42,668,101,24,43,ant_tunnel_dungeon,7,mob/ant_tunnel_mob_14
+ant_tunnel_mob_15,ant tunnel elite hunter,43,702,106,25,45,ant_tunnel_ruins,9,mob/ant_tunnel_mob_15
+ant_tunnel_mob_16,ant tunnel elite bruiser,44,736,112,26,47,ant_tunnel_clash_zone,9,mob/ant_tunnel_mob_16
+ant_tunnel_mob_17,ant tunnel rare marauder,45,770,117,27,49,ant_tunnel_grove,9,mob/ant_tunnel_mob_17
+ant_tunnel_mob_18,ant tunnel rare oracle,46,804,123,28,51,ant_tunnel_clash_zone,9,mob/ant_tunnel_mob_18
+ant_tunnel_mob_19,ant tunnel guardian,47,838,128,29,53,ant_tunnel_sanctum,9,mob/ant_tunnel_mob_19
+ant_tunnel_mob_20,ant tunnel champion,48,872,134,30,55,ant_tunnel_boss,9,mob/ant_tunnel_mob_20
+sleepywood_mob_01,sleepywood crawler,43,310,36,14,20,sleepywood_outskirts,5,mob/sleepywood_mob_01
+sleepywood_mob_02,sleepywood shellling,44,344,42,15,22,sleepywood_fields,5,mob/sleepywood_mob_02
+sleepywood_mob_03,sleepywood sporeling,45,378,47,16,24,sleepywood_fields,5,mob/sleepywood_mob_03
+sleepywood_mob_04,sleepywood fungal guard,46,412,53,17,26,sleepywood_upper_route,5,mob/sleepywood_mob_04
+sleepywood_mob_05,sleepywood twig stalker,47,446,58,18,28,sleepywood_lower_route,5,mob/sleepywood_mob_05
+sleepywood_mob_06,sleepywood thorn howler,48,480,64,19,30,sleepywood_grove,5,mob/sleepywood_mob_06
+sleepywood_mob_07,sleepywood grave sentry,49,514,69,20,32,sleepywood_ruins,5,mob/sleepywood_mob_07
+sleepywood_mob_08,sleepywood wraith lancer,50,548,75,21,34,sleepywood_tunnel,7,mob/sleepywood_mob_08
+sleepywood_mob_09,sleepywood sand beast,51,582,80,22,36,sleepywood_tunnel,7,mob/sleepywood_mob_09
+sleepywood_mob_10,sleepywood dune alpha,52,616,86,23,38,sleepywood_clash_zone,7,mob/sleepywood_mob_10
+sleepywood_mob_11,sleepywood ember sprite,53,650,91,24,40,sleepywood_fields,7,mob/sleepywood_mob_11
+sleepywood_mob_12,sleepywood storm wisp,54,684,97,25,42,sleepywood_sanctum,7,mob/sleepywood_mob_12
+sleepywood_mob_13,sleepywood vault golem,55,718,102,26,44,sleepywood_dungeon,7,mob/sleepywood_mob_13
+sleepywood_mob_14,sleepywood chain keeper,56,752,108,27,46,sleepywood_dungeon,7,mob/sleepywood_mob_14
+sleepywood_mob_15,sleepywood elite hunter,57,786,113,28,48,sleepywood_ruins,9,mob/sleepywood_mob_15
+sleepywood_mob_16,sleepywood elite bruiser,58,820,119,29,50,sleepywood_clash_zone,9,mob/sleepywood_mob_16
+sleepywood_mob_17,sleepywood rare marauder,59,854,124,30,52,sleepywood_grove,9,mob/sleepywood_mob_17
+sleepywood_mob_18,sleepywood rare oracle,60,888,130,31,54,sleepywood_clash_zone,9,mob/sleepywood_mob_18
+sleepywood_mob_19,sleepywood guardian,61,922,135,32,56,sleepywood_sanctum,9,mob/sleepywood_mob_19
+sleepywood_mob_20,sleepywood champion,62,956,141,33,58,sleepywood_boss,9,mob/sleepywood_mob_20
+dungeon_mob_01,dungeon crawler,59,406,44,18,24,dungeon_outskirts,5,mob/dungeon_mob_01
+dungeon_mob_02,dungeon shellling,60,440,50,19,26,dungeon_fields,5,mob/dungeon_mob_02
+dungeon_mob_03,dungeon sporeling,61,474,55,20,28,dungeon_fields,5,mob/dungeon_mob_03
+dungeon_mob_04,dungeon fungal guard,62,508,61,21,30,dungeon_upper_route,5,mob/dungeon_mob_04
+dungeon_mob_05,dungeon twig stalker,63,542,66,22,32,dungeon_lower_route,5,mob/dungeon_mob_05
+dungeon_mob_06,dungeon thorn howler,64,576,72,23,34,dungeon_grove,5,mob/dungeon_mob_06
+dungeon_mob_07,dungeon grave sentry,65,610,77,24,36,dungeon_ruins,5,mob/dungeon_mob_07
+dungeon_mob_08,dungeon wraith lancer,66,644,83,25,38,dungeon_tunnel,7,mob/dungeon_mob_08
+dungeon_mob_09,dungeon sand beast,67,678,88,26,40,dungeon_tunnel,7,mob/dungeon_mob_09
+dungeon_mob_10,dungeon dune alpha,68,712,94,27,42,dungeon_clash_zone,7,mob/dungeon_mob_10
+dungeon_mob_11,dungeon ember sprite,69,746,99,28,44,dungeon_fields,7,mob/dungeon_mob_11
+dungeon_mob_12,dungeon storm wisp,70,780,105,29,46,dungeon_sanctum,7,mob/dungeon_mob_12
+dungeon_mob_13,dungeon vault golem,71,814,110,30,48,dungeon_dungeon,7,mob/dungeon_mob_13
+dungeon_mob_14,dungeon chain keeper,72,848,116,31,50,dungeon_dungeon,7,mob/dungeon_mob_14
+dungeon_mob_15,dungeon elite hunter,73,882,121,32,52,dungeon_ruins,9,mob/dungeon_mob_15
+dungeon_mob_16,dungeon elite bruiser,74,916,127,33,54,dungeon_clash_zone,9,mob/dungeon_mob_16
+dungeon_mob_17,dungeon rare marauder,75,950,132,34,56,dungeon_grove,9,mob/dungeon_mob_17
+dungeon_mob_18,dungeon rare oracle,76,984,138,35,58,dungeon_clash_zone,9,mob/dungeon_mob_18
+dungeon_mob_19,dungeon guardian,77,1018,143,36,60,dungeon_sanctum,9,mob/dungeon_mob_19
+dungeon_mob_20,dungeon champion,78,1052,149,37,62,dungeon_boss,9,mob/dungeon_mob_20
+forest_mob_01,forest crawler,73,490,51,22,28,forest_outskirts,5,mob/forest_mob_01
+forest_mob_02,forest shellling,74,524,57,23,30,forest_fields,5,mob/forest_mob_02
+forest_mob_03,forest sporeling,75,558,62,24,32,forest_fields,5,mob/forest_mob_03
+forest_mob_04,forest fungal guard,76,592,68,25,34,forest_upper_route,5,mob/forest_mob_04
+forest_mob_05,forest twig stalker,77,626,73,26,36,forest_lower_route,5,mob/forest_mob_05
+forest_mob_06,forest thorn howler,78,660,79,27,38,forest_grove,5,mob/forest_mob_06
+forest_mob_07,forest grave sentry,79,694,84,28,40,forest_ruins,5,mob/forest_mob_07
+forest_mob_08,forest wraith lancer,80,728,90,29,42,forest_tunnel,7,mob/forest_mob_08
+forest_mob_09,forest sand beast,81,762,95,30,44,forest_tunnel,7,mob/forest_mob_09
+forest_mob_10,forest dune alpha,82,796,101,31,46,forest_clash_zone,7,mob/forest_mob_10
+forest_mob_11,forest ember sprite,83,830,106,32,48,forest_fields,7,mob/forest_mob_11
+forest_mob_12,forest storm wisp,84,864,112,33,50,forest_sanctum,7,mob/forest_mob_12
+forest_mob_13,forest vault golem,85,898,117,34,52,forest_dungeon,7,mob/forest_mob_13
+forest_mob_14,forest chain keeper,86,932,123,35,54,forest_dungeon,7,mob/forest_mob_14
+forest_mob_15,forest elite hunter,87,966,128,36,56,forest_ruins,9,mob/forest_mob_15
+forest_mob_16,forest elite bruiser,88,1000,134,37,58,forest_clash_zone,9,mob/forest_mob_16
+forest_mob_17,forest rare marauder,89,1034,139,38,60,forest_grove,9,mob/forest_mob_17
+forest_mob_18,forest rare oracle,90,1068,145,39,62,forest_clash_zone,9,mob/forest_mob_18
+forest_mob_19,forest guardian,91,1102,150,40,64,forest_sanctum,9,mob/forest_mob_19
+forest_mob_20,forest champion,92,1136,156,41,66,forest_boss,9,mob/forest_mob_20
+desert_mob_01,desert crawler,91,598,60,26,32,desert_outskirts,5,mob/desert_mob_01
+desert_mob_02,desert shellling,92,632,66,27,34,desert_fields,5,mob/desert_mob_02
+desert_mob_03,desert sporeling,93,666,71,28,36,desert_fields,5,mob/desert_mob_03
+desert_mob_04,desert fungal guard,94,700,77,29,38,desert_upper_route,5,mob/desert_mob_04
+desert_mob_05,desert twig stalker,95,734,82,30,40,desert_lower_route,5,mob/desert_mob_05
+desert_mob_06,desert thorn howler,96,768,88,31,42,desert_grove,5,mob/desert_mob_06
+desert_mob_07,desert grave sentry,97,802,93,32,44,desert_ruins,5,mob/desert_mob_07
+desert_mob_08,desert wraith lancer,98,836,99,33,46,desert_tunnel,7,mob/desert_mob_08
+desert_mob_09,desert sand beast,99,870,104,34,48,desert_tunnel,7,mob/desert_mob_09
+desert_mob_10,desert dune alpha,100,904,110,35,50,desert_clash_zone,7,mob/desert_mob_10
+desert_mob_11,desert ember sprite,101,938,115,36,52,desert_fields,7,mob/desert_mob_11
+desert_mob_12,desert storm wisp,102,972,121,37,54,desert_sanctum,7,mob/desert_mob_12
+desert_mob_13,desert vault golem,103,1006,126,38,56,desert_dungeon,7,mob/desert_mob_13
+desert_mob_14,desert chain keeper,104,1040,132,39,58,desert_dungeon,7,mob/desert_mob_14
+desert_mob_15,desert elite hunter,105,1074,137,40,60,desert_ruins,9,mob/desert_mob_15
+desert_mob_16,desert elite bruiser,106,1108,143,41,62,desert_clash_zone,9,mob/desert_mob_16
+desert_mob_17,desert rare marauder,107,1142,148,42,64,desert_grove,9,mob/desert_mob_17
+desert_mob_18,desert rare oracle,108,1176,154,43,66,desert_clash_zone,9,mob/desert_mob_18
+desert_mob_19,desert guardian,109,1210,159,44,68,desert_sanctum,9,mob/desert_mob_19
+desert_mob_20,desert champion,110,1244,165,45,70,desert_boss,9,mob/desert_mob_20
 snail,Snail,1,12,8,1,3,henesys_hunting_ground,5,mob/snail
 orange_mushroom,Orange Mushroom,8,80,18,6,12,henesys_hunting_ground,7,mob/orange_mushroom
 horny_mushroom,Horny Mushroom,22,260,52,24,35,ant_tunnel_1,9,mob/horny_mushroom
 zombie_mushroom,Zombie Mushroom,24,340,70,28,40,ant_tunnel_1,10,mob/zombie_mushroom
-mano,Mano,20,5000,420,180,240,forest_edge,1800,boss/mano
-stumpy,Stumpy,35,12000,900,400,600,perion_rocky,2700,boss/stumpy
+dbexp_starter_fields_mob_0001,Starter Fields moss stalker,2,119,29,4,13,starter_fields_combat_02,5,mob/dbexp_starter_fields_mob_0001
+dbexp_starter_fields_mob_0002,Starter Fields briar bloom,3,160,37,4,14,starter_fields_combat_03,5,mob/dbexp_starter_fields_mob_0002
+dbexp_starter_fields_mob_0003,Starter Fields fang mauler,4,201,45,5,16,starter_fields_combat_04,7,mob/dbexp_starter_fields_mob_0003
+dbexp_starter_fields_mob_0004,Starter Fields grave sentinel,5,242,53,5,17,starter_fields_combat_05,5,mob/dbexp_starter_fields_mob_0004
+dbexp_starter_fields_mob_0005,Starter Fields gear keeper,6,283,61,5,18,starter_fields_combat_06,5,mob/dbexp_starter_fields_mob_0005
+dbexp_starter_fields_mob_0006,Starter Fields rune watcher,7,324,69,5,19,starter_fields_combat_07,7,mob/dbexp_starter_fields_mob_0006
+dbexp_starter_fields_mob_0007,Starter Fields rogue brute,8,365,77,6,21,starter_fields_combat_08,9,mob/dbexp_starter_fields_mob_0007
+dbexp_starter_fields_mob_0008,Starter Fields frost oracle,9,406,85,6,22,starter_fields_combat_09,9,mob/dbexp_starter_fields_mob_0008
+dbexp_starter_fields_mob_0009,Starter Fields briar mauler,6,191,41,5,14,starter_fields_combat_11,5,mob/dbexp_starter_fields_mob_0009
+dbexp_starter_fields_mob_0010,Starter Fields fang sentinel,7,232,49,5,15,starter_fields_combat_12,5,mob/dbexp_starter_fields_mob_0010
+dbexp_starter_fields_mob_0011,Starter Fields grave keeper,8,273,57,6,17,starter_fields_combat_13,7,mob/dbexp_starter_fields_mob_0011
+dbexp_starter_fields_mob_0012,Starter Fields gear watcher,9,314,65,6,18,starter_fields_combat_14,5,mob/dbexp_starter_fields_mob_0012
+dbexp_starter_fields_mob_0013,Starter Fields rune brute,10,355,73,6,19,starter_fields_combat_15,5,mob/dbexp_starter_fields_mob_0013
+dbexp_starter_fields_mob_0014,Starter Fields rogue oracle,11,396,81,6,20,starter_fields_combat_16,7,mob/dbexp_starter_fields_mob_0014
+dbexp_starter_fields_mob_0015,Starter Fields frost hunter,12,437,89,7,22,starter_fields_combat_17,9,mob/dbexp_starter_fields_mob_0015
+dbexp_starter_fields_mob_0016,Starter Fields drake binder,13,478,97,7,23,starter_fields_combat_18,9,mob/dbexp_starter_fields_mob_0016
+dbexp_starter_fields_mob_0017,Starter Fields fang keeper,10,263,53,6,15,starter_fields_combat_20,5,mob/dbexp_starter_fields_mob_0017
+dbexp_starter_fields_mob_0018,Starter Fields grave watcher,11,304,61,6,16,starter_fields_combat_21,5,mob/dbexp_starter_fields_mob_0018
+dbexp_starter_fields_mob_0019,Starter Fields gear brute,12,345,69,7,18,starter_fields_combat_22,7,mob/dbexp_starter_fields_mob_0019
+dbexp_starter_fields_mob_0020,Starter Fields rune oracle,13,386,77,7,19,starter_fields_combat_23,5,mob/dbexp_starter_fields_mob_0020
+dbexp_starter_fields_mob_0021,Starter Fields rogue hunter,14,427,85,7,20,starter_fields_combat_24,5,mob/dbexp_starter_fields_mob_0021
+dbexp_starter_fields_mob_0022,Starter Fields frost binder,15,468,93,7,21,starter_fields_combat_25,7,mob/dbexp_starter_fields_mob_0022
+dbexp_starter_fields_mob_0023,Starter Fields drake warden,16,509,101,8,23,starter_fields_combat_26,9,mob/dbexp_starter_fields_mob_0023
+dbexp_starter_fields_mob_0024,Starter Fields tide runner,17,550,109,8,24,starter_fields_combat_27,9,mob/dbexp_starter_fields_mob_0024
+dbexp_starter_fields_mob_0025,Starter Fields grave brute,14,335,65,7,16,starter_fields_combat_29,5,mob/dbexp_starter_fields_mob_0025
+dbexp_starter_fields_mob_0026,Starter Fields gear oracle,15,376,73,7,17,starter_fields_combat_30,5,mob/dbexp_starter_fields_mob_0026
+dbexp_starter_fields_mob_0027,Starter Fields rune hunter,16,417,81,8,19,starter_fields_combat_31,7,mob/dbexp_starter_fields_mob_0027
+dbexp_starter_fields_mob_0028,Starter Fields rogue binder,17,458,89,8,20,starter_fields_combat_32,5,mob/dbexp_starter_fields_mob_0028
+dbexp_starter_fields_mob_0029,Starter Fields frost warden,18,499,97,8,21,starter_fields_combat_33,5,mob/dbexp_starter_fields_mob_0029
+dbexp_starter_fields_mob_0030,Starter Fields drake runner,19,540,105,8,22,starter_fields_combat_34,7,mob/dbexp_starter_fields_mob_0030
+dbexp_starter_fields_mob_0031,Starter Fields tide stalker,20,581,113,9,24,starter_fields_combat_35,9,mob/dbexp_starter_fields_mob_0031
+dbexp_starter_fields_mob_0032,Starter Fields dusk bloom,21,622,121,9,25,starter_fields_combat_36,9,mob/dbexp_starter_fields_mob_0032
+dbexp_starter_fields_mob_0033,Starter Fields gear hunter,18,407,77,8,17,starter_fields_combat_38,5,mob/dbexp_starter_fields_mob_0033
+dbexp_starter_fields_mob_0034,Starter Fields rune binder,19,448,85,8,18,starter_fields_combat_39,5,mob/dbexp_starter_fields_mob_0034
+dbexp_starter_fields_mob_0035,Starter Fields rogue warden,20,489,93,9,20,starter_fields_combat_40,7,mob/dbexp_starter_fields_mob_0035
+dbexp_starter_fields_mob_0036,Starter Fields frost runner,21,530,101,9,21,starter_fields_combat_41,5,mob/dbexp_starter_fields_mob_0036
+dbexp_starter_fields_mob_0037,Starter Fields drake stalker,22,571,109,9,22,starter_fields_combat_42,5,mob/dbexp_starter_fields_mob_0037
+dbexp_starter_fields_mob_0038,Starter Fields tide bloom,23,612,117,9,23,starter_fields_combat_43,7,mob/dbexp_starter_fields_mob_0038
+dbexp_starter_fields_mob_0039,Starter Fields dusk mauler,24,653,125,10,25,starter_fields_combat_44,9,mob/dbexp_starter_fields_mob_0039
+dbexp_starter_fields_mob_0040,Starter Fields sprout sentinel,25,694,133,10,26,starter_fields_combat_45,9,mob/dbexp_starter_fields_mob_0040
+dbexp_starter_fields_mob_0041,Starter Fields rune warden,22,479,89,9,18,starter_fields_combat_47,5,mob/dbexp_starter_fields_mob_0041
+dbexp_starter_fields_mob_0042,Starter Fields rogue runner,23,520,97,9,19,starter_fields_combat_48,5,mob/dbexp_starter_fields_mob_0042
+dbexp_starter_fields_mob_0043,Starter Fields frost stalker,24,561,105,10,21,starter_fields_combat_49,7,mob/dbexp_starter_fields_mob_0043
+dbexp_starter_fields_mob_0044,Starter Fields drake bloom,25,602,113,10,22,starter_fields_combat_50,5,mob/dbexp_starter_fields_mob_0044
+dbexp_starter_fields_mob_0045,Starter Fields tide mauler,26,643,121,10,23,starter_fields_combat_51,5,mob/dbexp_starter_fields_mob_0045
+dbexp_starter_fields_mob_0046,Starter Fields dusk sentinel,27,684,129,10,24,starter_fields_combat_52,7,mob/dbexp_starter_fields_mob_0046
+dbexp_starter_fields_mob_0047,Starter Fields sprout keeper,28,725,137,11,26,starter_fields_combat_53,9,mob/dbexp_starter_fields_mob_0047
+dbexp_starter_fields_mob_0048,Starter Fields moss watcher,29,766,145,11,27,starter_fields_combat_54,9,mob/dbexp_starter_fields_mob_0048
+dbexp_starter_fields_mob_0049,Starter Fields rogue stalker,26,551,101,10,19,starter_fields_combat_56,5,mob/dbexp_starter_fields_mob_0049
+dbexp_starter_fields_mob_0050,Starter Fields frost bloom,27,592,109,10,20,starter_fields_combat_57,5,mob/dbexp_starter_fields_mob_0050
+dbexp_starter_fields_mob_0051,Starter Fields drake mauler,28,633,117,11,22,starter_fields_combat_58,7,mob/dbexp_starter_fields_mob_0051
+dbexp_starter_fields_mob_0052,Starter Fields tide sentinel,29,674,125,11,23,starter_fields_combat_59,5,mob/dbexp_starter_fields_mob_0052
+dbexp_starter_fields_mob_0053,Starter Fields dusk keeper,30,715,133,11,24,starter_fields_combat_60,5,mob/dbexp_starter_fields_mob_0053
+dbexp_starter_fields_mob_0054,Starter Fields sprout watcher,31,756,141,11,25,starter_fields_combat_61,7,mob/dbexp_starter_fields_mob_0054
+dbexp_starter_fields_mob_0055,Starter Fields moss brute,32,797,149,12,27,starter_fields_combat_62,9,mob/dbexp_starter_fields_mob_0055
+dbexp_starter_fields_mob_0056,Starter Fields briar oracle,33,838,157,12,28,starter_fields_combat_63,9,mob/dbexp_starter_fields_mob_0056
+dbexp_starter_fields_mob_0057,Starter Fields frost mauler,30,623,113,11,20,starter_fields_combat_65,5,mob/dbexp_starter_fields_mob_0057
+dbexp_starter_fields_mob_0058,Starter Fields drake sentinel,31,664,121,11,21,starter_fields_combat_66,5,mob/dbexp_starter_fields_mob_0058
+dbexp_starter_fields_mob_0059,Starter Fields tide keeper,32,705,129,12,23,starter_fields_combat_67,7,mob/dbexp_starter_fields_mob_0059
+dbexp_starter_fields_mob_0060,Starter Fields dusk watcher,33,746,137,12,24,starter_fields_combat_68,5,mob/dbexp_starter_fields_mob_0060
+dbexp_starter_fields_mob_0061,Starter Fields sprout brute,34,787,145,12,25,starter_fields_combat_69,5,mob/dbexp_starter_fields_mob_0061
+dbexp_starter_fields_mob_0062,Starter Fields moss oracle,35,828,153,12,26,starter_fields_combat_70,7,mob/dbexp_starter_fields_mob_0062
+dbexp_starter_fields_mob_0063,Starter Fields briar hunter,36,869,161,13,28,starter_fields_combat_71,9,mob/dbexp_starter_fields_mob_0063
+dbexp_starter_fields_mob_0064,Starter Fields fang binder,37,910,169,13,29,starter_fields_combat_72,9,mob/dbexp_starter_fields_mob_0064
+dbexp_henesys_plains_mob_0065,Henesys Plains moss stalker,7,209,44,5,14,henesys_plains_combat_02,5,mob/dbexp_henesys_plains_mob_0065
+dbexp_henesys_plains_mob_0066,Henesys Plains briar bloom,8,250,52,6,16,henesys_plains_combat_03,5,mob/dbexp_henesys_plains_mob_0066
+dbexp_henesys_plains_mob_0067,Henesys Plains fang mauler,9,291,60,6,17,henesys_plains_combat_04,7,mob/dbexp_henesys_plains_mob_0067
+dbexp_henesys_plains_mob_0068,Henesys Plains grave sentinel,10,332,68,6,18,henesys_plains_combat_05,5,mob/dbexp_henesys_plains_mob_0068
+dbexp_henesys_plains_mob_0069,Henesys Plains gear keeper,11,373,76,6,19,henesys_plains_combat_06,5,mob/dbexp_henesys_plains_mob_0069
+dbexp_henesys_plains_mob_0070,Henesys Plains rune watcher,12,414,84,7,21,henesys_plains_combat_07,7,mob/dbexp_henesys_plains_mob_0070
+dbexp_henesys_plains_mob_0071,Henesys Plains rogue brute,13,455,92,7,22,henesys_plains_combat_08,9,mob/dbexp_henesys_plains_mob_0071
+dbexp_henesys_plains_mob_0072,Henesys Plains frost oracle,14,496,100,7,23,henesys_plains_combat_09,9,mob/dbexp_henesys_plains_mob_0072
+dbexp_henesys_plains_mob_0073,Henesys Plains briar mauler,11,281,56,6,15,henesys_plains_combat_11,5,mob/dbexp_henesys_plains_mob_0073
+dbexp_henesys_plains_mob_0074,Henesys Plains fang sentinel,12,322,64,7,17,henesys_plains_combat_12,5,mob/dbexp_henesys_plains_mob_0074
+dbexp_henesys_plains_mob_0075,Henesys Plains grave keeper,13,363,72,7,18,henesys_plains_combat_13,7,mob/dbexp_henesys_plains_mob_0075
+dbexp_henesys_plains_mob_0076,Henesys Plains gear watcher,14,404,80,7,19,henesys_plains_combat_14,5,mob/dbexp_henesys_plains_mob_0076
+dbexp_henesys_plains_mob_0077,Henesys Plains rune brute,15,445,88,7,20,henesys_plains_combat_15,5,mob/dbexp_henesys_plains_mob_0077
+dbexp_henesys_plains_mob_0078,Henesys Plains rogue oracle,16,486,96,8,22,henesys_plains_combat_16,7,mob/dbexp_henesys_plains_mob_0078
+dbexp_henesys_plains_mob_0079,Henesys Plains frost hunter,17,527,104,8,23,henesys_plains_combat_17,9,mob/dbexp_henesys_plains_mob_0079
+dbexp_henesys_plains_mob_0080,Henesys Plains drake binder,18,568,112,8,24,henesys_plains_combat_18,9,mob/dbexp_henesys_plains_mob_0080
+dbexp_henesys_plains_mob_0081,Henesys Plains fang keeper,15,353,68,7,16,henesys_plains_combat_20,5,mob/dbexp_henesys_plains_mob_0081
+dbexp_henesys_plains_mob_0082,Henesys Plains grave watcher,16,394,76,8,18,henesys_plains_combat_21,5,mob/dbexp_henesys_plains_mob_0082
+dbexp_henesys_plains_mob_0083,Henesys Plains gear brute,17,435,84,8,19,henesys_plains_combat_22,7,mob/dbexp_henesys_plains_mob_0083
+dbexp_henesys_plains_mob_0084,Henesys Plains rune oracle,18,476,92,8,20,henesys_plains_combat_23,5,mob/dbexp_henesys_plains_mob_0084
+dbexp_henesys_plains_mob_0085,Henesys Plains rogue hunter,19,517,100,8,21,henesys_plains_combat_24,5,mob/dbexp_henesys_plains_mob_0085
+dbexp_henesys_plains_mob_0086,Henesys Plains frost binder,20,558,108,9,23,henesys_plains_combat_25,7,mob/dbexp_henesys_plains_mob_0086
+dbexp_henesys_plains_mob_0087,Henesys Plains drake warden,21,599,116,9,24,henesys_plains_combat_26,9,mob/dbexp_henesys_plains_mob_0087
+dbexp_henesys_plains_mob_0088,Henesys Plains tide runner,22,640,124,9,25,henesys_plains_combat_27,9,mob/dbexp_henesys_plains_mob_0088
+dbexp_henesys_plains_mob_0089,Henesys Plains grave brute,19,425,80,8,17,henesys_plains_combat_29,5,mob/dbexp_henesys_plains_mob_0089
+dbexp_henesys_plains_mob_0090,Henesys Plains gear oracle,20,466,88,9,19,henesys_plains_combat_30,5,mob/dbexp_henesys_plains_mob_0090
+dbexp_henesys_plains_mob_0091,Henesys Plains rune hunter,21,507,96,9,20,henesys_plains_combat_31,7,mob/dbexp_henesys_plains_mob_0091
+dbexp_henesys_plains_mob_0092,Henesys Plains rogue binder,22,548,104,9,21,henesys_plains_combat_32,5,mob/dbexp_henesys_plains_mob_0092
+dbexp_henesys_plains_mob_0093,Henesys Plains frost warden,23,589,112,9,22,henesys_plains_combat_33,5,mob/dbexp_henesys_plains_mob_0093
+dbexp_henesys_plains_mob_0094,Henesys Plains drake runner,24,630,120,10,24,henesys_plains_combat_34,7,mob/dbexp_henesys_plains_mob_0094
+dbexp_henesys_plains_mob_0095,Henesys Plains tide stalker,25,671,128,10,25,henesys_plains_combat_35,9,mob/dbexp_henesys_plains_mob_0095
+dbexp_henesys_plains_mob_0096,Henesys Plains dusk bloom,26,712,136,10,26,henesys_plains_combat_36,9,mob/dbexp_henesys_plains_mob_0096
+dbexp_henesys_plains_mob_0097,Henesys Plains gear hunter,23,497,92,9,18,henesys_plains_combat_38,5,mob/dbexp_henesys_plains_mob_0097
+dbexp_henesys_plains_mob_0098,Henesys Plains rune binder,24,538,100,10,20,henesys_plains_combat_39,5,mob/dbexp_henesys_plains_mob_0098
+dbexp_henesys_plains_mob_0099,Henesys Plains rogue warden,25,579,108,10,21,henesys_plains_combat_40,7,mob/dbexp_henesys_plains_mob_0099
+dbexp_henesys_plains_mob_0100,Henesys Plains frost runner,26,620,116,10,22,henesys_plains_combat_41,5,mob/dbexp_henesys_plains_mob_0100
+dbexp_henesys_plains_mob_0101,Henesys Plains drake stalker,27,661,124,10,23,henesys_plains_combat_42,5,mob/dbexp_henesys_plains_mob_0101
+dbexp_henesys_plains_mob_0102,Henesys Plains tide bloom,28,702,132,11,25,henesys_plains_combat_43,7,mob/dbexp_henesys_plains_mob_0102
+dbexp_henesys_plains_mob_0103,Henesys Plains dusk mauler,29,743,140,11,26,henesys_plains_combat_44,9,mob/dbexp_henesys_plains_mob_0103
+dbexp_henesys_plains_mob_0104,Henesys Plains sprout sentinel,30,784,148,11,27,henesys_plains_combat_45,9,mob/dbexp_henesys_plains_mob_0104
+dbexp_henesys_plains_mob_0105,Henesys Plains rune warden,27,569,104,10,19,henesys_plains_combat_47,5,mob/dbexp_henesys_plains_mob_0105
+dbexp_henesys_plains_mob_0106,Henesys Plains rogue runner,28,610,112,11,21,henesys_plains_combat_48,5,mob/dbexp_henesys_plains_mob_0106
+dbexp_henesys_plains_mob_0107,Henesys Plains frost stalker,29,651,120,11,22,henesys_plains_combat_49,7,mob/dbexp_henesys_plains_mob_0107
+dbexp_henesys_plains_mob_0108,Henesys Plains drake bloom,30,692,128,11,23,henesys_plains_combat_50,5,mob/dbexp_henesys_plains_mob_0108
+dbexp_henesys_plains_mob_0109,Henesys Plains tide mauler,31,733,136,11,24,henesys_plains_combat_51,5,mob/dbexp_henesys_plains_mob_0109
+dbexp_henesys_plains_mob_0110,Henesys Plains dusk sentinel,32,774,144,12,26,henesys_plains_combat_52,7,mob/dbexp_henesys_plains_mob_0110
+dbexp_henesys_plains_mob_0111,Henesys Plains sprout keeper,33,815,152,12,27,henesys_plains_combat_53,9,mob/dbexp_henesys_plains_mob_0111
+dbexp_henesys_plains_mob_0112,Henesys Plains moss watcher,34,856,160,12,28,henesys_plains_combat_54,9,mob/dbexp_henesys_plains_mob_0112
+dbexp_henesys_plains_mob_0113,Henesys Plains rogue stalker,31,641,116,11,20,henesys_plains_combat_56,5,mob/dbexp_henesys_plains_mob_0113
+dbexp_henesys_plains_mob_0114,Henesys Plains frost bloom,32,682,124,12,22,henesys_plains_combat_57,5,mob/dbexp_henesys_plains_mob_0114
+dbexp_henesys_plains_mob_0115,Henesys Plains drake mauler,33,723,132,12,23,henesys_plains_combat_58,7,mob/dbexp_henesys_plains_mob_0115
+dbexp_henesys_plains_mob_0116,Henesys Plains tide sentinel,34,764,140,12,24,henesys_plains_combat_59,5,mob/dbexp_henesys_plains_mob_0116
+dbexp_henesys_plains_mob_0117,Henesys Plains dusk keeper,35,805,148,12,25,henesys_plains_combat_60,5,mob/dbexp_henesys_plains_mob_0117
+dbexp_henesys_plains_mob_0118,Henesys Plains sprout watcher,36,846,156,13,27,henesys_plains_combat_61,7,mob/dbexp_henesys_plains_mob_0118
+dbexp_henesys_plains_mob_0119,Henesys Plains moss brute,37,887,164,13,28,henesys_plains_combat_62,9,mob/dbexp_henesys_plains_mob_0119
+dbexp_henesys_plains_mob_0120,Henesys Plains briar oracle,38,928,172,13,29,henesys_plains_combat_63,9,mob/dbexp_henesys_plains_mob_0120
+dbexp_henesys_plains_mob_0121,Henesys Plains frost mauler,35,713,128,12,21,henesys_plains_combat_65,5,mob/dbexp_henesys_plains_mob_0121
+dbexp_henesys_plains_mob_0122,Henesys Plains drake sentinel,36,754,136,13,23,henesys_plains_combat_66,5,mob/dbexp_henesys_plains_mob_0122
+dbexp_henesys_plains_mob_0123,Henesys Plains tide keeper,37,795,144,13,24,henesys_plains_combat_67,7,mob/dbexp_henesys_plains_mob_0123
+dbexp_henesys_plains_mob_0124,Henesys Plains dusk watcher,38,836,152,13,25,henesys_plains_combat_68,5,mob/dbexp_henesys_plains_mob_0124
+dbexp_henesys_plains_mob_0125,Henesys Plains sprout brute,39,877,160,13,26,henesys_plains_combat_69,5,mob/dbexp_henesys_plains_mob_0125
+dbexp_henesys_plains_mob_0126,Henesys Plains moss oracle,40,918,168,14,28,henesys_plains_combat_70,7,mob/dbexp_henesys_plains_mob_0126
+dbexp_henesys_plains_mob_0127,Henesys Plains briar hunter,41,959,176,14,29,henesys_plains_combat_71,9,mob/dbexp_henesys_plains_mob_0127
+dbexp_henesys_plains_mob_0128,Henesys Plains fang binder,42,1000,184,14,30,henesys_plains_combat_72,9,mob/dbexp_henesys_plains_mob_0128
+dbexp_ellinia_forest_mob_0129,Ellinia Forest moss stalker,19,425,80,8,17,ellinia_forest_combat_02,5,mob/dbexp_ellinia_forest_mob_0129
+dbexp_ellinia_forest_mob_0130,Ellinia Forest briar bloom,20,466,88,9,19,ellinia_forest_combat_03,5,mob/dbexp_ellinia_forest_mob_0130
+dbexp_ellinia_forest_mob_0131,Ellinia Forest fang mauler,21,507,96,9,20,ellinia_forest_combat_04,7,mob/dbexp_ellinia_forest_mob_0131
+dbexp_ellinia_forest_mob_0132,Ellinia Forest grave sentinel,22,548,104,9,21,ellinia_forest_combat_05,5,mob/dbexp_ellinia_forest_mob_0132
+dbexp_ellinia_forest_mob_0133,Ellinia Forest gear keeper,23,589,112,9,22,ellinia_forest_combat_06,5,mob/dbexp_ellinia_forest_mob_0133
+dbexp_ellinia_forest_mob_0134,Ellinia Forest rune watcher,24,630,120,10,24,ellinia_forest_combat_07,7,mob/dbexp_ellinia_forest_mob_0134
+dbexp_ellinia_forest_mob_0135,Ellinia Forest rogue brute,25,671,128,10,25,ellinia_forest_combat_08,9,mob/dbexp_ellinia_forest_mob_0135
+dbexp_ellinia_forest_mob_0136,Ellinia Forest frost oracle,26,712,136,10,26,ellinia_forest_combat_09,9,mob/dbexp_ellinia_forest_mob_0136
+dbexp_ellinia_forest_mob_0137,Ellinia Forest briar mauler,23,497,92,9,18,ellinia_forest_combat_11,5,mob/dbexp_ellinia_forest_mob_0137
+dbexp_ellinia_forest_mob_0138,Ellinia Forest fang sentinel,24,538,100,10,20,ellinia_forest_combat_12,5,mob/dbexp_ellinia_forest_mob_0138
+dbexp_ellinia_forest_mob_0139,Ellinia Forest grave keeper,25,579,108,10,21,ellinia_forest_combat_13,7,mob/dbexp_ellinia_forest_mob_0139
+dbexp_ellinia_forest_mob_0140,Ellinia Forest gear watcher,26,620,116,10,22,ellinia_forest_combat_14,5,mob/dbexp_ellinia_forest_mob_0140
+dbexp_ellinia_forest_mob_0141,Ellinia Forest rune brute,27,661,124,10,23,ellinia_forest_combat_15,5,mob/dbexp_ellinia_forest_mob_0141
+dbexp_ellinia_forest_mob_0142,Ellinia Forest rogue oracle,28,702,132,11,25,ellinia_forest_combat_16,7,mob/dbexp_ellinia_forest_mob_0142
+dbexp_ellinia_forest_mob_0143,Ellinia Forest frost hunter,29,743,140,11,26,ellinia_forest_combat_17,9,mob/dbexp_ellinia_forest_mob_0143
+dbexp_ellinia_forest_mob_0144,Ellinia Forest drake binder,30,784,148,11,27,ellinia_forest_combat_18,9,mob/dbexp_ellinia_forest_mob_0144
+dbexp_ellinia_forest_mob_0145,Ellinia Forest fang keeper,27,569,104,10,19,ellinia_forest_combat_20,5,mob/dbexp_ellinia_forest_mob_0145
+dbexp_ellinia_forest_mob_0146,Ellinia Forest grave watcher,28,610,112,11,21,ellinia_forest_combat_21,5,mob/dbexp_ellinia_forest_mob_0146
+dbexp_ellinia_forest_mob_0147,Ellinia Forest gear brute,29,651,120,11,22,ellinia_forest_combat_22,7,mob/dbexp_ellinia_forest_mob_0147
+dbexp_ellinia_forest_mob_0148,Ellinia Forest rune oracle,30,692,128,11,23,ellinia_forest_combat_23,5,mob/dbexp_ellinia_forest_mob_0148
+dbexp_ellinia_forest_mob_0149,Ellinia Forest rogue hunter,31,733,136,11,24,ellinia_forest_combat_24,5,mob/dbexp_ellinia_forest_mob_0149
+dbexp_ellinia_forest_mob_0150,Ellinia Forest frost binder,32,774,144,12,26,ellinia_forest_combat_25,7,mob/dbexp_ellinia_forest_mob_0150
+dbexp_ellinia_forest_mob_0151,Ellinia Forest drake warden,33,815,152,12,27,ellinia_forest_combat_26,9,mob/dbexp_ellinia_forest_mob_0151
+dbexp_ellinia_forest_mob_0152,Ellinia Forest tide runner,34,856,160,12,28,ellinia_forest_combat_27,9,mob/dbexp_ellinia_forest_mob_0152
+dbexp_ellinia_forest_mob_0153,Ellinia Forest grave brute,31,641,116,11,20,ellinia_forest_combat_29,5,mob/dbexp_ellinia_forest_mob_0153
+dbexp_ellinia_forest_mob_0154,Ellinia Forest gear oracle,32,682,124,12,22,ellinia_forest_combat_30,5,mob/dbexp_ellinia_forest_mob_0154
+dbexp_ellinia_forest_mob_0155,Ellinia Forest rune hunter,33,723,132,12,23,ellinia_forest_combat_31,7,mob/dbexp_ellinia_forest_mob_0155
+dbexp_ellinia_forest_mob_0156,Ellinia Forest rogue binder,34,764,140,12,24,ellinia_forest_combat_32,5,mob/dbexp_ellinia_forest_mob_0156
+dbexp_ellinia_forest_mob_0157,Ellinia Forest frost warden,35,805,148,12,25,ellinia_forest_combat_33,5,mob/dbexp_ellinia_forest_mob_0157
+dbexp_ellinia_forest_mob_0158,Ellinia Forest drake runner,36,846,156,13,27,ellinia_forest_combat_34,7,mob/dbexp_ellinia_forest_mob_0158
+dbexp_ellinia_forest_mob_0159,Ellinia Forest tide stalker,37,887,164,13,28,ellinia_forest_combat_35,9,mob/dbexp_ellinia_forest_mob_0159
+dbexp_ellinia_forest_mob_0160,Ellinia Forest dusk bloom,38,928,172,13,29,ellinia_forest_combat_36,9,mob/dbexp_ellinia_forest_mob_0160
+dbexp_ellinia_forest_mob_0161,Ellinia Forest gear hunter,35,713,128,12,21,ellinia_forest_combat_38,5,mob/dbexp_ellinia_forest_mob_0161
+dbexp_ellinia_forest_mob_0162,Ellinia Forest rune binder,36,754,136,13,23,ellinia_forest_combat_39,5,mob/dbexp_ellinia_forest_mob_0162
+dbexp_ellinia_forest_mob_0163,Ellinia Forest rogue warden,37,795,144,13,24,ellinia_forest_combat_40,7,mob/dbexp_ellinia_forest_mob_0163
+dbexp_ellinia_forest_mob_0164,Ellinia Forest frost runner,38,836,152,13,25,ellinia_forest_combat_41,5,mob/dbexp_ellinia_forest_mob_0164
+dbexp_ellinia_forest_mob_0165,Ellinia Forest drake stalker,39,877,160,13,26,ellinia_forest_combat_42,5,mob/dbexp_ellinia_forest_mob_0165
+dbexp_ellinia_forest_mob_0166,Ellinia Forest tide bloom,40,918,168,14,28,ellinia_forest_combat_43,7,mob/dbexp_ellinia_forest_mob_0166
+dbexp_ellinia_forest_mob_0167,Ellinia Forest dusk mauler,41,959,176,14,29,ellinia_forest_combat_44,9,mob/dbexp_ellinia_forest_mob_0167
+dbexp_ellinia_forest_mob_0168,Ellinia Forest sprout sentinel,42,1000,184,14,30,ellinia_forest_combat_45,9,mob/dbexp_ellinia_forest_mob_0168
+dbexp_ellinia_forest_mob_0169,Ellinia Forest rune warden,39,785,140,13,22,ellinia_forest_combat_47,5,mob/dbexp_ellinia_forest_mob_0169
+dbexp_ellinia_forest_mob_0170,Ellinia Forest rogue runner,40,826,148,14,24,ellinia_forest_combat_48,5,mob/dbexp_ellinia_forest_mob_0170
+dbexp_ellinia_forest_mob_0171,Ellinia Forest frost stalker,41,867,156,14,25,ellinia_forest_combat_49,7,mob/dbexp_ellinia_forest_mob_0171
+dbexp_ellinia_forest_mob_0172,Ellinia Forest drake bloom,42,908,164,14,26,ellinia_forest_combat_50,5,mob/dbexp_ellinia_forest_mob_0172
+dbexp_ellinia_forest_mob_0173,Ellinia Forest tide mauler,43,949,172,14,27,ellinia_forest_combat_51,5,mob/dbexp_ellinia_forest_mob_0173
+dbexp_ellinia_forest_mob_0174,Ellinia Forest dusk sentinel,44,990,180,15,29,ellinia_forest_combat_52,7,mob/dbexp_ellinia_forest_mob_0174
+dbexp_ellinia_forest_mob_0175,Ellinia Forest sprout keeper,45,1031,188,15,30,ellinia_forest_combat_53,9,mob/dbexp_ellinia_forest_mob_0175
+dbexp_ellinia_forest_mob_0176,Ellinia Forest moss watcher,46,1072,196,15,31,ellinia_forest_combat_54,9,mob/dbexp_ellinia_forest_mob_0176
+dbexp_ellinia_forest_mob_0177,Ellinia Forest rogue stalker,43,857,152,14,23,ellinia_forest_combat_56,5,mob/dbexp_ellinia_forest_mob_0177
+dbexp_ellinia_forest_mob_0178,Ellinia Forest frost bloom,44,898,160,15,25,ellinia_forest_combat_57,5,mob/dbexp_ellinia_forest_mob_0178
+dbexp_ellinia_forest_mob_0179,Ellinia Forest drake mauler,45,939,168,15,26,ellinia_forest_combat_58,7,mob/dbexp_ellinia_forest_mob_0179
+dbexp_ellinia_forest_mob_0180,Ellinia Forest tide sentinel,46,980,176,15,27,ellinia_forest_combat_59,5,mob/dbexp_ellinia_forest_mob_0180
+dbexp_ellinia_forest_mob_0181,Ellinia Forest dusk keeper,47,1021,184,15,28,ellinia_forest_combat_60,5,mob/dbexp_ellinia_forest_mob_0181
+dbexp_ellinia_forest_mob_0182,Ellinia Forest sprout watcher,48,1062,192,16,30,ellinia_forest_combat_61,7,mob/dbexp_ellinia_forest_mob_0182
+dbexp_ellinia_forest_mob_0183,Ellinia Forest moss brute,49,1103,200,16,31,ellinia_forest_combat_62,9,mob/dbexp_ellinia_forest_mob_0183
+dbexp_ellinia_forest_mob_0184,Ellinia Forest briar oracle,50,1144,208,16,32,ellinia_forest_combat_63,9,mob/dbexp_ellinia_forest_mob_0184
+dbexp_ellinia_forest_mob_0185,Ellinia Forest frost mauler,47,929,164,15,24,ellinia_forest_combat_65,5,mob/dbexp_ellinia_forest_mob_0185
+dbexp_ellinia_forest_mob_0186,Ellinia Forest drake sentinel,48,970,172,16,26,ellinia_forest_combat_66,5,mob/dbexp_ellinia_forest_mob_0186
+dbexp_ellinia_forest_mob_0187,Ellinia Forest tide keeper,49,1011,180,16,27,ellinia_forest_combat_67,7,mob/dbexp_ellinia_forest_mob_0187
+dbexp_ellinia_forest_mob_0188,Ellinia Forest dusk watcher,50,1052,188,16,28,ellinia_forest_combat_68,5,mob/dbexp_ellinia_forest_mob_0188
+dbexp_ellinia_forest_mob_0189,Ellinia Forest sprout brute,51,1093,196,16,29,ellinia_forest_combat_69,5,mob/dbexp_ellinia_forest_mob_0189
+dbexp_ellinia_forest_mob_0190,Ellinia Forest moss oracle,52,1134,204,17,31,ellinia_forest_combat_70,7,mob/dbexp_ellinia_forest_mob_0190
+dbexp_ellinia_forest_mob_0191,Ellinia Forest briar hunter,53,1175,212,17,32,ellinia_forest_combat_71,9,mob/dbexp_ellinia_forest_mob_0191
+dbexp_ellinia_forest_mob_0192,Ellinia Forest fang binder,54,1216,220,17,33,ellinia_forest_combat_72,9,mob/dbexp_ellinia_forest_mob_0192
+dbexp_perion_rocklands_mob_0193,Perion Rocklands moss stalker,29,605,110,11,20,perion_rocklands_combat_02,5,mob/dbexp_perion_rocklands_mob_0193
+dbexp_perion_rocklands_mob_0194,Perion Rocklands briar bloom,30,646,118,11,21,perion_rocklands_combat_03,5,mob/dbexp_perion_rocklands_mob_0194
+dbexp_perion_rocklands_mob_0195,Perion Rocklands fang mauler,31,687,126,11,22,perion_rocklands_combat_04,7,mob/dbexp_perion_rocklands_mob_0195
+dbexp_perion_rocklands_mob_0196,Perion Rocklands grave sentinel,32,728,134,12,24,perion_rocklands_combat_05,5,mob/dbexp_perion_rocklands_mob_0196
+dbexp_perion_rocklands_mob_0197,Perion Rocklands gear keeper,33,769,142,12,25,perion_rocklands_combat_06,5,mob/dbexp_perion_rocklands_mob_0197
+dbexp_perion_rocklands_mob_0198,Perion Rocklands rune watcher,34,810,150,12,26,perion_rocklands_combat_07,7,mob/dbexp_perion_rocklands_mob_0198
+dbexp_perion_rocklands_mob_0199,Perion Rocklands rogue brute,35,851,158,12,27,perion_rocklands_combat_08,9,mob/dbexp_perion_rocklands_mob_0199
+dbexp_perion_rocklands_mob_0200,Perion Rocklands frost oracle,36,892,166,13,29,perion_rocklands_combat_09,9,mob/dbexp_perion_rocklands_mob_0200
+dbexp_perion_rocklands_mob_0201,Perion Rocklands briar mauler,33,677,122,12,21,perion_rocklands_combat_11,5,mob/dbexp_perion_rocklands_mob_0201
+dbexp_perion_rocklands_mob_0202,Perion Rocklands fang sentinel,34,718,130,12,22,perion_rocklands_combat_12,5,mob/dbexp_perion_rocklands_mob_0202
+dbexp_perion_rocklands_mob_0203,Perion Rocklands grave keeper,35,759,138,12,23,perion_rocklands_combat_13,7,mob/dbexp_perion_rocklands_mob_0203
+dbexp_perion_rocklands_mob_0204,Perion Rocklands gear watcher,36,800,146,13,25,perion_rocklands_combat_14,5,mob/dbexp_perion_rocklands_mob_0204
+dbexp_perion_rocklands_mob_0205,Perion Rocklands rune brute,37,841,154,13,26,perion_rocklands_combat_15,5,mob/dbexp_perion_rocklands_mob_0205
+dbexp_perion_rocklands_mob_0206,Perion Rocklands rogue oracle,38,882,162,13,27,perion_rocklands_combat_16,7,mob/dbexp_perion_rocklands_mob_0206
+dbexp_perion_rocklands_mob_0207,Perion Rocklands frost hunter,39,923,170,13,28,perion_rocklands_combat_17,9,mob/dbexp_perion_rocklands_mob_0207
+dbexp_perion_rocklands_mob_0208,Perion Rocklands drake binder,40,964,178,14,30,perion_rocklands_combat_18,9,mob/dbexp_perion_rocklands_mob_0208
+dbexp_perion_rocklands_mob_0209,Perion Rocklands fang keeper,37,749,134,13,22,perion_rocklands_combat_20,5,mob/dbexp_perion_rocklands_mob_0209
+dbexp_perion_rocklands_mob_0210,Perion Rocklands grave watcher,38,790,142,13,23,perion_rocklands_combat_21,5,mob/dbexp_perion_rocklands_mob_0210
+dbexp_perion_rocklands_mob_0211,Perion Rocklands gear brute,39,831,150,13,24,perion_rocklands_combat_22,7,mob/dbexp_perion_rocklands_mob_0211
+dbexp_perion_rocklands_mob_0212,Perion Rocklands rune oracle,40,872,158,14,26,perion_rocklands_combat_23,5,mob/dbexp_perion_rocklands_mob_0212
+dbexp_perion_rocklands_mob_0213,Perion Rocklands rogue hunter,41,913,166,14,27,perion_rocklands_combat_24,5,mob/dbexp_perion_rocklands_mob_0213
+dbexp_perion_rocklands_mob_0214,Perion Rocklands frost binder,42,954,174,14,28,perion_rocklands_combat_25,7,mob/dbexp_perion_rocklands_mob_0214
+dbexp_perion_rocklands_mob_0215,Perion Rocklands drake warden,43,995,182,14,29,perion_rocklands_combat_26,9,mob/dbexp_perion_rocklands_mob_0215
+dbexp_perion_rocklands_mob_0216,Perion Rocklands tide runner,44,1036,190,15,31,perion_rocklands_combat_27,9,mob/dbexp_perion_rocklands_mob_0216
+dbexp_perion_rocklands_mob_0217,Perion Rocklands grave brute,41,821,146,14,23,perion_rocklands_combat_29,5,mob/dbexp_perion_rocklands_mob_0217
+dbexp_perion_rocklands_mob_0218,Perion Rocklands gear oracle,42,862,154,14,24,perion_rocklands_combat_30,5,mob/dbexp_perion_rocklands_mob_0218
+dbexp_perion_rocklands_mob_0219,Perion Rocklands rune hunter,43,903,162,14,25,perion_rocklands_combat_31,7,mob/dbexp_perion_rocklands_mob_0219
+dbexp_perion_rocklands_mob_0220,Perion Rocklands rogue binder,44,944,170,15,27,perion_rocklands_combat_32,5,mob/dbexp_perion_rocklands_mob_0220
+dbexp_perion_rocklands_mob_0221,Perion Rocklands frost warden,45,985,178,15,28,perion_rocklands_combat_33,5,mob/dbexp_perion_rocklands_mob_0221
+dbexp_perion_rocklands_mob_0222,Perion Rocklands drake runner,46,1026,186,15,29,perion_rocklands_combat_34,7,mob/dbexp_perion_rocklands_mob_0222
+dbexp_perion_rocklands_mob_0223,Perion Rocklands tide stalker,47,1067,194,15,30,perion_rocklands_combat_35,9,mob/dbexp_perion_rocklands_mob_0223
+dbexp_perion_rocklands_mob_0224,Perion Rocklands dusk bloom,48,1108,202,16,32,perion_rocklands_combat_36,9,mob/dbexp_perion_rocklands_mob_0224
+dbexp_perion_rocklands_mob_0225,Perion Rocklands gear hunter,45,893,158,15,24,perion_rocklands_combat_38,5,mob/dbexp_perion_rocklands_mob_0225
+dbexp_perion_rocklands_mob_0226,Perion Rocklands rune binder,46,934,166,15,25,perion_rocklands_combat_39,5,mob/dbexp_perion_rocklands_mob_0226
+dbexp_perion_rocklands_mob_0227,Perion Rocklands rogue warden,47,975,174,15,26,perion_rocklands_combat_40,7,mob/dbexp_perion_rocklands_mob_0227
+dbexp_perion_rocklands_mob_0228,Perion Rocklands frost runner,48,1016,182,16,28,perion_rocklands_combat_41,5,mob/dbexp_perion_rocklands_mob_0228
+dbexp_perion_rocklands_mob_0229,Perion Rocklands drake stalker,49,1057,190,16,29,perion_rocklands_combat_42,5,mob/dbexp_perion_rocklands_mob_0229
+dbexp_perion_rocklands_mob_0230,Perion Rocklands tide bloom,50,1098,198,16,30,perion_rocklands_combat_43,7,mob/dbexp_perion_rocklands_mob_0230
+dbexp_perion_rocklands_mob_0231,Perion Rocklands dusk mauler,51,1139,206,16,31,perion_rocklands_combat_44,9,mob/dbexp_perion_rocklands_mob_0231
+dbexp_perion_rocklands_mob_0232,Perion Rocklands sprout sentinel,52,1180,214,17,33,perion_rocklands_combat_45,9,mob/dbexp_perion_rocklands_mob_0232
+dbexp_perion_rocklands_mob_0233,Perion Rocklands rune warden,49,965,170,16,25,perion_rocklands_combat_47,5,mob/dbexp_perion_rocklands_mob_0233
+dbexp_perion_rocklands_mob_0234,Perion Rocklands rogue runner,50,1006,178,16,26,perion_rocklands_combat_48,5,mob/dbexp_perion_rocklands_mob_0234
+dbexp_perion_rocklands_mob_0235,Perion Rocklands frost stalker,51,1047,186,16,27,perion_rocklands_combat_49,7,mob/dbexp_perion_rocklands_mob_0235
+dbexp_perion_rocklands_mob_0236,Perion Rocklands drake bloom,52,1088,194,17,29,perion_rocklands_combat_50,5,mob/dbexp_perion_rocklands_mob_0236
+dbexp_perion_rocklands_mob_0237,Perion Rocklands tide mauler,53,1129,202,17,30,perion_rocklands_combat_51,5,mob/dbexp_perion_rocklands_mob_0237
+dbexp_perion_rocklands_mob_0238,Perion Rocklands dusk sentinel,54,1170,210,17,31,perion_rocklands_combat_52,7,mob/dbexp_perion_rocklands_mob_0238
+dbexp_perion_rocklands_mob_0239,Perion Rocklands sprout keeper,55,1211,218,17,32,perion_rocklands_combat_53,9,mob/dbexp_perion_rocklands_mob_0239
+dbexp_perion_rocklands_mob_0240,Perion Rocklands moss watcher,56,1252,226,18,34,perion_rocklands_combat_54,9,mob/dbexp_perion_rocklands_mob_0240
+dbexp_perion_rocklands_mob_0241,Perion Rocklands rogue stalker,53,1037,182,17,26,perion_rocklands_combat_56,5,mob/dbexp_perion_rocklands_mob_0241
+dbexp_perion_rocklands_mob_0242,Perion Rocklands frost bloom,54,1078,190,17,27,perion_rocklands_combat_57,5,mob/dbexp_perion_rocklands_mob_0242
+dbexp_perion_rocklands_mob_0243,Perion Rocklands drake mauler,55,1119,198,17,28,perion_rocklands_combat_58,7,mob/dbexp_perion_rocklands_mob_0243
+dbexp_perion_rocklands_mob_0244,Perion Rocklands tide sentinel,56,1160,206,18,30,perion_rocklands_combat_59,5,mob/dbexp_perion_rocklands_mob_0244
+dbexp_perion_rocklands_mob_0245,Perion Rocklands dusk keeper,57,1201,214,18,31,perion_rocklands_combat_60,5,mob/dbexp_perion_rocklands_mob_0245
+dbexp_perion_rocklands_mob_0246,Perion Rocklands sprout watcher,58,1242,222,18,32,perion_rocklands_combat_61,7,mob/dbexp_perion_rocklands_mob_0246
+dbexp_perion_rocklands_mob_0247,Perion Rocklands moss brute,59,1283,230,18,33,perion_rocklands_combat_62,9,mob/dbexp_perion_rocklands_mob_0247
+dbexp_perion_rocklands_mob_0248,Perion Rocklands briar oracle,60,1324,238,19,35,perion_rocklands_combat_63,9,mob/dbexp_perion_rocklands_mob_0248
+dbexp_perion_rocklands_mob_0249,Perion Rocklands frost mauler,57,1109,194,18,27,perion_rocklands_combat_65,5,mob/dbexp_perion_rocklands_mob_0249
+dbexp_perion_rocklands_mob_0250,Perion Rocklands drake sentinel,58,1150,202,18,28,perion_rocklands_combat_66,5,mob/dbexp_perion_rocklands_mob_0250
+dbexp_perion_rocklands_mob_0251,Perion Rocklands tide keeper,59,1191,210,18,29,perion_rocklands_combat_67,7,mob/dbexp_perion_rocklands_mob_0251
+dbexp_perion_rocklands_mob_0252,Perion Rocklands dusk watcher,60,1232,218,19,31,perion_rocklands_combat_68,5,mob/dbexp_perion_rocklands_mob_0252
+dbexp_perion_rocklands_mob_0253,Perion Rocklands sprout brute,61,1273,226,19,32,perion_rocklands_combat_69,5,mob/dbexp_perion_rocklands_mob_0253
+dbexp_perion_rocklands_mob_0254,Perion Rocklands moss oracle,62,1314,234,19,33,perion_rocklands_combat_70,7,mob/dbexp_perion_rocklands_mob_0254
+dbexp_perion_rocklands_mob_0255,Perion Rocklands briar hunter,63,1355,242,19,34,perion_rocklands_combat_71,9,mob/dbexp_perion_rocklands_mob_0255
+dbexp_perion_rocklands_mob_0256,Perion Rocklands fang binder,64,1396,250,20,36,perion_rocklands_combat_72,9,mob/dbexp_perion_rocklands_mob_0256
+dbexp_sleepywood_depths_mob_0257,Sleepywood Depths moss stalker,36,731,131,13,22,sleepywood_depths_combat_02,5,mob/dbexp_sleepywood_depths_mob_0257
+dbexp_sleepywood_depths_mob_0258,Sleepywood Depths briar bloom,37,772,139,13,23,sleepywood_depths_combat_03,5,mob/dbexp_sleepywood_depths_mob_0258
+dbexp_sleepywood_depths_mob_0259,Sleepywood Depths fang mauler,38,813,147,13,24,sleepywood_depths_combat_04,7,mob/dbexp_sleepywood_depths_mob_0259
+dbexp_sleepywood_depths_mob_0260,Sleepywood Depths grave sentinel,39,854,155,13,25,sleepywood_depths_combat_05,5,mob/dbexp_sleepywood_depths_mob_0260
+dbexp_sleepywood_depths_mob_0261,Sleepywood Depths gear keeper,40,895,163,14,27,sleepywood_depths_combat_06,5,mob/dbexp_sleepywood_depths_mob_0261
+dbexp_sleepywood_depths_mob_0262,Sleepywood Depths rune watcher,41,936,171,14,28,sleepywood_depths_combat_07,7,mob/dbexp_sleepywood_depths_mob_0262
+dbexp_sleepywood_depths_mob_0263,Sleepywood Depths rogue brute,42,977,179,14,29,sleepywood_depths_combat_08,9,mob/dbexp_sleepywood_depths_mob_0263
+dbexp_sleepywood_depths_mob_0264,Sleepywood Depths frost oracle,43,1018,187,14,30,sleepywood_depths_combat_09,9,mob/dbexp_sleepywood_depths_mob_0264
+dbexp_sleepywood_depths_mob_0265,Sleepywood Depths briar mauler,40,803,143,14,23,sleepywood_depths_combat_11,5,mob/dbexp_sleepywood_depths_mob_0265
+dbexp_sleepywood_depths_mob_0266,Sleepywood Depths fang sentinel,41,844,151,14,24,sleepywood_depths_combat_12,5,mob/dbexp_sleepywood_depths_mob_0266
+dbexp_sleepywood_depths_mob_0267,Sleepywood Depths grave keeper,42,885,159,14,25,sleepywood_depths_combat_13,7,mob/dbexp_sleepywood_depths_mob_0267
+dbexp_sleepywood_depths_mob_0268,Sleepywood Depths gear watcher,43,926,167,14,26,sleepywood_depths_combat_14,5,mob/dbexp_sleepywood_depths_mob_0268
+dbexp_sleepywood_depths_mob_0269,Sleepywood Depths rune brute,44,967,175,15,28,sleepywood_depths_combat_15,5,mob/dbexp_sleepywood_depths_mob_0269
+dbexp_sleepywood_depths_mob_0270,Sleepywood Depths rogue oracle,45,1008,183,15,29,sleepywood_depths_combat_16,7,mob/dbexp_sleepywood_depths_mob_0270
+dbexp_sleepywood_depths_mob_0271,Sleepywood Depths frost hunter,46,1049,191,15,30,sleepywood_depths_combat_17,9,mob/dbexp_sleepywood_depths_mob_0271
+dbexp_sleepywood_depths_mob_0272,Sleepywood Depths drake binder,47,1090,199,15,31,sleepywood_depths_combat_18,9,mob/dbexp_sleepywood_depths_mob_0272
+dbexp_sleepywood_depths_mob_0273,Sleepywood Depths fang keeper,44,875,155,15,24,sleepywood_depths_combat_20,5,mob/dbexp_sleepywood_depths_mob_0273
+dbexp_sleepywood_depths_mob_0274,Sleepywood Depths grave watcher,45,916,163,15,25,sleepywood_depths_combat_21,5,mob/dbexp_sleepywood_depths_mob_0274
+dbexp_sleepywood_depths_mob_0275,Sleepywood Depths gear brute,46,957,171,15,26,sleepywood_depths_combat_22,7,mob/dbexp_sleepywood_depths_mob_0275
+dbexp_sleepywood_depths_mob_0276,Sleepywood Depths rune oracle,47,998,179,15,27,sleepywood_depths_combat_23,5,mob/dbexp_sleepywood_depths_mob_0276
+dbexp_sleepywood_depths_mob_0277,Sleepywood Depths rogue hunter,48,1039,187,16,29,sleepywood_depths_combat_24,5,mob/dbexp_sleepywood_depths_mob_0277
+dbexp_sleepywood_depths_mob_0278,Sleepywood Depths frost binder,49,1080,195,16,30,sleepywood_depths_combat_25,7,mob/dbexp_sleepywood_depths_mob_0278
+dbexp_sleepywood_depths_mob_0279,Sleepywood Depths drake warden,50,1121,203,16,31,sleepywood_depths_combat_26,9,mob/dbexp_sleepywood_depths_mob_0279
+dbexp_sleepywood_depths_mob_0280,Sleepywood Depths tide runner,51,1162,211,16,32,sleepywood_depths_combat_27,9,mob/dbexp_sleepywood_depths_mob_0280
+dbexp_sleepywood_depths_mob_0281,Sleepywood Depths grave brute,48,947,167,16,25,sleepywood_depths_combat_29,5,mob/dbexp_sleepywood_depths_mob_0281
+dbexp_sleepywood_depths_mob_0282,Sleepywood Depths gear oracle,49,988,175,16,26,sleepywood_depths_combat_30,5,mob/dbexp_sleepywood_depths_mob_0282
+dbexp_sleepywood_depths_mob_0283,Sleepywood Depths rune hunter,50,1029,183,16,27,sleepywood_depths_combat_31,7,mob/dbexp_sleepywood_depths_mob_0283
+dbexp_sleepywood_depths_mob_0284,Sleepywood Depths rogue binder,51,1070,191,16,28,sleepywood_depths_combat_32,5,mob/dbexp_sleepywood_depths_mob_0284
+dbexp_sleepywood_depths_mob_0285,Sleepywood Depths frost warden,52,1111,199,17,30,sleepywood_depths_combat_33,5,mob/dbexp_sleepywood_depths_mob_0285
+dbexp_sleepywood_depths_mob_0286,Sleepywood Depths drake runner,53,1152,207,17,31,sleepywood_depths_combat_34,7,mob/dbexp_sleepywood_depths_mob_0286
+dbexp_sleepywood_depths_mob_0287,Sleepywood Depths tide stalker,54,1193,215,17,32,sleepywood_depths_combat_35,9,mob/dbexp_sleepywood_depths_mob_0287
+dbexp_sleepywood_depths_mob_0288,Sleepywood Depths dusk bloom,55,1234,223,17,33,sleepywood_depths_combat_36,9,mob/dbexp_sleepywood_depths_mob_0288
+dbexp_sleepywood_depths_mob_0289,Sleepywood Depths gear hunter,52,1019,179,17,26,sleepywood_depths_combat_38,5,mob/dbexp_sleepywood_depths_mob_0289
+dbexp_sleepywood_depths_mob_0290,Sleepywood Depths rune binder,53,1060,187,17,27,sleepywood_depths_combat_39,5,mob/dbexp_sleepywood_depths_mob_0290
+dbexp_sleepywood_depths_mob_0291,Sleepywood Depths rogue warden,54,1101,195,17,28,sleepywood_depths_combat_40,7,mob/dbexp_sleepywood_depths_mob_0291
+dbexp_sleepywood_depths_mob_0292,Sleepywood Depths frost runner,55,1142,203,17,29,sleepywood_depths_combat_41,5,mob/dbexp_sleepywood_depths_mob_0292
+dbexp_sleepywood_depths_mob_0293,Sleepywood Depths drake stalker,56,1183,211,18,31,sleepywood_depths_combat_42,5,mob/dbexp_sleepywood_depths_mob_0293
+dbexp_sleepywood_depths_mob_0294,Sleepywood Depths tide bloom,57,1224,219,18,32,sleepywood_depths_combat_43,7,mob/dbexp_sleepywood_depths_mob_0294
+dbexp_sleepywood_depths_mob_0295,Sleepywood Depths dusk mauler,58,1265,227,18,33,sleepywood_depths_combat_44,9,mob/dbexp_sleepywood_depths_mob_0295
+dbexp_sleepywood_depths_mob_0296,Sleepywood Depths sprout sentinel,59,1306,235,18,34,sleepywood_depths_combat_45,9,mob/dbexp_sleepywood_depths_mob_0296
+dbexp_sleepywood_depths_mob_0297,Sleepywood Depths rune warden,56,1091,191,18,27,sleepywood_depths_combat_47,5,mob/dbexp_sleepywood_depths_mob_0297
+dbexp_sleepywood_depths_mob_0298,Sleepywood Depths rogue runner,57,1132,199,18,28,sleepywood_depths_combat_48,5,mob/dbexp_sleepywood_depths_mob_0298
+dbexp_sleepywood_depths_mob_0299,Sleepywood Depths frost stalker,58,1173,207,18,29,sleepywood_depths_combat_49,7,mob/dbexp_sleepywood_depths_mob_0299
+dbexp_sleepywood_depths_mob_0300,Sleepywood Depths drake bloom,59,1214,215,18,30,sleepywood_depths_combat_50,5,mob/dbexp_sleepywood_depths_mob_0300
+dbexp_sleepywood_depths_mob_0301,Sleepywood Depths tide mauler,60,1255,223,19,32,sleepywood_depths_combat_51,5,mob/dbexp_sleepywood_depths_mob_0301
+dbexp_sleepywood_depths_mob_0302,Sleepywood Depths dusk sentinel,61,1296,231,19,33,sleepywood_depths_combat_52,7,mob/dbexp_sleepywood_depths_mob_0302
+dbexp_sleepywood_depths_mob_0303,Sleepywood Depths sprout keeper,62,1337,239,19,34,sleepywood_depths_combat_53,9,mob/dbexp_sleepywood_depths_mob_0303
+dbexp_sleepywood_depths_mob_0304,Sleepywood Depths moss watcher,63,1378,247,19,35,sleepywood_depths_combat_54,9,mob/dbexp_sleepywood_depths_mob_0304
+dbexp_sleepywood_depths_mob_0305,Sleepywood Depths rogue stalker,60,1163,203,19,28,sleepywood_depths_combat_56,5,mob/dbexp_sleepywood_depths_mob_0305
+dbexp_sleepywood_depths_mob_0306,Sleepywood Depths frost bloom,61,1204,211,19,29,sleepywood_depths_combat_57,5,mob/dbexp_sleepywood_depths_mob_0306
+dbexp_sleepywood_depths_mob_0307,Sleepywood Depths drake mauler,62,1245,219,19,30,sleepywood_depths_combat_58,7,mob/dbexp_sleepywood_depths_mob_0307
+dbexp_sleepywood_depths_mob_0308,Sleepywood Depths tide sentinel,63,1286,227,19,31,sleepywood_depths_combat_59,5,mob/dbexp_sleepywood_depths_mob_0308
+dbexp_sleepywood_depths_mob_0309,Sleepywood Depths dusk keeper,64,1327,235,20,33,sleepywood_depths_combat_60,5,mob/dbexp_sleepywood_depths_mob_0309
+dbexp_sleepywood_depths_mob_0310,Sleepywood Depths sprout watcher,65,1368,243,20,34,sleepywood_depths_combat_61,7,mob/dbexp_sleepywood_depths_mob_0310
+dbexp_sleepywood_depths_mob_0311,Sleepywood Depths moss brute,66,1409,251,20,35,sleepywood_depths_combat_62,9,mob/dbexp_sleepywood_depths_mob_0311
+dbexp_sleepywood_depths_mob_0312,Sleepywood Depths briar oracle,67,1450,259,20,36,sleepywood_depths_combat_63,9,mob/dbexp_sleepywood_depths_mob_0312
+dbexp_sleepywood_depths_mob_0313,Sleepywood Depths frost mauler,64,1235,215,20,29,sleepywood_depths_combat_65,5,mob/dbexp_sleepywood_depths_mob_0313
+dbexp_sleepywood_depths_mob_0314,Sleepywood Depths drake sentinel,65,1276,223,20,30,sleepywood_depths_combat_66,5,mob/dbexp_sleepywood_depths_mob_0314
+dbexp_sleepywood_depths_mob_0315,Sleepywood Depths tide keeper,66,1317,231,20,31,sleepywood_depths_combat_67,7,mob/dbexp_sleepywood_depths_mob_0315
+dbexp_sleepywood_depths_mob_0316,Sleepywood Depths dusk watcher,67,1358,239,20,32,sleepywood_depths_combat_68,5,mob/dbexp_sleepywood_depths_mob_0316
+dbexp_sleepywood_depths_mob_0317,Sleepywood Depths sprout brute,68,1399,247,21,34,sleepywood_depths_combat_69,5,mob/dbexp_sleepywood_depths_mob_0317
+dbexp_sleepywood_depths_mob_0318,Sleepywood Depths moss oracle,69,1440,255,21,35,sleepywood_depths_combat_70,7,mob/dbexp_sleepywood_depths_mob_0318
+dbexp_sleepywood_depths_mob_0319,Sleepywood Depths briar hunter,70,1481,263,21,36,sleepywood_depths_combat_71,9,mob/dbexp_sleepywood_depths_mob_0319
+dbexp_sleepywood_depths_mob_0320,Sleepywood Depths fang binder,71,1522,271,21,37,sleepywood_depths_combat_72,9,mob/dbexp_sleepywood_depths_mob_0320
+dbexp_kerning_city_shadow_mob_0321,Kerning City Shadow moss stalker,33,677,122,12,21,kerning_city_shadow_combat_02,5,mob/dbexp_kerning_city_shadow_mob_0321
+dbexp_kerning_city_shadow_mob_0322,Kerning City Shadow briar bloom,34,718,130,12,22,kerning_city_shadow_combat_03,5,mob/dbexp_kerning_city_shadow_mob_0322
+dbexp_kerning_city_shadow_mob_0323,Kerning City Shadow fang mauler,35,759,138,12,23,kerning_city_shadow_combat_04,7,mob/dbexp_kerning_city_shadow_mob_0323
+dbexp_kerning_city_shadow_mob_0324,Kerning City Shadow grave sentinel,36,800,146,13,25,kerning_city_shadow_combat_05,5,mob/dbexp_kerning_city_shadow_mob_0324
+dbexp_kerning_city_shadow_mob_0325,Kerning City Shadow gear keeper,37,841,154,13,26,kerning_city_shadow_combat_06,5,mob/dbexp_kerning_city_shadow_mob_0325
+dbexp_kerning_city_shadow_mob_0326,Kerning City Shadow rune watcher,38,882,162,13,27,kerning_city_shadow_combat_07,7,mob/dbexp_kerning_city_shadow_mob_0326
+dbexp_kerning_city_shadow_mob_0327,Kerning City Shadow rogue brute,39,923,170,13,28,kerning_city_shadow_combat_08,9,mob/dbexp_kerning_city_shadow_mob_0327
+dbexp_kerning_city_shadow_mob_0328,Kerning City Shadow frost oracle,40,964,178,14,30,kerning_city_shadow_combat_09,9,mob/dbexp_kerning_city_shadow_mob_0328
+dbexp_kerning_city_shadow_mob_0329,Kerning City Shadow briar mauler,37,749,134,13,22,kerning_city_shadow_combat_11,5,mob/dbexp_kerning_city_shadow_mob_0329
+dbexp_kerning_city_shadow_mob_0330,Kerning City Shadow fang sentinel,38,790,142,13,23,kerning_city_shadow_combat_12,5,mob/dbexp_kerning_city_shadow_mob_0330
+dbexp_kerning_city_shadow_mob_0331,Kerning City Shadow grave keeper,39,831,150,13,24,kerning_city_shadow_combat_13,7,mob/dbexp_kerning_city_shadow_mob_0331
+dbexp_kerning_city_shadow_mob_0332,Kerning City Shadow gear watcher,40,872,158,14,26,kerning_city_shadow_combat_14,5,mob/dbexp_kerning_city_shadow_mob_0332
+dbexp_kerning_city_shadow_mob_0333,Kerning City Shadow rune brute,41,913,166,14,27,kerning_city_shadow_combat_15,5,mob/dbexp_kerning_city_shadow_mob_0333
+dbexp_kerning_city_shadow_mob_0334,Kerning City Shadow rogue oracle,42,954,174,14,28,kerning_city_shadow_combat_16,7,mob/dbexp_kerning_city_shadow_mob_0334
+dbexp_kerning_city_shadow_mob_0335,Kerning City Shadow frost hunter,43,995,182,14,29,kerning_city_shadow_combat_17,9,mob/dbexp_kerning_city_shadow_mob_0335
+dbexp_kerning_city_shadow_mob_0336,Kerning City Shadow drake binder,44,1036,190,15,31,kerning_city_shadow_combat_18,9,mob/dbexp_kerning_city_shadow_mob_0336
+dbexp_kerning_city_shadow_mob_0337,Kerning City Shadow fang keeper,41,821,146,14,23,kerning_city_shadow_combat_20,5,mob/dbexp_kerning_city_shadow_mob_0337
+dbexp_kerning_city_shadow_mob_0338,Kerning City Shadow grave watcher,42,862,154,14,24,kerning_city_shadow_combat_21,5,mob/dbexp_kerning_city_shadow_mob_0338
+dbexp_kerning_city_shadow_mob_0339,Kerning City Shadow gear brute,43,903,162,14,25,kerning_city_shadow_combat_22,7,mob/dbexp_kerning_city_shadow_mob_0339
+dbexp_kerning_city_shadow_mob_0340,Kerning City Shadow rune oracle,44,944,170,15,27,kerning_city_shadow_combat_23,5,mob/dbexp_kerning_city_shadow_mob_0340
+dbexp_kerning_city_shadow_mob_0341,Kerning City Shadow rogue hunter,45,985,178,15,28,kerning_city_shadow_combat_24,5,mob/dbexp_kerning_city_shadow_mob_0341
+dbexp_kerning_city_shadow_mob_0342,Kerning City Shadow frost binder,46,1026,186,15,29,kerning_city_shadow_combat_25,7,mob/dbexp_kerning_city_shadow_mob_0342
+dbexp_kerning_city_shadow_mob_0343,Kerning City Shadow drake warden,47,1067,194,15,30,kerning_city_shadow_combat_26,9,mob/dbexp_kerning_city_shadow_mob_0343
+dbexp_kerning_city_shadow_mob_0344,Kerning City Shadow tide runner,48,1108,202,16,32,kerning_city_shadow_combat_27,9,mob/dbexp_kerning_city_shadow_mob_0344
+dbexp_kerning_city_shadow_mob_0345,Kerning City Shadow grave brute,45,893,158,15,24,kerning_city_shadow_combat_29,5,mob/dbexp_kerning_city_shadow_mob_0345
+dbexp_kerning_city_shadow_mob_0346,Kerning City Shadow gear oracle,46,934,166,15,25,kerning_city_shadow_combat_30,5,mob/dbexp_kerning_city_shadow_mob_0346
+dbexp_kerning_city_shadow_mob_0347,Kerning City Shadow rune hunter,47,975,174,15,26,kerning_city_shadow_combat_31,7,mob/dbexp_kerning_city_shadow_mob_0347
+dbexp_kerning_city_shadow_mob_0348,Kerning City Shadow rogue binder,48,1016,182,16,28,kerning_city_shadow_combat_32,5,mob/dbexp_kerning_city_shadow_mob_0348
+dbexp_kerning_city_shadow_mob_0349,Kerning City Shadow frost warden,49,1057,190,16,29,kerning_city_shadow_combat_33,5,mob/dbexp_kerning_city_shadow_mob_0349
+dbexp_kerning_city_shadow_mob_0350,Kerning City Shadow drake runner,50,1098,198,16,30,kerning_city_shadow_combat_34,7,mob/dbexp_kerning_city_shadow_mob_0350
+dbexp_kerning_city_shadow_mob_0351,Kerning City Shadow tide stalker,51,1139,206,16,31,kerning_city_shadow_combat_35,9,mob/dbexp_kerning_city_shadow_mob_0351
+dbexp_kerning_city_shadow_mob_0352,Kerning City Shadow dusk bloom,52,1180,214,17,33,kerning_city_shadow_combat_36,9,mob/dbexp_kerning_city_shadow_mob_0352
+dbexp_kerning_city_shadow_mob_0353,Kerning City Shadow gear hunter,49,965,170,16,25,kerning_city_shadow_combat_38,5,mob/dbexp_kerning_city_shadow_mob_0353
+dbexp_kerning_city_shadow_mob_0354,Kerning City Shadow rune binder,50,1006,178,16,26,kerning_city_shadow_combat_39,5,mob/dbexp_kerning_city_shadow_mob_0354
+dbexp_kerning_city_shadow_mob_0355,Kerning City Shadow rogue warden,51,1047,186,16,27,kerning_city_shadow_combat_40,7,mob/dbexp_kerning_city_shadow_mob_0355
+dbexp_kerning_city_shadow_mob_0356,Kerning City Shadow frost runner,52,1088,194,17,29,kerning_city_shadow_combat_41,5,mob/dbexp_kerning_city_shadow_mob_0356
+dbexp_kerning_city_shadow_mob_0357,Kerning City Shadow drake stalker,53,1129,202,17,30,kerning_city_shadow_combat_42,5,mob/dbexp_kerning_city_shadow_mob_0357
+dbexp_kerning_city_shadow_mob_0358,Kerning City Shadow tide bloom,54,1170,210,17,31,kerning_city_shadow_combat_43,7,mob/dbexp_kerning_city_shadow_mob_0358
+dbexp_kerning_city_shadow_mob_0359,Kerning City Shadow dusk mauler,55,1211,218,17,32,kerning_city_shadow_combat_44,9,mob/dbexp_kerning_city_shadow_mob_0359
+dbexp_kerning_city_shadow_mob_0360,Kerning City Shadow sprout sentinel,56,1252,226,18,34,kerning_city_shadow_combat_45,9,mob/dbexp_kerning_city_shadow_mob_0360
+dbexp_kerning_city_shadow_mob_0361,Kerning City Shadow rune warden,53,1037,182,17,26,kerning_city_shadow_combat_47,5,mob/dbexp_kerning_city_shadow_mob_0361
+dbexp_kerning_city_shadow_mob_0362,Kerning City Shadow rogue runner,54,1078,190,17,27,kerning_city_shadow_combat_48,5,mob/dbexp_kerning_city_shadow_mob_0362
+dbexp_kerning_city_shadow_mob_0363,Kerning City Shadow frost stalker,55,1119,198,17,28,kerning_city_shadow_combat_49,7,mob/dbexp_kerning_city_shadow_mob_0363
+dbexp_kerning_city_shadow_mob_0364,Kerning City Shadow drake bloom,56,1160,206,18,30,kerning_city_shadow_combat_50,5,mob/dbexp_kerning_city_shadow_mob_0364
+dbexp_kerning_city_shadow_mob_0365,Kerning City Shadow tide mauler,57,1201,214,18,31,kerning_city_shadow_combat_51,5,mob/dbexp_kerning_city_shadow_mob_0365
+dbexp_kerning_city_shadow_mob_0366,Kerning City Shadow dusk sentinel,58,1242,222,18,32,kerning_city_shadow_combat_52,7,mob/dbexp_kerning_city_shadow_mob_0366
+dbexp_kerning_city_shadow_mob_0367,Kerning City Shadow sprout keeper,59,1283,230,18,33,kerning_city_shadow_combat_53,9,mob/dbexp_kerning_city_shadow_mob_0367
+dbexp_kerning_city_shadow_mob_0368,Kerning City Shadow moss watcher,60,1324,238,19,35,kerning_city_shadow_combat_54,9,mob/dbexp_kerning_city_shadow_mob_0368
+dbexp_kerning_city_shadow_mob_0369,Kerning City Shadow rogue stalker,57,1109,194,18,27,kerning_city_shadow_combat_56,5,mob/dbexp_kerning_city_shadow_mob_0369
+dbexp_kerning_city_shadow_mob_0370,Kerning City Shadow frost bloom,58,1150,202,18,28,kerning_city_shadow_combat_57,5,mob/dbexp_kerning_city_shadow_mob_0370
+dbexp_kerning_city_shadow_mob_0371,Kerning City Shadow drake mauler,59,1191,210,18,29,kerning_city_shadow_combat_58,7,mob/dbexp_kerning_city_shadow_mob_0371
+dbexp_kerning_city_shadow_mob_0372,Kerning City Shadow tide sentinel,60,1232,218,19,31,kerning_city_shadow_combat_59,5,mob/dbexp_kerning_city_shadow_mob_0372
+dbexp_kerning_city_shadow_mob_0373,Kerning City Shadow dusk keeper,61,1273,226,19,32,kerning_city_shadow_combat_60,5,mob/dbexp_kerning_city_shadow_mob_0373
+dbexp_kerning_city_shadow_mob_0374,Kerning City Shadow sprout watcher,62,1314,234,19,33,kerning_city_shadow_combat_61,7,mob/dbexp_kerning_city_shadow_mob_0374
+dbexp_kerning_city_shadow_mob_0375,Kerning City Shadow moss brute,63,1355,242,19,34,kerning_city_shadow_combat_62,9,mob/dbexp_kerning_city_shadow_mob_0375
+dbexp_kerning_city_shadow_mob_0376,Kerning City Shadow briar oracle,64,1396,250,20,36,kerning_city_shadow_combat_63,9,mob/dbexp_kerning_city_shadow_mob_0376
+dbexp_kerning_city_shadow_mob_0377,Kerning City Shadow frost mauler,61,1181,206,19,28,kerning_city_shadow_combat_65,5,mob/dbexp_kerning_city_shadow_mob_0377
+dbexp_kerning_city_shadow_mob_0378,Kerning City Shadow drake sentinel,62,1222,214,19,29,kerning_city_shadow_combat_66,5,mob/dbexp_kerning_city_shadow_mob_0378
+dbexp_kerning_city_shadow_mob_0379,Kerning City Shadow tide keeper,63,1263,222,19,30,kerning_city_shadow_combat_67,7,mob/dbexp_kerning_city_shadow_mob_0379
+dbexp_kerning_city_shadow_mob_0380,Kerning City Shadow dusk watcher,64,1304,230,20,32,kerning_city_shadow_combat_68,5,mob/dbexp_kerning_city_shadow_mob_0380
+dbexp_kerning_city_shadow_mob_0381,Kerning City Shadow sprout brute,65,1345,238,20,33,kerning_city_shadow_combat_69,5,mob/dbexp_kerning_city_shadow_mob_0381
+dbexp_kerning_city_shadow_mob_0382,Kerning City Shadow moss oracle,66,1386,246,20,34,kerning_city_shadow_combat_70,7,mob/dbexp_kerning_city_shadow_mob_0382
+dbexp_kerning_city_shadow_mob_0383,Kerning City Shadow briar hunter,67,1427,254,20,35,kerning_city_shadow_combat_71,9,mob/dbexp_kerning_city_shadow_mob_0383
+dbexp_kerning_city_shadow_mob_0384,Kerning City Shadow fang binder,68,1468,262,21,37,kerning_city_shadow_combat_72,9,mob/dbexp_kerning_city_shadow_mob_0384
+dbexp_orbis_skyrealm_mob_0385,Orbis Skyrealm moss stalker,49,965,170,16,25,orbis_skyrealm_combat_02,5,mob/dbexp_orbis_skyrealm_mob_0385
+dbexp_orbis_skyrealm_mob_0386,Orbis Skyrealm briar bloom,50,1006,178,16,26,orbis_skyrealm_combat_03,5,mob/dbexp_orbis_skyrealm_mob_0386
+dbexp_orbis_skyrealm_mob_0387,Orbis Skyrealm fang mauler,51,1047,186,16,27,orbis_skyrealm_combat_04,7,mob/dbexp_orbis_skyrealm_mob_0387
+dbexp_orbis_skyrealm_mob_0388,Orbis Skyrealm grave sentinel,52,1088,194,17,29,orbis_skyrealm_combat_05,5,mob/dbexp_orbis_skyrealm_mob_0388
+dbexp_orbis_skyrealm_mob_0389,Orbis Skyrealm gear keeper,53,1129,202,17,30,orbis_skyrealm_combat_06,5,mob/dbexp_orbis_skyrealm_mob_0389
+dbexp_orbis_skyrealm_mob_0390,Orbis Skyrealm rune watcher,54,1170,210,17,31,orbis_skyrealm_combat_07,7,mob/dbexp_orbis_skyrealm_mob_0390
+dbexp_orbis_skyrealm_mob_0391,Orbis Skyrealm rogue brute,55,1211,218,17,32,orbis_skyrealm_combat_08,9,mob/dbexp_orbis_skyrealm_mob_0391
+dbexp_orbis_skyrealm_mob_0392,Orbis Skyrealm frost oracle,56,1252,226,18,34,orbis_skyrealm_combat_09,9,mob/dbexp_orbis_skyrealm_mob_0392
+dbexp_orbis_skyrealm_mob_0393,Orbis Skyrealm briar mauler,53,1037,182,17,26,orbis_skyrealm_combat_11,5,mob/dbexp_orbis_skyrealm_mob_0393
+dbexp_orbis_skyrealm_mob_0394,Orbis Skyrealm fang sentinel,54,1078,190,17,27,orbis_skyrealm_combat_12,5,mob/dbexp_orbis_skyrealm_mob_0394
+dbexp_orbis_skyrealm_mob_0395,Orbis Skyrealm grave keeper,55,1119,198,17,28,orbis_skyrealm_combat_13,7,mob/dbexp_orbis_skyrealm_mob_0395
+dbexp_orbis_skyrealm_mob_0396,Orbis Skyrealm gear watcher,56,1160,206,18,30,orbis_skyrealm_combat_14,5,mob/dbexp_orbis_skyrealm_mob_0396
+dbexp_orbis_skyrealm_mob_0397,Orbis Skyrealm rune brute,57,1201,214,18,31,orbis_skyrealm_combat_15,5,mob/dbexp_orbis_skyrealm_mob_0397
+dbexp_orbis_skyrealm_mob_0398,Orbis Skyrealm rogue oracle,58,1242,222,18,32,orbis_skyrealm_combat_16,7,mob/dbexp_orbis_skyrealm_mob_0398
+dbexp_orbis_skyrealm_mob_0399,Orbis Skyrealm frost hunter,59,1283,230,18,33,orbis_skyrealm_combat_17,9,mob/dbexp_orbis_skyrealm_mob_0399
+dbexp_orbis_skyrealm_mob_0400,Orbis Skyrealm drake binder,60,1324,238,19,35,orbis_skyrealm_combat_18,9,mob/dbexp_orbis_skyrealm_mob_0400
+dbexp_orbis_skyrealm_mob_0401,Orbis Skyrealm fang keeper,57,1109,194,18,27,orbis_skyrealm_combat_20,5,mob/dbexp_orbis_skyrealm_mob_0401
+dbexp_orbis_skyrealm_mob_0402,Orbis Skyrealm grave watcher,58,1150,202,18,28,orbis_skyrealm_combat_21,5,mob/dbexp_orbis_skyrealm_mob_0402
+dbexp_orbis_skyrealm_mob_0403,Orbis Skyrealm gear brute,59,1191,210,18,29,orbis_skyrealm_combat_22,7,mob/dbexp_orbis_skyrealm_mob_0403
+dbexp_orbis_skyrealm_mob_0404,Orbis Skyrealm rune oracle,60,1232,218,19,31,orbis_skyrealm_combat_23,5,mob/dbexp_orbis_skyrealm_mob_0404
+dbexp_orbis_skyrealm_mob_0405,Orbis Skyrealm rogue hunter,61,1273,226,19,32,orbis_skyrealm_combat_24,5,mob/dbexp_orbis_skyrealm_mob_0405
+dbexp_orbis_skyrealm_mob_0406,Orbis Skyrealm frost binder,62,1314,234,19,33,orbis_skyrealm_combat_25,7,mob/dbexp_orbis_skyrealm_mob_0406
+dbexp_orbis_skyrealm_mob_0407,Orbis Skyrealm drake warden,63,1355,242,19,34,orbis_skyrealm_combat_26,9,mob/dbexp_orbis_skyrealm_mob_0407
+dbexp_orbis_skyrealm_mob_0408,Orbis Skyrealm tide runner,64,1396,250,20,36,orbis_skyrealm_combat_27,9,mob/dbexp_orbis_skyrealm_mob_0408
+dbexp_orbis_skyrealm_mob_0409,Orbis Skyrealm grave brute,61,1181,206,19,28,orbis_skyrealm_combat_29,5,mob/dbexp_orbis_skyrealm_mob_0409
+dbexp_orbis_skyrealm_mob_0410,Orbis Skyrealm gear oracle,62,1222,214,19,29,orbis_skyrealm_combat_30,5,mob/dbexp_orbis_skyrealm_mob_0410
+dbexp_orbis_skyrealm_mob_0411,Orbis Skyrealm rune hunter,63,1263,222,19,30,orbis_skyrealm_combat_31,7,mob/dbexp_orbis_skyrealm_mob_0411
+dbexp_orbis_skyrealm_mob_0412,Orbis Skyrealm rogue binder,64,1304,230,20,32,orbis_skyrealm_combat_32,5,mob/dbexp_orbis_skyrealm_mob_0412
+dbexp_orbis_skyrealm_mob_0413,Orbis Skyrealm frost warden,65,1345,238,20,33,orbis_skyrealm_combat_33,5,mob/dbexp_orbis_skyrealm_mob_0413
+dbexp_orbis_skyrealm_mob_0414,Orbis Skyrealm drake runner,66,1386,246,20,34,orbis_skyrealm_combat_34,7,mob/dbexp_orbis_skyrealm_mob_0414
+dbexp_orbis_skyrealm_mob_0415,Orbis Skyrealm tide stalker,67,1427,254,20,35,orbis_skyrealm_combat_35,9,mob/dbexp_orbis_skyrealm_mob_0415
+dbexp_orbis_skyrealm_mob_0416,Orbis Skyrealm dusk bloom,68,1468,262,21,37,orbis_skyrealm_combat_36,9,mob/dbexp_orbis_skyrealm_mob_0416
+dbexp_orbis_skyrealm_mob_0417,Orbis Skyrealm gear hunter,65,1253,218,20,29,orbis_skyrealm_combat_38,5,mob/dbexp_orbis_skyrealm_mob_0417
+dbexp_orbis_skyrealm_mob_0418,Orbis Skyrealm rune binder,66,1294,226,20,30,orbis_skyrealm_combat_39,5,mob/dbexp_orbis_skyrealm_mob_0418
+dbexp_orbis_skyrealm_mob_0419,Orbis Skyrealm rogue warden,67,1335,234,20,31,orbis_skyrealm_combat_40,7,mob/dbexp_orbis_skyrealm_mob_0419
+dbexp_orbis_skyrealm_mob_0420,Orbis Skyrealm frost runner,68,1376,242,21,33,orbis_skyrealm_combat_41,5,mob/dbexp_orbis_skyrealm_mob_0420
+dbexp_orbis_skyrealm_mob_0421,Orbis Skyrealm drake stalker,69,1417,250,21,34,orbis_skyrealm_combat_42,5,mob/dbexp_orbis_skyrealm_mob_0421
+dbexp_orbis_skyrealm_mob_0422,Orbis Skyrealm tide bloom,70,1458,258,21,35,orbis_skyrealm_combat_43,7,mob/dbexp_orbis_skyrealm_mob_0422
+dbexp_orbis_skyrealm_mob_0423,Orbis Skyrealm dusk mauler,71,1499,266,21,36,orbis_skyrealm_combat_44,9,mob/dbexp_orbis_skyrealm_mob_0423
+dbexp_orbis_skyrealm_mob_0424,Orbis Skyrealm sprout sentinel,72,1540,274,22,38,orbis_skyrealm_combat_45,9,mob/dbexp_orbis_skyrealm_mob_0424
+dbexp_orbis_skyrealm_mob_0425,Orbis Skyrealm rune warden,69,1325,230,21,30,orbis_skyrealm_combat_47,5,mob/dbexp_orbis_skyrealm_mob_0425
+dbexp_orbis_skyrealm_mob_0426,Orbis Skyrealm rogue runner,70,1366,238,21,31,orbis_skyrealm_combat_48,5,mob/dbexp_orbis_skyrealm_mob_0426
+dbexp_orbis_skyrealm_mob_0427,Orbis Skyrealm frost stalker,71,1407,246,21,32,orbis_skyrealm_combat_49,7,mob/dbexp_orbis_skyrealm_mob_0427
+dbexp_orbis_skyrealm_mob_0428,Orbis Skyrealm drake bloom,72,1448,254,22,34,orbis_skyrealm_combat_50,5,mob/dbexp_orbis_skyrealm_mob_0428
+dbexp_orbis_skyrealm_mob_0429,Orbis Skyrealm tide mauler,73,1489,262,22,35,orbis_skyrealm_combat_51,5,mob/dbexp_orbis_skyrealm_mob_0429
+dbexp_orbis_skyrealm_mob_0430,Orbis Skyrealm dusk sentinel,74,1530,270,22,36,orbis_skyrealm_combat_52,7,mob/dbexp_orbis_skyrealm_mob_0430
+dbexp_orbis_skyrealm_mob_0431,Orbis Skyrealm sprout keeper,75,1571,278,22,37,orbis_skyrealm_combat_53,9,mob/dbexp_orbis_skyrealm_mob_0431
+dbexp_orbis_skyrealm_mob_0432,Orbis Skyrealm moss watcher,76,1612,286,23,39,orbis_skyrealm_combat_54,9,mob/dbexp_orbis_skyrealm_mob_0432
+dbexp_orbis_skyrealm_mob_0433,Orbis Skyrealm rogue stalker,73,1397,242,22,31,orbis_skyrealm_combat_56,5,mob/dbexp_orbis_skyrealm_mob_0433
+dbexp_orbis_skyrealm_mob_0434,Orbis Skyrealm frost bloom,74,1438,250,22,32,orbis_skyrealm_combat_57,5,mob/dbexp_orbis_skyrealm_mob_0434
+dbexp_orbis_skyrealm_mob_0435,Orbis Skyrealm drake mauler,75,1479,258,22,33,orbis_skyrealm_combat_58,7,mob/dbexp_orbis_skyrealm_mob_0435
+dbexp_orbis_skyrealm_mob_0436,Orbis Skyrealm tide sentinel,76,1520,266,23,35,orbis_skyrealm_combat_59,5,mob/dbexp_orbis_skyrealm_mob_0436
+dbexp_orbis_skyrealm_mob_0437,Orbis Skyrealm dusk keeper,77,1561,274,23,36,orbis_skyrealm_combat_60,5,mob/dbexp_orbis_skyrealm_mob_0437
+dbexp_orbis_skyrealm_mob_0438,Orbis Skyrealm sprout watcher,78,1602,282,23,37,orbis_skyrealm_combat_61,7,mob/dbexp_orbis_skyrealm_mob_0438
+dbexp_orbis_skyrealm_mob_0439,Orbis Skyrealm moss brute,79,1643,290,23,38,orbis_skyrealm_combat_62,9,mob/dbexp_orbis_skyrealm_mob_0439
+dbexp_orbis_skyrealm_mob_0440,Orbis Skyrealm briar oracle,80,1684,298,24,40,orbis_skyrealm_combat_63,9,mob/dbexp_orbis_skyrealm_mob_0440
+dbexp_orbis_skyrealm_mob_0441,Orbis Skyrealm frost mauler,77,1469,254,23,32,orbis_skyrealm_combat_65,5,mob/dbexp_orbis_skyrealm_mob_0441
+dbexp_orbis_skyrealm_mob_0442,Orbis Skyrealm drake sentinel,78,1510,262,23,33,orbis_skyrealm_combat_66,5,mob/dbexp_orbis_skyrealm_mob_0442
+dbexp_orbis_skyrealm_mob_0443,Orbis Skyrealm tide keeper,79,1551,270,23,34,orbis_skyrealm_combat_67,7,mob/dbexp_orbis_skyrealm_mob_0443
+dbexp_orbis_skyrealm_mob_0444,Orbis Skyrealm dusk watcher,80,1592,278,24,36,orbis_skyrealm_combat_68,5,mob/dbexp_orbis_skyrealm_mob_0444
+dbexp_orbis_skyrealm_mob_0445,Orbis Skyrealm sprout brute,81,1633,286,24,37,orbis_skyrealm_combat_69,5,mob/dbexp_orbis_skyrealm_mob_0445
+dbexp_orbis_skyrealm_mob_0446,Orbis Skyrealm moss oracle,82,1674,294,24,38,orbis_skyrealm_combat_70,7,mob/dbexp_orbis_skyrealm_mob_0446
+dbexp_orbis_skyrealm_mob_0447,Orbis Skyrealm briar hunter,83,1715,302,24,39,orbis_skyrealm_combat_71,9,mob/dbexp_orbis_skyrealm_mob_0447
+dbexp_orbis_skyrealm_mob_0448,Orbis Skyrealm fang binder,84,1756,310,25,41,orbis_skyrealm_combat_72,9,mob/dbexp_orbis_skyrealm_mob_0448
+dbexp_ludibrium_clockwork_mob_0449,Ludibrium Clockwork moss stalker,56,1091,191,18,27,ludibrium_clockwork_combat_02,5,mob/dbexp_ludibrium_clockwork_mob_0449
+dbexp_ludibrium_clockwork_mob_0450,Ludibrium Clockwork briar bloom,57,1132,199,18,28,ludibrium_clockwork_combat_03,5,mob/dbexp_ludibrium_clockwork_mob_0450
+dbexp_ludibrium_clockwork_mob_0451,Ludibrium Clockwork fang mauler,58,1173,207,18,29,ludibrium_clockwork_combat_04,7,mob/dbexp_ludibrium_clockwork_mob_0451
+dbexp_ludibrium_clockwork_mob_0452,Ludibrium Clockwork grave sentinel,59,1214,215,18,30,ludibrium_clockwork_combat_05,5,mob/dbexp_ludibrium_clockwork_mob_0452
+dbexp_ludibrium_clockwork_mob_0453,Ludibrium Clockwork gear keeper,60,1255,223,19,32,ludibrium_clockwork_combat_06,5,mob/dbexp_ludibrium_clockwork_mob_0453
+dbexp_ludibrium_clockwork_mob_0454,Ludibrium Clockwork rune watcher,61,1296,231,19,33,ludibrium_clockwork_combat_07,7,mob/dbexp_ludibrium_clockwork_mob_0454
+dbexp_ludibrium_clockwork_mob_0455,Ludibrium Clockwork rogue brute,62,1337,239,19,34,ludibrium_clockwork_combat_08,9,mob/dbexp_ludibrium_clockwork_mob_0455
+dbexp_ludibrium_clockwork_mob_0456,Ludibrium Clockwork frost oracle,63,1378,247,19,35,ludibrium_clockwork_combat_09,9,mob/dbexp_ludibrium_clockwork_mob_0456
+dbexp_ludibrium_clockwork_mob_0457,Ludibrium Clockwork briar mauler,60,1163,203,19,28,ludibrium_clockwork_combat_11,5,mob/dbexp_ludibrium_clockwork_mob_0457
+dbexp_ludibrium_clockwork_mob_0458,Ludibrium Clockwork fang sentinel,61,1204,211,19,29,ludibrium_clockwork_combat_12,5,mob/dbexp_ludibrium_clockwork_mob_0458
+dbexp_ludibrium_clockwork_mob_0459,Ludibrium Clockwork grave keeper,62,1245,219,19,30,ludibrium_clockwork_combat_13,7,mob/dbexp_ludibrium_clockwork_mob_0459
+dbexp_ludibrium_clockwork_mob_0460,Ludibrium Clockwork gear watcher,63,1286,227,19,31,ludibrium_clockwork_combat_14,5,mob/dbexp_ludibrium_clockwork_mob_0460
+dbexp_ludibrium_clockwork_mob_0461,Ludibrium Clockwork rune brute,64,1327,235,20,33,ludibrium_clockwork_combat_15,5,mob/dbexp_ludibrium_clockwork_mob_0461
+dbexp_ludibrium_clockwork_mob_0462,Ludibrium Clockwork rogue oracle,65,1368,243,20,34,ludibrium_clockwork_combat_16,7,mob/dbexp_ludibrium_clockwork_mob_0462
+dbexp_ludibrium_clockwork_mob_0463,Ludibrium Clockwork frost hunter,66,1409,251,20,35,ludibrium_clockwork_combat_17,9,mob/dbexp_ludibrium_clockwork_mob_0463
+dbexp_ludibrium_clockwork_mob_0464,Ludibrium Clockwork drake binder,67,1450,259,20,36,ludibrium_clockwork_combat_18,9,mob/dbexp_ludibrium_clockwork_mob_0464
+dbexp_ludibrium_clockwork_mob_0465,Ludibrium Clockwork fang keeper,64,1235,215,20,29,ludibrium_clockwork_combat_20,5,mob/dbexp_ludibrium_clockwork_mob_0465
+dbexp_ludibrium_clockwork_mob_0466,Ludibrium Clockwork grave watcher,65,1276,223,20,30,ludibrium_clockwork_combat_21,5,mob/dbexp_ludibrium_clockwork_mob_0466
+dbexp_ludibrium_clockwork_mob_0467,Ludibrium Clockwork gear brute,66,1317,231,20,31,ludibrium_clockwork_combat_22,7,mob/dbexp_ludibrium_clockwork_mob_0467
+dbexp_ludibrium_clockwork_mob_0468,Ludibrium Clockwork rune oracle,67,1358,239,20,32,ludibrium_clockwork_combat_23,5,mob/dbexp_ludibrium_clockwork_mob_0468
+dbexp_ludibrium_clockwork_mob_0469,Ludibrium Clockwork rogue hunter,68,1399,247,21,34,ludibrium_clockwork_combat_24,5,mob/dbexp_ludibrium_clockwork_mob_0469
+dbexp_ludibrium_clockwork_mob_0470,Ludibrium Clockwork frost binder,69,1440,255,21,35,ludibrium_clockwork_combat_25,7,mob/dbexp_ludibrium_clockwork_mob_0470
+dbexp_ludibrium_clockwork_mob_0471,Ludibrium Clockwork drake warden,70,1481,263,21,36,ludibrium_clockwork_combat_26,9,mob/dbexp_ludibrium_clockwork_mob_0471
+dbexp_ludibrium_clockwork_mob_0472,Ludibrium Clockwork tide runner,71,1522,271,21,37,ludibrium_clockwork_combat_27,9,mob/dbexp_ludibrium_clockwork_mob_0472
+dbexp_ludibrium_clockwork_mob_0473,Ludibrium Clockwork grave brute,68,1307,227,21,30,ludibrium_clockwork_combat_29,5,mob/dbexp_ludibrium_clockwork_mob_0473
+dbexp_ludibrium_clockwork_mob_0474,Ludibrium Clockwork gear oracle,69,1348,235,21,31,ludibrium_clockwork_combat_30,5,mob/dbexp_ludibrium_clockwork_mob_0474
+dbexp_ludibrium_clockwork_mob_0475,Ludibrium Clockwork rune hunter,70,1389,243,21,32,ludibrium_clockwork_combat_31,7,mob/dbexp_ludibrium_clockwork_mob_0475
+dbexp_ludibrium_clockwork_mob_0476,Ludibrium Clockwork rogue binder,71,1430,251,21,33,ludibrium_clockwork_combat_32,5,mob/dbexp_ludibrium_clockwork_mob_0476
+dbexp_ludibrium_clockwork_mob_0477,Ludibrium Clockwork frost warden,72,1471,259,22,35,ludibrium_clockwork_combat_33,5,mob/dbexp_ludibrium_clockwork_mob_0477
+dbexp_ludibrium_clockwork_mob_0478,Ludibrium Clockwork drake runner,73,1512,267,22,36,ludibrium_clockwork_combat_34,7,mob/dbexp_ludibrium_clockwork_mob_0478
+dbexp_ludibrium_clockwork_mob_0479,Ludibrium Clockwork tide stalker,74,1553,275,22,37,ludibrium_clockwork_combat_35,9,mob/dbexp_ludibrium_clockwork_mob_0479
+dbexp_ludibrium_clockwork_mob_0480,Ludibrium Clockwork dusk bloom,75,1594,283,22,38,ludibrium_clockwork_combat_36,9,mob/dbexp_ludibrium_clockwork_mob_0480
+dbexp_ludibrium_clockwork_mob_0481,Ludibrium Clockwork gear hunter,72,1379,239,22,31,ludibrium_clockwork_combat_38,5,mob/dbexp_ludibrium_clockwork_mob_0481
+dbexp_ludibrium_clockwork_mob_0482,Ludibrium Clockwork rune binder,73,1420,247,22,32,ludibrium_clockwork_combat_39,5,mob/dbexp_ludibrium_clockwork_mob_0482
+dbexp_ludibrium_clockwork_mob_0483,Ludibrium Clockwork rogue warden,74,1461,255,22,33,ludibrium_clockwork_combat_40,7,mob/dbexp_ludibrium_clockwork_mob_0483
+dbexp_ludibrium_clockwork_mob_0484,Ludibrium Clockwork frost runner,75,1502,263,22,34,ludibrium_clockwork_combat_41,5,mob/dbexp_ludibrium_clockwork_mob_0484
+dbexp_ludibrium_clockwork_mob_0485,Ludibrium Clockwork drake stalker,76,1543,271,23,36,ludibrium_clockwork_combat_42,5,mob/dbexp_ludibrium_clockwork_mob_0485
+dbexp_ludibrium_clockwork_mob_0486,Ludibrium Clockwork tide bloom,77,1584,279,23,37,ludibrium_clockwork_combat_43,7,mob/dbexp_ludibrium_clockwork_mob_0486
+dbexp_ludibrium_clockwork_mob_0487,Ludibrium Clockwork dusk mauler,78,1625,287,23,38,ludibrium_clockwork_combat_44,9,mob/dbexp_ludibrium_clockwork_mob_0487
+dbexp_ludibrium_clockwork_mob_0488,Ludibrium Clockwork sprout sentinel,79,1666,295,23,39,ludibrium_clockwork_combat_45,9,mob/dbexp_ludibrium_clockwork_mob_0488
+dbexp_ludibrium_clockwork_mob_0489,Ludibrium Clockwork rune warden,76,1451,251,23,32,ludibrium_clockwork_combat_47,5,mob/dbexp_ludibrium_clockwork_mob_0489
+dbexp_ludibrium_clockwork_mob_0490,Ludibrium Clockwork rogue runner,77,1492,259,23,33,ludibrium_clockwork_combat_48,5,mob/dbexp_ludibrium_clockwork_mob_0490
+dbexp_ludibrium_clockwork_mob_0491,Ludibrium Clockwork frost stalker,78,1533,267,23,34,ludibrium_clockwork_combat_49,7,mob/dbexp_ludibrium_clockwork_mob_0491
+dbexp_ludibrium_clockwork_mob_0492,Ludibrium Clockwork drake bloom,79,1574,275,23,35,ludibrium_clockwork_combat_50,5,mob/dbexp_ludibrium_clockwork_mob_0492
+dbexp_ludibrium_clockwork_mob_0493,Ludibrium Clockwork tide mauler,80,1615,283,24,37,ludibrium_clockwork_combat_51,5,mob/dbexp_ludibrium_clockwork_mob_0493
+dbexp_ludibrium_clockwork_mob_0494,Ludibrium Clockwork dusk sentinel,81,1656,291,24,38,ludibrium_clockwork_combat_52,7,mob/dbexp_ludibrium_clockwork_mob_0494
+dbexp_ludibrium_clockwork_mob_0495,Ludibrium Clockwork sprout keeper,82,1697,299,24,39,ludibrium_clockwork_combat_53,9,mob/dbexp_ludibrium_clockwork_mob_0495
+dbexp_ludibrium_clockwork_mob_0496,Ludibrium Clockwork moss watcher,83,1738,307,24,40,ludibrium_clockwork_combat_54,9,mob/dbexp_ludibrium_clockwork_mob_0496
+dbexp_ludibrium_clockwork_mob_0497,Ludibrium Clockwork rogue stalker,80,1523,263,24,33,ludibrium_clockwork_combat_56,5,mob/dbexp_ludibrium_clockwork_mob_0497
+dbexp_ludibrium_clockwork_mob_0498,Ludibrium Clockwork frost bloom,81,1564,271,24,34,ludibrium_clockwork_combat_57,5,mob/dbexp_ludibrium_clockwork_mob_0498
+dbexp_ludibrium_clockwork_mob_0499,Ludibrium Clockwork drake mauler,82,1605,279,24,35,ludibrium_clockwork_combat_58,7,mob/dbexp_ludibrium_clockwork_mob_0499
+dbexp_ludibrium_clockwork_mob_0500,Ludibrium Clockwork tide sentinel,83,1646,287,24,36,ludibrium_clockwork_combat_59,5,mob/dbexp_ludibrium_clockwork_mob_0500
+dbexp_ludibrium_clockwork_mob_0501,Ludibrium Clockwork dusk keeper,84,1687,295,25,38,ludibrium_clockwork_combat_60,5,mob/dbexp_ludibrium_clockwork_mob_0501
+dbexp_ludibrium_clockwork_mob_0502,Ludibrium Clockwork sprout watcher,85,1728,303,25,39,ludibrium_clockwork_combat_61,7,mob/dbexp_ludibrium_clockwork_mob_0502
+dbexp_ludibrium_clockwork_mob_0503,Ludibrium Clockwork moss brute,86,1769,311,25,40,ludibrium_clockwork_combat_62,9,mob/dbexp_ludibrium_clockwork_mob_0503
+dbexp_ludibrium_clockwork_mob_0504,Ludibrium Clockwork briar oracle,87,1810,319,25,41,ludibrium_clockwork_combat_63,9,mob/dbexp_ludibrium_clockwork_mob_0504
+dbexp_ludibrium_clockwork_mob_0505,Ludibrium Clockwork frost mauler,84,1595,275,25,34,ludibrium_clockwork_combat_65,5,mob/dbexp_ludibrium_clockwork_mob_0505
+dbexp_ludibrium_clockwork_mob_0506,Ludibrium Clockwork drake sentinel,85,1636,283,25,35,ludibrium_clockwork_combat_66,5,mob/dbexp_ludibrium_clockwork_mob_0506
+dbexp_ludibrium_clockwork_mob_0507,Ludibrium Clockwork tide keeper,86,1677,291,25,36,ludibrium_clockwork_combat_67,7,mob/dbexp_ludibrium_clockwork_mob_0507
+dbexp_ludibrium_clockwork_mob_0508,Ludibrium Clockwork dusk watcher,87,1718,299,25,37,ludibrium_clockwork_combat_68,5,mob/dbexp_ludibrium_clockwork_mob_0508
+dbexp_ludibrium_clockwork_mob_0509,Ludibrium Clockwork sprout brute,88,1759,307,26,39,ludibrium_clockwork_combat_69,5,mob/dbexp_ludibrium_clockwork_mob_0509
+dbexp_ludibrium_clockwork_mob_0510,Ludibrium Clockwork moss oracle,89,1800,315,26,40,ludibrium_clockwork_combat_70,7,mob/dbexp_ludibrium_clockwork_mob_0510
+dbexp_ludibrium_clockwork_mob_0511,Ludibrium Clockwork briar hunter,90,1841,323,26,41,ludibrium_clockwork_combat_71,9,mob/dbexp_ludibrium_clockwork_mob_0511
+dbexp_ludibrium_clockwork_mob_0512,Ludibrium Clockwork fang binder,91,1882,331,26,42,ludibrium_clockwork_combat_72,9,mob/dbexp_ludibrium_clockwork_mob_0512
+dbexp_elnath_snowfield_mob_0513,Elnath Snowfield moss stalker,69,1325,230,21,30,elnath_snowfield_combat_02,5,mob/dbexp_elnath_snowfield_mob_0513
+dbexp_elnath_snowfield_mob_0514,Elnath Snowfield briar bloom,70,1366,238,21,31,elnath_snowfield_combat_03,5,mob/dbexp_elnath_snowfield_mob_0514
+dbexp_elnath_snowfield_mob_0515,Elnath Snowfield fang mauler,71,1407,246,21,32,elnath_snowfield_combat_04,7,mob/dbexp_elnath_snowfield_mob_0515
+dbexp_elnath_snowfield_mob_0516,Elnath Snowfield grave sentinel,72,1448,254,22,34,elnath_snowfield_combat_05,5,mob/dbexp_elnath_snowfield_mob_0516
+dbexp_elnath_snowfield_mob_0517,Elnath Snowfield gear keeper,73,1489,262,22,35,elnath_snowfield_combat_06,5,mob/dbexp_elnath_snowfield_mob_0517
+dbexp_elnath_snowfield_mob_0518,Elnath Snowfield rune watcher,74,1530,270,22,36,elnath_snowfield_combat_07,7,mob/dbexp_elnath_snowfield_mob_0518
+dbexp_elnath_snowfield_mob_0519,Elnath Snowfield rogue brute,75,1571,278,22,37,elnath_snowfield_combat_08,9,mob/dbexp_elnath_snowfield_mob_0519
+dbexp_elnath_snowfield_mob_0520,Elnath Snowfield frost oracle,76,1612,286,23,39,elnath_snowfield_combat_09,9,mob/dbexp_elnath_snowfield_mob_0520
+dbexp_elnath_snowfield_mob_0521,Elnath Snowfield briar mauler,73,1397,242,22,31,elnath_snowfield_combat_11,5,mob/dbexp_elnath_snowfield_mob_0521
+dbexp_elnath_snowfield_mob_0522,Elnath Snowfield fang sentinel,74,1438,250,22,32,elnath_snowfield_combat_12,5,mob/dbexp_elnath_snowfield_mob_0522
+dbexp_elnath_snowfield_mob_0523,Elnath Snowfield grave keeper,75,1479,258,22,33,elnath_snowfield_combat_13,7,mob/dbexp_elnath_snowfield_mob_0523
+dbexp_elnath_snowfield_mob_0524,Elnath Snowfield gear watcher,76,1520,266,23,35,elnath_snowfield_combat_14,5,mob/dbexp_elnath_snowfield_mob_0524
+dbexp_elnath_snowfield_mob_0525,Elnath Snowfield rune brute,77,1561,274,23,36,elnath_snowfield_combat_15,5,mob/dbexp_elnath_snowfield_mob_0525
+dbexp_elnath_snowfield_mob_0526,Elnath Snowfield rogue oracle,78,1602,282,23,37,elnath_snowfield_combat_16,7,mob/dbexp_elnath_snowfield_mob_0526
+dbexp_elnath_snowfield_mob_0527,Elnath Snowfield frost hunter,79,1643,290,23,38,elnath_snowfield_combat_17,9,mob/dbexp_elnath_snowfield_mob_0527
+dbexp_elnath_snowfield_mob_0528,Elnath Snowfield drake binder,80,1684,298,24,40,elnath_snowfield_combat_18,9,mob/dbexp_elnath_snowfield_mob_0528
+dbexp_elnath_snowfield_mob_0529,Elnath Snowfield fang keeper,77,1469,254,23,32,elnath_snowfield_combat_20,5,mob/dbexp_elnath_snowfield_mob_0529
+dbexp_elnath_snowfield_mob_0530,Elnath Snowfield grave watcher,78,1510,262,23,33,elnath_snowfield_combat_21,5,mob/dbexp_elnath_snowfield_mob_0530
+dbexp_elnath_snowfield_mob_0531,Elnath Snowfield gear brute,79,1551,270,23,34,elnath_snowfield_combat_22,7,mob/dbexp_elnath_snowfield_mob_0531
+dbexp_elnath_snowfield_mob_0532,Elnath Snowfield rune oracle,80,1592,278,24,36,elnath_snowfield_combat_23,5,mob/dbexp_elnath_snowfield_mob_0532
+dbexp_elnath_snowfield_mob_0533,Elnath Snowfield rogue hunter,81,1633,286,24,37,elnath_snowfield_combat_24,5,mob/dbexp_elnath_snowfield_mob_0533
+dbexp_elnath_snowfield_mob_0534,Elnath Snowfield frost binder,82,1674,294,24,38,elnath_snowfield_combat_25,7,mob/dbexp_elnath_snowfield_mob_0534
+dbexp_elnath_snowfield_mob_0535,Elnath Snowfield drake warden,83,1715,302,24,39,elnath_snowfield_combat_26,9,mob/dbexp_elnath_snowfield_mob_0535
+dbexp_elnath_snowfield_mob_0536,Elnath Snowfield tide runner,84,1756,310,25,41,elnath_snowfield_combat_27,9,mob/dbexp_elnath_snowfield_mob_0536
+dbexp_elnath_snowfield_mob_0537,Elnath Snowfield grave brute,81,1541,266,24,33,elnath_snowfield_combat_29,5,mob/dbexp_elnath_snowfield_mob_0537
+dbexp_elnath_snowfield_mob_0538,Elnath Snowfield gear oracle,82,1582,274,24,34,elnath_snowfield_combat_30,5,mob/dbexp_elnath_snowfield_mob_0538
+dbexp_elnath_snowfield_mob_0539,Elnath Snowfield rune hunter,83,1623,282,24,35,elnath_snowfield_combat_31,7,mob/dbexp_elnath_snowfield_mob_0539
+dbexp_elnath_snowfield_mob_0540,Elnath Snowfield rogue binder,84,1664,290,25,37,elnath_snowfield_combat_32,5,mob/dbexp_elnath_snowfield_mob_0540
+dbexp_elnath_snowfield_mob_0541,Elnath Snowfield frost warden,85,1705,298,25,38,elnath_snowfield_combat_33,5,mob/dbexp_elnath_snowfield_mob_0541
+dbexp_elnath_snowfield_mob_0542,Elnath Snowfield drake runner,86,1746,306,25,39,elnath_snowfield_combat_34,7,mob/dbexp_elnath_snowfield_mob_0542
+dbexp_elnath_snowfield_mob_0543,Elnath Snowfield tide stalker,87,1787,314,25,40,elnath_snowfield_combat_35,9,mob/dbexp_elnath_snowfield_mob_0543
+dbexp_elnath_snowfield_mob_0544,Elnath Snowfield dusk bloom,88,1828,322,26,42,elnath_snowfield_combat_36,9,mob/dbexp_elnath_snowfield_mob_0544
+dbexp_elnath_snowfield_mob_0545,Elnath Snowfield gear hunter,85,1613,278,25,34,elnath_snowfield_combat_38,5,mob/dbexp_elnath_snowfield_mob_0545
+dbexp_elnath_snowfield_mob_0546,Elnath Snowfield rune binder,86,1654,286,25,35,elnath_snowfield_combat_39,5,mob/dbexp_elnath_snowfield_mob_0546
+dbexp_elnath_snowfield_mob_0547,Elnath Snowfield rogue warden,87,1695,294,25,36,elnath_snowfield_combat_40,7,mob/dbexp_elnath_snowfield_mob_0547
+dbexp_elnath_snowfield_mob_0548,Elnath Snowfield frost runner,88,1736,302,26,38,elnath_snowfield_combat_41,5,mob/dbexp_elnath_snowfield_mob_0548
+dbexp_elnath_snowfield_mob_0549,Elnath Snowfield drake stalker,89,1777,310,26,39,elnath_snowfield_combat_42,5,mob/dbexp_elnath_snowfield_mob_0549
+dbexp_elnath_snowfield_mob_0550,Elnath Snowfield tide bloom,90,1818,318,26,40,elnath_snowfield_combat_43,7,mob/dbexp_elnath_snowfield_mob_0550
+dbexp_elnath_snowfield_mob_0551,Elnath Snowfield dusk mauler,91,1859,326,26,41,elnath_snowfield_combat_44,9,mob/dbexp_elnath_snowfield_mob_0551
+dbexp_elnath_snowfield_mob_0552,Elnath Snowfield sprout sentinel,92,1900,334,27,43,elnath_snowfield_combat_45,9,mob/dbexp_elnath_snowfield_mob_0552
+dbexp_elnath_snowfield_mob_0553,Elnath Snowfield rune warden,89,1685,290,26,35,elnath_snowfield_combat_47,5,mob/dbexp_elnath_snowfield_mob_0553
+dbexp_elnath_snowfield_mob_0554,Elnath Snowfield rogue runner,90,1726,298,26,36,elnath_snowfield_combat_48,5,mob/dbexp_elnath_snowfield_mob_0554
+dbexp_elnath_snowfield_mob_0555,Elnath Snowfield frost stalker,91,1767,306,26,37,elnath_snowfield_combat_49,7,mob/dbexp_elnath_snowfield_mob_0555
+dbexp_elnath_snowfield_mob_0556,Elnath Snowfield drake bloom,92,1808,314,27,39,elnath_snowfield_combat_50,5,mob/dbexp_elnath_snowfield_mob_0556
+dbexp_elnath_snowfield_mob_0557,Elnath Snowfield tide mauler,93,1849,322,27,40,elnath_snowfield_combat_51,5,mob/dbexp_elnath_snowfield_mob_0557
+dbexp_elnath_snowfield_mob_0558,Elnath Snowfield dusk sentinel,94,1890,330,27,41,elnath_snowfield_combat_52,7,mob/dbexp_elnath_snowfield_mob_0558
+dbexp_elnath_snowfield_mob_0559,Elnath Snowfield sprout keeper,95,1931,338,27,42,elnath_snowfield_combat_53,9,mob/dbexp_elnath_snowfield_mob_0559
+dbexp_elnath_snowfield_mob_0560,Elnath Snowfield moss watcher,96,1972,346,28,44,elnath_snowfield_combat_54,9,mob/dbexp_elnath_snowfield_mob_0560
+dbexp_elnath_snowfield_mob_0561,Elnath Snowfield rogue stalker,93,1757,302,27,36,elnath_snowfield_combat_56,5,mob/dbexp_elnath_snowfield_mob_0561
+dbexp_elnath_snowfield_mob_0562,Elnath Snowfield frost bloom,94,1798,310,27,37,elnath_snowfield_combat_57,5,mob/dbexp_elnath_snowfield_mob_0562
+dbexp_elnath_snowfield_mob_0563,Elnath Snowfield drake mauler,95,1839,318,27,38,elnath_snowfield_combat_58,7,mob/dbexp_elnath_snowfield_mob_0563
+dbexp_elnath_snowfield_mob_0564,Elnath Snowfield tide sentinel,96,1880,326,28,40,elnath_snowfield_combat_59,5,mob/dbexp_elnath_snowfield_mob_0564
+dbexp_elnath_snowfield_mob_0565,Elnath Snowfield dusk keeper,97,1921,334,28,41,elnath_snowfield_combat_60,5,mob/dbexp_elnath_snowfield_mob_0565
+dbexp_elnath_snowfield_mob_0566,Elnath Snowfield sprout watcher,98,1962,342,28,42,elnath_snowfield_combat_61,7,mob/dbexp_elnath_snowfield_mob_0566
+dbexp_elnath_snowfield_mob_0567,Elnath Snowfield moss brute,99,2003,350,28,43,elnath_snowfield_combat_62,9,mob/dbexp_elnath_snowfield_mob_0567
+dbexp_elnath_snowfield_mob_0568,Elnath Snowfield briar oracle,100,2044,358,29,45,elnath_snowfield_combat_63,9,mob/dbexp_elnath_snowfield_mob_0568
+dbexp_elnath_snowfield_mob_0569,Elnath Snowfield frost mauler,97,1829,314,28,37,elnath_snowfield_combat_65,5,mob/dbexp_elnath_snowfield_mob_0569
+dbexp_elnath_snowfield_mob_0570,Elnath Snowfield drake sentinel,98,1870,322,28,38,elnath_snowfield_combat_66,5,mob/dbexp_elnath_snowfield_mob_0570
+dbexp_elnath_snowfield_mob_0571,Elnath Snowfield tide keeper,99,1911,330,28,39,elnath_snowfield_combat_67,7,mob/dbexp_elnath_snowfield_mob_0571
+dbexp_elnath_snowfield_mob_0572,Elnath Snowfield dusk watcher,100,1952,338,29,41,elnath_snowfield_combat_68,5,mob/dbexp_elnath_snowfield_mob_0572
+dbexp_elnath_snowfield_mob_0573,Elnath Snowfield sprout brute,101,1993,346,29,42,elnath_snowfield_combat_69,5,mob/dbexp_elnath_snowfield_mob_0573
+dbexp_elnath_snowfield_mob_0574,Elnath Snowfield moss oracle,102,2034,354,29,43,elnath_snowfield_combat_70,7,mob/dbexp_elnath_snowfield_mob_0574
+dbexp_elnath_snowfield_mob_0575,Elnath Snowfield briar hunter,103,2075,362,29,44,elnath_snowfield_combat_71,9,mob/dbexp_elnath_snowfield_mob_0575
+dbexp_elnath_snowfield_mob_0576,Elnath Snowfield fang binder,104,2116,370,30,46,elnath_snowfield_combat_72,9,mob/dbexp_elnath_snowfield_mob_0576
+dbexp_minar_mountain_mob_0577,Minar Mountain moss stalker,79,1505,260,23,32,minar_mountain_combat_02,5,mob/dbexp_minar_mountain_mob_0577
+dbexp_minar_mountain_mob_0578,Minar Mountain briar bloom,80,1546,268,24,34,minar_mountain_combat_03,5,mob/dbexp_minar_mountain_mob_0578
+dbexp_minar_mountain_mob_0579,Minar Mountain fang mauler,81,1587,276,24,35,minar_mountain_combat_04,7,mob/dbexp_minar_mountain_mob_0579
+dbexp_minar_mountain_mob_0580,Minar Mountain grave sentinel,82,1628,284,24,36,minar_mountain_combat_05,5,mob/dbexp_minar_mountain_mob_0580
+dbexp_minar_mountain_mob_0581,Minar Mountain gear keeper,83,1669,292,24,37,minar_mountain_combat_06,5,mob/dbexp_minar_mountain_mob_0581
+dbexp_minar_mountain_mob_0582,Minar Mountain rune watcher,84,1710,300,25,39,minar_mountain_combat_07,7,mob/dbexp_minar_mountain_mob_0582
+dbexp_minar_mountain_mob_0583,Minar Mountain rogue brute,85,1751,308,25,40,minar_mountain_combat_08,9,mob/dbexp_minar_mountain_mob_0583
+dbexp_minar_mountain_mob_0584,Minar Mountain frost oracle,86,1792,316,25,41,minar_mountain_combat_09,9,mob/dbexp_minar_mountain_mob_0584
+dbexp_minar_mountain_mob_0585,Minar Mountain briar mauler,83,1577,272,24,33,minar_mountain_combat_11,5,mob/dbexp_minar_mountain_mob_0585
+dbexp_minar_mountain_mob_0586,Minar Mountain fang sentinel,84,1618,280,25,35,minar_mountain_combat_12,5,mob/dbexp_minar_mountain_mob_0586
+dbexp_minar_mountain_mob_0587,Minar Mountain grave keeper,85,1659,288,25,36,minar_mountain_combat_13,7,mob/dbexp_minar_mountain_mob_0587
+dbexp_minar_mountain_mob_0588,Minar Mountain gear watcher,86,1700,296,25,37,minar_mountain_combat_14,5,mob/dbexp_minar_mountain_mob_0588
+dbexp_minar_mountain_mob_0589,Minar Mountain rune brute,87,1741,304,25,38,minar_mountain_combat_15,5,mob/dbexp_minar_mountain_mob_0589
+dbexp_minar_mountain_mob_0590,Minar Mountain rogue oracle,88,1782,312,26,40,minar_mountain_combat_16,7,mob/dbexp_minar_mountain_mob_0590
+dbexp_minar_mountain_mob_0591,Minar Mountain frost hunter,89,1823,320,26,41,minar_mountain_combat_17,9,mob/dbexp_minar_mountain_mob_0591
+dbexp_minar_mountain_mob_0592,Minar Mountain drake binder,90,1864,328,26,42,minar_mountain_combat_18,9,mob/dbexp_minar_mountain_mob_0592
+dbexp_minar_mountain_mob_0593,Minar Mountain fang keeper,87,1649,284,25,34,minar_mountain_combat_20,5,mob/dbexp_minar_mountain_mob_0593
+dbexp_minar_mountain_mob_0594,Minar Mountain grave watcher,88,1690,292,26,36,minar_mountain_combat_21,5,mob/dbexp_minar_mountain_mob_0594
+dbexp_minar_mountain_mob_0595,Minar Mountain gear brute,89,1731,300,26,37,minar_mountain_combat_22,7,mob/dbexp_minar_mountain_mob_0595
+dbexp_minar_mountain_mob_0596,Minar Mountain rune oracle,90,1772,308,26,38,minar_mountain_combat_23,5,mob/dbexp_minar_mountain_mob_0596
+dbexp_minar_mountain_mob_0597,Minar Mountain rogue hunter,91,1813,316,26,39,minar_mountain_combat_24,5,mob/dbexp_minar_mountain_mob_0597
+dbexp_minar_mountain_mob_0598,Minar Mountain frost binder,92,1854,324,27,41,minar_mountain_combat_25,7,mob/dbexp_minar_mountain_mob_0598
+dbexp_minar_mountain_mob_0599,Minar Mountain drake warden,93,1895,332,27,42,minar_mountain_combat_26,9,mob/dbexp_minar_mountain_mob_0599
+dbexp_minar_mountain_mob_0600,Minar Mountain tide runner,94,1936,340,27,43,minar_mountain_combat_27,9,mob/dbexp_minar_mountain_mob_0600
+dbexp_minar_mountain_mob_0601,Minar Mountain grave brute,91,1721,296,26,35,minar_mountain_combat_29,5,mob/dbexp_minar_mountain_mob_0601
+dbexp_minar_mountain_mob_0602,Minar Mountain gear oracle,92,1762,304,27,37,minar_mountain_combat_30,5,mob/dbexp_minar_mountain_mob_0602
+dbexp_minar_mountain_mob_0603,Minar Mountain rune hunter,93,1803,312,27,38,minar_mountain_combat_31,7,mob/dbexp_minar_mountain_mob_0603
+dbexp_minar_mountain_mob_0604,Minar Mountain rogue binder,94,1844,320,27,39,minar_mountain_combat_32,5,mob/dbexp_minar_mountain_mob_0604
+dbexp_minar_mountain_mob_0605,Minar Mountain frost warden,95,1885,328,27,40,minar_mountain_combat_33,5,mob/dbexp_minar_mountain_mob_0605
+dbexp_minar_mountain_mob_0606,Minar Mountain drake runner,96,1926,336,28,42,minar_mountain_combat_34,7,mob/dbexp_minar_mountain_mob_0606
+dbexp_minar_mountain_mob_0607,Minar Mountain tide stalker,97,1967,344,28,43,minar_mountain_combat_35,9,mob/dbexp_minar_mountain_mob_0607
+dbexp_minar_mountain_mob_0608,Minar Mountain dusk bloom,98,2008,352,28,44,minar_mountain_combat_36,9,mob/dbexp_minar_mountain_mob_0608
+dbexp_minar_mountain_mob_0609,Minar Mountain gear hunter,95,1793,308,27,36,minar_mountain_combat_38,5,mob/dbexp_minar_mountain_mob_0609
+dbexp_minar_mountain_mob_0610,Minar Mountain rune binder,96,1834,316,28,38,minar_mountain_combat_39,5,mob/dbexp_minar_mountain_mob_0610
+dbexp_minar_mountain_mob_0611,Minar Mountain rogue warden,97,1875,324,28,39,minar_mountain_combat_40,7,mob/dbexp_minar_mountain_mob_0611
+dbexp_minar_mountain_mob_0612,Minar Mountain frost runner,98,1916,332,28,40,minar_mountain_combat_41,5,mob/dbexp_minar_mountain_mob_0612
+dbexp_minar_mountain_mob_0613,Minar Mountain drake stalker,99,1957,340,28,41,minar_mountain_combat_42,5,mob/dbexp_minar_mountain_mob_0613
+dbexp_minar_mountain_mob_0614,Minar Mountain tide bloom,100,1998,348,29,43,minar_mountain_combat_43,7,mob/dbexp_minar_mountain_mob_0614
+dbexp_minar_mountain_mob_0615,Minar Mountain dusk mauler,101,2039,356,29,44,minar_mountain_combat_44,9,mob/dbexp_minar_mountain_mob_0615
+dbexp_minar_mountain_mob_0616,Minar Mountain sprout sentinel,102,2080,364,29,45,minar_mountain_combat_45,9,mob/dbexp_minar_mountain_mob_0616
+dbexp_minar_mountain_mob_0617,Minar Mountain rune warden,99,1865,320,28,37,minar_mountain_combat_47,5,mob/dbexp_minar_mountain_mob_0617
+dbexp_minar_mountain_mob_0618,Minar Mountain rogue runner,100,1906,328,29,39,minar_mountain_combat_48,5,mob/dbexp_minar_mountain_mob_0618
+dbexp_minar_mountain_mob_0619,Minar Mountain frost stalker,101,1947,336,29,40,minar_mountain_combat_49,7,mob/dbexp_minar_mountain_mob_0619
+dbexp_minar_mountain_mob_0620,Minar Mountain drake bloom,102,1988,344,29,41,minar_mountain_combat_50,5,mob/dbexp_minar_mountain_mob_0620
+dbexp_minar_mountain_mob_0621,Minar Mountain tide mauler,103,2029,352,29,42,minar_mountain_combat_51,5,mob/dbexp_minar_mountain_mob_0621
+dbexp_minar_mountain_mob_0622,Minar Mountain dusk sentinel,104,2070,360,30,44,minar_mountain_combat_52,7,mob/dbexp_minar_mountain_mob_0622
+dbexp_minar_mountain_mob_0623,Minar Mountain sprout keeper,105,2111,368,30,45,minar_mountain_combat_53,9,mob/dbexp_minar_mountain_mob_0623
+dbexp_minar_mountain_mob_0624,Minar Mountain moss watcher,106,2152,376,30,46,minar_mountain_combat_54,9,mob/dbexp_minar_mountain_mob_0624
+dbexp_minar_mountain_mob_0625,Minar Mountain rogue stalker,103,1937,332,29,38,minar_mountain_combat_56,5,mob/dbexp_minar_mountain_mob_0625
+dbexp_minar_mountain_mob_0626,Minar Mountain frost bloom,104,1978,340,30,40,minar_mountain_combat_57,5,mob/dbexp_minar_mountain_mob_0626
+dbexp_minar_mountain_mob_0627,Minar Mountain drake mauler,105,2019,348,30,41,minar_mountain_combat_58,7,mob/dbexp_minar_mountain_mob_0627
+dbexp_minar_mountain_mob_0628,Minar Mountain tide sentinel,106,2060,356,30,42,minar_mountain_combat_59,5,mob/dbexp_minar_mountain_mob_0628
+dbexp_minar_mountain_mob_0629,Minar Mountain dusk keeper,107,2101,364,30,43,minar_mountain_combat_60,5,mob/dbexp_minar_mountain_mob_0629
+dbexp_minar_mountain_mob_0630,Minar Mountain sprout watcher,108,2142,372,31,45,minar_mountain_combat_61,7,mob/dbexp_minar_mountain_mob_0630
+dbexp_minar_mountain_mob_0631,Minar Mountain moss brute,109,2183,380,31,46,minar_mountain_combat_62,9,mob/dbexp_minar_mountain_mob_0631
+dbexp_minar_mountain_mob_0632,Minar Mountain briar oracle,110,2224,388,31,47,minar_mountain_combat_63,9,mob/dbexp_minar_mountain_mob_0632
+dbexp_minar_mountain_mob_0633,Minar Mountain frost mauler,107,2009,344,30,39,minar_mountain_combat_65,5,mob/dbexp_minar_mountain_mob_0633
+dbexp_minar_mountain_mob_0634,Minar Mountain drake sentinel,108,2050,352,31,41,minar_mountain_combat_66,5,mob/dbexp_minar_mountain_mob_0634
+dbexp_minar_mountain_mob_0635,Minar Mountain tide keeper,109,2091,360,31,42,minar_mountain_combat_67,7,mob/dbexp_minar_mountain_mob_0635
+dbexp_minar_mountain_mob_0636,Minar Mountain dusk watcher,110,2132,368,31,43,minar_mountain_combat_68,5,mob/dbexp_minar_mountain_mob_0636
+dbexp_minar_mountain_mob_0637,Minar Mountain sprout brute,111,2173,376,31,44,minar_mountain_combat_69,5,mob/dbexp_minar_mountain_mob_0637
+dbexp_minar_mountain_mob_0638,Minar Mountain moss oracle,112,2214,384,32,46,minar_mountain_combat_70,7,mob/dbexp_minar_mountain_mob_0638
+dbexp_minar_mountain_mob_0639,Minar Mountain briar hunter,113,2255,392,32,47,minar_mountain_combat_71,9,mob/dbexp_minar_mountain_mob_0639
+dbexp_minar_mountain_mob_0640,Minar Mountain fang binder,114,2296,400,32,48,minar_mountain_combat_72,9,mob/dbexp_minar_mountain_mob_0640
+dbexp_coastal_harbors_mob_0641,Coastal Harbors moss stalker,23,497,92,9,18,coastal_harbors_combat_02,5,mob/dbexp_coastal_harbors_mob_0641
+dbexp_coastal_harbors_mob_0642,Coastal Harbors briar bloom,24,538,100,10,20,coastal_harbors_combat_03,5,mob/dbexp_coastal_harbors_mob_0642
+dbexp_coastal_harbors_mob_0643,Coastal Harbors fang mauler,25,579,108,10,21,coastal_harbors_combat_04,7,mob/dbexp_coastal_harbors_mob_0643
+dbexp_coastal_harbors_mob_0644,Coastal Harbors grave sentinel,26,620,116,10,22,coastal_harbors_combat_05,5,mob/dbexp_coastal_harbors_mob_0644
+dbexp_coastal_harbors_mob_0645,Coastal Harbors gear keeper,27,661,124,10,23,coastal_harbors_combat_06,5,mob/dbexp_coastal_harbors_mob_0645
+dbexp_coastal_harbors_mob_0646,Coastal Harbors rune watcher,28,702,132,11,25,coastal_harbors_combat_07,7,mob/dbexp_coastal_harbors_mob_0646
+dbexp_coastal_harbors_mob_0647,Coastal Harbors rogue brute,29,743,140,11,26,coastal_harbors_combat_08,9,mob/dbexp_coastal_harbors_mob_0647
+dbexp_coastal_harbors_mob_0648,Coastal Harbors frost oracle,30,784,148,11,27,coastal_harbors_combat_09,9,mob/dbexp_coastal_harbors_mob_0648
+dbexp_coastal_harbors_mob_0649,Coastal Harbors briar mauler,27,569,104,10,19,coastal_harbors_combat_11,5,mob/dbexp_coastal_harbors_mob_0649
+dbexp_coastal_harbors_mob_0650,Coastal Harbors fang sentinel,28,610,112,11,21,coastal_harbors_combat_12,5,mob/dbexp_coastal_harbors_mob_0650
+dbexp_coastal_harbors_mob_0651,Coastal Harbors grave keeper,29,651,120,11,22,coastal_harbors_combat_13,7,mob/dbexp_coastal_harbors_mob_0651
+dbexp_coastal_harbors_mob_0652,Coastal Harbors gear watcher,30,692,128,11,23,coastal_harbors_combat_14,5,mob/dbexp_coastal_harbors_mob_0652
+dbexp_coastal_harbors_mob_0653,Coastal Harbors rune brute,31,733,136,11,24,coastal_harbors_combat_15,5,mob/dbexp_coastal_harbors_mob_0653
+dbexp_coastal_harbors_mob_0654,Coastal Harbors rogue oracle,32,774,144,12,26,coastal_harbors_combat_16,7,mob/dbexp_coastal_harbors_mob_0654
+dbexp_coastal_harbors_mob_0655,Coastal Harbors frost hunter,33,815,152,12,27,coastal_harbors_combat_17,9,mob/dbexp_coastal_harbors_mob_0655
+dbexp_coastal_harbors_mob_0656,Coastal Harbors drake binder,34,856,160,12,28,coastal_harbors_combat_18,9,mob/dbexp_coastal_harbors_mob_0656
+dbexp_coastal_harbors_mob_0657,Coastal Harbors fang keeper,31,641,116,11,20,coastal_harbors_combat_20,5,mob/dbexp_coastal_harbors_mob_0657
+dbexp_coastal_harbors_mob_0658,Coastal Harbors grave watcher,32,682,124,12,22,coastal_harbors_combat_21,5,mob/dbexp_coastal_harbors_mob_0658
+dbexp_coastal_harbors_mob_0659,Coastal Harbors gear brute,33,723,132,12,23,coastal_harbors_combat_22,7,mob/dbexp_coastal_harbors_mob_0659
+dbexp_coastal_harbors_mob_0660,Coastal Harbors rune oracle,34,764,140,12,24,coastal_harbors_combat_23,5,mob/dbexp_coastal_harbors_mob_0660
+dbexp_coastal_harbors_mob_0661,Coastal Harbors rogue hunter,35,805,148,12,25,coastal_harbors_combat_24,5,mob/dbexp_coastal_harbors_mob_0661
+dbexp_coastal_harbors_mob_0662,Coastal Harbors frost binder,36,846,156,13,27,coastal_harbors_combat_25,7,mob/dbexp_coastal_harbors_mob_0662
+dbexp_coastal_harbors_mob_0663,Coastal Harbors drake warden,37,887,164,13,28,coastal_harbors_combat_26,9,mob/dbexp_coastal_harbors_mob_0663
+dbexp_coastal_harbors_mob_0664,Coastal Harbors tide runner,38,928,172,13,29,coastal_harbors_combat_27,9,mob/dbexp_coastal_harbors_mob_0664
+dbexp_coastal_harbors_mob_0665,Coastal Harbors grave brute,35,713,128,12,21,coastal_harbors_combat_29,5,mob/dbexp_coastal_harbors_mob_0665
+dbexp_coastal_harbors_mob_0666,Coastal Harbors gear oracle,36,754,136,13,23,coastal_harbors_combat_30,5,mob/dbexp_coastal_harbors_mob_0666
+dbexp_coastal_harbors_mob_0667,Coastal Harbors rune hunter,37,795,144,13,24,coastal_harbors_combat_31,7,mob/dbexp_coastal_harbors_mob_0667
+dbexp_coastal_harbors_mob_0668,Coastal Harbors rogue binder,38,836,152,13,25,coastal_harbors_combat_32,5,mob/dbexp_coastal_harbors_mob_0668
+dbexp_coastal_harbors_mob_0669,Coastal Harbors frost warden,39,877,160,13,26,coastal_harbors_combat_33,5,mob/dbexp_coastal_harbors_mob_0669
+dbexp_coastal_harbors_mob_0670,Coastal Harbors drake runner,40,918,168,14,28,coastal_harbors_combat_34,7,mob/dbexp_coastal_harbors_mob_0670
+dbexp_coastal_harbors_mob_0671,Coastal Harbors tide stalker,41,959,176,14,29,coastal_harbors_combat_35,9,mob/dbexp_coastal_harbors_mob_0671
+dbexp_coastal_harbors_mob_0672,Coastal Harbors dusk bloom,42,1000,184,14,30,coastal_harbors_combat_36,9,mob/dbexp_coastal_harbors_mob_0672
+dbexp_coastal_harbors_mob_0673,Coastal Harbors gear hunter,39,785,140,13,22,coastal_harbors_combat_38,5,mob/dbexp_coastal_harbors_mob_0673
+dbexp_coastal_harbors_mob_0674,Coastal Harbors rune binder,40,826,148,14,24,coastal_harbors_combat_39,5,mob/dbexp_coastal_harbors_mob_0674
+dbexp_coastal_harbors_mob_0675,Coastal Harbors rogue warden,41,867,156,14,25,coastal_harbors_combat_40,7,mob/dbexp_coastal_harbors_mob_0675
+dbexp_coastal_harbors_mob_0676,Coastal Harbors frost runner,42,908,164,14,26,coastal_harbors_combat_41,5,mob/dbexp_coastal_harbors_mob_0676
+dbexp_coastal_harbors_mob_0677,Coastal Harbors drake stalker,43,949,172,14,27,coastal_harbors_combat_42,5,mob/dbexp_coastal_harbors_mob_0677
+dbexp_coastal_harbors_mob_0678,Coastal Harbors tide bloom,44,990,180,15,29,coastal_harbors_combat_43,7,mob/dbexp_coastal_harbors_mob_0678
+dbexp_coastal_harbors_mob_0679,Coastal Harbors dusk mauler,45,1031,188,15,30,coastal_harbors_combat_44,9,mob/dbexp_coastal_harbors_mob_0679
+dbexp_coastal_harbors_mob_0680,Coastal Harbors sprout sentinel,46,1072,196,15,31,coastal_harbors_combat_45,9,mob/dbexp_coastal_harbors_mob_0680
+dbexp_coastal_harbors_mob_0681,Coastal Harbors rune warden,43,857,152,14,23,coastal_harbors_combat_47,5,mob/dbexp_coastal_harbors_mob_0681
+dbexp_coastal_harbors_mob_0682,Coastal Harbors rogue runner,44,898,160,15,25,coastal_harbors_combat_48,5,mob/dbexp_coastal_harbors_mob_0682
+dbexp_coastal_harbors_mob_0683,Coastal Harbors frost stalker,45,939,168,15,26,coastal_harbors_combat_49,7,mob/dbexp_coastal_harbors_mob_0683
+dbexp_coastal_harbors_mob_0684,Coastal Harbors drake bloom,46,980,176,15,27,coastal_harbors_combat_50,5,mob/dbexp_coastal_harbors_mob_0684
+dbexp_coastal_harbors_mob_0685,Coastal Harbors tide mauler,47,1021,184,15,28,coastal_harbors_combat_51,5,mob/dbexp_coastal_harbors_mob_0685
+dbexp_coastal_harbors_mob_0686,Coastal Harbors dusk sentinel,48,1062,192,16,30,coastal_harbors_combat_52,7,mob/dbexp_coastal_harbors_mob_0686
+dbexp_coastal_harbors_mob_0687,Coastal Harbors sprout keeper,49,1103,200,16,31,coastal_harbors_combat_53,9,mob/dbexp_coastal_harbors_mob_0687
+dbexp_coastal_harbors_mob_0688,Coastal Harbors moss watcher,50,1144,208,16,32,coastal_harbors_combat_54,9,mob/dbexp_coastal_harbors_mob_0688
+dbexp_coastal_harbors_mob_0689,Coastal Harbors rogue stalker,47,929,164,15,24,coastal_harbors_combat_56,5,mob/dbexp_coastal_harbors_mob_0689
+dbexp_coastal_harbors_mob_0690,Coastal Harbors frost bloom,48,970,172,16,26,coastal_harbors_combat_57,5,mob/dbexp_coastal_harbors_mob_0690
+dbexp_coastal_harbors_mob_0691,Coastal Harbors drake mauler,49,1011,180,16,27,coastal_harbors_combat_58,7,mob/dbexp_coastal_harbors_mob_0691
+dbexp_coastal_harbors_mob_0692,Coastal Harbors tide sentinel,50,1052,188,16,28,coastal_harbors_combat_59,5,mob/dbexp_coastal_harbors_mob_0692
+dbexp_coastal_harbors_mob_0693,Coastal Harbors dusk keeper,51,1093,196,16,29,coastal_harbors_combat_60,5,mob/dbexp_coastal_harbors_mob_0693
+dbexp_coastal_harbors_mob_0694,Coastal Harbors sprout watcher,52,1134,204,17,31,coastal_harbors_combat_61,7,mob/dbexp_coastal_harbors_mob_0694
+dbexp_coastal_harbors_mob_0695,Coastal Harbors moss brute,53,1175,212,17,32,coastal_harbors_combat_62,9,mob/dbexp_coastal_harbors_mob_0695
+dbexp_coastal_harbors_mob_0696,Coastal Harbors briar oracle,54,1216,220,17,33,coastal_harbors_combat_63,9,mob/dbexp_coastal_harbors_mob_0696
+dbexp_coastal_harbors_mob_0697,Coastal Harbors frost mauler,51,1001,176,16,25,coastal_harbors_combat_65,5,mob/dbexp_coastal_harbors_mob_0697
+dbexp_coastal_harbors_mob_0698,Coastal Harbors drake sentinel,52,1042,184,17,27,coastal_harbors_combat_66,5,mob/dbexp_coastal_harbors_mob_0698
+dbexp_coastal_harbors_mob_0699,Coastal Harbors tide keeper,53,1083,192,17,28,coastal_harbors_combat_67,7,mob/dbexp_coastal_harbors_mob_0699
+dbexp_coastal_harbors_mob_0700,Coastal Harbors dusk watcher,54,1124,200,17,29,coastal_harbors_combat_68,5,mob/dbexp_coastal_harbors_mob_0700
+dbexp_coastal_harbors_mob_0701,Coastal Harbors sprout brute,55,1165,208,17,30,coastal_harbors_combat_69,5,mob/dbexp_coastal_harbors_mob_0701
+dbexp_coastal_harbors_mob_0702,Coastal Harbors moss oracle,56,1206,216,18,32,coastal_harbors_combat_70,7,mob/dbexp_coastal_harbors_mob_0702
+dbexp_coastal_harbors_mob_0703,Coastal Harbors briar hunter,57,1247,224,18,33,coastal_harbors_combat_71,9,mob/dbexp_coastal_harbors_mob_0703
+dbexp_coastal_harbors_mob_0704,Coastal Harbors fang binder,58,1288,232,18,34,coastal_harbors_combat_72,9,mob/dbexp_coastal_harbors_mob_0704
+dbexp_ancient_hidden_domains_mob_0705,Ancient Hidden Domains moss stalker,89,1685,290,26,35,ancient_hidden_domains_combat_02,5,mob/dbexp_ancient_hidden_domains_mob_0705
+dbexp_ancient_hidden_domains_mob_0706,Ancient Hidden Domains briar bloom,90,1726,298,26,36,ancient_hidden_domains_combat_03,5,mob/dbexp_ancient_hidden_domains_mob_0706
+dbexp_ancient_hidden_domains_mob_0707,Ancient Hidden Domains fang mauler,91,1767,306,26,37,ancient_hidden_domains_combat_04,7,mob/dbexp_ancient_hidden_domains_mob_0707
+dbexp_ancient_hidden_domains_mob_0708,Ancient Hidden Domains grave sentinel,92,1808,314,27,39,ancient_hidden_domains_combat_05,5,mob/dbexp_ancient_hidden_domains_mob_0708
+dbexp_ancient_hidden_domains_mob_0709,Ancient Hidden Domains gear keeper,93,1849,322,27,40,ancient_hidden_domains_combat_06,5,mob/dbexp_ancient_hidden_domains_mob_0709
+dbexp_ancient_hidden_domains_mob_0710,Ancient Hidden Domains rune watcher,94,1890,330,27,41,ancient_hidden_domains_combat_07,7,mob/dbexp_ancient_hidden_domains_mob_0710
+dbexp_ancient_hidden_domains_mob_0711,Ancient Hidden Domains rogue brute,95,1931,338,27,42,ancient_hidden_domains_combat_08,9,mob/dbexp_ancient_hidden_domains_mob_0711
+dbexp_ancient_hidden_domains_mob_0712,Ancient Hidden Domains frost oracle,96,1972,346,28,44,ancient_hidden_domains_combat_09,9,mob/dbexp_ancient_hidden_domains_mob_0712
+dbexp_ancient_hidden_domains_mob_0713,Ancient Hidden Domains briar mauler,93,1757,302,27,36,ancient_hidden_domains_combat_11,5,mob/dbexp_ancient_hidden_domains_mob_0713
+dbexp_ancient_hidden_domains_mob_0714,Ancient Hidden Domains fang sentinel,94,1798,310,27,37,ancient_hidden_domains_combat_12,5,mob/dbexp_ancient_hidden_domains_mob_0714
+dbexp_ancient_hidden_domains_mob_0715,Ancient Hidden Domains grave keeper,95,1839,318,27,38,ancient_hidden_domains_combat_13,7,mob/dbexp_ancient_hidden_domains_mob_0715
+dbexp_ancient_hidden_domains_mob_0716,Ancient Hidden Domains gear watcher,96,1880,326,28,40,ancient_hidden_domains_combat_14,5,mob/dbexp_ancient_hidden_domains_mob_0716
+dbexp_ancient_hidden_domains_mob_0717,Ancient Hidden Domains rune brute,97,1921,334,28,41,ancient_hidden_domains_combat_15,5,mob/dbexp_ancient_hidden_domains_mob_0717
+dbexp_ancient_hidden_domains_mob_0718,Ancient Hidden Domains rogue oracle,98,1962,342,28,42,ancient_hidden_domains_combat_16,7,mob/dbexp_ancient_hidden_domains_mob_0718
+dbexp_ancient_hidden_domains_mob_0719,Ancient Hidden Domains frost hunter,99,2003,350,28,43,ancient_hidden_domains_combat_17,9,mob/dbexp_ancient_hidden_domains_mob_0719
+dbexp_ancient_hidden_domains_mob_0720,Ancient Hidden Domains drake binder,100,2044,358,29,45,ancient_hidden_domains_combat_18,9,mob/dbexp_ancient_hidden_domains_mob_0720
+dbexp_ancient_hidden_domains_mob_0721,Ancient Hidden Domains fang keeper,97,1829,314,28,37,ancient_hidden_domains_combat_20,5,mob/dbexp_ancient_hidden_domains_mob_0721
+dbexp_ancient_hidden_domains_mob_0722,Ancient Hidden Domains grave watcher,98,1870,322,28,38,ancient_hidden_domains_combat_21,5,mob/dbexp_ancient_hidden_domains_mob_0722
+dbexp_ancient_hidden_domains_mob_0723,Ancient Hidden Domains gear brute,99,1911,330,28,39,ancient_hidden_domains_combat_22,7,mob/dbexp_ancient_hidden_domains_mob_0723
+dbexp_ancient_hidden_domains_mob_0724,Ancient Hidden Domains rune oracle,100,1952,338,29,41,ancient_hidden_domains_combat_23,5,mob/dbexp_ancient_hidden_domains_mob_0724
+dbexp_ancient_hidden_domains_mob_0725,Ancient Hidden Domains rogue hunter,101,1993,346,29,42,ancient_hidden_domains_combat_24,5,mob/dbexp_ancient_hidden_domains_mob_0725
+dbexp_ancient_hidden_domains_mob_0726,Ancient Hidden Domains frost binder,102,2034,354,29,43,ancient_hidden_domains_combat_25,7,mob/dbexp_ancient_hidden_domains_mob_0726
+dbexp_ancient_hidden_domains_mob_0727,Ancient Hidden Domains drake warden,103,2075,362,29,44,ancient_hidden_domains_combat_26,9,mob/dbexp_ancient_hidden_domains_mob_0727
+dbexp_ancient_hidden_domains_mob_0728,Ancient Hidden Domains tide runner,104,2116,370,30,46,ancient_hidden_domains_combat_27,9,mob/dbexp_ancient_hidden_domains_mob_0728
+dbexp_ancient_hidden_domains_mob_0729,Ancient Hidden Domains grave brute,101,1901,326,29,38,ancient_hidden_domains_combat_29,5,mob/dbexp_ancient_hidden_domains_mob_0729
+dbexp_ancient_hidden_domains_mob_0730,Ancient Hidden Domains gear oracle,102,1942,334,29,39,ancient_hidden_domains_combat_30,5,mob/dbexp_ancient_hidden_domains_mob_0730
+dbexp_ancient_hidden_domains_mob_0731,Ancient Hidden Domains rune hunter,103,1983,342,29,40,ancient_hidden_domains_combat_31,7,mob/dbexp_ancient_hidden_domains_mob_0731
+dbexp_ancient_hidden_domains_mob_0732,Ancient Hidden Domains rogue binder,104,2024,350,30,42,ancient_hidden_domains_combat_32,5,mob/dbexp_ancient_hidden_domains_mob_0732
+dbexp_ancient_hidden_domains_mob_0733,Ancient Hidden Domains frost warden,105,2065,358,30,43,ancient_hidden_domains_combat_33,5,mob/dbexp_ancient_hidden_domains_mob_0733
+dbexp_ancient_hidden_domains_mob_0734,Ancient Hidden Domains drake runner,106,2106,366,30,44,ancient_hidden_domains_combat_34,7,mob/dbexp_ancient_hidden_domains_mob_0734
+dbexp_ancient_hidden_domains_mob_0735,Ancient Hidden Domains tide stalker,107,2147,374,30,45,ancient_hidden_domains_combat_35,9,mob/dbexp_ancient_hidden_domains_mob_0735
+dbexp_ancient_hidden_domains_mob_0736,Ancient Hidden Domains dusk bloom,108,2188,382,31,47,ancient_hidden_domains_combat_36,9,mob/dbexp_ancient_hidden_domains_mob_0736
+dbexp_ancient_hidden_domains_mob_0737,Ancient Hidden Domains gear hunter,105,1973,338,30,39,ancient_hidden_domains_combat_38,5,mob/dbexp_ancient_hidden_domains_mob_0737
+dbexp_ancient_hidden_domains_mob_0738,Ancient Hidden Domains rune binder,106,2014,346,30,40,ancient_hidden_domains_combat_39,5,mob/dbexp_ancient_hidden_domains_mob_0738
+dbexp_ancient_hidden_domains_mob_0739,Ancient Hidden Domains rogue warden,107,2055,354,30,41,ancient_hidden_domains_combat_40,7,mob/dbexp_ancient_hidden_domains_mob_0739
+dbexp_ancient_hidden_domains_mob_0740,Ancient Hidden Domains frost runner,108,2096,362,31,43,ancient_hidden_domains_combat_41,5,mob/dbexp_ancient_hidden_domains_mob_0740
+dbexp_ancient_hidden_domains_mob_0741,Ancient Hidden Domains drake stalker,109,2137,370,31,44,ancient_hidden_domains_combat_42,5,mob/dbexp_ancient_hidden_domains_mob_0741
+dbexp_ancient_hidden_domains_mob_0742,Ancient Hidden Domains tide bloom,110,2178,378,31,45,ancient_hidden_domains_combat_43,7,mob/dbexp_ancient_hidden_domains_mob_0742
+dbexp_ancient_hidden_domains_mob_0743,Ancient Hidden Domains dusk mauler,111,2219,386,31,46,ancient_hidden_domains_combat_44,9,mob/dbexp_ancient_hidden_domains_mob_0743
+dbexp_ancient_hidden_domains_mob_0744,Ancient Hidden Domains sprout sentinel,112,2260,394,32,48,ancient_hidden_domains_combat_45,9,mob/dbexp_ancient_hidden_domains_mob_0744
+dbexp_ancient_hidden_domains_mob_0745,Ancient Hidden Domains rune warden,109,2045,350,31,40,ancient_hidden_domains_combat_47,5,mob/dbexp_ancient_hidden_domains_mob_0745
+dbexp_ancient_hidden_domains_mob_0746,Ancient Hidden Domains rogue runner,110,2086,358,31,41,ancient_hidden_domains_combat_48,5,mob/dbexp_ancient_hidden_domains_mob_0746
+dbexp_ancient_hidden_domains_mob_0747,Ancient Hidden Domains frost stalker,111,2127,366,31,42,ancient_hidden_domains_combat_49,7,mob/dbexp_ancient_hidden_domains_mob_0747
+dbexp_ancient_hidden_domains_mob_0748,Ancient Hidden Domains drake bloom,112,2168,374,32,44,ancient_hidden_domains_combat_50,5,mob/dbexp_ancient_hidden_domains_mob_0748
+dbexp_ancient_hidden_domains_mob_0749,Ancient Hidden Domains tide mauler,113,2209,382,32,45,ancient_hidden_domains_combat_51,5,mob/dbexp_ancient_hidden_domains_mob_0749
+dbexp_ancient_hidden_domains_mob_0750,Ancient Hidden Domains dusk sentinel,114,2250,390,32,46,ancient_hidden_domains_combat_52,7,mob/dbexp_ancient_hidden_domains_mob_0750
+dbexp_ancient_hidden_domains_mob_0751,Ancient Hidden Domains sprout keeper,115,2291,398,32,47,ancient_hidden_domains_combat_53,9,mob/dbexp_ancient_hidden_domains_mob_0751
+dbexp_ancient_hidden_domains_mob_0752,Ancient Hidden Domains moss watcher,116,2332,406,33,49,ancient_hidden_domains_combat_54,9,mob/dbexp_ancient_hidden_domains_mob_0752
+dbexp_ancient_hidden_domains_mob_0753,Ancient Hidden Domains rogue stalker,113,2117,362,32,41,ancient_hidden_domains_combat_56,5,mob/dbexp_ancient_hidden_domains_mob_0753
+dbexp_ancient_hidden_domains_mob_0754,Ancient Hidden Domains frost bloom,114,2158,370,32,42,ancient_hidden_domains_combat_57,5,mob/dbexp_ancient_hidden_domains_mob_0754
+dbexp_ancient_hidden_domains_mob_0755,Ancient Hidden Domains drake mauler,115,2199,378,32,43,ancient_hidden_domains_combat_58,7,mob/dbexp_ancient_hidden_domains_mob_0755
+dbexp_ancient_hidden_domains_mob_0756,Ancient Hidden Domains tide sentinel,116,2240,386,33,45,ancient_hidden_domains_combat_59,5,mob/dbexp_ancient_hidden_domains_mob_0756
+dbexp_ancient_hidden_domains_mob_0001,Ancient Hidden Domains fallback scout,92,1980,412,44,62,ancient_hidden_domains_combat_01,7,mob/dbexp_ancient_hidden_domains_mob_0001

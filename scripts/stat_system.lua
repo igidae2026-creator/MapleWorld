@@ -41,9 +41,16 @@ function StatSystem:derived(player, itemSystem, buffs)
     local equipmentPower = itemSystem and itemSystem:getPower(player) or 0
     local buffAttack = 0
     local buffDefense = 0
+    local critRate = 0.02 + (floor(stats.dex, 4) * 0.002)
+    local evasion = floor(stats.luk, 4) * 0.003
+    local resourceEfficiency = 1.0
     for _, effect in ipairs(buffs or {}) do
         if effect.stat == 'attack' then buffAttack = buffAttack + floor(effect.amount, 0) end
         if effect.stat == 'defense' then buffDefense = buffDefense + floor(effect.amount, 0) end
+        if effect.stat == 'critRate' then critRate = critRate + (tonumber(effect.amount) or 0) end
+        if effect.stat == 'evasion' then evasion = evasion + (tonumber(effect.amount) or 0) end
+        if effect.stat == 'attackSpeed' then resourceEfficiency = resourceEfficiency + ((tonumber(effect.amount) or 0) * 0.05) end
+        if effect.stat == 'damageReduction' then buffDefense = buffDefense + math.floor((tonumber(effect.amount) or 0) * 100) end
     end
     return {
         attack = floor(stats.str, 4) + math.floor(floor(stats.dex, 4) * 0.4) + equipmentPower + buffAttack,
@@ -51,6 +58,16 @@ function StatSystem:derived(player, itemSystem, buffs)
         defense = floor(stats.dex, 4) + floor(stats.luk, 4) + buffDefense + math.floor(equipmentPower * 0.2),
         maxHp = floor(stats.hp, 50) + (floor(player.level, 1) * 8),
         maxMp = floor(stats.mp, 25) + (floor(player.level, 1) * 4),
+        critRate = math.min(0.65, critRate),
+        evasion = math.min(0.45, evasion),
+        specialization = ({
+            warrior = 'frontline',
+            magician = 'caster',
+            bowman = 'marksman',
+            thief = 'assassin',
+            pirate = 'hybrid',
+        })[player.jobId or 'beginner'] or 'general',
+        resourceEfficiency = resourceEfficiency,
     }
 end
 

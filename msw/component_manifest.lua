@@ -7,8 +7,9 @@ return {
         runtimeContract = {
             worldScope = 'authoritative_server_runtime',
             ownership = 'world/channel/runtime scoped',
-            lifecycle = { 'bootstrap', 'tick', 'player_enter', 'player_leave', 'shutdown' },
+            lifecycle = { 'bootstrap', 'tick', 'player_enter', 'player_leave', 'map_load', 'reconcile', 'shutdown' },
             bindings = { 'player', 'world', 'channel', 'map' },
+            sync = { 'delta_state', 'entity_lifecycle', 'event_routing', 'reconciliation' },
         },
         attachToAliases = {
             'server_runtime',
@@ -22,6 +23,12 @@ return {
     serverMethods = {
         'GetPlayerState',
         'GetMapState',
+        'GetStateDelta',
+        'GetBridgeDiagnostics',
+        'ReconcileRuntimeState',
+        'DispatchRuntimeEvent',
+        'RoutePlayerAction',
+        'GetEventStream',
         'AttackMob',
         'PickupDrop',
         'DamageBoss',

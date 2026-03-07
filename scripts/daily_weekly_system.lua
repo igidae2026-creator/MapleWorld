@@ -5,7 +5,7 @@ function DailyWeeklySystem.new()
 end
 
 function DailyWeeklySystem:ensurePlayer(player)
-    player.rotations = player.rotations or { daily = {}, weekly = {} }
+    player.rotations = player.rotations or { daily = {}, weekly = {}, seasonal = {} }
     return player
 end
 
