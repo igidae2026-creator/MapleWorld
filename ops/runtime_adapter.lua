@@ -309,31 +309,33 @@ function RuntimeAdapter:resolveActorContext(source, options)
             return nil, 'authoritative_identity_unavailable'
         end
 
-        local userId = self:getUserId(source, { authoritativeOnly = true })
-        local entity = userId and self:getUserEntityByUserId(userId) or nil
-        if not userId and entity then
-            userId = self:getUserId(entity, { authoritativeOnly = true })
+        local nestedEntity = first(source, {
+            { 'Entity' },
+            { 'UserEntity' },
+            { 'Player' },
+            { 'User' },
+        })
+        local entity = nestedEntity
+        if entity == nil and (type(source) == 'userdata' or self:getUserId(source, { authoritativeOnly = true }) ~= nil) then
+            entity = source
         end
-        if not userId or entity == nil then return nil, 'authoritative_identity_unavailable' end
-
-        local sourceEntity = self:getUserId(source, { authoritativeOnly = true }) and self:getUserEntityByUserId(self:getUserId(source, { authoritativeOnly = true })) or nil
-        if source ~= entity and source ~= sourceEntity and sourceEntity ~= entity then
-            local nestedEntity = first(source, {
-                { 'Entity' },
-                { 'UserEntity' },
-                { 'Player' },
-                { 'User' },
-            })
-            if nestedEntity ~= entity then
-                return nil, 'authoritative_identity_unavailable'
-            end
+        if entity == nil or not self:isAuthoritativeSource(entity) then
+            return nil, 'authoritative_identity_unavailable'
         end
 
-        local mapId = self:getMapId(entity, { authoritativeOnly = true })
-        local position = self:getPosition(entity, { authoritativeOnly = true })
+        local userId = self:getUserId(entity, { authoritativeOnly = true })
+        if not userId then return nil, 'authoritative_identity_unavailable' end
+
+        local authoritativeEntity = self:getUserEntityByUserId(userId)
+        if authoritativeEntity == nil or authoritativeEntity ~= entity then
+            return nil, 'authoritative_identity_unavailable'
+        end
+
+        local mapId = self:getMapId(authoritativeEntity, { authoritativeOnly = true })
+        local position = self:getPosition(authoritativeEntity, { authoritativeOnly = true })
         return {
             userId = userId,
-            entity = entity,
+            entity = authoritativeEntity,
             mapId = mapId,
             position = position,
             authoritative = true,

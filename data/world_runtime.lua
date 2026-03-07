@@ -18,7 +18,7 @@ return {
         worldStorageKey = 'state',
         worldStateSlotCount = 3,
         persistedDropsPerMap = 120,
-        persistedJournalEntries = 2000,
+        persistedJournalEntries = 0,
         journalMaxEntries = 0,
         autoPickupDrops = true,
     },

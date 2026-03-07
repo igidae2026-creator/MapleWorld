@@ -87,6 +87,11 @@ function PlayerRepository:_slotKey(index)
     return tostring(self.key) .. '__slot_' .. tostring(index)
 end
 
+
+function PlayerRepository:_revisionKey(index)
+    return tostring(self.key) .. '__rev_' .. tostring(math.max(1, math.floor(tonumber(index) or 1)))
+end
+
 function PlayerRepository:_headKey()
     return tostring(self.key) .. '__head'
 end
@@ -167,12 +172,24 @@ function PlayerRepository:_loadFromStorage(playerId)
     local bestKey = nil
 
     local prioritized = {}
+    local highestRevision = 0
 
     for _, head in ipairs(self:_headCandidates(storage)) do
         if type(head) == 'table' and tonumber(head.slot) then
             prioritized[#prioritized + 1] = self:_slotKey(math.floor(tonumber(head.slot)))
         end
+        if type(head) == 'table' and tonumber(head.revision) then
+            highestRevision = math.max(highestRevision, math.floor(tonumber(head.revision) or 0))
+        end
     end
+
+    local revisionWindow = math.max(self.slotCount * 6, self:_headHistorySize() * 4)
+    if highestRevision > 0 then
+        for rev = highestRevision, math.max(1, highestRevision - revisionWindow), -1 do
+            prioritized[#prioritized + 1] = self:_revisionKey(rev)
+        end
+    end
+
     for _, key in ipairs(self:_candidateKeys()) do
         prioritized[#prioritized + 1] = key
     end
@@ -220,7 +237,10 @@ function PlayerRepository:_saveToStorage(player)
     }
 
     local encodedEnvelope = self.runtimeAdapter:encodeData(envelope)
-    local ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
+    local ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
+    if not ok then return false, err end
+
+    ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
     if not ok then return false, err end
 
     local headSnapshot = {
