@@ -121,4 +121,42 @@ local worldRestored = ServerBootstrap.boot('.', {
 local restoredDrops = worldRestored.dropSystem:listDrops('henesys_hunting_ground')
 assert(#restoredDrops == 1 and restoredDrops[1].dropId == 12, 'dropsByMap-only persisted snapshot did not restore correctly')
 
+-- replay invariants fail closed on invalid negative mesos ledger post-state
+local invalidReplaySnapshot = {
+    version = 2,
+    savedAt = 77,
+    checkpoint = {
+        checkpoint_id = 'invalid-neg-mesos',
+        journal_watermark = 1,
+        replay_base_revision = 0,
+    },
+    boss = { encounters = {} },
+    drops = { nextDropId = 1, drops = {}, dropsByMap = {} },
+    journal = {
+        entries = {},
+        ledgerEntries = {
+            {
+                ledger_event_id = 1,
+                event_type = 'mesos_spend',
+                source_system = 'economy_system',
+                player_id = 'u1',
+                post_state = { mesos = -5 },
+            },
+        },
+        nextSeq = 2,
+        nextLedgerEventId = 2,
+    },
+}
+
+local invalidBootOk, invalidBootErr = pcall(function()
+    ServerBootstrap.boot('.', {
+        worldRepository = {
+            load = function() return invalidReplaySnapshot end,
+            save = function() return true end,
+        },
+        playerRepository = PlayerRepository.newMemory({}),
+    })
+end)
+assert(invalidBootOk == false and tostring(invalidBootErr):find('negative_mesos_after_replay', 1, true), 'invalid replay state did not fail closed')
+
 print('persistence_integrity_test: ok')

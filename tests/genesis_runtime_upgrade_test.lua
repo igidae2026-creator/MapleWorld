@@ -39,4 +39,19 @@ local replaced = worldB:replacePolicyBundle({ policyId = 'test.override', policy
 assert(replaced, 'policy replacement failed')
 assert(worldB:getRuntimeStatus().policy.policyId == 'test.override', 'policy replacement not visible')
 
+-- scoped ownership conflict must fail closed and feed pressure/escalation
+local scopePlayer = worldB:createPlayer('scope_conflict')
+scopePlayer.runtimeScope.worldId = 'different-world'
+local mapOk, mapErr = worldB:changeMap(scopePlayer, 'forest_edge', scopePlayer.currentMapId)
+assert(mapOk == false and mapErr == 'runtime_world_conflict', 'ownership conflict must fail map migration')
+local statusC = worldB:getRuntimeStatus()
+assert((statusC.pressure.ownershipConflict or 0) >= 1, 'ownership conflict pressure not tracked')
+
+local replayStart, replayFinish = false, false
+for _, entry in ipairs(worldB.journal:snapshot()) do
+    if entry.event == 'replay_start' then replayStart = true end
+    if entry.event == 'replay_finish' then replayFinish = true end
+end
+assert(replayStart and replayFinish, 'replay lifecycle events missing')
+
 print('genesis_runtime_upgrade_test: ok')
