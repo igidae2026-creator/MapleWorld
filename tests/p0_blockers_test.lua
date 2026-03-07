@@ -16,6 +16,34 @@ assert(not ok and err == 'instance_not_found', 'bogus instance did not fail safe
 assert(player.equipment.weapon and player.equipment.weapon.instanceId == first, 'equipped item changed on failed equip')
 assert(player.inventory.sword_bronze and player.inventory.sword_bronze.quantity == 1 and player.inventory.sword_bronze.instances[1].instanceId == second, 'inventory duplicated or corrupted after failed equip')
 
+
+-- failed equip with stale/foreign instanceId leaves state unchanged
+local integrity = world:createPlayer('p0_integrity')
+integrity.level = 40
+assert(world.itemSystem:addItem(integrity, 'sword_bronze', 1), 'seed bronze failed')
+assert(world.itemSystem:addItem(integrity, 'stumpy_axe', 1), 'seed axe failed')
+local bronzeId = integrity.inventory.sword_bronze.instances[1].instanceId
+local axeId = integrity.inventory.stumpy_axe.instances[1].instanceId
+assert(world:equipItem(integrity, 'sword_bronze', bronzeId), 'integrity initial equip failed')
+local inventoryBefore = world.itemSystem:exportInventory(integrity)
+local equippedBefore = integrity.equipment.weapon and integrity.equipment.weapon.instanceId
+local badOk, badErr = world:equipItem(integrity, 'sword_bronze', axeId)
+assert(not badOk and badErr == 'instance_not_found', 'foreign instanceId did not fail closed')
+assert(integrity.equipment.weapon and integrity.equipment.weapon.instanceId == equippedBefore, 'equip slot mutated after failed foreign-instance equip')
+local inventoryAfter = world.itemSystem:exportInventory(integrity)
+assert(inventoryAfter.sword_bronze and inventoryAfter.sword_bronze.quantity == (inventoryBefore.sword_bronze and inventoryBefore.sword_bronze.quantity or 0), 'sword quantity changed after failed equip')
+assert(inventoryAfter.stumpy_axe and inventoryAfter.stumpy_axe.quantity == (inventoryBefore.stumpy_axe and inventoryBefore.stumpy_axe.quantity or 0), 'axe quantity changed after failed equip')
+local seen = {}
+for _, entry in pairs(inventoryAfter) do
+    if type(entry.instances) == 'table' then
+        for _, inst in ipairs(entry.instances) do
+            assert(not seen[inst.instanceId], 'duplicate instance found in inventory after failed equip')
+            seen[inst.instanceId] = true
+        end
+    end
+end
+assert(not seen[integrity.equipment.weapon.instanceId], 'equipped instance also present in inventory after failed equip')
+
 -- authority boundaries for map and npc actions
 local traveler = world:createPlayer('p0_authority')
 local changed, changedErr = world:changeMap(traveler, 'forest_edge', 'henesys_hunting_ground')
