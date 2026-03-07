@@ -4,6 +4,7 @@ local EventJournal = require('ops.event_journal')
 local ServerBootstrap = require('scripts.server_bootstrap')
 local RuntimeAdapter = require('ops.runtime_adapter')
 local WorldRepository = require('ops.world_repository')
+local PlayerRepository = require('ops.player_repository')
 
 -- journal trimming cap
 local journal = EventJournal.new({ maxEntries = 3, time = function() return 0 end })
@@ -150,6 +151,27 @@ assert(okB == false and (errB == 'world_owner_conflict' or errB == 'world_owner_
 
 local okC, errC = repoC:save({ version = 'from_c' })
 assert(okC == false and errC == 'world_owner_epoch_stale', 'stale writer epoch was not rejected')
+
+
+-- player repository guardrails: head conflict + commit retention
+local playerRepo = PlayerRepository.newMapleWorldsDataStorage({
+    runtimeAdapter = adapter,
+    storageName = 'TestPlayerState',
+    key = 'profile',
+    maxRevisions = 2,
+    maxCommits = 2,
+})
+for i = 1, 4 do
+    local ok, err = playerRepo:save({ id = 'player_guard', version = i })
+    assert(ok, 'player repo save failed: ' .. tostring(err))
+end
+local playerStore = _G._DataStorageService._stores['TestPlayerState:player_guard']
+assert(playerStore['profile__rev_1'] == '', 'old player revision was not trimmed under maxRevisions cap')
+assert(playerStore['profile__commit_1'] == '', 'old player commit marker was not trimmed under maxCommits cap')
+
+playerStore['profile__head'] = adapter:encodeData({ revision = 999, slot = 1 })
+local conflictOk, conflictErr = playerRepo:save({ id = 'player_guard', version = 5 })
+assert(conflictOk == false and conflictErr == 'player_head_conflict', 'player head conflict guard did not fail closed')
 
 _G._DataStorageService = previousStorage
 

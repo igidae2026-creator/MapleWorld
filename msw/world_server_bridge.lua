@@ -576,24 +576,24 @@ end
 function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local contextOk, contextErr = self:_validateMobActionContext(player, mapId, spawnId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
-    local ok, result, mobOrErr = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage))
+    local contextOk, mobOrErr = self:_validateMobActionContext(player, mapId, spawnId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, mobOrErr) end
+    local ok, result, resolvedMob = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage), mobOrErr)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, {
         result = result,
         map = self:_cachedMapState(player.currentMapId),
         player = self.world:publishPlayerSnapshot(player),
-        mob = mobOrErr,
+        mob = resolvedMob,
     })
 end
 
 function WorldServerBridge:pickupDrop(requestContext, mapId, dropId)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local contextOk, contextErr = self:_validateDropActionContext(player, mapId, dropId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
-    local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId))
+    local contextOk, dropOrErr = self:_validateDropActionContext(player, mapId, dropId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, dropOrErr) end
+    local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId), dropOrErr)
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { drop = payload, player = self.world:publishPlayerSnapshot(player) })
 end
@@ -605,9 +605,9 @@ function WorldServerBridge:damageBoss(requestContext, mapId, bossId, requestedDa
         requestedDamage = bossId
         bossId = nil
     end
-    local contextOk, contextErr = self:_validateBossActionContext(player, mapId, bossId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
-    local ok, payload = self.world:damageBoss(player, player.currentMapId, bossId, tonumber(requestedDamage))
+    local contextOk, encounterOrErr = self:_validateBossActionContext(player, mapId, bossId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, encounterOrErr) end
+    local ok, payload = self.world:damageBoss(player, player.currentMapId, bossId, tonumber(requestedDamage), encounterOrErr)
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { result = payload, map = self:_cachedMapState(player.currentMapId), player = self.world:publishPlayerSnapshot(player) })
 end
