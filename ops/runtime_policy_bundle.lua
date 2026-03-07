@@ -36,6 +36,7 @@ function RuntimePolicyBundle.defaults(worldConfig)
             replay = tonumber(runtime.pressureReplayThreshold) or 1,
             instability = tonumber(runtime.pressureInstabilityThreshold) or 3,
             lowDiversity = tonumber(runtime.pressureLowDiversityThreshold) or 4,
+            ownershipConflict = tonumber(runtime.pressureOwnershipConflictThreshold) or 2,
         },
         containment = {
             safeModeOnEscalation = tonumber(runtime.safeModeSeverityThreshold) or 3,

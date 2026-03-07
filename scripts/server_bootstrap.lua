@@ -558,6 +558,8 @@ function ServerBootstrap.boot(basePath, config)
             lowDiversity = 0,
             duplicateRisk = 0,
             savePressure = 0,
+            ownershipConflict = 0,
+            repetitiveFarming = 0,
         },
         containment = {
             safeMode = false,
@@ -593,6 +595,7 @@ function ServerBootstrap.boot(basePath, config)
         _worldStateDirty = false,
         _lastWorldSaveAt = nil,
         _savingFailures = 0,
+        _ownershipConflicts = 0,
         _rewardMutationCountWindow = {},
         _lastPolicyId = nil,
         actionGuard = actionGuard,
@@ -733,6 +736,7 @@ function ServerBootstrap.boot(basePath, config)
         self.pressure.backlog = backlog
         self.pressure.savePressure = backlog
         self.pressure.instability = instability
+        self.pressure.ownershipConflict = math.max(0, tonumber(self._ownershipConflicts) or 0)
 
         local now = self:_now()
         local window = self._rewardMutationCountWindow or {}
@@ -746,6 +750,7 @@ function ServerBootstrap.boot(basePath, config)
         for _, entry in ipairs(recent) do diversity[tostring(entry.event)] = true end
         local kinds = countTableKeys(diversity)
         self.pressure.lowDiversity = kinds <= 2 and (3 - kinds) or 0
+        self.pressure.repetitiveFarming = self.pressure.lowDiversity
 
         local replayPressure = self.recovery and self.recovery.divergence and 2 or 0
         self.pressure.replay = replayPressure
@@ -758,6 +763,8 @@ function ServerBootstrap.boot(basePath, config)
             self.metrics:gauge('pressure.low_diversity', self.pressure.lowDiversity)
             self.metrics:gauge('pressure.instability', instability)
             self.metrics:gauge('pressure.duplicate_risk', self.pressure.duplicateRisk or 0)
+            self.metrics:gauge('pressure.ownership_conflict', self.pressure.ownershipConflict or 0)
+            self.metrics:gauge('pressure.repetitive_farming', self.pressure.repetitiveFarming or 0)
         end
 
         if backlog >= self:_pressureThreshold('saveBacklog') then
@@ -769,6 +776,9 @@ function ServerBootstrap.boot(basePath, config)
         if instability >= self:_pressureThreshold('instability') then
             self:_recordRuntimeEvent('failure_collapse_diversity_repair', { instability = instability })
             self:_escalate('world_instability_pressure', { instability = instability })
+        end
+        if (self.pressure.ownershipConflict or 0) >= self:_pressureThreshold('ownershipConflict') then
+            self:_escalate('ownership_conflict_pressure', { conflicts = self.pressure.ownershipConflict })
         end
     end
 
@@ -1080,6 +1090,13 @@ function ServerBootstrap.boot(basePath, config)
                 end
                 if iid then self.recoveryInvariants.itemInstanceIds[iid] = true end
             end
+            if entry.event_type == 'mesos_spend' or entry.event_type == 'mesos_grant' then
+                local post = entry.post_state or {}
+                local mesos = tonumber(post.mesos)
+                if mesos and mesos < 0 then
+                    return false, 'negative_mesos_after_replay'
+                end
+            end
             if entry.event_type == 'drop_claim' and entry.source_event_id then
                 local dk = tostring(entry.source_event_id)
                 if self.recoveryInvariants.claimedDrops[dk] then
@@ -1094,6 +1111,7 @@ function ServerBootstrap.boot(basePath, config)
     function world:restoreWorldState()
         if not self.worldRepository then return false end
         self.recovery.mode = 'loading_checkpoint'
+        self:_recordRuntimeEvent('replay_start', { mode = 'checkpoint_restore' })
         local startedAt = os.clock()
         local snapshot, err = self.worldRepository:load()
         if err then
@@ -1103,11 +1121,13 @@ function ServerBootstrap.boot(basePath, config)
             end
             self.recovery.mode = 'checkpoint_invalid'
             self.recovery.valid = false
+            self:_recordRuntimeEvent('replay_divergence', { reason = 'checkpoint_load_failed', error = tostring(err) })
             return false, err
         end
         if not snapshot then
             self.recovery.mode = 'cold_start'
             self.recovery.valid = true
+            self:_recordRuntimeEvent('replay_finish', { mode = 'cold_start', replayed_entries = 0 })
             return false
         end
         if type(snapshot) ~= 'table' then return false, 'invalid_world_snapshot' end
@@ -1139,6 +1159,7 @@ function ServerBootstrap.boot(basePath, config)
             self.recovery.mode = 'checkpoint_restore_failed'
             self.recovery.valid = false
             self:_escalate('checkpoint_restore_failed', { error = tostring(restoreErr) })
+            self:_recordRuntimeEvent('replay_divergence', { reason = 'checkpoint_restore_failed', error = tostring(restoreErr) })
             return false, 'restore_failed:' .. tostring(restoreErr)
         end
 
@@ -1146,7 +1167,9 @@ function ServerBootstrap.boot(basePath, config)
         if not invOk then
             self.recovery.mode = 'replay_restore_required'
             self.recovery.valid = false
+            self.containment.replayOnly = true
             self:_escalate('replay_invariant_violation', { invariant = invErr })
+            self:_recordRuntimeEvent('replay_divergence', { reason = invErr })
             return false, invErr
         end
 
@@ -1176,6 +1199,11 @@ function ServerBootstrap.boot(basePath, config)
             checkpoint_id = self.recovery.checkpointId,
             replayed_entries = self.recovery.replayedEntries,
             duration_ms = elapsedMs,
+        })
+        self:_recordRuntimeEvent('replay_finish', {
+            mode = 'checkpoint_restore',
+            replayed_entries = self.recovery.replayedEntries,
+            checkpoint_id = self.recovery.checkpointId,
         })
         self:_recomputePressure()
         return true
@@ -1775,8 +1803,28 @@ function ServerBootstrap.boot(basePath, config)
     function world:changeMap(player, mapId, sourceMapId)
         if not player then return false, 'invalid_player' end
         if self.containment.migrationBlocked then return false, 'migration_blocked' end
+        if self.containment.ownershipReject then return false, 'ownership_reject' end
         if not mapId or mapId == '' or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
         if sourceMapId ~= nil and sourceMapId ~= '' and player.currentMapId ~= sourceMapId then return false, 'wrong_map' end
+        local scope = player.runtimeScope or {}
+        if scope.worldId and tostring(scope.worldId) ~= tostring(self.runtimeIdentity.worldId) then
+            self._ownershipConflicts = (self._ownershipConflicts or 0) + 1
+            self:_recordRuntimeEvent('ownership_conflict', { type = 'world', playerId = player.id, expected = self.runtimeIdentity.worldId, actual = scope.worldId })
+            self:_recomputePressure()
+            return false, 'runtime_world_conflict'
+        end
+        if scope.channelId and tostring(scope.channelId) ~= tostring(self.runtimeIdentity.channelId) then
+            self._ownershipConflicts = (self._ownershipConflicts or 0) + 1
+            self:_recordRuntimeEvent('ownership_conflict', { type = 'channel', playerId = player.id, expected = self.runtimeIdentity.channelId, actual = scope.channelId })
+            self:_recomputePressure()
+            return false, 'runtime_channel_conflict'
+        end
+        if scope.runtimeInstanceId and tostring(scope.runtimeInstanceId) ~= tostring(self.runtimeIdentity.runtimeInstanceId) then
+            self._ownershipConflicts = (self._ownershipConflicts or 0) + 1
+            self:_recordRuntimeEvent('ownership_conflict', { type = 'runtime_instance', playerId = player.id, expected = self.runtimeIdentity.runtimeInstanceId, actual = scope.runtimeInstanceId })
+            self:_recomputePressure()
+            return false, 'runtime_instance_conflict'
+        end
         local source = sourceMapId
         if source == nil or source == '' then source = player.currentMapId end
         if source ~= mapId and not self:_isAllowedMapTransition(source, mapId) then return false, 'invalid_map_transition' end
