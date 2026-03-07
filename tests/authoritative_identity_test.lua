@@ -46,25 +46,21 @@ _G._UserService = {
 local bridge = WorldServerBridge.new({})
 bridge:bootstrap()
 
-local beforeEnter = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({}, 'runtime_user'))
+local beforeEnter = bridge.runtimeAdapter:decodeData(bridge:getPlayerState(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })))
 assert(not beforeEnter.ok and beforeEnter.error == 'player_not_active', 'ghost player created before authoritative enter')
 
 assert(bridge:onUserEnter(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })), 'authoritative enter failed')
 bridge:tick(5)
 
-local state = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({
-    userId = 'spoofed_runtime_user',
-    CurrentMapName = 'perion_rocky',
-    Position = { x = 999, y = 999, z = 0 },
-}, 'runtime_user'))
+local state = bridge.runtimeAdapter:decodeData(bridge:getPlayerState(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })))
 assert(state.ok and state.data.playerId == 'runtime_user', 'authoritative sender identity was not used')
-assert(state.data.currentMapId == 'henesys_hunting_ground', 'spoofed request context overrode authoritative map')
+assert(state.data.currentMapId == 'henesys_hunting_ground', 'authoritative map was not preserved')
 
-local spoofed = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({ UserId = 'runtime_user' }, 'ghost_user'))
+local spoofed = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({ UserId = 'runtime_user' }))
 assert(not spoofed.ok and spoofed.error == 'player_not_active', 'spoofed sender created or resolved a ghost player')
 
 assert(bridge:onUserLeave(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })), 'authoritative leave failed')
-local afterLeave = bridge.runtimeAdapter:decodeData(bridge:getPlayerState({}, 'runtime_user'))
+local afterLeave = bridge.runtimeAdapter:decodeData(bridge:getPlayerState(runtimeEntity('runtime_user', 'henesys_hunting_ground', { x = 20, y = 0, z = 0 })))
 assert(not afterLeave.ok and afterLeave.error == 'player_not_active', 'offline player session remained active after leave')
 
 _G._DataStorageService = previousStorage

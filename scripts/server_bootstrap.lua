@@ -167,6 +167,8 @@ local function requireWorldConfig()
             worldStorageName = 'GenesisWorldState',
             worldStorageKey = 'state',
             worldStateSlotCount = 3,
+            persistedDropsPerMap = 120,
+            persistedJournalEntries = 2000,
             journalMaxEntries = 0,
             autoPickupDrops = true,
         },
@@ -174,6 +176,7 @@ local function requireWorldConfig()
             minimumDamage = 1,
             mobDamageCapFactor = 6.0,
             bossDamageCapFactor = 4.0,
+            bossDamageMaxHpFactor = 0.1,
             mobDamageMinCap = 12,
             bossDamageMinCap = 0,
             mobDamageFloorPerLevel = 4,
@@ -266,6 +269,29 @@ local function countTableKeys(value)
     local count = 0
     for _ in pairs(value or {}) do count = count + 1 end
     return count
+end
+
+local function tailEntries(entries, maxEntries)
+    if type(entries) ~= 'table' then return {} end
+    local cap = math.floor(tonumber(maxEntries) or 0)
+    if cap <= 0 or #entries <= cap then return deepcopy(entries) end
+    local out = {}
+    local start = math.max(1, (#entries - cap) + 1)
+    for i = start, #entries do out[#out + 1] = deepcopy(entries[i]) end
+    return out
+end
+
+local function limitDropSnapshot(snapshot, maxPerMap)
+    if type(snapshot) ~= 'table' then return {} end
+    local cap = math.floor(tonumber(maxPerMap) or 0)
+    if cap <= 0 then return deepcopy(snapshot) end
+
+    local trimmed = { byMap = {}, nextDropId = tonumber(snapshot.nextDropId) or 1 }
+    local byMap = snapshot.byMap or {}
+    for mapId, entries in pairs(byMap) do
+        trimmed.byMap[mapId] = tailEntries(entries, cap)
+    end
+    return trimmed
 end
 
 function ServerBootstrap.boot(basePath, config)
@@ -513,12 +539,19 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:snapshotWorldState()
+        local runtimeCfg = self.worldConfig.runtime or {}
+        local persistedJournalEntries = tonumber(runtimeCfg.persistedJournalEntries) or 0
+        local persistedDropsPerMap = tonumber(runtimeCfg.persistedDropsPerMap) or 0
+        local journalSnapshot = self.journal:serialize()
+        if persistedJournalEntries > 0 then
+            journalSnapshot.entries = tailEntries(journalSnapshot.entries, persistedJournalEntries)
+        end
         return {
             version = 1,
             savedAt = self:_now(),
             boss = self.bossSystem:snapshot(),
-            drops = self.dropSystem:snapshot(),
-            journal = self.journal:serialize(),
+            drops = limitDropSnapshot(self.dropSystem:snapshot(), persistedDropsPerMap),
+            journal = journalSnapshot,
         }
     end
 
@@ -873,6 +906,10 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local damage, damageErr = self:_capDamage(player, 'boss', amount)
         if not damage then return false, damageErr end
+        local combatCfg = self.worldConfig.combat or {}
+        local hpCapFactor = tonumber(combatCfg.bossDamageMaxHpFactor) or 0.1
+        local hpCap = math.max(1, math.floor((tonumber(encounter.maxHp) or 1) * hpCapFactor))
+        damage = math.min(damage, hpCap)
 
         local ok, dropsOrError, resolvedEncounter = self.bossSystem:damage(encounter.mapId, player, damage)
         if not ok then return false, dropsOrError end
