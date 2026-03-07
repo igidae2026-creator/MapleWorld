@@ -90,6 +90,21 @@ local worldB = ServerBootstrap.boot('.', {
 })
 assert(#worldB.dropSystem:listDrops('henesys_hunting_ground') >= 1, 'persisted drops lost on restore')
 
+
+-- validation context must match mutation target
+local guard = world:createPlayer('p0_ctx_guard')
+world.scheduler:tick(5)
+local guardSpawn = next(world.spawnSystem.maps['henesys_hunting_ground'].active)
+assert(guardSpawn, 'missing mob for context guard test')
+local validMob = world.spawnSystem:getMob('henesys_hunting_ground', guardSpawn)
+local mobMismatchOk, mobMismatchErr = world:attackMob(guard, 'henesys_hunting_ground', guardSpawn + 99999, 50, validMob)
+assert(not mobMismatchOk and mobMismatchErr == 'mob_context_mismatch', 'mob context mismatch was not rejected')
+
+local guardedDrops = world.dropSystem:registerDrops('henesys_hunting_ground', { x = 20, y = 0, z = 0 }, { { itemId = 'hp_potion', quantity = 1 } }, { ownerId = guard.id, now = 5000 })
+assert(#guardedDrops == 1, 'failed to seed guarded drop')
+local dropMismatchOk, dropMismatchErr = world:pickupDrop(guard, 'henesys_hunting_ground', guardedDrops[1].dropId + 10, guardedDrops[1])
+assert(not dropMismatchOk and dropMismatchErr == 'drop_context_mismatch', 'drop context mismatch was not rejected')
+
 -- fail closed on repository load failure
 local previousStorage = rawget(_G, '_DataStorageService')
 _G._DataStorageService = {

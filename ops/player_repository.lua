@@ -71,6 +71,7 @@ function PlayerRepository.newMapleWorldsDataStorage(config)
         key = cfg.key or 'profile',
         slotCount = math.max(2, math.floor(tonumber(cfg.slotCount) or 2)),
         maxRevisions = math.max(0, math.floor(tonumber(cfg.maxRevisions) or 16)),
+        maxCommits = math.max(0, math.floor(tonumber(cfg.maxCommits) or (math.max(0, math.floor(tonumber(cfg.maxRevisions) or 16)) * 2))),
     }
     setmetatable(self, { __index = PlayerRepository })
     return self
@@ -121,6 +122,13 @@ end
 
 function PlayerRepository:_headHistorySize()
     return math.max(2, self.slotCount)
+end
+
+function PlayerRepository:_oldCommitKey(revision)
+    local maxCommits = math.max(0, math.floor(tonumber(self.maxCommits) or 0))
+    local normalized = math.max(0, math.floor(tonumber(revision) or 0))
+    if maxCommits <= 0 or normalized <= maxCommits then return nil end
+    return self:_commitKey(normalized - maxCommits)
 end
 
 function PlayerRepository:_headCandidates(storage)
@@ -287,6 +295,13 @@ function PlayerRepository:_saveToStorage(player)
     ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
     if not ok then return false, err end
 
+    local observedHead = self:_readHead(storage, self:_headKey()) or self:_readHead(storage, self:_shadowHeadKey()) or { revision = 0, slot = 0 }
+    local observedRevision = math.max(0, math.floor(tonumber(observedHead.revision) or 0))
+    if observedRevision ~= currentRevision then
+        if self.metrics then self.metrics:increment('repository.save', 1, { status = 'head_conflict', kind = 'msw' }) end
+        return false, 'player_head_conflict'
+    end
+
     local commitEnvelope = {
         revision = nextRevision,
         savedAt = envelope.savedAt,
@@ -320,10 +335,17 @@ function PlayerRepository:_saveToStorage(player)
         if self.metrics then self.metrics:increment('repository.trimmed_revision', 1, { kind = 'msw' }) end
     end
 
+    local oldCommitKey = self:_oldCommitKey(nextRevision)
+    if oldCommitKey ~= nil then
+        writeStorage(storage, oldCommitKey, '')
+        if self.metrics then self.metrics:increment('repository.trimmed_commit', 1, { kind = 'msw' }) end
+    end
+
     if self.metrics then
         self.metrics:increment('repository.save', 1, { status = 'ok', kind = 'msw' })
         self.metrics:gauge('repository.save_revision', nextRevision)
         self.metrics:gauge('repository.retained_revisions', math.min(nextRevision, math.max(1, self.maxRevisions)))
+        self.metrics:gauge('repository.retained_commits', math.min(nextRevision, math.max(1, self.maxCommits)))
     end
     return true
 end

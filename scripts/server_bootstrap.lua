@@ -825,11 +825,6 @@ function ServerBootstrap.boot(basePath, config)
     journal.onAppend = function(entry)
         if world._restoringWorldState then return end
         world:markWorldStateDirty('journal:' .. tostring(entry and entry.event))
-        local saved, saveErr = world:requestWorldSave('journal:' .. tostring(entry and entry.event))
-        if saved == false and world.metrics then
-            world.metrics:increment('world_state.save_error', 1, { reason = 'journal_append' })
-            world.metrics:error('world_state_save_failed', { reason = 'journal_append', error = tostring(saveErr) })
-        end
     end
 
     spawnSystem.callbacks = {
@@ -1127,11 +1122,14 @@ function ServerBootstrap.boot(basePath, config)
         return delivered
     end
 
-    function world:attackMob(player, mapId, spawnId, requestedDamage)
+    function world:attackMob(player, mapId, spawnId, requestedDamage, validatedMob)
         if not player then return false, 'invalid_player' end
         if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
-        local mob = self.spawnSystem:getMob(targetMapId, spawnId)
+        local mob = validatedMob or self.spawnSystem:getMob(targetMapId, spawnId)
+        if validatedMob and (validatedMob.mapId ~= targetMapId or tonumber(validatedMob.spawnId) ~= tonumber(spawnId)) then
+            return false, 'mob_context_mismatch'
+        end
         if not mob and mapId and mapId ~= targetMapId and self.spawnSystem:getMob(mapId, spawnId) then
             return false, 'wrong_map'
         end
@@ -1144,7 +1142,7 @@ function ServerBootstrap.boot(basePath, config)
         local damage, damageErr = self:_capDamage(player, 'mob', requestedDamage)
         if not damage then return false, damageErr end
 
-        local ok, mobOrErr, killed = self.spawnSystem:damageMob(mob.mapId, spawnId, damage)
+        local ok, mobOrErr, killed = self.spawnSystem:damageMob(mob.mapId, mob.spawnId, damage)
         if not ok then return false, mobOrErr end
         if killed then
             return true, self:_applyMobRewards(player, mobOrErr, false), mobOrErr
@@ -1160,10 +1158,11 @@ function ServerBootstrap.boot(basePath, config)
         return self:_applyMobRewards(player, mob, true)
     end
 
-    function world:pickupDrop(player, mapId, dropId)
+    function world:pickupDrop(player, mapId, dropId, validatedDrop)
         if not player then return false, 'invalid_player' end
         if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
-        local record = self.dropSystem:getDrop(dropId)
+        local record = validatedDrop or self.dropSystem:getDrop(dropId)
+        if validatedDrop and tonumber(validatedDrop.dropId) ~= tonumber(dropId) then return false, 'drop_context_mismatch' end
         if not record then return false, 'drop_not_found' end
         if mapId ~= nil and mapId ~= '' and record.mapId ~= mapId then return false, 'wrong_map' end
         local boundaryOk, boundaryErr = self:_requireActionBoundary(player, record.mapId, { x = record.x, y = record.y, z = record.z or 0 }, 'dropPickupRange')
@@ -1206,7 +1205,7 @@ function ServerBootstrap.boot(basePath, config)
         return delivered
     end
 
-    function world:damageBoss(player, mapId, bossId, amount)
+    function world:damageBoss(player, mapId, bossId, amount, validatedEncounter)
         if not player then return false, 'invalid_player' end
         if amount == nil and bossId ~= nil and type(bossId) ~= 'string' then
             amount = bossId
@@ -1214,7 +1213,8 @@ function ServerBootstrap.boot(basePath, config)
         end
         if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
-        local encounter = self.bossSystem:getEncounter(targetMapId)
+        local encounter = validatedEncounter or self.bossSystem:getEncounter(targetMapId)
+        if validatedEncounter and (validatedEncounter.mapId ~= targetMapId or (bossId ~= nil and bossId ~= '' and validatedEncounter.bossId ~= bossId)) then return false, 'boss_context_mismatch' end
         if not encounter and mapId and mapId ~= targetMapId and self.bossSystem:getEncounter(mapId) then
             return false, 'wrong_map'
         end
