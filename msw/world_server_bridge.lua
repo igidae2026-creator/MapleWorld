@@ -286,6 +286,9 @@ function WorldServerBridge:bootstrap()
         self:attachComponent(self.component)
         return self.world
     end
+    if self.bootstrapError then
+        return nil, self.bootstrapError
+    end
 
     local worldConfig = self.worldConfig or safeRequire('data.world_runtime') or {}
     local usePersistentStorage = self.runtimeAdapter:hasDataStorage()
@@ -357,7 +360,7 @@ function WorldServerBridge:bootstrap()
         end,
     }
 
-    self.world = ServerBootstrap.boot({
+    local ok, worldOrErr = pcall(ServerBootstrap.boot, {
         dataProvider = safeRequire('data.runtime_tables'),
         worldConfig = worldConfig,
         playerRepository = repository,
@@ -366,17 +369,28 @@ function WorldServerBridge:bootstrap()
         autoPickupDrops = false,
         useMapleWorldsDataStorage = usePersistentStorage,
     })
+    if not ok then
+        self.bootstrapError = 'world_bootstrap_failed'
+        self:_setComponentField('BridgeReady', false)
+        self:_setComponentField('BridgeError', tostring(worldOrErr))
+        return nil, self.bootstrapError
+    end
+
+    self.world = worldOrErr
     self:_setComponentField('BridgeReady', true)
     return self.world
 end
 
 function WorldServerBridge:tick(delta)
-    self:bootstrap()
-    self.world.scheduler:tick(tonumber(delta) or 0)
+    local world = self:bootstrap()
+    if not world then return false, self.bootstrapError or 'world_bootstrap_failed' end
+    world.scheduler:tick(tonumber(delta) or 0)
+    return true
 end
 
 function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return nil, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
 
     if authoritative then
@@ -397,7 +411,7 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
         local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, true)
         if not ok then return nil, updateErr end
         session.lastSeenAt = self.runtimeAdapter:now()
-        return player
+        return player, nil, actor
     end
 
     local actor, err = self.runtimeAdapter:resolveActorContext(requestContext, { authoritativeOnly = false })
@@ -411,11 +425,63 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
     local mapId = actor.mapId or player.currentMapId or requestedMapId or self:_defaultMapId()
     local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, false)
     if not ok then return nil, updateErr end
-    return player
+    return player, nil, actor
+end
+
+function WorldServerBridge:_isAllowedMapTransition(sourceMapId, destinationMapId)
+    local transitions = (self.worldConfig and self.worldConfig.mapTransitions)
+        or (self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.mapTransitions)
+    if type(transitions) ~= 'table' then return false end
+    local source = transitions[sourceMapId]
+    if type(source) ~= 'table' then return false end
+    if source[destinationMapId] == true then return true end
+    for _, candidate in ipairs(source) do
+        if candidate == destinationMapId then return true end
+    end
+    return false
+end
+
+function WorldServerBridge:_validateChangeMapContext(player, actor, destinationMapId, sourceMapId)
+    if not destinationMapId or destinationMapId == '' then return false, 'invalid_map' end
+    if not self.worldConfig.maps or not self.worldConfig.maps[destinationMapId] then return false, 'invalid_map' end
+
+    if not self.runtimeAdapter:isLive() then return true end
+    if not player then return false, 'invalid_player' end
+
+    local playerMapId = player.currentMapId
+    local actorMapId = actor and actor.mapId or nil
+    local source = sourceMapId
+    if source == nil or source == '' then return false, 'missing_transition_source' end
+    if playerMapId and source ~= playerMapId then return false, 'wrong_map' end
+    if actorMapId and source ~= actorMapId then return false, 'wrong_map' end
+    if destinationMapId == source then return true end
+
+    if not self:_isAllowedMapTransition(source, destinationMapId) then
+        return false, 'invalid_map_transition'
+    end
+    return true
+end
+
+function WorldServerBridge:_validateNpcActionContext(player, npcId, itemId)
+    if npcId == nil or npcId == '' then return false, 'invalid_npc' end
+    local npc, npcErr = self.world:_resolveNpcBinding(npcId)
+    if not npc then return false, npcErr end
+
+    local shopOk, shopErr = self.world:_validateNpcShop(npc)
+    if not shopOk then return false, shopErr end
+
+    local boundaryOk, boundaryErr = self.world:_requireActionBoundary(player, npc.mapId, npc.position, 'questNpcRange')
+    if not boundaryOk then return false, boundaryErr end
+
+    if itemId == nil or itemId == '' then return false, 'invalid_item' end
+    if not self.world:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
+
+    return true
 end
 
 function WorldServerBridge:onUserEnter(event)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
     local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
     if not actor or not actor.userId then return false, err or 'invalid_user' end
@@ -431,12 +497,14 @@ function WorldServerBridge:onUserEnter(event)
 end
 
 function WorldServerBridge:onUserLeave(event)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
     local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
     if not actor or not actor.userId then return false, err or 'invalid_user' end
+    local ok, leaveErr = self.world:onPlayerLeave(actor.userId)
+    if not ok then return false, leaveErr or 'player_save_failed' end
     self.activeSessions[actor.userId] = nil
-    self.world:onPlayerLeave(actor.userId)
     return true
 end
 
@@ -448,7 +516,8 @@ function WorldServerBridge:getPlayerState(requestContext)
 end
 
 function WorldServerBridge:getMapState(requestContext, mapId)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return response(self.runtimeAdapter, false, nil, bootstrapErr or 'world_bootstrap_failed') end
     local targetMapId = mapId
 
     if mapId == nil and type(requestContext) == 'string' then
@@ -514,6 +583,8 @@ end
 function WorldServerBridge:buyFromNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:buyFromNpc(player, npcId, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -522,6 +593,8 @@ end
 function WorldServerBridge:sellToNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:sellToNpc(player, npcId, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -544,8 +617,10 @@ function WorldServerBridge:unequipItem(requestContext, slot)
 end
 
 function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
-    local player, err = self:_resolvePlayer(requestContext, nil)
+    local player, err, actor = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateChangeMapContext(player, actor, mapId, sourceMapId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:changeMap(player, mapId, sourceMapId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
