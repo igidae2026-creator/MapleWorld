@@ -600,12 +600,8 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:snapshotWorldState()
         local runtimeCfg = self.worldConfig.runtime or {}
-        local persistedJournalEntries = tonumber(runtimeCfg.persistedJournalEntries) or 0
         local persistedDropsPerMap = tonumber(runtimeCfg.persistedDropsPerMap) or 0
         local journalSnapshot = self.journal:serialize()
-        if persistedJournalEntries > 0 then
-            journalSnapshot.entries = tailEntries(journalSnapshot.entries, persistedJournalEntries)
-        end
         return {
             version = 1,
             savedAt = self:_now(),
