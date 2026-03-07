@@ -72,6 +72,9 @@ function WorldRepository.newMapleWorldsDataStorage(config)
         key = cfg.key or 'state',
         reservedUserId = cfg.reservedUserId or '__world__',
         slotCount = math.max(2, math.floor(tonumber(cfg.slotCount) or 3)),
+        maxRevisions = math.max(0, math.floor(tonumber(cfg.maxRevisions) or 32)),
+        writerOwnerId = cfg.writerOwnerId,
+        writerEpoch = math.max(0, math.floor(tonumber(cfg.writerEpoch) or 0)),
     }
     setmetatable(self, { __index = WorldRepository })
     return self
@@ -99,6 +102,10 @@ end
 
 function WorldRepository:_shadowHeadKey()
     return tostring(self.key) .. '__head_shadow'
+end
+
+function WorldRepository:_ownerKey()
+    return tostring(self.key) .. '__writer_owner'
 end
 
 function WorldRepository:_headHistoryKey(index)
@@ -169,6 +176,27 @@ function WorldRepository:_isValidEnvelope(envelope)
     local previousRevision = normalizeRevision(envelope.previousRevision)
     if previousRevision ~= nil and previousRevision > revision then return false end
     return true
+end
+
+function WorldRepository:_oldRevisionKey(revision)
+    local maxRevisions = math.max(0, math.floor(tonumber(self.maxRevisions) or 0))
+    local normalized = normalizeRevision(revision)
+    if maxRevisions <= 0 or normalized == nil or normalized <= maxRevisions then return nil end
+    return self:_revisionKey(normalized - maxRevisions)
+end
+
+function WorldRepository:_writerFingerprint()
+    return tostring(self.writerOwnerId or 'default') .. ':' .. tostring(self.writerEpoch or 0)
+end
+
+function WorldRepository:_validateWriter(storage)
+    local owner = self:_readHead(storage, self:_ownerKey())
+    local fingerprint = self:_writerFingerprint()
+    if owner == nil then return true, nil, fingerprint end
+    if type(owner) ~= 'table' then return false, 'world_owner_conflict', fingerprint end
+    local existing = tostring(owner.ownerId or 'default') .. ':' .. tostring(math.max(0, math.floor(tonumber(owner.epoch) or 0)))
+    if existing ~= fingerprint then return false, 'world_owner_conflict', fingerprint end
+    return true, nil, fingerprint
 end
 
 function WorldRepository:_isCommittedRevision(storage, revision)
@@ -262,6 +290,12 @@ function WorldRepository:save(state)
     local storage = self:_storage()
     if not storage then return false, 'storage_unavailable' end
 
+    local writerOk, writerErr, writerFingerprint = self:_validateWriter(storage)
+    if not writerOk then
+        if self.metrics then self.metrics:increment('world_repository.save', 1, { status = 'owner_conflict', kind = 'msw' }) end
+        return false, writerErr
+    end
+
     local currentHead = self:_readHead(storage, self:_headKey()) or self:_readHead(storage, self:_shadowHeadKey()) or { revision = 0, slot = 0 }
     local currentRevision = math.max(0, math.floor(tonumber(currentHead.revision) or 0))
     local nextRevision = currentRevision + 1
@@ -281,10 +315,19 @@ function WorldRepository:save(state)
     ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
     if not ok then return false, err end
 
+    local postWriteHead = self:_readHead(storage, self:_headKey()) or self:_readHead(storage, self:_shadowHeadKey()) or { revision = 0, slot = 0 }
+    local observedRevision = math.max(0, math.floor(tonumber(postWriteHead.revision) or 0))
+    if observedRevision ~= currentRevision then
+        if self.metrics then self.metrics:increment('world_repository.save', 1, { status = 'head_conflict', kind = 'msw' }) end
+        return false, 'world_head_conflict'
+    end
+
     local headSnapshot = {
         revision = nextRevision,
         slot = nextSlot,
         savedAt = envelope.savedAt,
+        ownerId = self.writerOwnerId,
+        epoch = self.writerEpoch,
     }
 
     writeStorage(storage, self:_shadowHeadKey(), self.runtimeAdapter:encodeData(currentHead))
@@ -296,13 +339,28 @@ function WorldRepository:save(state)
         return false, err
     end
 
+    local ownerSnapshot = {
+        ownerId = self.writerOwnerId,
+        epoch = self.writerEpoch,
+        revision = nextRevision,
+        slot = nextSlot,
+        savedAt = envelope.savedAt,
+    }
+    ok, err = writeStorage(storage, self:_ownerKey(), self.runtimeAdapter:encodeData(ownerSnapshot))
+    if not ok then return false, err end
+
     local commitEnvelope = {
         revision = nextRevision,
         savedAt = envelope.savedAt,
-        value = { revision = nextRevision, slot = nextSlot },
+        value = { revision = nextRevision, slot = nextSlot, writer = writerFingerprint },
     }
     ok, err = writeStorage(storage, self:_commitKey(nextRevision), self.runtimeAdapter:encodeData(commitEnvelope))
     if not ok then return false, err end
+
+    local trimKey = self:_oldRevisionKey(nextRevision)
+    if trimKey ~= nil then
+        writeStorage(storage, trimKey, '')
+    end
 
     if self.metrics then
         self.metrics:increment('world_repository.save', 1, { status = 'ok', kind = 'msw' })

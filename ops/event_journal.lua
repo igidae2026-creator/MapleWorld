@@ -28,7 +28,14 @@ function EventJournal.new(config)
 end
 
 function EventJournal:_trim()
-    return
+    local cap = math.max(0, math.floor(tonumber(self.maxEntries) or 0))
+    if cap <= 0 then return end
+    local excess = #self.entries - cap
+    if excess <= 0 then return end
+    for _ = 1, excess do
+        table.remove(self.entries, 1)
+    end
+    if self.metrics then self.metrics:increment('journal.trimmed', excess) end
 end
 
 function EventJournal:append(eventType, payload)
