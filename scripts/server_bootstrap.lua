@@ -309,6 +309,36 @@ local function tailEntries(entries, maxEntries)
     return out
 end
 
+local function stableSerialize(value, seen)
+    local valueType = type(value)
+    if valueType ~= 'table' then return tostring(value) end
+    local visited = seen or {}
+    if visited[value] then return '<cycle>' end
+    visited[value] = true
+    local keys = {}
+    for key in pairs(value) do keys[#keys + 1] = key end
+    table.sort(keys, function(a, b) return tostring(a) < tostring(b) end)
+    local out = {'{'}
+    for _, key in ipairs(keys) do
+        out[#out + 1] = tostring(key)
+        out[#out + 1] = '='
+        out[#out + 1] = stableSerialize(value[key], visited)
+        out[#out + 1] = ';'
+    end
+    out[#out + 1] = '}'
+    visited[value] = nil
+    return table.concat(out)
+end
+
+local function stringHash(value)
+    local hash = 5381
+    for i = 1, #value do
+        hash = ((hash * 33) + string.byte(value, i)) % 4294967296
+        hash = hash % 4294967296
+    end
+    return string.format('%08x', hash)
+end
+
 local function limitDropSnapshot(snapshot, maxPerMap)
     if type(snapshot) ~= 'table' then return { nextDropId = 1, drops = {}, dropsByMap = {} } end
     local cap = math.floor(tonumber(maxPerMap) or 0)
@@ -587,6 +617,22 @@ function ServerBootstrap.boot(basePath, config)
             history = {},
             severity = 'warning',
         },
+        governance = {
+            state = 'normal',
+            previousState = nil,
+            changedAt = 0,
+            reason = 'boot',
+            history = {},
+            decisions = {},
+            outputs = {},
+        },
+        repairs = {
+            state = 'idle',
+            retries = {},
+            actions = {},
+            timeline = {},
+            quarantines = {},
+        },
         recovery = {
             mode = 'cold_start',
             checkpointId = nil,
@@ -595,6 +641,21 @@ function ServerBootstrap.boot(basePath, config)
             replayedEntries = 0,
             divergence = false,
             valid = true,
+            phases = {
+                checkpoint_load = 'pending',
+                event_hydration = 'pending',
+                state_reconstruction = 'pending',
+                invariant_verification = 'pending',
+                runtime_activation = 'pending',
+            },
+            watermark = {
+                journal = 0,
+                ledger = 0,
+            },
+            lastReplayDurationMs = 0,
+            divergenceCount = 0,
+            checkpointLineage = {},
+            lastReplayReportId = nil,
         },
         recoveryInvariants = {
             claimedDrops = {},
@@ -618,6 +679,18 @@ function ServerBootstrap.boot(basePath, config)
         clock = runtimeClock,
         strictRuntimeBoundary = runtimeAdapter:isLive(),
         autoPickupDrops = config.autoPickupDrops,
+        artifacts = {
+            nextId = 1,
+            entries = {},
+            byKind = {},
+        },
+        topology = {
+            mode = 'single_runtime',
+            world = {},
+            channel = {},
+            runtime = {},
+            mapInstances = {},
+        },
         bootReport = {
             dataSource = summarizeDataSources(dataSources),
             dataSources = dataSources,
@@ -631,6 +704,9 @@ function ServerBootstrap.boot(basePath, config)
         world.autoPickupDrops = worldConfig.runtime and worldConfig.runtime.autoPickupDrops ~= false
     end
     healthcheck.world = world
+    world.topology.world = { id = world.runtimeIdentity.worldId, scope = 'world_global' }
+    world.topology.channel = { id = world.runtimeIdentity.channelId, worldId = world.runtimeIdentity.worldId, scope = 'channel_global' }
+    world.topology.runtime = { id = world.runtimeIdentity.runtimeInstanceId, channelId = world.runtimeIdentity.channelId, worldId = world.runtimeIdentity.worldId, scope = 'runtime_local' }
 
     economySystem.auditSink = function(entry)
         if not world or not world.journal then return end
@@ -681,23 +757,203 @@ function ServerBootstrap.boot(basePath, config)
         return ctx
     end
 
-    function world:_recordOwnershipConflict(reason, detail)
+    function world:_replayPhase(phase, status, detail)
+        self.recovery.phases = self.recovery.phases or {}
+        self.recovery.phases[phase] = status
+        self.recovery.mode = phase
+        self:_recordRuntimeEvent('replay_phase_changed', {
+            phase = phase,
+            status = status,
+            detail = detail,
+        })
+    end
+
+    function world:_artifact(kind, scope, detail)
+        local nextId = self.artifacts.nextId or 1
+        self.artifacts.nextId = nextId + 1
+        local artifact = {
+            artifactId = string.format('artifact:%s:%s:%s', tostring(kind), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(nextId)),
+            kind = tostring(kind),
+            at = self:_now(),
+            scope = deepcopy(scope or self.runtimeIdentity),
+            detail = deepcopy(detail or {}),
+            lineage = {
+                checkpointId = self.recovery and self.recovery.checkpointId or nil,
+                policyId = (self:_policy().policyId or nil),
+                policyVersion = (self:_policy().policyVersion or nil),
+                runtimeEpoch = self.runtimeIdentity.runtimeEpoch,
+                ownerEpoch = self.runtimeIdentity.ownerEpoch,
+            },
+        }
+        self.artifacts.entries[#self.artifacts.entries + 1] = artifact
+        self.artifacts.byKind[kind] = self.artifacts.byKind[kind] or {}
+        self.artifacts.byKind[kind][#self.artifacts.byKind[kind] + 1] = artifact
+        return artifact
+    end
+
+    function world:_ownershipScope(mapId, extra)
+        local scope = {
+            worldId = self.runtimeIdentity.worldId,
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            mapInstanceId = tostring(mapId or 'global') .. '@' .. tostring(self.runtimeIdentity.runtimeInstanceId),
+            ownerId = self.runtimeIdentity.ownerId,
+            ownerEpoch = self.runtimeIdentity.ownerEpoch,
+            runtimeEpoch = self.runtimeIdentity.runtimeEpoch,
+        }
+        for k, v in pairs(extra or {}) do scope[k] = deepcopy(v) end
+        return scope
+    end
+
+    function world:_dropClaimKey(recordOrDropId)
+        local record = type(recordOrDropId) == 'table' and recordOrDropId or nil
+        local dropId = record and record.dropId or recordOrDropId
+        return string.format('%s:%s:%s:%s',
+            tostring((record and record.worldId) or self.runtimeIdentity.worldId),
+            tostring((record and record.channelId) or self.runtimeIdentity.channelId),
+            tostring((record and record.runtimeInstanceId) or self.runtimeIdentity.runtimeInstanceId),
+            tostring(dropId))
+    end
+
+    function world:_bossRewardClaimKey(playerId, encounter)
+        local claimScope = encounter and encounter.uniqueness == 'world_unique' and {
+            self.runtimeIdentity.worldId, 'world', 'world',
+        } or {
+            self.runtimeIdentity.worldId,
+            self.runtimeIdentity.channelId,
+            self.runtimeIdentity.runtimeInstanceId,
+        }
+        return string.format('boss_claim:%s:%s:%s:%s:%s',
+            tostring(claimScope[1]),
+            tostring(claimScope[2]),
+            tostring(claimScope[3]),
+            tostring(playerId),
+            tostring(encounter and encounter.bossId))
+    end
+
+    function world:_recordGovernanceDecision(reason, decision, detail)
+        local entry = {
+            at = self:_now(),
+            reason = tostring(reason or 'unspecified'),
+            decision = tostring(decision or 'observe'),
+            detail = deepcopy(detail or {}),
+            state = self.governance.state,
+        }
+        local decisions = self.governance.decisions or {}
+        decisions[#decisions + 1] = entry
+        while #decisions > 64 do table.remove(decisions, 1) end
+        self.governance.decisions = decisions
+        self:_artifact('governance_decision', self:_ownershipScope(detail and detail.mapId, detail and detail.scope), entry)
+        self:_recordRuntimeEvent('governance_decision', entry)
+        return entry
+    end
+
+    function world:_setGovernanceState(nextState, reason, outputs)
+        nextState = tostring(nextState or 'normal')
+        if self.governance.state == nextState then return false end
+        local previous = self.governance.state
+        self.governance.previousState = previous
+        self.governance.state = nextState
+        self.governance.reason = tostring(reason or 'unspecified')
+        self.governance.changedAt = self:_now()
+        self.governance.outputs = deepcopy(outputs or {})
+        local history = self.governance.history or {}
+        history[#history + 1] = {
+            at = self.governance.changedAt,
+            from = previous,
+            to = nextState,
+            reason = self.governance.reason,
+            outputs = deepcopy(outputs or {}),
+        }
+        while #history > 64 do table.remove(history, 1) end
+        self.governance.history = history
+        self:_artifact('governance_transition', self:_ownershipScope(), history[#history])
+        self:_recordRuntimeEvent('governance_transition', history[#history])
+        return true
+    end
+
+    function world:_recordRepairAction(kind, scope, cause, outcome, detail)
+        local retries = self.repairs.retries or {}
+        retries[kind] = (retries[kind] or 0) + 1
+        self.repairs.retries = retries
+        self.repairs.state = tostring(kind or 'repairing')
+        local action = {
+            at = self:_now(),
+            kind = tostring(kind or 'repair'),
+            scope = deepcopy(scope or self:_ownershipScope()),
+            cause = tostring(cause or 'unknown'),
+            outcome = tostring(outcome or 'pending'),
+            retry = retries[kind],
+            detail = deepcopy(detail or {}),
+        }
+        local actions = self.repairs.actions or {}
+        actions[#actions + 1] = action
+        while #actions > 64 do table.remove(actions, 1) end
+        self.repairs.actions = actions
+        local timeline = self.repairs.timeline or {}
+        timeline[#timeline + 1] = action
+        while #timeline > 128 do table.remove(timeline, 1) end
+        self.repairs.timeline = timeline
+        local maxRetries = tonumber(self:_policySection('repair').maxAutomaticRetries) or 3
+        if retries[kind] >= maxRetries then
+            self.containment.replayOnly = self.containment.replayOnly or action.kind == 'replay_divergence'
+            self.containment.migrationBlocked = true
+            self.governance.state = 'repair'
+            action.operatorEscalation = true
+        end
+        self:_artifact('repair_action', action.scope, action)
+        self:_recordRuntimeEvent('repair_action', action)
+        return action
+    end
+
+    function world:_materializedDigest()
+        local status = {
+            drops = self.dropSystem:snapshot(),
+            boss = self.bossSystem:snapshot(),
+            policy = self.policyBundle:snapshot(),
+            runtimeIdentity = self.runtimeIdentity,
+            containment = self.containment,
+            escalation = {
+                level = self.escalation.level,
+                severity = self.escalation.severity,
+            },
+        }
+        return stringHash(stableSerialize(status))
+    end
+
+    function world:_recordOwnershipConflict(reason, detail, options)
+        local opts = options or {}
         local now = self:_now()
         local window = self._ownershipConflictWindow or {}
         window[#window + 1] = now
         while #window > 0 and (now - window[1]) > 120 do table.remove(window, 1) end
         self._ownershipConflictWindow = window
         self.pressure.ownershipConflictPressure = #window
-        self:_recordRuntimeEvent('ownership_conflict', { reason = reason, detail = detail, count = #window })
+        if opts.recordEvent ~= false then
+            self:_recordRuntimeEvent('ownership_conflict', { reason = reason, detail = detail, count = #window })
+        end
+        self:_artifact('ownership_conflict_report', self:_ownershipScope(detail and detail.mapId, detail and detail.scope), {
+            reason = reason,
+            detail = detail,
+            count = #window,
+        })
     end
 
-    function world:_recordFarmSignal(player, targetId)
+    function world:_recordFarmSignal(player, targetId, options)
+        local opts = options or {}
         local now = self:_now()
         local signals = self._recentFarmSignals or {}
         signals[#signals + 1] = { at = now, playerId = player and player.id or nil, targetId = tostring(targetId or 'unknown') }
         while #signals > 0 and (now - (signals[1].at or now)) > 120 do table.remove(signals, 1) end
         self._recentFarmSignals = signals
         self.pressure.farmRepetitionPressure = #signals
+        if opts.recordArtifact ~= false then
+            self:_artifact('runtime_pressure_snapshot', self:_ownershipScope(), {
+                pressure = { farmRepetitionPressure = #signals },
+                source = 'farm_signal',
+                targetId = tostring(targetId or 'unknown'),
+            })
+        end
     end
 
     function world:appendLedgerEvent(event)
@@ -732,6 +988,9 @@ function ServerBootstrap.boot(basePath, config)
             policyId = (self.policyBundle:snapshot() or {}).policyId,
             policyVersion = (self.policyBundle:snapshot() or {}).policyVersion,
         }
+        if self._restoringWorldState or self._replayingRecovery then
+            return { event = eventName, payload = deepcopy(eventPayload) }
+        end
         self.journal:append(eventName, eventPayload)
     end
 
@@ -808,6 +1067,8 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:_recomputePressure()
+        if self._recomputingPressure then return end
+        self._recomputingPressure = true
         local runtimeCfg = self.worldConfig.runtime or {}
         local activePlayers = self:getActivePlayerCount()
         local mapCount = math.max(1, countTableKeys(self.worldConfig.maps or {}))
@@ -880,6 +1141,22 @@ function ServerBootstrap.boot(basePath, config)
         if (self.pressure.farmRepetitionPressure or 0) >= self:_pressureThreshold('farmRepetition') then
             self:_recordRuntimeEvent('failure_plateau_exploration', { farmRepetition = self.pressure.farmRepetitionPressure })
         end
+
+        local governancePolicy = self:_policySection('governance')
+        if self.containment.replayOnly or (self.pressure.replayPressure or 0) >= (tonumber(governancePolicy.repairReplayThreshold) or math.huge) then
+            self:_setGovernanceState('replay-only', 'replay_pressure', { replayPressure = self.pressure.replayPressure })
+        elseif self.containment.safeMode or instability >= self:_pressureThreshold('instability') then
+            self:_setGovernanceState('degraded-safe', 'instability_pressure', { instability = instability })
+        elseif self.containment.rewardQuarantine or (self.pressure.duplicateRiskPressure or 0) >= (tonumber(governancePolicy.quarantineAnomalyThreshold) or math.huge) then
+            self:_setGovernanceState('quarantine', 'anomaly_pressure', { duplicateRisk = self.pressure.duplicateRiskPressure })
+        elseif (self.pressure.ownershipConflictPressure or 0) >= (tonumber(governancePolicy.adaptiveOwnershipConflictThreshold) or math.huge) then
+            self:_setGovernanceState('adaptive', 'ownership_conflict_pressure', { ownershipConflict = self.pressure.ownershipConflictPressure })
+        elseif (self.pressure.lowDiversity or 0) >= (tonumber(governancePolicy.explorationLowDiversityThreshold) or math.huge) then
+            self:_setGovernanceState('exploration', 'low_diversity_pressure', { lowDiversity = self.pressure.lowDiversity })
+        else
+            self:_setGovernanceState('normal', 'pressure_normalized', { pressure = deepcopy(self.pressure) })
+        end
+        self._recomputingPressure = false
     end
 
     function world:getRuntimeStatus()
@@ -890,10 +1167,13 @@ function ServerBootstrap.boot(basePath, config)
             pressure = deepcopy(self.pressure),
             containment = deepcopy(self.containment),
             escalation = deepcopy(self.escalation),
+            governance = deepcopy(self.governance),
+            repairs = deepcopy(self.repairs),
             recovery = deepcopy(self.recovery),
             pendingSave = {
                 count = self._pendingWorldSaveCount,
                 reason = self._pendingWorldSaveReason,
+                reasons = deepcopy(self._pendingWorldSaveReasons),
             },
             ownership = {
                 worldId = self.runtimeIdentity.worldId,
@@ -903,9 +1183,21 @@ function ServerBootstrap.boot(basePath, config)
                 runtimeEpoch = self.runtimeIdentity.runtimeEpoch,
                 coordinatorEpoch = self.runtimeIdentity.coordinatorEpoch,
             },
+            topology = deepcopy(self.topology),
+            artifacts = {
+                total = #(self.artifacts.entries or {}),
+                byKind = deepcopy(self.artifacts.byKind),
+            },
             watermark = {
                 journalSeq = self.journal.nextSeq - 1,
                 ledgerEventId = self.journal.nextLedgerEventId - 1,
+            },
+            health = {
+                replayStatus = self.recovery.mode,
+                replayWatermark = deepcopy(self.recovery.watermark),
+                lastReplayDurationMs = self.recovery.lastReplayDurationMs or 0,
+                divergenceCount = self.recovery.divergenceCount or 0,
+                checkpointLineage = deepcopy(self.recovery.checkpointLineage),
             },
         }
     end
@@ -1102,6 +1394,18 @@ function ServerBootstrap.boot(basePath, config)
             recovery = deepcopy(self.recovery),
             pressure = deepcopy(self.pressure),
             escalation = deepcopy(self.escalation),
+            governance = deepcopy(self.governance),
+            repairs = deepcopy(self.repairs),
+            topology = deepcopy(self.topology),
+            artifacts = tailEntries(self.artifacts.entries, tonumber(runtimeCfg.persistedArtifactEntries) or 256),
+            materialized_digest = self:_materializedDigest(),
+            health = {
+                replay_status = self.recovery.mode,
+                replay_watermark = deepcopy(self.recovery.watermark),
+                last_replay_duration_ms = self.recovery.lastReplayDurationMs or 0,
+                divergence_count = self.recovery.divergenceCount or 0,
+                checkpoint_lineage = deepcopy(self.recovery.checkpointLineage),
+            },
         }
     end
 
@@ -1111,7 +1415,21 @@ function ServerBootstrap.boot(basePath, config)
         self._savingWorldState = true
         local now = self:_now()
         local startedAt = os.clock()
+        self.recovery.checkpointLineage = self.recovery.checkpointLineage or {}
+        local predictedCheckpointId = string.format('%s:%s:%s:%s', tostring(self.runtimeIdentity.worldId), tostring(self.runtimeIdentity.channelId), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(now))
+        self.recovery.checkpointLineage[#self.recovery.checkpointLineage + 1] = {
+            checkpointId = predictedCheckpointId,
+            revision = self.worldRepository and self.worldRepository:lastLoadedRevision() or 0,
+            reason = tostring(reason or 'unspecified'),
+            at = now,
+        }
+        while #self.recovery.checkpointLineage > 32 do table.remove(self.recovery.checkpointLineage, 1) end
         local snapshot = self:snapshotWorldState()
+        self:_artifact('checkpoint_metadata', self:_ownershipScope(), {
+            phase = 'staged',
+            reason = reason,
+            checkpoint = deepcopy(snapshot.checkpoint),
+        })
         self:_recordRuntimeEvent('world_checkpoint_stage', {
             reason = reason,
             checkpoint = snapshot.checkpoint,
@@ -1121,6 +1439,12 @@ function ServerBootstrap.boot(basePath, config)
         self._savingWorldState = false
         local elapsedMs = math.floor((os.clock() - startedAt) * 1000)
         if ok then
+            self:_artifact('checkpoint_metadata', self:_ownershipScope(), {
+                phase = 'finalized',
+                reason = reason,
+                checkpoint = deepcopy(snapshot.checkpoint),
+                duration_ms = elapsedMs,
+            })
             self:_recordRuntimeEvent('world_checkpoint_commit', {
                 reason = reason,
                 checkpoint = snapshot.checkpoint,
@@ -1165,6 +1489,10 @@ function ServerBootstrap.boot(basePath, config)
                 metadata = { reason = reason, error = tostring(err), action = 'world_save_rollback' },
             })
             self:_recordRuntimeEvent('world_checkpoint_save_failed', { reason = reason, error = tostring(err) })
+            self:_recordRepairAction('world_save_failed', self:_ownershipScope(), tostring(reason), 'retry_pending', {
+                error = tostring(err),
+                failures = self._savingFailures,
+            })
             self:_escalate('world_save_failed', { reason = reason, error = tostring(err), failures = self._savingFailures })
         end
         self:_recomputePressure()
@@ -1186,6 +1514,11 @@ function ServerBootstrap.boot(basePath, config)
             self.metrics:gauge('world_state.pending_reasons', #reasons)
             self.metrics:gauge('world_state.pending_events', self._pendingWorldSaveCount)
         end
+        self:_artifact('save_backlog_snapshot', self:_ownershipScope(), {
+            reason = tostring(reason or 'unspecified'),
+            pendingCount = self._pendingWorldSaveCount,
+            pendingReasons = tailEntries(reasons, 16),
+        })
         self:_recomputePressure()
     end
 
@@ -1201,13 +1534,26 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:flushPendingWorldSave(reason)
         if not self._worldStateDirty then return true, 'clean' end
-        local debounceSec = math.max(0, tonumber(self:_policySection('savePolicy').debounceSec) or 0)
+        local savePolicy = self:_policySection('savePolicy')
+        local debounceSec = math.max(0, tonumber(savePolicy.debounceSec) or 0)
         local now = self:_now()
         if self.containment.persistenceQuarantine then return false, 'save_quarantined' end
         if (self.pressure.replayPressure or 0) > 0 and self:_policySection('savePolicy').immediateWhenReplayPressure == true then
             return self:saveWorldState(reason or self._pendingWorldSaveReason)
         end
         if (self.pressure.ownershipConflictPressure or 0) > 0 and self:_policySection('savePolicy').immediateWhenOwnershipConflict == true then
+            return self:saveWorldState(reason or self._pendingWorldSaveReason)
+        end
+        if (self._pendingWorldSaveCount or 0) >= (tonumber(savePolicy.backlogImmediateThreshold) or math.huge) then
+            self:_recordGovernanceDecision('save_backlog', 'flush_immediately', { pending = self._pendingWorldSaveCount })
+            return self:saveWorldState(reason or self._pendingWorldSaveReason)
+        end
+        if (self._pendingWorldSaveCount or 0) >= (tonumber(savePolicy.mutationDensityThreshold) or math.huge) then
+            self:_artifact('checkpoint_metadata', self:_ownershipScope(), {
+                class = 'integrity_checkpoint',
+                reason = reason or self._pendingWorldSaveReason,
+                pending = self._pendingWorldSaveCount,
+            })
             return self:saveWorldState(reason or self._pendingWorldSaveReason)
         end
         if debounceSec > 0 and self._lastWorldSaveAt and (now - self._lastWorldSaveAt) < debounceSec then
@@ -1220,6 +1566,7 @@ function ServerBootstrap.boot(basePath, config)
     function world:_rebuildRecoveryInvariants()
         self.recoveryInvariants = { claimedDrops = {}, bossRewardClaims = {}, itemInstanceIds = {} }
         local ledger = self.journal:ledgerSnapshot()
+        local activeDropIds = {}
         for _, entry in ipairs(ledger) do
             if entry.event_type == 'boss_reward_claim' and entry.idempotency_key then
                 if self.recoveryInvariants.bossRewardClaims[entry.idempotency_key] then
@@ -1242,12 +1589,44 @@ function ServerBootstrap.boot(basePath, config)
                 end
             end
             if entry.event_type == 'drop_claim' and entry.source_event_id then
-                local dk = tostring(entry.source_event_id)
+                local dk = string.format('%s:%s:%s:%s',
+                    tostring(entry.world_id or self.runtimeIdentity.worldId),
+                    tostring(entry.channel_id or self.runtimeIdentity.channelId),
+                    tostring(entry.runtime_instance_id or self.runtimeIdentity.runtimeInstanceId),
+                    tostring(entry.source_event_id))
                 if self.recoveryInvariants.claimedDrops[dk] then
                     return false, 'duplicate_drop_claim'
                 end
                 self.recoveryInvariants.claimedDrops[dk] = true
             end
+        end
+        for _, drop in ipairs(self.dropSystem:listAllDrops()) do
+            local claimKey = self:_dropClaimKey(drop)
+            if activeDropIds[claimKey] then return false, 'duplicate_active_drop_scope' end
+            activeDropIds[claimKey] = true
+            if drop.runtimeInstanceId ~= nil and tostring(drop.runtimeInstanceId) == '' then
+                return false, 'invalid_drop_runtime_scope'
+            end
+        end
+        for _, player in pairs(self.players or {}) do
+            if player.runtimeScope then
+                if player.currentMapId and player.runtimeScope.mapId and player.runtimeScope.mapId ~= player.currentMapId then
+                    return false, 'player_scope_map_mismatch'
+                end
+                if player.runtimeScope.runtimeInstanceId and tostring(player.runtimeScope.runtimeInstanceId) ~= tostring(self.runtimeIdentity.runtimeInstanceId) then
+                    return false, 'player_scope_runtime_mismatch'
+                end
+            end
+            local itemOk, itemErr = self.itemSystem:validatePlayerItemTopology(player)
+            if not itemOk then return false, itemErr end
+        end
+        local policy = self:_policy()
+        if type(policy.lineage) ~= 'table' or type(policy.activation) ~= 'table' then
+            return false, 'policy_bundle_incomplete'
+        end
+        if tonumber(self.runtimeIdentity.ownerEpoch) ~= nil and tonumber(self.runtimeIdentity.runtimeEpoch) ~= nil
+            and tonumber(self.runtimeIdentity.ownerEpoch) > tonumber(self.runtimeIdentity.runtimeEpoch) then
+            return false, 'ownership_epoch_inconsistent'
         end
         return true
     end
@@ -1260,12 +1639,16 @@ function ServerBootstrap.boot(basePath, config)
             if seq > minSeq then
                 local eventName = tostring(entry.event or 'unknown')
                 if eventName == 'ownership_conflict' then
-                    self:_recordOwnershipConflict('replay', entry.payload)
+                    self:_recordOwnershipConflict('replay', entry.payload, { recordEvent = false })
                 elseif eventName == 'mob_killed' or eventName == 'boss_killed' then
-                    self:_recordFarmSignal({ id = entry.payload and entry.payload.playerId or nil }, entry.payload and (entry.payload.mobId or entry.payload.bossId))
+                    self:_recordFarmSignal({ id = entry.payload and entry.payload.playerId or nil }, entry.payload and (entry.payload.mobId or entry.payload.bossId), { recordArtifact = false })
                 elseif eventName == 'failure_escalated' then
                     self.escalation.level = math.max(self.escalation.level or 0, math.floor(tonumber(entry.payload and entry.payload.level) or 0))
                     self.escalation.severity = self:_severityName(self.escalation.level)
+                elseif eventName == 'governance_transition' then
+                    self.governance.state = tostring(entry.payload and entry.payload.to or self.governance.state or 'normal')
+                elseif eventName == 'repair_action' then
+                    self.repairs.state = tostring(entry.payload and entry.payload.kind or self.repairs.state or 'idle')
                 end
                 replayed = replayed + 1
             end
@@ -1275,8 +1658,8 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:restoreWorldState()
         if not self.worldRepository then return false end
-        self.recovery.mode = 'loading_checkpoint'
-        self:_recordRuntimeEvent('replay_start', { mode = 'checkpoint_restore' })
+        self._replayingRecovery = true
+        self:_replayPhase('checkpoint_load', 'in_progress')
         local startedAt = os.clock()
         local snapshot, err = self.worldRepository:load()
         if err then
@@ -1284,28 +1667,42 @@ function ServerBootstrap.boot(basePath, config)
                 self.metrics:increment('world_state.load_error', 1)
                 self.metrics:error('world_state_load_failed', { error = tostring(err) })
             end
-            self.recovery.mode = 'checkpoint_invalid'
+            self:_replayPhase('checkpoint_load', 'failed', { error = tostring(err) })
             self.recovery.valid = false
-            self:_recordRuntimeEvent('replay_divergence', { reason = 'checkpoint_load_failed', error = tostring(err) })
+            self._replayingRecovery = false
             return false, err
         end
         if not snapshot then
             self.recovery.mode = 'cold_start'
             self.recovery.valid = true
-            self:_recordRuntimeEvent('replay_finish', { mode = 'cold_start', replayed_entries = 0 })
+            self._replayingRecovery = false
             return false
         end
-        if type(snapshot) ~= 'table' then return false, 'invalid_world_snapshot' end
+        if type(snapshot) ~= 'table' then
+            self._replayingRecovery = false
+            return false, 'invalid_world_snapshot'
+        end
 
         local previousJournal = self.journal:serialize()
         local previousDrops = self.dropSystem:snapshot()
         local previousBoss = self.bossSystem:snapshot()
 
         self._restoringWorldState = true
+        self:_replayPhase('event_hydration', 'in_progress')
         local ok, restoreErr = pcall(function()
             self.journal:restore(snapshot.journal)
             self.dropSystem:restore(snapshot.drops)
             self.bossSystem:restore(snapshot.boss)
+            self.governance = deepcopy(snapshot.governance or self.governance)
+            self.repairs = deepcopy(snapshot.repairs or self.repairs)
+            self.topology = deepcopy(snapshot.topology or self.topology)
+            self.artifacts.entries = deepcopy(snapshot.artifacts or {})
+            self.artifacts.byKind = {}
+            for _, artifact in ipairs(self.artifacts.entries) do
+                self.artifacts.byKind[artifact.kind] = self.artifacts.byKind[artifact.kind] or {}
+                self.artifacts.byKind[artifact.kind][#self.artifacts.byKind[artifact.kind] + 1] = artifact
+            end
+            self.artifacts.nextId = (#self.artifacts.entries or 0) + 1
         end)
         self._restoringWorldState = false
 
@@ -1321,32 +1718,60 @@ function ServerBootstrap.boot(basePath, config)
                 self.metrics:increment('world_state.restore_error', 1)
                 self.metrics:error('world_state_restore_failed', { error = tostring(restoreErr) })
             end
-            self.recovery.mode = 'checkpoint_restore_failed'
+            self:_replayPhase('event_hydration', 'failed', { error = tostring(restoreErr) })
             self.recovery.valid = false
             self:_escalate('checkpoint_restore_failed', { error = tostring(restoreErr) })
-            self:_recordRuntimeEvent('replay_divergence', { reason = 'checkpoint_restore_failed', error = tostring(restoreErr) })
+            self._replayingRecovery = false
             return false, 'restore_failed:' .. tostring(restoreErr)
         end
 
+        self:_replayPhase('state_reconstruction', 'completed')
+        self:_replayPhase('invariant_verification', 'in_progress')
         local invOk, invErr = self:_rebuildRecoveryInvariants()
         if not invOk then
             self.recovery.mode = 'replay_restore_required'
             self.recovery.valid = false
             self.containment.replayOnly = true
+            self.containment.ownershipReject = true
+            self:_recordRepairAction('replay_invariant_violation', self:_ownershipScope(), invErr, 'entered_replay_only', {})
             self:_escalate('replay_invariant_violation', { invariant = invErr })
-            self:_recordRuntimeEvent('replay_divergence', { reason = invErr })
+            self:_replayPhase('invariant_verification', 'failed', { invariant = invErr })
+            self._replayingRecovery = false
             return false, invErr
         end
 
         local checkpoint = snapshot.checkpoint or {}
+        self:_replayPhase('event_hydration', 'completed', { checkpointId = checkpoint.checkpoint_id })
         local replayedEntries = self:_replayJournalEntries(self.journal:snapshot(), tonumber(checkpoint.journal_watermark) or 0)
-        self.recovery.mode = 'open_runtime'
+        self.recovery.watermark = {
+            journal = tonumber(checkpoint.journal_watermark) or 0,
+            ledger = tonumber(checkpoint.ledger_watermark) or 0,
+        }
         self.recovery.valid = true
         self.recovery.checkpointId = checkpoint.checkpoint_id
         self.recovery.replayBaseRevision = tonumber(checkpoint.replay_base_revision) or 0
         self.recovery.replayedEntries = replayedEntries
-        self.recovery.divergence = false
+        self.recovery.checkpointLineage = deepcopy(snapshot.health and snapshot.health.checkpoint_lineage or self.recovery.checkpointLineage or {})
         self.recovery.checkpointRevision = self.worldRepository:lastLoadedRevision() or 0
+        local actualDigest = self:_materializedDigest()
+        self.recovery.divergence = snapshot.materialized_digest ~= nil and snapshot.materialized_digest ~= actualDigest
+        if self.recovery.divergence then
+            self.recovery.divergenceCount = (self.recovery.divergenceCount or 0) + 1
+            local divergence = self:_artifact('replay_report', self:_ownershipScope(), {
+                expectedDigest = snapshot.materialized_digest,
+                actualDigest = actualDigest,
+                checkpointId = checkpoint.checkpoint_id,
+            })
+            self.recovery.lastReplayReportId = divergence.artifactId
+            self:_recordRepairAction('replay_divergence', self:_ownershipScope(), 'digest_mismatch', 'repair_escalation', {
+                expectedDigest = snapshot.materialized_digest,
+                actualDigest = actualDigest,
+            })
+            self:_escalate('replay_divergence_detected', { expectedDigest = snapshot.materialized_digest, actualDigest = actualDigest })
+        end
+        self:_replayPhase('invariant_verification', 'completed')
+        self:_replayPhase('runtime_activation', self.recovery.divergence and 'degraded' or 'completed')
+        self.recovery.mode = self.recovery.divergence and 'degraded_safe' or 'open_runtime'
 
         for _, drop in ipairs(self.dropSystem:listAllDrops()) do
             self:_emit('onDropSpawned', drop)
@@ -1356,15 +1781,24 @@ function ServerBootstrap.boot(basePath, config)
         end
 
         local elapsedMs = math.floor((os.clock() - startedAt) * 1000)
+        self.recovery.lastReplayDurationMs = elapsedMs
         if self.metrics then
             self.metrics:time('world_state.restore.duration_ms', elapsedMs)
             self.metrics:gauge('world_state.replay_entries', self.recovery.replayedEntries or 0)
             self.metrics:gauge('world_state.recovery_valid', self.recovery.valid and 1 or 0)
         end
+        local report = self:_artifact('replay_report', self:_ownershipScope(), {
+            checkpoint_id = self.recovery.checkpointId,
+            replayed_entries = self.recovery.replayedEntries,
+            duration_ms = elapsedMs,
+            divergence = self.recovery.divergence,
+        })
+        self.recovery.lastReplayReportId = report.artifactId
         self:_recordRuntimeEvent('world_recovered', {
             checkpoint_id = self.recovery.checkpointId,
             replayed_entries = self.recovery.replayedEntries,
             duration_ms = elapsedMs,
+            replay_report_id = report.artifactId,
         })
         self:_recordRuntimeEvent('replay_finish', {
             mode = 'checkpoint_restore',
@@ -1372,6 +1806,7 @@ function ServerBootstrap.boot(basePath, config)
             checkpoint_id = self.recovery.checkpointId,
         })
         self:_recomputePressure()
+        self._replayingRecovery = false
         return true
     end
 
@@ -1425,6 +1860,19 @@ function ServerBootstrap.boot(basePath, config)
         self.mapPlayers[mapId] = self.mapPlayers[mapId] or {}
         self.mapPlayers[mapId][player.id] = true
         player.currentMapId = mapId
+        player.runtimeScope = player.runtimeScope or {}
+        player.runtimeScope.worldId = self.runtimeIdentity.worldId
+        player.runtimeScope.channelId = self.runtimeIdentity.channelId
+        player.runtimeScope.runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId
+        player.runtimeScope.mapId = mapId
+        player.runtimeScope.mapInstanceId = tostring(mapId) .. '@' .. tostring(self.runtimeIdentity.runtimeInstanceId)
+        self.topology.mapInstances[player.runtimeScope.mapInstanceId] = self.topology.mapInstances[player.runtimeScope.mapInstanceId] or {
+            mapId = mapId,
+            worldId = self.runtimeIdentity.worldId,
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            scope = 'runtime_local',
+        }
         player.lastMapChangeAt = self:_now()
         player.dirty = true
         self:_setPlayerPosition(player, self:_defaultMapPosition(mapId), not self.strictRuntimeBoundary)
@@ -1550,6 +1998,9 @@ function ServerBootstrap.boot(basePath, config)
         end
         local player = self.itemSystem:sanitizePlayerProfile(loaded, playerId)
         player.runtimeScope = player.runtimeScope or {}
+        player.runtimeScope.worldId = self.runtimeIdentity.worldId
+        player.runtimeScope.channelId = self.runtimeIdentity.channelId
+        player.runtimeScope.runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId
         player.currentMapId = player.currentMapId or (self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId) or 'henesys_hunting_ground'
         if loaded then player.dirty = false else player.dirty = true end
         if not player.position then self:_setPlayerPosition(player, self:_defaultMapPosition(player.currentMapId), not self.strictRuntimeBoundary) end
@@ -1725,7 +2176,13 @@ function ServerBootstrap.boot(basePath, config)
             runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
             ownerScope = deepcopy(player.runtimeScope),
         })
-        for _, record in ipairs(records) do self:_emit('onDropSpawned', record) end
+        for _, record in ipairs(records) do
+            self:_artifact('drop_lifecycle_state', self:_ownershipScope(mapId, { dropId = record.dropId }), {
+                phase = 'spawned',
+                drop = deepcopy(record),
+            })
+            self:_emit('onDropSpawned', record)
+        end
         return records
     end
 
@@ -1801,7 +2258,11 @@ function ServerBootstrap.boot(basePath, config)
             self:_recordOwnershipConflict('drop_channel_scope_conflict', { expected = record.channelId, actual = self.runtimeIdentity.channelId, dropId = dropId })
             return false, 'runtime_channel_conflict'
         end
-        local claimKey = string.format('%s:%s:%s:%s', tostring(self.runtimeIdentity.worldId), tostring(self.runtimeIdentity.channelId), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(dropId))
+        if record.runtimeInstanceId and tostring(record.runtimeInstanceId) ~= tostring(self.runtimeIdentity.runtimeInstanceId) then
+            self:_recordOwnershipConflict('drop_runtime_scope_conflict', { expected = record.runtimeInstanceId, actual = self.runtimeIdentity.runtimeInstanceId, dropId = dropId })
+            return false, 'runtime_instance_conflict'
+        end
+        local claimKey = self:_dropClaimKey(record)
         if self.recoveryInvariants.claimedDrops[claimKey] then
             self:_escalate('duplicate_drop_claim_attempt', { dropId = dropId, playerId = player.id })
             return false, 'duplicate_drop_claim'
@@ -1812,6 +2273,12 @@ function ServerBootstrap.boot(basePath, config)
         self.questSystem:onItemAcquired(player, recordOrErr.itemId, recordOrErr.quantity)
         self.journal:append('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId })
         self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', map_id = record.mapId, item_id = recordOrErr.itemId, quantity = recordOrErr.quantity, source_event_id = tostring(dropId), correlation_id = recordOrErr.correlationId, idempotency_key = string.format('reward:pickup:%s:%s', tostring(player.id), tostring(dropId)), lineage_reference = self:_lineageReference('drop', dropId), metadata = { mode = 'manual_pickup' } })
+        self:_artifact('drop_lifecycle_state', self:_ownershipScope(record.mapId, { dropId = dropId }), {
+            phase = 'picked',
+            drop = deepcopy(recordOrErr),
+            claimKey = claimKey,
+            playerId = player.id,
+        })
         self:_emit('onDropPicked', recordOrErr, player)
         self:publishPlayerSnapshot(player)
         return true, recordOrErr
@@ -1820,13 +2287,18 @@ function ServerBootstrap.boot(basePath, config)
     function world:spawnBoss(bossId, mapId)
         local def = self.bossSystem.bossTable[bossId]
         local targetMapId = mapId or (def and def.mapId)
-        if (self.pressure.ownershipConflictPressure or 0) >= (tonumber(self:_policySection('bossUniqueness').worldUniqueThrottle) or math.huge) then
+        if def and tostring(def.uniqueness or 'channel_unique') == 'world_unique'
+            and (self.pressure.ownershipConflictPressure or 0) >= (tonumber(self:_policySection('bossUniqueness').worldUniqueThrottle) or math.huge) then
             return false, 'boss_throttled_by_pressure'
         end
         local encounter, err, remaining = self.bossSystem:spawnEncounter(bossId, targetMapId)
         if type(encounter) == 'table' then
             if not encounter.position then encounter.position = deepcopy(def and def.position) end
             self:_recordRuntimeEvent('boss_spawned', { bossId = bossId, mapId = targetMapId, scope = deepcopy(self.runtimeIdentity) })
+            self:_artifact('boss_encounter_state', self:_ownershipScope(targetMapId, { bossId = bossId, uniqueness = def and def.uniqueness }), {
+                phase = 'spawned',
+                encounter = deepcopy(encounter),
+            })
             self:_emit('onBossSpawned', encounter)
         end
         return encounter, err, remaining
@@ -1839,13 +2311,18 @@ function ServerBootstrap.boot(basePath, config)
         self.economySystem:grantMesos(player, self:_rollMesos(bossDef.mesos_min, bossDef.mesos_max), 'boss_drop', { bossId = encounter.bossId, mapId = encounter.mapId, correlationId = correlationId })
         local position = self:_bossPosition(encounter)
         local delivered = self:_processDropAcquisition(player, encounter.mapId, position, rawDrops, self.autoPickupDrops == true, { source = 'boss_drop', correlationId = correlationId, bossId = encounter.bossId, sourceEventId = tostring(encounter.bossId) })
-        local claimKey = string.format('boss_claim:%s:%s:%s:%s:%s', tostring(self.runtimeIdentity.worldId), tostring(self.runtimeIdentity.channelId), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(player.id), tostring(encounter.bossId))
+        local claimKey = self:_bossRewardClaimKey(player.id, encounter)
         if self.recoveryInvariants.bossRewardClaims[claimKey] then
             self:_escalate('duplicate_boss_reward_attempt', { playerId = player.id, bossId = encounter.bossId })
             return false, 'duplicate_boss_reward'
         end
         self.recoveryInvariants.bossRewardClaims[claimKey] = true
         self:_emitRewardLedger(player, 'boss_reward_claim', { source_system = 'boss_system', correlation_id = correlationId, map_id = encounter.mapId, boss_id = encounter.bossId, idempotency_key = claimKey, lineage_reference = self:_lineageReference('boss', encounter.bossId), metadata = { reward_kind = 'boss_clear', uniqueness = encounter.uniqueness or 'channel_unique' } })
+        self:_artifact('reward_eligibility_state', self:_ownershipScope(encounter.mapId, { bossId = encounter.bossId }), {
+            playerId = player.id,
+            claimKey = claimKey,
+            uniqueness = encounter.uniqueness or 'channel_unique',
+        })
         self.questSystem:onKill(player, encounter.bossId, 1)
         player.killLog[encounter.bossId] = (player.killLog[encounter.bossId] or 0) + 1
         player.dirty = true

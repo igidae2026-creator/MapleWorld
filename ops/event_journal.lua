@@ -328,4 +328,16 @@ function EventJournal:latest()
     return self.entries[#self.entries]
 end
 
+function EventJournal:findByEvent(eventType, sinceSeq)
+    local out = {}
+    local target = tostring(eventType or '')
+    local minSeq = tonumber(sinceSeq) or 0
+    for _, entry in ipairs(self.entries) do
+        if entry.seq > minSeq and tostring(entry.event) == target then
+            out[#out + 1] = deepcopy(entry)
+        end
+    end
+    return out
+end
+
 return EventJournal

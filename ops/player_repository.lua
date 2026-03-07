@@ -371,7 +371,7 @@ function PlayerRepository:_saveToStorage(player)
         revision = nextRevision,
         savedAt = envelope.savedAt,
         phase = 'finalized',
-        value = { revision = nextRevision, slot = nextSlot, previousRevision = currentRevision },
+        value = { revision = nextRevision, slot = nextSlot, previousRevision = currentRevision, phase = 'finalized' },
     }
     ok, err = writeStorage(storage, self:_finalizeKey(nextRevision), self.runtimeAdapter:encodeData(finalizeEnvelope))
     if not ok then return false, err end

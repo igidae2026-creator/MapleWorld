@@ -39,6 +39,36 @@ function AdminTools:getRuntimeStatus(world)
     return status
 end
 
+function AdminTools:getReplayStatus(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return status.health
+end
+
+function AdminTools:getOwnershipTopology(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        ownership = status.ownership,
+        topology = status.topology,
+    }
+end
+
+function AdminTools:getRepairHistory(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return status.repairs
+end
+
+function AdminTools:getPolicyVersions(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        active = status.policy,
+        version = status.policyVersion,
+    }
+end
+
 function AdminTools:replacePolicyBundle(world, bundle)
     if not world or type(world.replacePolicyBundle) ~= 'function' then return false, 'policy_replace_unavailable' end
     local ok, err = world:replacePolicyBundle(bundle)
