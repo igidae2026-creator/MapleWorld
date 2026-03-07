@@ -38,6 +38,13 @@ return {
         dropPickupRange = 32,
         questNpcRange = 28,
     },
+
+    mapTransitions = {
+        henesys_hunting_ground = { ant_tunnel_1 = true, forest_edge = true },
+        ant_tunnel_1 = { henesys_hunting_ground = true },
+        forest_edge = { henesys_hunting_ground = true, perion_rocky = true },
+        perion_rocky = { forest_edge = true },
+    },
     actionRateLimits = {
         mob_attack = { tokens = 12, recharge = 8 },
         boss_attack = { tokens = 24, recharge = 8 },
