@@ -1,0 +1,3 @@
+boss_id,name,map_id,hp,trigger,cooldown_sec,rare_drop_group,asset_key
+mano,Mano,forest_edge,5000,channel_presence,1800,mano_rares,boss/mano
+stumpy,Stumpy,perion_rocky,12000,scheduled_window,2700,stumpy_rares,boss/stumpy

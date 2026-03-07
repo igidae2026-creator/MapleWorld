@@ -1,0 +1,11 @@
+item_id,name,type,required_level,attack,defense,stackable,npc_price,rarity,asset_key
+sword_bronze,Bronze Sword,weapon,5,12,0,false,180,common,item/sword_bronze
+wooden_armor,Wooden Armor,overall,3,0,8,false,140,common,item/wooden_armor
+red_potion,Red Potion,consumable,1,0,0,true,25,common,item/red_potion
+hp_potion,HP Potion,consumable,1,0,0,true,20,common,item/hp_potion
+mushcap_hat,Mushcap Hat,hat,10,0,6,false,220,uncommon,item/mushcap_hat
+zombie_glove,Zombie Glove,glove,20,4,3,false,560,rare,item/zombie_glove
+mano_shell,Mano Shell,accessory,15,2,2,false,1000,rare,item/mano_shell
+stumpy_axe,Stumpy Axe,weapon,30,38,0,false,2400,epic,item/stumpy_axe
+snail_shell,Snail Shell,material,1,0,0,true,5,common,item/snail_shell
+mushroom_spore,Mushroom Spore,material,1,0,0,true,12,common,item/mushroom_spore

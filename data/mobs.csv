@@ -1,0 +1,7 @@
+mob_id,name,level,hp,exp,mesos_min,mesos_max,map_pool,respawn_sec,asset_key
+snail,Snail,1,12,8,1,3,henesys_hunting_ground,5,mob/snail
+orange_mushroom,Orange Mushroom,8,80,18,6,12,henesys_hunting_ground,7,mob/orange_mushroom
+horny_mushroom,Horny Mushroom,22,260,52,24,35,ant_tunnel_1,9,mob/horny_mushroom
+zombie_mushroom,Zombie Mushroom,24,340,70,28,40,ant_tunnel_1,10,mob/zombie_mushroom
+mano,Mano,20,5000,420,180,240,forest_edge,1800,boss/mano
+stumpy,Stumpy,35,12000,900,400,600,perion_rocky,2700,boss/stumpy

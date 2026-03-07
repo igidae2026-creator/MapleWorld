@@ -1,0 +1,4 @@
+quest_id,name,required_level,objectives,reward_exp,reward_mesos,reward_items,start_npc,end_npc
+q_snail_cleanup,Snail Cleanup,1,kill:snail:5,40,100,red_potion:5,Rina,Rina
+q_spore_collection,Spore Collection,8,collect:mushroom_spore:4,120,260,hp_potion:3,Sera,Sera
+q_mano_hunt,Mano Suppression,18,kill:mano:1,800,1200,mano_shell:1,Chief_Stan,Chief_Stan

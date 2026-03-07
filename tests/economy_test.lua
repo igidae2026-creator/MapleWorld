@@ -1,0 +1,13 @@
+package.path = package.path .. ';./?.lua;../?.lua'
+local ServerBootstrap = require('scripts.server_bootstrap')
+local world = ServerBootstrap.boot('.')
+local player = world:createPlayer('merchant')
+world.economySystem:grantMesos(player, 500, 'seed')
+assert(world.economySystem:buyFromNpc(player, 'hp_potion', 5, 20), 'npc buy failed')
+assert(player.inventory['hp_potion'].quantity == 5, 'inventory quantity mismatch')
+assert(world.economySystem:sellToNpc(player, 'hp_potion', 2, 10), 'npc sell failed')
+assert(player.mesos == 420, 'mesos accounting mismatch')
+local snapshot = world.economySystem:snapshot()
+assert(snapshot.faucets.seed == 500, 'faucet tracking failed')
+assert(snapshot.sinks.npc_buy == 100, 'sink tracking failed')
+print('economy_test: ok')

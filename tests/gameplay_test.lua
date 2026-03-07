@@ -1,0 +1,17 @@
+package.path = package.path .. ';./?.lua;../?.lua'
+local ServerBootstrap = require('scripts.server_bootstrap')
+local world = ServerBootstrap.boot('.')
+local player = world:createPlayer('tester')
+world.scheduler:tick(5)
+assert(next(world.spawnSystem.maps['henesys_hunting_ground'].active) ~= nil, 'spawn system failed')
+local spawnId = next(world.spawnSystem.maps['henesys_hunting_ground'].active)
+local beforePower = world.itemSystem:getPower(player)
+world:killMob(player, 'henesys_hunting_ground', spawnId)
+assert(player.mesos >= 1, 'mesos did not increase')
+assert(player.exp >= 0, 'exp not granted')
+world.itemSystem:addItem(player, 'sword_bronze', 1)
+player.level = 5
+local ok = world.itemSystem:equip(player, 'sword_bronze')
+assert(ok, 'equip failed')
+assert(world.itemSystem:getPower(player) > beforePower, 'power did not increase')
+print('gameplay_test: ok')

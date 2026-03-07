@@ -1,0 +1,424 @@
+local ServerBootstrap = require('scripts.server_bootstrap')
+local RuntimeAdapter = require('ops.runtime_adapter')
+local PlayerRepository = require('ops.player_repository')
+
+local WorldServerBridge = {}
+WorldServerBridge.__index = WorldServerBridge
+
+local function safeRequire(name)
+    local ok, mod = pcall(require, name)
+    if ok then return mod end
+    return nil
+end
+
+local function response(adapter, ok, payload, err)
+    return adapter:encodeData({ ok = ok == true, data = payload, error = err })
+end
+
+local function normalizePath(path)
+    if path == nil then return nil end
+    local normalized = tostring(path):gsub('\\', '/')
+    normalized = normalized:gsub('/+', '/')
+    if normalized == '' then return nil end
+    if normalized ~= '/' and normalized:sub(-1) == '/' then
+        normalized = normalized:sub(1, -2)
+    end
+    if normalized == '' then return nil end
+    if normalized:sub(1, 1) ~= '/' then
+        normalized = '/' .. normalized
+    end
+    return normalized
+end
+
+function WorldServerBridge.new(config)
+    local cfg = config or {}
+    local self = {
+        component = cfg.component,
+        runtimeAdapter = cfg.runtimeAdapter or RuntimeAdapter.new({}),
+        worldConfig = cfg.worldConfig or safeRequire('data.world_runtime'),
+        world = nil,
+        playerStateById = {},
+        mapStateById = {},
+        mobEntities = {},
+        dropEntities = {},
+        bossEntities = {},
+        activeSessions = {},
+    }
+    setmetatable(self, WorldServerBridge)
+    return self
+end
+
+function WorldServerBridge:attachComponent(component)
+    if component ~= nil then
+        self.component = component
+    end
+    return self.component
+end
+
+function WorldServerBridge:_setComponentField(name, value)
+    if not self.component then return end
+    pcall(function() self.component[name] = value end)
+end
+
+function WorldServerBridge:_cachePlayerState(playerId, snapshot)
+    self.playerStateById[playerId] = snapshot
+    self:_setComponentField('LastSyncUserId', tostring(playerId))
+    self:_setComponentField('LastPlayerStateJson', self.runtimeAdapter:encodeData(snapshot))
+end
+
+function WorldServerBridge:_cacheMapState(mapId, state)
+    self.mapStateById[mapId] = state
+    self:_setComponentField('LastMapStateJson', self.runtimeAdapter:encodeData(state))
+end
+
+function WorldServerBridge:_defaultMapId()
+    return self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId or 'henesys_hunting_ground'
+end
+
+function WorldServerBridge:_rootAttachPath()
+    return normalizePath(self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.componentAttachPath) or '/server_runtime'
+end
+
+function WorldServerBridge:_mapRuntime(mapId)
+    return self.worldConfig and self.worldConfig.maps and self.worldConfig.maps[mapId] and self.worldConfig.maps[mapId].runtime or nil
+end
+
+function WorldServerBridge:_entityPath(parentPath, name)
+    local parent = normalizePath(parentPath)
+    if not parent or not name or name == '' then return nil end
+    return parent .. '/' .. tostring(name)
+end
+
+function WorldServerBridge:_resolveParentEntity(parentPath)
+    local normalizedPath = normalizePath(parentPath)
+    if normalizedPath then
+        local parent = self.runtimeAdapter:findEntityByPath(normalizedPath)
+        if parent ~= nil then return parent end
+    end
+
+    local componentEntity = self.runtimeAdapter:getComponentEntity(self.component)
+    if componentEntity ~= nil then return componentEntity end
+    return nil
+end
+
+function WorldServerBridge:_spawnRuntimeEntity(modelId, name, x, y, z, parentPath)
+    local entityPath = self:_entityPath(parentPath, name)
+    if entityPath then
+        local existing = self.runtimeAdapter:findEntityByPath(entityPath)
+        if existing then
+            self.runtimeAdapter:setEntityPosition(existing, { x = x, y = y, z = z or 0 })
+            return existing
+        end
+    end
+
+    local parent = self:_resolveParentEntity(parentPath)
+    return self.runtimeAdapter:spawnModel(modelId, name, self.runtimeAdapter:makeVector3(x, y, z or 0), parent)
+end
+
+function WorldServerBridge:_spawnMobEntity(mob)
+    local runtime = self:_mapRuntime(mob.mapId)
+    local mobDef = self.world and self.world.mobs and self.world.mobs[mob.mobId] or nil
+    local modelId = (runtime and runtime.mobModelIds and runtime.mobModelIds[mob.mobId]) or (mobDef and mobDef.assetKey) or nil
+    local entity = self:_spawnRuntimeEntity(modelId, 'mob_' .. tostring(mob.spawnId), mob.x, mob.y, mob.z or 0, runtime and runtime.mobParentPath)
+    if entity then self.mobEntities[mob.spawnId] = entity end
+    self:_cacheMapState(mob.mapId, self.world:getMapState(mob.mapId))
+end
+
+function WorldServerBridge:_destroyMobEntity(mob)
+    local entity = self.mobEntities[mob.spawnId]
+    if entity then self.runtimeAdapter:destroyEntity(entity) end
+    self.mobEntities[mob.spawnId] = nil
+    self:_cacheMapState(mob.mapId, self.world:getMapState(mob.mapId))
+end
+
+function WorldServerBridge:_spawnDropEntity(drop)
+    local mapRuntime = self:_mapRuntime(drop.mapId)
+    local dropCfg = self.worldConfig and self.worldConfig.drops or {}
+    local itemDef = self.world and self.world.items and self.world.items[drop.itemId] or nil
+    local modelId = (dropCfg.modelIds and dropCfg.modelIds[drop.itemId]) or dropCfg.defaultModelId or (itemDef and itemDef.assetKey) or nil
+    local entity = self:_spawnRuntimeEntity(modelId, 'drop_' .. tostring(drop.dropId), drop.x, drop.y, drop.z or 0, mapRuntime and mapRuntime.dropParentPath)
+    if entity then self.dropEntities[drop.dropId] = entity end
+    self:_cacheMapState(drop.mapId, self.world:getMapState(drop.mapId))
+end
+
+function WorldServerBridge:_destroyDropEntity(drop)
+    local entity = self.dropEntities[drop.dropId]
+    if entity then self.runtimeAdapter:destroyEntity(entity) end
+    self.dropEntities[drop.dropId] = nil
+    self:_cacheMapState(drop.mapId, self.world:getMapState(drop.mapId))
+end
+
+function WorldServerBridge:_spawnBossEntity(encounter)
+    local mapRuntime = self:_mapRuntime(encounter.mapId)
+    local bossCfg = self.worldConfig and self.worldConfig.bosses and self.worldConfig.bosses[encounter.bossId] or {}
+    local bossDef = self.world and self.world.bossSystem and self.world.bossSystem.bossTable and self.world.bossSystem.bossTable[encounter.bossId] or nil
+    local pos = encounter.position or bossCfg.spawnPosition or (bossDef and bossDef.position) or { x = 0, y = 0, z = 0 }
+    local modelId = bossCfg.modelId or (bossDef and bossDef.modelId) or (self.world and self.world.mobs and self.world.mobs[encounter.bossId] and self.world.mobs[encounter.bossId].assetKey) or nil
+    local parentPath = bossCfg.parentPath or (bossDef and bossDef.parentPath) or (mapRuntime and mapRuntime.bossParentPath) or self:_rootAttachPath()
+    local entity = self:_spawnRuntimeEntity(modelId, 'boss_' .. tostring(encounter.bossId), pos.x, pos.y, pos.z, parentPath)
+    if entity then self.bossEntities[encounter.mapId] = entity end
+    self:_cacheMapState(encounter.mapId, self.world:getMapState(encounter.mapId))
+end
+
+function WorldServerBridge:_destroyBossEntity(encounter)
+    local entity = self.bossEntities[encounter.mapId]
+    if entity then self.runtimeAdapter:destroyEntity(entity) end
+    self.bossEntities[encounter.mapId] = nil
+    self:_cacheMapState(encounter.mapId, self.world:getMapState(encounter.mapId))
+end
+
+function WorldServerBridge:bootstrap()
+    if self.world then
+        self:attachComponent(self.component)
+        return self.world
+    end
+
+    local worldConfig = self.worldConfig or safeRequire('data.world_runtime') or {}
+    local usePersistentStorage = self.runtimeAdapter:hasDataStorage()
+    local repository
+    if usePersistentStorage then
+        repository = PlayerRepository.newMapleWorldsDataStorage({
+            runtimeAdapter = self.runtimeAdapter,
+            storageName = worldConfig.runtime and worldConfig.runtime.playerStorageName,
+            key = worldConfig.runtime and worldConfig.runtime.playerStorageKey,
+            slotCount = worldConfig.runtime and worldConfig.runtime.playerProfileSlotCount,
+        })
+    else
+        repository = PlayerRepository.newMemory({})
+    end
+
+    local runtimeHooks = {
+        onPlayerEnter = function(world, player)
+            self.activeSessions[player.id] = {
+                userId = player.id,
+                enteredAt = self.runtimeAdapter:now(),
+                lastSeenAt = self.runtimeAdapter:now(),
+            }
+            self:_cachePlayerState(player.id, world:publishPlayerSnapshot(player))
+            self:_cacheMapState(player.currentMapId, world:getMapState(player.currentMapId))
+        end,
+        onPlayerLeave = function(world, player)
+            self.playerStateById[player.id] = nil
+            self.activeSessions[player.id] = nil
+        end,
+        onPlayerSnapshot = function(world, player, snapshot)
+            if self.activeSessions[player.id] then
+                self.activeSessions[player.id].lastSeenAt = self.runtimeAdapter:now()
+            end
+            self:_cachePlayerState(player.id, snapshot)
+        end,
+        onPlayerMapChanged = function(world, player, mapId)
+            self:_cacheMapState(mapId, world:getMapState(mapId))
+        end,
+        onMobSpawned = function(world, mob)
+            self:_spawnMobEntity(mob)
+        end,
+        onMobRemoved = function(world, mob)
+            self:_destroyMobEntity(mob)
+        end,
+        onMobDamaged = function(world, player, mob)
+            self:_cacheMapState(mob.mapId, world:getMapState(mob.mapId))
+        end,
+        onDropSpawned = function(world, drop)
+            self:_spawnDropEntity(drop)
+        end,
+        onDropPicked = function(world, drop)
+            self:_destroyDropEntity(drop)
+        end,
+        onDropExpired = function(world, drop)
+            self:_destroyDropEntity(drop)
+        end,
+        onBossSpawned = function(world, encounter)
+            self:_spawnBossEntity(encounter)
+        end,
+        onBossDamaged = function(world, encounter)
+            self:_cacheMapState(encounter.mapId, world:getMapState(encounter.mapId))
+        end,
+        onBossKilled = function(world, encounter)
+            self:_destroyBossEntity(encounter)
+        end,
+    }
+
+    self.world = ServerBootstrap.boot({
+        dataProvider = safeRequire('data.runtime_tables'),
+        worldConfig = worldConfig,
+        playerRepository = repository,
+        runtimeAdapter = self.runtimeAdapter,
+        runtimeHooks = runtimeHooks,
+        autoPickupDrops = false,
+        useMapleWorldsDataStorage = usePersistentStorage,
+    })
+    self:_setComponentField('BridgeReady', true)
+    return self.world
+end
+
+function WorldServerBridge:tick(delta)
+    self:bootstrap()
+    self.world.scheduler:tick(tonumber(delta) or 0)
+end
+
+function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId, senderUserId)
+    self:bootstrap()
+    local authoritative = self.runtimeAdapter:isLive()
+
+    if authoritative then
+        local actor, err = self.runtimeAdapter:resolveActorContext(requestContext, {
+            authoritativeOnly = true,
+            senderUserId = senderUserId,
+        })
+        if not actor or not actor.userId then return nil, err or 'invalid_user' end
+
+        local session = self.activeSessions[actor.userId]
+        local player = self.world.players[actor.userId]
+        if not session or not player then return nil, 'player_not_active' end
+
+        if requestedMapId and actor.mapId and tostring(requestedMapId) ~= tostring(actor.mapId) then
+            return nil, 'map_mismatch'
+        end
+
+        local mapId = actor.mapId or player.currentMapId or requestedMapId or self:_defaultMapId()
+        local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, true)
+        if not ok then return nil, updateErr end
+        session.lastSeenAt = self.runtimeAdapter:now()
+        return player
+    end
+
+    local actor, err = self.runtimeAdapter:resolveActorContext(requestContext, { authoritativeOnly = false })
+    if not actor or not actor.userId then return nil, err or 'invalid_user' end
+    local player = self.world.players[actor.userId] or self.world:createPlayer(actor.userId)
+    local mapId = actor.mapId or player.currentMapId or requestedMapId or self:_defaultMapId()
+    local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, false)
+    if not ok then return nil, updateErr end
+    return player
+end
+
+function WorldServerBridge:onUserEnter(event)
+    self:bootstrap()
+    local authoritative = self.runtimeAdapter:isLive()
+    local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
+    if not actor or not actor.userId then return false, err or 'invalid_user' end
+    local mapId = actor.mapId or self:_defaultMapId()
+    self.world:onPlayerEnter(actor.userId, mapId, actor.position)
+    self.activeSessions[actor.userId] = {
+        userId = actor.userId,
+        enteredAt = self.runtimeAdapter:now(),
+        lastSeenAt = self.runtimeAdapter:now(),
+    }
+    return true
+end
+
+function WorldServerBridge:onUserLeave(event)
+    self:bootstrap()
+    local authoritative = self.runtimeAdapter:isLive()
+    local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
+    if not actor or not actor.userId then return false, err or 'invalid_user' end
+    self.activeSessions[actor.userId] = nil
+    self.world:onPlayerLeave(actor.userId)
+    return true
+end
+
+function WorldServerBridge:getPlayerState(requestContext, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local snapshot = self.world:publishPlayerSnapshot(player)
+    return response(self.runtimeAdapter, true, snapshot)
+end
+
+function WorldServerBridge:getMapState(mapId, senderUserId)
+    self:bootstrap()
+    local targetMapId = mapId
+    if (targetMapId == nil or targetMapId == '') and self.runtimeAdapter:isLive() then
+        local player, err = self:_resolvePlayer(nil, nil, senderUserId)
+        if not player then return response(self.runtimeAdapter, false, nil, err) end
+        targetMapId = player.currentMapId
+    end
+    targetMapId = targetMapId or self:_defaultMapId()
+    return response(self.runtimeAdapter, true, self.world:getMapState(targetMapId))
+end
+
+function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result, mobOrErr = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage))
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, {
+        result = result,
+        map = self.world:getMapState(player.currentMapId),
+        player = self.world:publishPlayerSnapshot(player),
+        mob = mobOrErr,
+    })
+end
+
+function WorldServerBridge:pickupDrop(requestContext, mapId, dropId, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId))
+    if not ok then return response(self.runtimeAdapter, false, nil, payload) end
+    return response(self.runtimeAdapter, true, { drop = payload, player = self.world:publishPlayerSnapshot(player) })
+end
+
+function WorldServerBridge:damageBoss(requestContext, mapId, requestedDamage, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, payload = self.world:damageBoss(player, player.currentMapId, tonumber(requestedDamage))
+    if not ok then return response(self.runtimeAdapter, false, nil, payload) end
+    return response(self.runtimeAdapter, true, { result = payload, map = self.world:getMapState(player.currentMapId), player = self.world:publishPlayerSnapshot(player) })
+end
+
+function WorldServerBridge:acceptQuest(requestContext, questId, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:acceptQuest(player, questId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:turnInQuest(requestContext, questId, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:turnInQuest(player, questId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:buyFromNpc(requestContext, itemId, quantity, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:buyFromNpc(player, itemId, tonumber(quantity))
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:sellToNpc(requestContext, itemId, quantity, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:sellToNpc(player, itemId, tonumber(quantity))
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:equipItem(requestContext, itemId, instanceId, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:equipItem(player, itemId, instanceId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:unequipItem(requestContext, slot, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:unequipItem(player, slot)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+function WorldServerBridge:changeMap(requestContext, mapId, senderUserId)
+    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+    if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local ok, result = self.world:changeMap(player, mapId)
+    if not ok then return response(self.runtimeAdapter, false, nil, result) end
+    return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
+end
+
+return WorldServerBridge

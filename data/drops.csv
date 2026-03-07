@@ -1,0 +1,13 @@
+mob_id,item_id,chance,min_qty,max_qty,rarity,bind_on_pickup
+snail,snail_shell,0.65,1,2,common,false
+snail,red_potion,0.15,1,1,common,false
+orange_mushroom,mushroom_spore,0.55,1,2,common,false
+orange_mushroom,mushcap_hat,0.06,1,1,uncommon,false
+horny_mushroom,wooden_armor,0.08,1,1,common,false
+horny_mushroom,red_potion,0.45,1,3,common,false
+zombie_mushroom,zombie_glove,0.04,1,1,rare,false
+zombie_mushroom,hp_potion,0.35,1,2,common,false
+mano,mano_shell,1.00,1,1,rare,false
+mano,sword_bronze,0.25,1,1,uncommon,false
+stumpy,stumpy_axe,1.00,1,1,epic,false
+stumpy,wooden_armor,0.20,1,1,common,false
