@@ -29,6 +29,17 @@ local function readStorage(storage, key)
     return true, encoded
 end
 
+
+local function isFiniteNumber(value)
+    local n = tonumber(value)
+    return n ~= nil and n == n and n ~= math.huge and n ~= -math.huge
+end
+
+local function normalizeRevision(value)
+    if not isFiniteNumber(value) then return nil end
+    return math.max(0, math.floor(tonumber(value) or 0))
+end
+
 local function writeStorage(storage, key, encoded)
     local ok, result = pcall(function()
         return storage:SetAndWait(key, encoded)
@@ -94,6 +105,10 @@ function WorldRepository:_headHistoryKey(index)
     return tostring(self.key) .. '__head_history_' .. tostring(index)
 end
 
+function WorldRepository:_commitKey(revision)
+    return tostring(self.key) .. '__commit_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
 function WorldRepository:_headHistorySize()
     return math.max(2, self.slotCount)
 end
@@ -142,6 +157,30 @@ function WorldRepository:_readHead(storage, key)
     return type(envelope) == 'table' and envelope.legacy == true and envelope.value or nil
 end
 
+
+function WorldRepository:_isValidEnvelope(envelope)
+    if type(envelope) ~= 'table' then return false end
+    if envelope.value == nil then return false end
+    if envelope.legacy == true then return true end
+    local revision = normalizeRevision(envelope.revision)
+    if revision == nil or revision < 0 then return false end
+    local savedAt = tonumber(envelope.savedAt)
+    if savedAt ~= nil and not isFiniteNumber(savedAt) then return false end
+    local previousRevision = normalizeRevision(envelope.previousRevision)
+    if previousRevision ~= nil and previousRevision > revision then return false end
+    return true
+end
+
+function WorldRepository:_isCommittedRevision(storage, revision)
+    local normalized = normalizeRevision(revision)
+    if normalized == nil or normalized <= 0 then return true end
+    local envelope = self:_readEnvelope(storage, self:_commitKey(normalized))
+    if type(envelope) ~= 'table' then return false end
+    local value = envelope.value
+    if type(value) ~= 'table' then return false end
+    return normalizeRevision(value.revision) == normalized
+end
+
 function WorldRepository:load()
     if not self.runtimeAdapter then
         if self.state == nil then return nil end
@@ -185,8 +224,12 @@ function WorldRepository:load()
             local envelope, err = self:_readEnvelope(storage, key)
             if err then
                 loadErr = loadErr or err
-            elseif envelope and envelope.value ~= nil then
-                if not bestEnvelope or (tonumber(envelope.revision) or 0) > (tonumber(bestEnvelope.revision) or 0) then
+            elseif envelope and self:_isValidEnvelope(envelope) then
+                local envelopeRevision = normalizeRevision(envelope.revision) or 0
+                local bestRevision = normalizeRevision(bestEnvelope and bestEnvelope.revision) or 0
+                local envelopeCommitted = self:_isCommittedRevision(storage, envelopeRevision)
+                local bestCommitted = bestEnvelope and self:_isCommittedRevision(storage, bestRevision) or false
+                if (not bestEnvelope) or (envelopeCommitted and not bestCommitted) or (envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
                     bestEnvelope = envelope
                 end
             end
@@ -219,7 +262,7 @@ function WorldRepository:save(state)
     local storage = self:_storage()
     if not storage then return false, 'storage_unavailable' end
 
-    local currentHead = self:_readHead(storage, self:_headKey()) or { revision = 0, slot = 0 }
+    local currentHead = self:_readHead(storage, self:_headKey()) or self:_readHead(storage, self:_shadowHeadKey()) or { revision = 0, slot = 0 }
     local currentRevision = math.max(0, math.floor(tonumber(currentHead.revision) or 0))
     local nextRevision = currentRevision + 1
     local nextSlot = ((nextRevision - 1) % self.slotCount) + 1
@@ -252,6 +295,14 @@ function WorldRepository:save(state)
         writeStorage(storage, self:_headKey(), self.runtimeAdapter:encodeData(currentHead))
         return false, err
     end
+
+    local commitEnvelope = {
+        revision = nextRevision,
+        savedAt = envelope.savedAt,
+        value = { revision = nextRevision, slot = nextSlot },
+    }
+    ok, err = writeStorage(storage, self:_commitKey(nextRevision), self.runtimeAdapter:encodeData(commitEnvelope))
+    if not ok then return false, err end
 
     if self.metrics then
         self.metrics:increment('world_repository.save', 1, { status = 'ok', kind = 'msw' })

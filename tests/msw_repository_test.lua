@@ -56,6 +56,8 @@ local rawStore = _G._DataStorageService._stores[storageKey]
 assert(type(rawStore) == 'table', 'test storage unavailable')
 assert(rawStore['profile__rev_1'] ~= nil, 'append-only revision 1 missing')
 assert(rawStore['profile__rev_2'] ~= nil, 'append-only revision 2 missing')
+assert(rawStore['profile__commit_1'] ~= nil, 'commit marker 1 missing')
+assert(rawStore['profile__commit_2'] ~= nil, 'commit marker 2 missing')
 rawStore['profile__head'] = nil
 
 local recovered = repo:load('msw_user')
