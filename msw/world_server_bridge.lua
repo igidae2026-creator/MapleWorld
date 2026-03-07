@@ -286,6 +286,9 @@ function WorldServerBridge:bootstrap()
         self:attachComponent(self.component)
         return self.world
     end
+    if self.bootstrapError then
+        return nil, self.bootstrapError
+    end
 
     local worldConfig = self.worldConfig or safeRequire('data.world_runtime') or {}
     local usePersistentStorage = self.runtimeAdapter:hasDataStorage()
@@ -357,7 +360,7 @@ function WorldServerBridge:bootstrap()
         end,
     }
 
-    self.world = ServerBootstrap.boot({
+    local ok, worldOrErr = pcall(ServerBootstrap.boot, {
         dataProvider = safeRequire('data.runtime_tables'),
         worldConfig = worldConfig,
         playerRepository = repository,
@@ -366,17 +369,28 @@ function WorldServerBridge:bootstrap()
         autoPickupDrops = false,
         useMapleWorldsDataStorage = usePersistentStorage,
     })
+    if not ok then
+        self.bootstrapError = 'world_bootstrap_failed'
+        self:_setComponentField('BridgeReady', false)
+        self:_setComponentField('BridgeError', tostring(worldOrErr))
+        return nil, self.bootstrapError
+    end
+
+    self.world = worldOrErr
     self:_setComponentField('BridgeReady', true)
     return self.world
 end
 
 function WorldServerBridge:tick(delta)
-    self:bootstrap()
-    self.world.scheduler:tick(tonumber(delta) or 0)
+    local world = self:bootstrap()
+    if not world then return false, self.bootstrapError or 'world_bootstrap_failed' end
+    world.scheduler:tick(tonumber(delta) or 0)
+    return true
 end
 
 function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return nil, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
 
     if authoritative then
@@ -415,7 +429,8 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
 end
 
 function WorldServerBridge:onUserEnter(event)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
     local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
     if not actor or not actor.userId then return false, err or 'invalid_user' end
@@ -431,12 +446,14 @@ function WorldServerBridge:onUserEnter(event)
 end
 
 function WorldServerBridge:onUserLeave(event)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
     local authoritative = self.runtimeAdapter:isLive()
     local actor, err = self.runtimeAdapter:resolveActorContext(event, { authoritativeOnly = authoritative })
     if not actor or not actor.userId then return false, err or 'invalid_user' end
+    local ok, leaveErr = self.world:onPlayerLeave(actor.userId)
+    if not ok then return false, leaveErr or 'player_save_failed' end
     self.activeSessions[actor.userId] = nil
-    self.world:onPlayerLeave(actor.userId)
     return true
 end
 
@@ -448,7 +465,8 @@ function WorldServerBridge:getPlayerState(requestContext)
 end
 
 function WorldServerBridge:getMapState(requestContext, mapId)
-    self:bootstrap()
+    local world, bootstrapErr = self:bootstrap()
+    if not world then return response(self.runtimeAdapter, false, nil, bootstrapErr or 'world_bootstrap_failed') end
     local targetMapId = mapId
 
     if mapId == nil and type(requestContext) == 'string' then

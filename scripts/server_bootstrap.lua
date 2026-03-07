@@ -282,13 +282,14 @@ local function tailEntries(entries, maxEntries)
 end
 
 local function limitDropSnapshot(snapshot, maxPerMap)
-    if type(snapshot) ~= 'table' then return { nextDropId = 1, drops = {} } end
+    if type(snapshot) ~= 'table' then return { nextDropId = 1, drops = {}, dropsByMap = {} } end
     local cap = math.floor(tonumber(maxPerMap) or 0)
     local drops = snapshot.drops or {}
     if cap <= 0 then
         return {
             nextDropId = tonumber(snapshot.nextDropId) or 1,
             drops = deepcopy(drops),
+            dropsByMap = deepcopy(snapshot.dropsByMap or {}),
         }
     end
 
@@ -306,8 +307,10 @@ local function limitDropSnapshot(snapshot, maxPerMap)
     end
 
     local trimmedDrops = {}
-    for _, records in pairs(byMap) do
+    local trimmedByMap = {}
+    for mapId, records in pairs(byMap) do
         local entries = tailEntries(records, cap)
+        trimmedByMap[mapId] = deepcopy(entries)
         for _, entry in ipairs(entries) do
             trimmedDrops[#trimmedDrops + 1] = entry
         end
@@ -320,6 +323,7 @@ local function limitDropSnapshot(snapshot, maxPerMap)
     return {
         nextDropId = tonumber(snapshot.nextDropId) or 1,
         drops = deepcopy(trimmedDrops),
+        dropsByMap = trimmedByMap,
     }
 end
 
@@ -703,27 +707,58 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:savePlayer(player)
+    function world:savePlayer(player, options)
         if not player or not player.id then return false, 'invalid_player' end
+        local cfg = options or {}
+        local requireWorldSave = cfg.requireWorldSave == true
         local ok, err = self.playerRepository:save(player)
-        if ok then
-            player.dirty = false
-            player.lastSavedAt = self:_now()
-            self.journal:append('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt })
+        if not ok then
+            if self.metrics then
+                self.metrics:increment('player_state.save_error', 1)
+                self.metrics:error('player_state_save_failed', { playerId = tostring(player.id), error = tostring(err) })
+            end
+            return false, err
         end
-        return ok, err
-    end
 
-    function world:flushDirtyPlayers()
-        local saved = 0
-        for _, player in pairs(self.players) do
-            if player.dirty then
-                local ok = self:savePlayer(player)
-                if ok then saved = saved + 1 end
+        if requireWorldSave then
+            local worldSaved, worldErr = self:saveWorldState('player_save:' .. tostring(player.id))
+            if not worldSaved then
+                player.dirty = true
+                if self.metrics then
+                    self.metrics:increment('player_state.save_error', 1, { reason = 'world_state_save_failed' })
+                end
+                return false, worldErr or 'world_state_save_failed'
             end
         end
-        if self.metrics then self.metrics:gauge('world.dirty_players_saved', saved) end
-        return saved
+
+        player.dirty = false
+        player.lastSavedAt = self:_now()
+        self.journal:append('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt })
+        return true
+    end
+
+    function world:flushDirtyPlayers(options)
+        local cfg = options or {}
+        local saved = 0
+        local failed = 0
+        for _, player in pairs(self.players) do
+            if player.dirty then
+                local ok, err = self:savePlayer(player, cfg)
+                if ok then
+                    saved = saved + 1
+                else
+                    failed = failed + 1
+                    if self.metrics then
+                        self.metrics:error('player_flush_save_failed', { playerId = tostring(player.id), error = tostring(err) })
+                    end
+                end
+            end
+        end
+        if self.metrics then
+            self.metrics:gauge('world.dirty_players_saved', saved)
+            self.metrics:gauge('world.dirty_players_failed', failed)
+        end
+        return saved, failed
     end
 
     function world:createPlayer(playerId)
@@ -763,7 +798,10 @@ function ServerBootstrap.boot(basePath, config)
     function world:onPlayerLeave(playerId)
         local player = self.players[playerId]
         if not player then return false, 'player_not_found' end
-        self:savePlayer(player)
+        if player.dirty then
+            local saved, saveErr = self:savePlayer(player, { requireWorldSave = self.strictRuntimeBoundary })
+            if not saved then return false, saveErr or 'player_save_failed' end
+        end
         self:_emit('onPlayerLeave', player)
         self:_removePlayerFromMap(playerId, player.currentMapId)
         self.players[playerId] = nil
@@ -1141,12 +1179,15 @@ function ServerBootstrap.boot(basePath, config)
         spawnSystem:registerMap(mapId, mapConfig.spawnGroups or {})
     end
 
-    world:restoreWorldState()
+    local restoredWorldState, restoreErr = world:restoreWorldState()
+    if restoreErr and world.strictRuntimeBoundary then
+        error('world_state_restore_failed:' .. tostring(restoreErr))
+    end
 
     local runtimeCfg = worldConfig.runtime or {}
     scheduler:every('spawn_tick', tonumber(runtimeCfg.spawnTickSec) or 5, function() spawnSystem:tick() end)
     scheduler:every('boss_tick', tonumber(runtimeCfg.bossTickSec) or 15, function() world:tickBosses() end)
-    scheduler:every('autosave_tick', tonumber(runtimeCfg.autosaveTickSec) or 30, function() world:flushDirtyPlayers() end)
+    scheduler:every('autosave_tick', tonumber(runtimeCfg.autosaveTickSec) or 30, function() world:flushDirtyPlayers({ requireWorldSave = world.strictRuntimeBoundary }) end)
     scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:saveWorldState('periodic') end)
     scheduler:every('health_tick', tonumber(runtimeCfg.healthTickSec) or 30, function() healthcheck:run() end)
     scheduler:every('drop_expire_tick', tonumber(runtimeCfg.dropExpireTickSec) or 5, function() world:expireDrops() end)
