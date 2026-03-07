@@ -268,6 +268,56 @@ function RuntimeAdapter:normalizePosition(value)
     return { x = x, y = y, z = z }
 end
 
+
+function RuntimeAdapter:getWorldId(source, options)
+    local opts = options or {}
+    local authoritativeOnly = opts.authoritativeOnly
+    if authoritativeOnly == nil then authoritativeOnly = self:isLive() end
+    if source == nil then return nil end
+    if authoritativeOnly and not self:isAuthoritativeSource(source) then return nil end
+
+    local value = first(source, {
+        { 'WorldId' }, { 'WorldID' }, { 'worldId' }, { 'ShardId' }, { 'ShardID' }, { 'shardId' },
+    })
+    if value == nil and not authoritativeOnly then
+        value = first(source, { { 'world_id' } })
+    end
+    return value and tostring(value) or nil
+end
+
+function RuntimeAdapter:getChannelId(source, options)
+    local opts = options or {}
+    local authoritativeOnly = opts.authoritativeOnly
+    if authoritativeOnly == nil then authoritativeOnly = self:isLive() end
+    if source == nil then return nil end
+    if authoritativeOnly and not self:isAuthoritativeSource(source) then return nil end
+
+    local value = first(source, {
+        { 'ChannelId' }, { 'ChannelID' }, { 'channelId' }, { 'RoomId' }, { 'RoomID' }, { 'roomId' },
+    })
+    if value == nil and not authoritativeOnly then
+        value = first(source, { { 'channel_id' } })
+    end
+    return value and tostring(value) or nil
+end
+
+function RuntimeAdapter:getRuntimeInstanceId(source, options)
+    local opts = options or {}
+    local authoritativeOnly = opts.authoritativeOnly
+    if authoritativeOnly == nil then authoritativeOnly = self:isLive() end
+    if source == nil then return nil end
+    if authoritativeOnly and not self:isAuthoritativeSource(source) then return nil end
+
+    local value = first(source, {
+        { 'RuntimeInstanceId' }, { 'RuntimeInstanceID' }, { 'runtimeInstanceId' },
+        { 'MapInstanceId' }, { 'MapInstanceID' }, { 'mapInstanceId' },
+    })
+    if value == nil and not authoritativeOnly then
+        value = first(source, { { 'runtime_instance_id' }, { 'map_instance_id' } })
+    end
+    return value and tostring(value) or nil
+end
+
 function RuntimeAdapter:getPosition(source, options)
     local opts = options or {}
     local authoritativeOnly = opts.authoritativeOnly
@@ -339,6 +389,9 @@ function RuntimeAdapter:resolveActorContext(source, options)
             mapId = mapId,
             position = position,
             authoritative = true,
+            worldId = self:getWorldId(authoritativeEntity, { authoritativeOnly = true }),
+            channelId = self:getChannelId(authoritativeEntity, { authoritativeOnly = true }),
+            runtimeInstanceId = self:getRuntimeInstanceId(authoritativeEntity, { authoritativeOnly = true }),
         }
     end
 
@@ -349,6 +402,9 @@ function RuntimeAdapter:resolveActorContext(source, options)
         mapId = self:getMapId(source, { authoritativeOnly = false }),
         position = self:getPosition(source, { authoritativeOnly = false }),
         authoritative = false,
+        worldId = self:getWorldId(source, { authoritativeOnly = false }),
+        channelId = self:getChannelId(source, { authoritativeOnly = false }),
+        runtimeInstanceId = self:getRuntimeInstanceId(source, { authoritativeOnly = false }),
     }
 end
 
