@@ -210,9 +210,19 @@ function DropSystem:expireDrops(now)
 end
 
 function DropSystem:snapshot()
+    local dropsByMap = {}
+    for mapId, records in pairs(self.dropsByMap) do
+        local bucket = {}
+        for _, record in pairs(records) do
+            bucket[#bucket + 1] = deepcopy(record)
+        end
+        table.sort(bucket, function(a, b) return (tonumber(a.dropId) or 0) < (tonumber(b.dropId) or 0) end)
+        dropsByMap[mapId] = bucket
+    end
     return {
         nextDropId = self.nextDropId,
         drops = deepcopy(self:listAllDrops()),
+        dropsByMap = dropsByMap,
     }
 end
 
@@ -224,13 +234,34 @@ function DropSystem:restore(snapshot)
     local restoredNext = tonumber(snapshot and snapshot.nextDropId) or 1
     local now = self:_now()
     local highest = 0
+    local records = {}
+    if type(snapshot and snapshot.dropsByMap) == 'table' then
+        for mapId, mapRecords in pairs(snapshot.dropsByMap) do
+            if type(mapRecords) == 'table' then
+                for _, record in ipairs(mapRecords) do
+                    local copy = deepcopy(record)
+                    if copy and copy.mapId == nil then copy.mapId = mapId end
+                    records[#records + 1] = copy
+                end
+            end
+        end
+    end
     for _, record in ipairs((snapshot and snapshot.drops) or {}) do
+        records[#records + 1] = record
+    end
+
+    local seenDropIds = {}
+    table.sort(records, function(a, b)
+        return (tonumber(a and a.dropId) or 0) < (tonumber(b and b.dropId) or 0)
+    end)
+    for _, record in ipairs(records) do
         if type(record) == 'table' then
             local copy = deepcopy(record)
             local dropId = math.floor(tonumber(copy.dropId) or 0)
             local mapId = copy.mapId
             local expiresAt = tonumber(copy.expiresAt) or 0
-            if dropId > 0 and mapId and expiresAt > now then
+            if dropId > 0 and mapId and expiresAt > now and not seenDropIds[dropId] then
+                seenDropIds[dropId] = true
                 self.activeDrops[dropId] = copy
                 self:_mapDrops(mapId)[dropId] = copy
                 if dropId > highest then highest = dropId end

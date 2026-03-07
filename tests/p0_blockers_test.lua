@@ -80,4 +80,51 @@ assert(failedPlayer == nil and failErr ~= nil, 'load failure did not fail closed
 assert(worldFail.players['cannot_load'] == nil, 'blank player state was created after load failure')
 _G._DataStorageService = previousStorage
 
+
+
+-- drop restore supports map-bucket schema and capped snapshots remain restorable
+local dropSystem = require('scripts.drop_system').new({ time = function() return t end })
+dropSystem:restore({
+    nextDropId = 42,
+    dropsByMap = {
+        henesys_hunting_ground = {
+            { dropId = 21, mapId = 'henesys_hunting_ground', itemId = 'hp_potion', quantity = 1, expiresAt = t + 30, x = 0, y = 0, z = 0 },
+        },
+    },
+})
+local restoredDrop = dropSystem:getDrop(21)
+assert(restoredDrop and restoredDrop.mapId == 'henesys_hunting_ground', 'dropsByMap schema did not restore active drop')
+assert(dropSystem.nextDropId == 42, 'dropsByMap schema lost nextDropId')
+
+-- do not unload dirty players when persistence fails on leave
+local worldSaveFail = ServerBootstrap.boot('.', {
+    playerRepository = {
+        load = function() return nil end,
+        save = function() return false, 'disk_down' end,
+    },
+})
+local unsaved = worldSaveFail:createPlayer('p0_leave_fail')
+unsaved.dirty = true
+local left, leaveErr = worldSaveFail:onPlayerLeave('p0_leave_fail')
+assert(left == false and leaveErr == 'disk_down', 'player leave should fail when save durability fails')
+assert(worldSaveFail.players['p0_leave_fail'] ~= nil, 'dirty player was removed despite save failure')
+
+-- live boot fails closed when world-state restore load errors
+local liveAdapter = RuntimeAdapter.new({
+    contextProvider = function()
+        return { isServer = true, live = true, phase = 'server' }
+    end,
+})
+local liveBootOk, liveBootErr = pcall(function()
+    ServerBootstrap.boot('.', {
+        runtimeAdapter = liveAdapter,
+        worldRepository = {
+            load = function() return nil, 'world_read_failure' end,
+            save = function() return true end,
+        },
+        playerRepository = PlayerRepository.newMemory({}),
+    })
+end)
+assert(liveBootOk == false and tostring(liveBootErr):find('world_state_restore_failed', 1, true), 'live restore load error did not fail closed at boot')
+
 print('p0_blockers_test: ok')
