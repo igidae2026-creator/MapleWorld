@@ -16,6 +16,8 @@ local ActionGuard = require('ops.action_guard')
 local RuntimeAdapter = require('ops.runtime_adapter')
 local RuntimePolicyBundle = require('ops.runtime_policy_bundle')
 local RuntimeKernel = require('ops.runtime_kernel')
+local RecoveryKernel = require('ops.recovery_kernel')
+local EventTruth = require('ops.event_truth')
 
 local ServerBootstrap = {}
 
@@ -667,6 +669,12 @@ function ServerBootstrap.boot(basePath, config)
                 revision = 0,
                 reportArtifactId = nil,
             },
+            confidence = 100,
+            verificationSummary = {
+                verdict = 'cold_start',
+                confidence = 100,
+                reasons = { 'cold_start' },
+            },
         },
         recoveryInvariants = {
             claimedDrops = {},
@@ -840,6 +848,40 @@ function ServerBootstrap.boot(basePath, config)
         plan.reason = tostring(reason or self._pendingWorldSaveReason or 'unspecified')
         self.savePlan = plan
         return plan
+    end
+
+    function world:_refreshRecoveryVerification()
+        local summary = RecoveryKernel.verificationSummary(self.recovery, self.savePlan)
+        self.recovery.confidence = summary.confidence
+        self.recovery.verificationSummary = summary
+        return summary
+    end
+
+    function world:_truthContext(base)
+        local ctx = deepcopy(base or {})
+        local policy = self:_policy()
+        ctx.policyId = ctx.policyId or policy.policyId
+        ctx.policyVersion = ctx.policyVersion or policy.policyVersion
+        ctx.runtimeScope = ctx.runtimeScope or self:_ownershipScope(ctx.mapId, {
+            bossId = ctx.bossId,
+            dropId = ctx.dropId,
+            spawnId = ctx.spawnId,
+            questId = ctx.questId,
+        })
+        ctx.ownerScope = ctx.ownerScope or deepcopy(ctx.runtimeScope)
+        ctx.lineageReference = ctx.lineageReference or self:_lineageReference(ctx.truthType or 'runtime', ctx.playerId or ctx.itemId or ctx.bossId or ctx.dropId or ctx.mapId or ctx.questId or ctx.npcId)
+        return ctx
+    end
+
+    function world:_recordTruthEvent(eventType, payload, context)
+        local ctx = self:_truthContext(context)
+        local enriched = EventTruth.enrich(eventType, payload, ctx)
+        if ctx.forceRecord == true then enriched.__forceRecord = true end
+        return self:_recordRuntimeEvent(eventType, enriched)
+    end
+
+    function world:getEventHistory(filter)
+        return EventTruth.query(self.journal:snapshot(), filter)
     end
 
     function world:_dropClaimKey(recordOrDropId)
@@ -1027,6 +1069,8 @@ function ServerBootstrap.boot(basePath, config)
     function world:_recordRuntimeEvent(eventType, payload)
         local eventName = self:_eventType(eventType)
         local eventPayload = payload or {}
+        local forceRecord = eventPayload.__forceRecord == true
+        eventPayload.__forceRecord = nil
         eventPayload.runtime = {
             worldId = self.runtimeIdentity.worldId,
             channelId = self.runtimeIdentity.channelId,
@@ -1037,7 +1081,7 @@ function ServerBootstrap.boot(basePath, config)
             policyId = (self.policyBundle:snapshot() or {}).policyId,
             policyVersion = (self.policyBundle:snapshot() or {}).policyVersion,
         }
-        if self._restoringWorldState or self._replayingRecovery then
+        if (self._restoringWorldState or self._replayingRecovery) and not forceRecord then
             return { event = eventName, payload = deepcopy(eventPayload) }
         end
         self.journal:append(eventName, eventPayload)
@@ -1219,23 +1263,38 @@ function ServerBootstrap.boot(basePath, config)
         end
 
         if backlog >= self:_pressureThreshold('saveBacklog') then
+            self:_recordTruthEvent('pressure_threshold_breached', {
+                metric = 'saveBacklog',
+                value = backlog,
+                threshold = self:_pressureThreshold('saveBacklog'),
+            }, { truthType = 'pressure.threshold_breach' })
             self:_escalate('save_backlog_pressure', { backlog = backlog })
         end
         if self.pressure.lowDiversity >= self:_pressureThreshold('lowDiversity') then
-            self:_recordRuntimeEvent('failure_plateau_exploration', { lowDiversity = self.pressure.lowDiversity })
+            self:_recordTruthEvent('failure_plateau_exploration', { lowDiversity = self.pressure.lowDiversity }, { truthType = 'failure.plateau_exploration' })
         end
         if instability >= self:_pressureThreshold('instability') then
-            self:_recordRuntimeEvent('failure_collapse_diversity_repair', { instability = instability })
+            self:_recordTruthEvent('failure_collapse_diversity_repair', { instability = instability }, { truthType = 'failure.collapse_diversity_repair' })
             self:_escalate('world_instability_pressure', { instability = instability })
         end
         if (self.pressure.ownershipConflictPressure or 0) >= self:_pressureThreshold('ownershipConflict') then
+            self:_recordTruthEvent('pressure_threshold_breached', {
+                metric = 'ownershipConflict',
+                value = self.pressure.ownershipConflictPressure,
+                threshold = self:_pressureThreshold('ownershipConflict'),
+            }, { truthType = 'pressure.threshold_breach' })
             self:_escalate('ownership_conflict_pressure', { count = self.pressure.ownershipConflictPressure })
         end
         if (self.pressure.duplicateRiskPressure or 0) >= self:_pressureThreshold('duplicateRisk') then
+            self:_recordTruthEvent('pressure_threshold_breached', {
+                metric = 'duplicateRisk',
+                value = self.pressure.duplicateRiskPressure,
+                threshold = self:_pressureThreshold('duplicateRisk'),
+            }, { truthType = 'pressure.threshold_breach' })
             self:_escalate('duplicate_risk_pressure', { count = self.pressure.duplicateRiskPressure })
         end
         if (self.pressure.farmRepetitionPressure or 0) >= self:_pressureThreshold('farmRepetition') then
-            self:_recordRuntimeEvent('failure_plateau_exploration', { farmRepetition = self.pressure.farmRepetitionPressure })
+            self:_recordTruthEvent('failure_plateau_exploration', { farmRepetition = self.pressure.farmRepetitionPressure }, { truthType = 'failure.plateau_exploration' })
         end
 
         self:_updateSavePlan('pressure_recompute')
@@ -1256,6 +1315,7 @@ function ServerBootstrap.boot(basePath, config)
             self:_setGovernanceState('normal', governanceReason, { pressure = deepcopy(self.pressure), savePlan = deepcopy(self.savePlan) })
         end
         self:_evaluatePolicyBundle('pressure_recompute')
+        self:_refreshRecoveryVerification()
         self._recomputingPressure = false
     end
 
@@ -1272,6 +1332,10 @@ function ServerBootstrap.boot(basePath, config)
             repairs = deepcopy(self.repairs),
             recovery = deepcopy(self.recovery),
             savePlan = deepcopy(self.savePlan),
+            eventHistory = {
+                total = math.max(0, (self.journal.nextSeq or 1) - 1),
+                recent = tailEntries(self.journal:snapshot(), 32),
+            },
             pendingSave = {
                 count = self._pendingWorldSaveCount,
                 reason = self._pendingWorldSaveReason,
@@ -1302,6 +1366,8 @@ function ServerBootstrap.boot(basePath, config)
                 checkpointLineage = deepcopy(self.recovery.checkpointLineage),
                 recoverySource = deepcopy(self.recovery.recoverySource),
                 checkpointHealthScore = self.savePlan and self.savePlan.healthScore or 100,
+                replayConfidence = self.recovery.confidence or 100,
+                verificationSummary = deepcopy(self.recovery.verificationSummary),
             },
         }
     end
@@ -1470,6 +1536,7 @@ function ServerBootstrap.boot(basePath, config)
         local journalSnapshot = self.journal:serialize()
         journalSnapshot.entries = tailEntries(journalSnapshot.entries, runtimeCfg.persistedJournalEntries)
         local savePlan = self:_updateSavePlan('snapshot')
+        local verificationSummary = self:_refreshRecoveryVerification()
         local checkpointId = string.format('%s:%s:%s:%s', tostring(self.runtimeIdentity.worldId), tostring(self.runtimeIdentity.channelId), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(self:_now()))
         local snapshot = {
             version = 2,
@@ -1522,6 +1589,8 @@ function ServerBootstrap.boot(basePath, config)
                 divergence_count = self.recovery.divergenceCount or 0,
                 checkpoint_lineage = deepcopy(self.recovery.checkpointLineage),
                 checkpoint_validity_score = 100,
+                replay_confidence = verificationSummary.confidence,
+                verification_summary = deepcopy(verificationSummary),
             },
         }
         snapshot.health.checkpoint_validity_score = self:_checkpointValidityHealth(snapshot)
@@ -1783,6 +1852,20 @@ function ServerBootstrap.boot(basePath, config)
         if type(policy.lineage) ~= 'table' or type(policy.activation) ~= 'table' then
             return false, 'policy_bundle_incomplete'
         end
+        local rewardArtifacts = self.artifacts and self.artifacts.byKind and self.artifacts.byKind.reward_eligibility_state or {}
+        local eligibilityClaims = {}
+        for _, artifact in ipairs(rewardArtifacts or {}) do
+            local claimKey = artifact and artifact.detail and artifact.detail.claimKey or nil
+            if claimKey then
+                if eligibilityClaims[claimKey] then
+                    return false, 'duplicate_reward_eligibility'
+                end
+                eligibilityClaims[claimKey] = true
+                if self.recoveryInvariants.bossRewardClaims[claimKey] ~= true then
+                    return false, 'reward_eligibility_inconsistent'
+                end
+            end
+        end
         local checkpointPolicy = self.recovery.recoverySource and self.recovery.recoverySource.policy or nil
         if checkpointPolicy and stableSerialize(checkpointPolicy) ~= stableSerialize(policy) then
             return false, 'policy_bundle_inconsistent'
@@ -1826,16 +1909,32 @@ function ServerBootstrap.boot(basePath, config)
     function world:restoreWorldState()
         if not self.worldRepository then return false end
         self._replayingRecovery = true
+        self:_recordTruthEvent('recovery_start', { phase = 'world_restore' }, { truthType = 'recovery.start', forceRecord = true })
+        self:_recordTruthEvent('replay_start', { mode = 'checkpoint_restore' }, { truthType = 'replay.start', forceRecord = true })
         self:_replayPhase('checkpoint_load', 'in_progress')
         local startedAt = os.clock()
-        local snapshot, err = self.worldRepository:load()
+        local snapshot, loadStatus, err
+        if type(self.worldRepository.loadDetailed) == 'function' then
+            snapshot, loadStatus, err = self.worldRepository:loadDetailed()
+        else
+            snapshot, err = self.worldRepository:load()
+            if err then loadStatus = RecoveryKernel.classifyLoadError(err) elseif snapshot then loadStatus = 'ok' else loadStatus = 'not_found' end
+        end
         if err then
             if self.metrics then
                 self.metrics:increment('world_state.load_error', 1)
-                self.metrics:error('world_state_load_failed', { error = tostring(err) })
+                self.metrics:error('world_state_load_failed', { error = tostring(err), status = tostring(loadStatus) })
             end
             self:_replayPhase('checkpoint_load', 'failed', { error = tostring(err) })
             self.recovery.valid = false
+            self.recovery.recoverySource = {
+                source = tostring(loadStatus or 'load_error'),
+                checkpointId = nil,
+                revision = 0,
+                reportArtifactId = nil,
+            }
+            self:_refreshRecoveryVerification()
+            self:_recordTruthEvent('recovery_end', { phase = 'world_restore', status = 'failed', reason = tostring(err) }, { truthType = 'recovery.end', forceRecord = true })
             self._replayingRecovery = false
             return false, err
         end
@@ -1843,11 +1942,12 @@ function ServerBootstrap.boot(basePath, config)
             self.recovery.mode = 'cold_start'
             self.recovery.valid = true
             self.recovery.recoverySource = {
-                source = 'cold_start',
+                source = tostring(loadStatus or 'cold_start'),
                 checkpointId = nil,
                 revision = 0,
                 reportArtifactId = nil,
             }
+            self:_refreshRecoveryVerification()
             self._replayingRecovery = false
             return false
         end
@@ -1951,6 +2051,8 @@ function ServerBootstrap.boot(basePath, config)
             self:_escalate('replay_invariant_violation', { invariant = invErr })
             self:_replayPhase('invariant_verification', 'failed', { invariant = invErr })
             self:_replayPhase('runtime_activation', 'failed', { invariant = invErr })
+            self:_refreshRecoveryVerification()
+            self:_recordTruthEvent('recovery_end', { phase = 'world_restore', status = 'failed', reason = tostring(invErr) }, { truthType = 'recovery.end', forceRecord = true })
             self._replayingRecovery = false
             return false, invErr
         end
@@ -1979,12 +2081,12 @@ function ServerBootstrap.boot(basePath, config)
             })
             self.recovery.lastReplayReportId = divergence.artifactId
             self.recovery.recoverySource.reportArtifactId = divergence.artifactId
-            self:_recordRuntimeEvent('replay_divergence_detected', {
+            self:_recordTruthEvent('replay_divergence_detected', {
                 checkpointId = checkpoint.checkpoint_id,
                 expectedDigest = snapshot.materialized_digest,
                 actualDigest = actualDigest,
                 reportArtifactId = divergence.artifactId,
-            })
+            }, { truthType = 'replay.divergence', forceRecord = true })
             self:_recordRepairAction('replay_divergence', self:_ownershipScope(), 'digest_mismatch', 'repair_escalation', {
                 expectedDigest = snapshot.materialized_digest,
                 actualDigest = actualDigest,
@@ -2018,17 +2120,23 @@ function ServerBootstrap.boot(basePath, config)
         })
         self.recovery.lastReplayReportId = report.artifactId
         self.recovery.recoverySource.reportArtifactId = report.artifactId
-        self:_recordRuntimeEvent('world_recovered', {
+        self:_refreshRecoveryVerification()
+        self:_recordTruthEvent('world_recovered', {
             checkpoint_id = self.recovery.checkpointId,
             replayed_entries = self.recovery.replayedEntries,
             duration_ms = elapsedMs,
             replay_report_id = report.artifactId,
-        })
-        self:_recordRuntimeEvent('replay_finish', {
+        }, { truthType = 'recovery.restore', forceRecord = true })
+        self:_recordTruthEvent('recovery_end', {
+            checkpoint_id = self.recovery.checkpointId,
+            replay_report_id = report.artifactId,
+            confidence = self.recovery.confidence,
+        }, { truthType = 'recovery.end', forceRecord = true })
+        self:_recordTruthEvent('replay_finish', {
             mode = 'checkpoint_restore',
             replayed_entries = self.recovery.replayedEntries,
             checkpoint_id = self.recovery.checkpointId,
-        })
+        }, { truthType = 'replay.finish', forceRecord = true })
         self:_recomputePressure()
         self._replayingRecovery = false
         return true
@@ -2046,10 +2154,19 @@ function ServerBootstrap.boot(basePath, config)
 
     spawnSystem.callbacks = {
         onSpawn = function(mob)
-            world.journal:append('mob_spawned', { mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId })
+            world:_recordTruthEvent('mob_spawned', { mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId }, {
+                truthType = 'spawn.create',
+                mapId = mob.mapId,
+                spawnId = mob.spawnId,
+            })
             world:_emit('onMobSpawned', mob)
         end,
         onKill = function(mob)
+            world:_recordTruthEvent('mob_despawned', { mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId }, {
+                truthType = 'spawn.despawn',
+                mapId = mob.mapId,
+                spawnId = mob.spawnId,
+            })
             world:_emit('onMobRemoved', mob)
         end,
     }
@@ -2100,7 +2217,11 @@ function ServerBootstrap.boot(basePath, config)
         player.lastMapChangeAt = self:_now()
         player.dirty = true
         self:_setPlayerPosition(player, self:_defaultMapPosition(mapId), not self.strictRuntimeBoundary)
-        self.journal:append('player_map_changed', { playerId = player.id, mapId = mapId })
+        self:_recordTruthEvent('player_map_changed', { playerId = player.id, mapId = mapId }, {
+            truthType = 'topology.route_commit',
+            playerId = player.id,
+            mapId = mapId,
+        })
         self:_emit('onPlayerMapChanged', player, mapId)
         return true
     end
@@ -2167,11 +2288,21 @@ function ServerBootstrap.boot(basePath, config)
             previousPersisted = loadedPrevious
         end
 
-        self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_begin' })
+        self:_recordTruthEvent('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_begin' }, {
+            truthType = 'player.save.stage',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            stageLink = 'player_save_begin',
+        })
         self:_recordRuntimeEvent('player_lifecycle_save_stage', { playerId = player.id, runtimeScope = deepcopy(player.runtimeScope) })
         local ok, err = self.playerRepository:save(player)
         if not ok then
-            self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_failed', error = tostring(err) })
+            self:_recordTruthEvent('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_failed', error = tostring(err) }, {
+                truthType = 'player.save.rollback',
+                playerId = player.id,
+                mapId = player.currentMapId,
+                stageLink = 'player_save_failed',
+            })
             if self.metrics then
                 self.metrics:increment('player_state.save_error', 1)
                 self.metrics:error('player_state_save_failed', { playerId = tostring(player.id), error = tostring(err) })
@@ -2184,7 +2315,12 @@ function ServerBootstrap.boot(basePath, config)
             local worldSaved, worldErr = self:saveWorldState('player_save:' .. tostring(player.id))
             if not worldSaved then
                 player.dirty = true
-                self.journal:append('player_save_staged', { playerId = player.id, phase = 'world_save_failed', error = tostring(worldErr) })
+                self:_recordTruthEvent('player_save_staged', { playerId = player.id, phase = 'world_save_failed', error = tostring(worldErr) }, {
+                    truthType = 'player.save.rollback',
+                    playerId = player.id,
+                    mapId = player.currentMapId,
+                    stageLink = 'world_save_failed',
+                })
                 local rollbackOk = true
                 local rollbackErr = nil
                 if previousPersisted then
@@ -2207,19 +2343,38 @@ function ServerBootstrap.boot(basePath, config)
                     metadata = { action = 'player_save_rollback', error = tostring(worldErr) },
                 })
                 if not rollbackOk then
-                    self.journal:append('player_save_staged', { playerId = player.id, phase = 'rollback_failed', error = tostring(rollbackErr) })
+                    self:_recordTruthEvent('player_save_staged', { playerId = player.id, phase = 'rollback_failed', error = tostring(rollbackErr) }, {
+                        truthType = 'player.save.rollback',
+                        playerId = player.id,
+                        mapId = player.currentMapId,
+                        stageLink = 'rollback_failed',
+                    })
                     return false, 'world_state_save_failed:' .. tostring(worldErr) .. ';rollback_failed:' .. tostring(rollbackErr)
                 end
-                self.journal:append('player_save_staged', { playerId = player.id, phase = 'rollback_completed' })
+                self:_recordTruthEvent('player_save_staged', { playerId = player.id, phase = 'rollback_completed' }, {
+                    truthType = 'player.save.rollback',
+                    playerId = player.id,
+                    mapId = player.currentMapId,
+                    stageLink = 'rollback_completed',
+                })
                 return false, worldErr or 'world_state_save_failed'
             end
         end
 
         player.dirty = false
         player.lastSavedAt = self:_now()
-        self.journal:append('player_save_staged', { playerId = player.id, phase = 'commit_complete' })
+        self:_recordTruthEvent('player_save_staged', { playerId = player.id, phase = 'commit_complete' }, {
+            truthType = 'player.save.commit',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            stageLink = 'commit_complete',
+        })
         self:_recordRuntimeEvent('player_lifecycle_save_finalize', { playerId = player.id, at = player.lastSavedAt, runtimeScope = deepcopy(player.runtimeScope) })
-        self.journal:append('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt })
+        self:_recordTruthEvent('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt }, {
+            truthType = 'player.save.finalize',
+            playerId = player.id,
+            mapId = player.currentMapId,
+        })
         return true
     end
 
@@ -2262,9 +2417,12 @@ function ServerBootstrap.boot(basePath, config)
                 self.metrics:increment('player_state.load_error', 1, { status = tostring(loadStatus) })
                 self.metrics:error('player_state_load_failed', { playerId = tostring(playerId), error = tostring(loadErr), status = tostring(loadStatus) })
             end
-            self:_recordRuntimeEvent('player_load_failed', { playerId = playerId, status = loadStatus, error = tostring(loadErr) })
-            return nil, loadErr
-        end
+        self:_recordTruthEvent('player_load_failed', { playerId = playerId, status = loadStatus, error = tostring(loadErr) }, {
+            truthType = 'player.load.failed',
+            playerId = playerId,
+        })
+        return nil, loadErr
+    end
         local player = self.itemSystem:sanitizePlayerProfile(loaded, playerId)
         player.runtimeScope = player.runtimeScope or {}
         player.runtimeScope.worldId = self.runtimeIdentity.worldId
@@ -2282,7 +2440,11 @@ function ServerBootstrap.boot(basePath, config)
         self.players[playerId] = player
         self.mapPlayers[player.currentMapId] = self.mapPlayers[player.currentMapId] or {}
         self.mapPlayers[player.currentMapId][playerId] = true
-        self:_recordRuntimeEvent('player_loaded', { playerId = playerId, loaded = loaded ~= nil, scope = deepcopy(player.runtimeScope) })
+        self:_recordTruthEvent('player_loaded', { playerId = playerId, loaded = loaded ~= nil, scope = deepcopy(player.runtimeScope) }, {
+            truthType = loaded ~= nil and 'player.load.restore' or 'player.create',
+            playerId = playerId,
+            mapId = player.currentMapId,
+        })
         return player
     end
 
@@ -2309,7 +2471,11 @@ function ServerBootstrap.boot(basePath, config)
         self:_emit('onPlayerLeave', player)
         self:_removePlayerFromMap(playerId, player.currentMapId)
         self.players[playerId] = nil
-        self.journal:append('player_unloaded', { playerId = playerId })
+        self:_recordTruthEvent('player_unloaded', { playerId = playerId }, {
+            truthType = 'player.unload',
+            playerId = playerId,
+            mapId = player.currentMapId,
+        })
         return true
     end
 
@@ -2471,7 +2637,12 @@ function ServerBootstrap.boot(basePath, config)
         self.questSystem:onKill(player, mob.mobId, 1)
         player.killLog[mob.mobId] = (player.killLog[mob.mobId] or 0) + 1
         player.dirty = true
-        self.journal:append('mob_killed', { playerId = player.id, mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId })
+        self:_recordTruthEvent('mob_killed', { playerId = player.id, mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId }, {
+            truthType = 'spawn.kill',
+            playerId = player.id,
+            mapId = mob.mapId,
+            spawnId = mob.spawnId,
+        })
         self:_emit('onMobKilled', player, mob, delivered)
         self:publishPlayerSnapshot(player)
         return delivered
@@ -2546,7 +2717,13 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, recordOrErr end
         self.recoveryInvariants.claimedDrops[claimKey] = true
         self.questSystem:onItemAcquired(player, recordOrErr.itemId, recordOrErr.quantity)
-        self.journal:append('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId })
+        self:_recordTruthEvent('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId }, {
+            truthType = 'drop.pick',
+            playerId = player.id,
+            mapId = record.mapId,
+            dropId = dropId,
+            itemId = recordOrErr.itemId,
+        })
         self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', map_id = record.mapId, item_id = recordOrErr.itemId, quantity = recordOrErr.quantity, source_event_id = tostring(dropId), correlation_id = recordOrErr.correlationId, idempotency_key = string.format('reward:pickup:%s:%s', tostring(player.id), tostring(dropId)), lineage_reference = self:_lineageReference('drop', dropId), metadata = { mode = 'manual_pickup' } })
         self:_artifact('drop_lifecycle_state', self:_ownershipScope(record.mapId, { dropId = dropId }), {
             phase = 'picked',
@@ -2601,7 +2778,12 @@ function ServerBootstrap.boot(basePath, config)
         self.questSystem:onKill(player, encounter.bossId, 1)
         player.killLog[encounter.bossId] = (player.killLog[encounter.bossId] or 0) + 1
         player.dirty = true
-        self.journal:append('boss_killed', { playerId = player.id, mapId = encounter.mapId, bossId = encounter.bossId })
+        self:_recordTruthEvent('boss_killed', { playerId = player.id, mapId = encounter.mapId, bossId = encounter.bossId }, {
+            truthType = 'boss.clear',
+            playerId = player.id,
+            mapId = encounter.mapId,
+            bossId = encounter.bossId,
+        })
         self:_emit('onBossKilled', encounter, player, delivered)
         self:publishPlayerSnapshot(player)
         return delivered
@@ -2697,7 +2879,12 @@ function ServerBootstrap.boot(basePath, config)
         local ok, err = self.itemSystem:addItem(player, itemId, quantity, metadata, { source = reason or 'grant_item', correlation_id = corr })
         if not ok then return false, err end
         self.questSystem:onItemAcquired(player, itemId, quantity)
-        self.journal:append('item_granted', { playerId = player.id, itemId = itemId, quantity = quantity, reason = reason })
+        self:_recordTruthEvent('item_granted', { playerId = player.id, itemId = itemId, quantity = quantity, reason = reason }, {
+            truthType = 'item.create',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            itemId = itemId,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2718,7 +2905,13 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, err end
         self:_emitRewardLedger(player, 'shop_buy', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_buy', itemId), metadata = { action = 'buy' } })
         self.questSystem:onItemAcquired(player, itemId, quantity)
-        self.journal:append('npc_buy', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
+        self:_recordTruthEvent('npc_buy', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity }, {
+            truthType = 'mesos.value_mutation',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            npcId = npcId,
+            itemId = itemId,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2739,7 +2932,13 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, err end
         self:_emitRewardLedger(player, 'shop_sell', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_sell', itemId), metadata = { action = 'sell' } })
         self.questSystem:onItemRemoved(player, itemId, quantity)
-        self.journal:append('npc_sell', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
+        self:_recordTruthEvent('npc_sell', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity }, {
+            truthType = 'mesos.value_mutation',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            npcId = npcId,
+            itemId = itemId,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2750,7 +2949,12 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self.itemSystem:equip(player, itemId, instanceId, { correlation_id = string.format('equip:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now())) })
         if not ok then return false, err end
-        self.journal:append('item_equipped', { playerId = player.id, itemId = itemId })
+        self:_recordTruthEvent('item_equipped', { playerId = player.id, itemId = itemId }, {
+            truthType = 'item.equip',
+            playerId = player.id,
+            mapId = player.currentMapId,
+            itemId = itemId,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2761,7 +2965,11 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self.itemSystem:unequip(player, slot, { correlation_id = string.format('unequip:%s:%s:%s', tostring(player.id), tostring(slot), tostring(self:_now())) })
         if not ok then return false, err end
-        self.journal:append('item_unequipped', { playerId = player.id, slot = slot })
+        self:_recordTruthEvent('item_unequipped', { playerId = player.id, slot = slot }, {
+            truthType = 'item.unequip',
+            playerId = player.id,
+            mapId = player.currentMapId,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2842,7 +3050,13 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self.questSystem:accept(player, questId)
         if not ok then return false, err end
-        self.journal:append('quest_accepted', { playerId = player.id, questId = questId, npc = binding.npc, mapId = binding.mapId })
+        self:_recordTruthEvent('quest_accepted', { playerId = player.id, questId = questId, npc = binding.npc, mapId = binding.mapId }, {
+            truthType = 'quest.accept',
+            playerId = player.id,
+            mapId = binding.mapId,
+            questId = questId,
+            npcId = binding.npc,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -2859,7 +3073,13 @@ function ServerBootstrap.boot(basePath, config)
         local ok, err = self.questSystem:turnIn(player, questId)
         if not ok then return false, err end
         self:_emitRewardLedger(player, 'quest_reward_claim', { source_system = 'quest_system', correlation_id = string.format('quest_turnin:%s:%s:%s', tostring(player.id), tostring(questId), tostring(self:_now())), quest_id = questId, lineage_reference = self:_lineageReference('quest', questId), metadata = { action = 'turn_in' } })
-        self.journal:append('quest_completed', { playerId = player.id, questId = questId, npc = binding.npc, mapId = binding.mapId })
+        self:_recordTruthEvent('quest_completed', { playerId = player.id, questId = questId, npc = binding.npc, mapId = binding.mapId }, {
+            truthType = 'quest.complete',
+            playerId = player.id,
+            mapId = binding.mapId,
+            questId = questId,
+            npcId = binding.npc,
+        })
         self:publishPlayerSnapshot(player)
         return true
     end

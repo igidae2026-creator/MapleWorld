@@ -61,6 +61,16 @@ local function writeStorage(storage, key, encoded)
     return true
 end
 
+local function classifyLoadError(err)
+    local msg = tostring(err or '')
+    if msg == '' then return 'unknown_error' end
+    if msg:find('storage_unavailable', 1, true) then return 'storage_unavailable' end
+    if msg:find('replay', 1, true) or msg:find('restore', 1, true) then return 'replay_recovery' end
+    if msg:find('decode', 1, true) or msg:find('json', 1, true) or msg:find('invalid', 1, true) then return 'corruption' end
+    if msg:find('error_code_', 1, true) then return 'storage_error' end
+    return 'storage_error'
+end
+
 function WorldRepository.newMemory(config)
     local cfg = config or {}
     local self = {
@@ -489,6 +499,17 @@ end
 
 function WorldRepository:lastLoadedCheckpointId()
     return self.loadedCheckpointId
+end
+
+function WorldRepository:loadDetailed()
+    local value, err = self:load()
+    if err then
+        return nil, classifyLoadError(err), err
+    end
+    if value == nil then
+        return nil, 'not_found', nil
+    end
+    return deepcopy(value), 'ok', nil
 end
 
 return WorldRepository

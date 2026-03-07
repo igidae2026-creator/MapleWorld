@@ -749,4 +749,20 @@ function WorldServerBridge:getOwnershipTopology()
     return response(self.runtimeAdapter, true, self.world.adminTools:getOwnershipTopology(self.world))
 end
 
+function WorldServerBridge:getControlPlaneReport()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world.adminTools:getControlPlaneReport(self.world))
+end
+
+function WorldServerBridge:getEventTruth()
+    if not self.world then
+        local world, err = self:bootstrap()
+        if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
+    end
+    return response(self.runtimeAdapter, true, self.world.adminTools:getEventTruth(self.world, {}))
+end
+
 return WorldServerBridge

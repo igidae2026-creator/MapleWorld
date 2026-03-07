@@ -111,6 +111,15 @@ function AdminTools:getRuntimeHealthSummary(world)
     }
 end
 
+function AdminTools:getEventTruth(world, filter)
+    if not world or type(world.getEventHistory) ~= 'function' then return nil, 'event_history_unavailable' end
+    local entries = world:getEventHistory(filter)
+    return {
+        total = #entries,
+        events = entries,
+    }
+end
+
 function AdminTools:replacePolicyBundle(world, bundle)
     if not world or type(world.replacePolicyBundle) ~= 'function' then return false, 'policy_replace_unavailable' end
     local ok, err = world:replacePolicyBundle(bundle, {
@@ -141,6 +150,23 @@ function AdminTools:getArtifactLineage(world, kind)
     return {
         artifacts = out,
         total = #out,
+    }
+end
+
+function AdminTools:getControlPlaneReport(world)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    return {
+        replay = self:getReplayStatus(world),
+        checkpointLineage = self:getCheckpointLineage(world),
+        ownership = self:getOwnershipTopology(world),
+        pressure = self:getPressureMatrix(world),
+        policies = self:getPolicyVersions(world),
+        repairs = self:getRepairHistory(world),
+        artifacts = self:getArtifactLineage(world),
+        eventHistory = self:getEventTruth(world, {}),
+        health = self:getRuntimeHealthSummary(world),
+        runtimeStatus = status,
     }
 end
 

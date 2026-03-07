@@ -17,4 +17,12 @@ local topologyResp = bridge:getOwnershipTopology()
 local topology = bridge.runtimeAdapter:decodeData(topologyResp)
 assert(topology and topology.ok == true and topology.data and topology.data.topology, 'bridge topology status missing')
 
+local controlResp = bridge:getControlPlaneReport()
+local control = bridge.runtimeAdapter:decodeData(controlResp)
+assert(control and control.ok == true and control.data and control.data.runtimeStatus, 'bridge control-plane report missing')
+
+local eventResp = bridge:getEventTruth()
+local eventTruth = bridge.runtimeAdapter:decodeData(eventResp)
+assert(eventTruth and eventTruth.ok == true and eventTruth.data and eventTruth.data.events ~= nil, 'bridge event truth missing')
+
 print('bridge_runtime_status_test: ok')

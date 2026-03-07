@@ -31,6 +31,8 @@ assert(restored ~= nil, 'active player checkpoint was not restored')
 
 local status = worldB.adminTools:getRuntimeHealthSummary(worldB)
 assert(status.health.recoverySource.source == 'checkpoint_restore', 'recovery source missing')
+assert((status.health.replayConfidence or 0) >= 1, 'replay confidence missing')
+assert(type(status.health.verificationSummary) == 'table', 'verification summary missing')
 assert(type(worldB.adminTools:getCheckpointLineage(worldB).checkpointLineage) == 'table', 'checkpoint lineage missing')
 assert(type(worldB.adminTools:getPressureMatrix(worldB).pressure) == 'table', 'pressure matrix missing')
 

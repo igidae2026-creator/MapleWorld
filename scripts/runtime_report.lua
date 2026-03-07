@@ -17,6 +17,8 @@ local reports = {
     repairs = function() return admin:getRepairHistory(world) end,
     lineage = function() return admin:getCheckpointLineage(world) end,
     health = function() return admin:getRuntimeHealthSummary(world) end,
+    events = function() return admin:getEventTruth(world, {}) end,
+    control = function() return admin:getControlPlaneReport(world) end,
 }
 
 local selected = reports[reportType]
