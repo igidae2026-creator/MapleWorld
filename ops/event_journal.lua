@@ -39,6 +39,7 @@ function EventJournal.new(config)
         droppedEntries = 0,
         droppedPayloadBytes = 0,
         ledgerIdempotency = {},
+        nextEventId = 1,
     }
     setmetatable(self, { __index = EventJournal })
     return self
@@ -109,12 +110,14 @@ end
 
 function EventJournal:append(eventType, payload)
     local entry = {
+        event_id = self.nextEventId,
         seq = self.nextSeq,
         at = self.time(),
         event = eventType,
         payload = self:_clampPayload(payload),
     }
     self.entries[#self.entries + 1] = entry
+    self.nextEventId = self.nextEventId + 1
     self.nextSeq = self.nextSeq + 1
     self:_trim()
 
@@ -143,6 +146,7 @@ function EventJournal:appendLedgerEvent(event)
     end
 
     local entry = {
+        event_id = self.nextEventId,
         ledger_event_id = self.nextLedgerEventId,
         sequence = self.nextLedgerEventId,
         revision = self.nextLedgerEventId,
@@ -155,6 +159,12 @@ function EventJournal:appendLedgerEvent(event)
         source_event_id = sanitizeString(payload.source_event_id),
         correlation_id = sanitizeString(payload.correlation_id),
         map_id = sanitizeString(payload.map_id),
+        channel_id = sanitizeString(payload.channel_id),
+        runtime_instance_id = sanitizeString(payload.runtime_instance_id),
+        world_id = sanitizeString(payload.world_id),
+        owner_id = sanitizeString(payload.owner_id),
+        runtime_epoch = tonumber(payload.runtime_epoch),
+        coordinator_epoch = tonumber(payload.coordinator_epoch),
         boss_id = sanitizeString(payload.boss_id),
         quest_id = sanitizeString(payload.quest_id),
         npc_id = sanitizeString(payload.npc_id),
@@ -162,6 +172,7 @@ function EventJournal:appendLedgerEvent(event)
         item_id = sanitizeString(payload.item_id),
         quantity = tonumber(payload.quantity),
         mesos_delta = tonumber(payload.mesos_delta),
+        lineage_reference = sanitizeString(payload.lineage_reference),
         pre_state = deepcopy(payload.pre_state),
         post_state = deepcopy(payload.post_state),
         idempotency_key = payload.idempotency_key,
@@ -170,6 +181,7 @@ function EventJournal:appendLedgerEvent(event)
         metadata = deepcopy(payload.metadata or {}),
     }
     self.ledgerEntries[#self.ledgerEntries + 1] = entry
+    self.nextEventId = self.nextEventId + 1
     self.nextLedgerEventId = self.nextLedgerEventId + 1
     if entry.idempotency_key and entry.idempotency_key ~= '' then
         self.ledgerIdempotency[entry.idempotency_key] = entry
@@ -213,6 +225,7 @@ function EventJournal:serialize()
         ledgerEntries = self:ledgerSnapshot(),
         nextSeq = self.nextSeq,
         nextLedgerEventId = self.nextLedgerEventId,
+        nextEventId = self.nextEventId,
         maxEntries = self.maxEntries,
         maxLedgerEntries = self.maxLedgerEntries,
         droppedEntries = self.droppedEntries,
@@ -225,6 +238,7 @@ function EventJournal:restore(snapshot)
     self.ledgerEntries = {}
     self.nextSeq = 1
     self.nextLedgerEventId = 1
+    self.nextEventId = 1
     self.ledgerIdempotency = {}
 
     local entries = snapshot
@@ -235,6 +249,7 @@ function EventJournal:restore(snapshot)
         entries = snapshot.entries
         nextSeq = tonumber(snapshot.nextSeq)
         self.nextLedgerEventId = math.max(1, math.floor(tonumber(snapshot.nextLedgerEventId) or 1))
+        self.nextEventId = math.max(1, math.floor(tonumber(snapshot.nextEventId) or 1))
         maxEntries = tonumber(snapshot.maxEntries)
         maxLedgerEntries = tonumber(snapshot.maxLedgerEntries)
         self.droppedEntries = math.max(0, math.floor(tonumber(snapshot.droppedEntries) or 0))
@@ -255,6 +270,7 @@ function EventJournal:restore(snapshot)
             if type(entry) == 'table' then
                 local seq = math.max(1, math.floor(tonumber(entry.seq) or 1))
                 local restored = {
+                    event_id = math.max(1, math.floor(tonumber(entry.event_id) or seq)),
                     seq = seq,
                     at = tonumber(entry.at) or self.time(),
                     event = entry.event,
@@ -283,6 +299,7 @@ function EventJournal:restore(snapshot)
             if type(entry) == 'table' then
                 local restored = deepcopy(entry)
                 restored.ledger_event_id = math.max(1, math.floor(tonumber(restored.ledger_event_id) or 1))
+                restored.event_id = math.max(1, math.floor(tonumber(restored.event_id) or restored.ledger_event_id))
                 restored.sequence = restored.ledger_event_id
                 restored.revision = restored.ledger_event_id
                 restored.timestamp = tonumber(restored.timestamp) or self.time()
@@ -297,6 +314,14 @@ function EventJournal:restore(snapshot)
     end
     self:_trimLedger()
     self.nextLedgerEventId = math.max(maxLedgerId + 1, self.nextLedgerEventId)
+    local maxEventId = 0
+    for _, entry in ipairs(self.entries) do
+        maxEventId = math.max(maxEventId, math.floor(tonumber(entry.event_id) or 0))
+    end
+    for _, entry in ipairs(self.ledgerEntries) do
+        maxEventId = math.max(maxEventId, math.floor(tonumber(entry.event_id) or 0))
+    end
+    self.nextEventId = math.max(maxEventId + 1, self.nextEventId)
 end
 
 function EventJournal:latest()

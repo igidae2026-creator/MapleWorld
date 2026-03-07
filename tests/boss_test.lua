@@ -16,6 +16,6 @@ print('boss_test: ok')
 local ledger = world.journal:ledgerSnapshot()
 local foundBossClaim = false
 for _, evt in ipairs(ledger) do
-    if evt.event_type == 'reward_claim' and evt.metadata and evt.metadata.reward_kind == 'boss_clear' then foundBossClaim = true end
+    if evt.event_type == 'boss_reward_claim' and evt.metadata and evt.metadata.reward_kind == 'boss_clear' then foundBossClaim = true end
 end
 assert(foundBossClaim, 'boss clear reward claim missing in ledger')

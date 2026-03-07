@@ -68,6 +68,7 @@ function BossSystem:spawnEncounter(bossId, mapId)
         updatedAt = self:_now(),
         contributors = {},
         position = deepcopy(def.position),
+        uniqueness = def.uniqueness or 'channel_unique',
     }
     self.encounters[mapId] = encounter
     if self.metrics then self.metrics:increment('boss.spawn', 1, { boss = bossId, map = mapId }) end

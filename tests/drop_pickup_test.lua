@@ -32,6 +32,6 @@ print('drop_pickup_test: ok')
 local ledger = world.journal:ledgerSnapshot()
 local found = false
 for _, evt in ipairs(ledger) do
-    if evt.event_type == 'reward_claim' and evt.source_system == 'drop_system' then found = true break end
+    if evt.event_type == 'drop_claim' and evt.source_system == 'drop_system' then found = true break end
 end
 assert(found, 'drop pickup should write reward claim ledger event')

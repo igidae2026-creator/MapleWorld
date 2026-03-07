@@ -36,20 +36,48 @@ function RuntimePolicyBundle.defaults(worldConfig)
             replay = tonumber(runtime.pressureReplayThreshold) or 1,
             instability = tonumber(runtime.pressureInstabilityThreshold) or 3,
             lowDiversity = tonumber(runtime.pressureLowDiversityThreshold) or 4,
-            ownershipConflict = tonumber(runtime.pressureOwnershipConflictThreshold) or 2,
+            ownershipConflict = tonumber(runtime.pressureOwnershipConflictThreshold) or 1,
+            duplicateRisk = tonumber(runtime.pressureDuplicateRiskThreshold) or 1,
+            farmRepetition = tonumber(runtime.pressureFarmRepetitionThreshold) or 8,
         },
         containment = {
             safeModeOnEscalation = tonumber(runtime.safeModeSeverityThreshold) or 3,
             rewardQuarantineOnEscalation = tonumber(runtime.rewardQuarantineSeverityThreshold) or 2,
             migrationBlockOnEscalation = tonumber(runtime.migrationBlockSeverityThreshold) or 2,
             replayOnlyOnEscalation = tonumber(runtime.replayOnlySeverityThreshold) or 4,
+            persistenceQuarantineOnEscalation = tonumber(runtime.persistenceQuarantineSeverityThreshold) or 3,
         },
         spawnRegulation = {
             minTickScale = 0.5,
             maxTickScale = 2.0,
+            densityThrottleThreshold = tonumber(runtime.pressureDensityThreshold) or 0.85,
+            farmRepetitionThrottleThreshold = tonumber(runtime.pressureFarmRepetitionThreshold) or 8,
+        },
+        bossUniqueness = {
+            defaultScope = tostring(runtime.defaultBossUniquenessScope or 'channel_unique'),
+            worldUniqueThrottle = tonumber(runtime.pressureOwnershipConflictThreshold) or 2,
+        },
+        dropReservation = {
+            ownerWindowSec = tonumber(runtime.dropOwnerWindowSec) or 2,
+            rejectCrossScopeClaims = true,
+        },
+        routing = {
+            requireScopeSource = true,
+            rejectCrossRuntimeScope = true,
+        },
+        replayFallback = {
+            failClosedOnInvariantViolation = true,
+            restoreFromCheckpointOnly = false,
         },
         savePolicy = {
             forceImmediateWhenHighPressure = true,
+            immediateWhenReplayPressure = true,
+            immediateWhenOwnershipConflict = true,
+            debounceSec = tonumber(runtime.worldStateSaveDebounceSec) or 5,
+        },
+        exploitResponse = {
+            duplicateRiskEscalationThreshold = tonumber(runtime.pressureDuplicateRiskThreshold) or 1,
+            rewardInflationEscalationThreshold = tonumber(runtime.pressureRewardInflationThreshold) or 12,
         },
     }
 end

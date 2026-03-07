@@ -137,6 +137,10 @@ function DropSystem:registerDrops(mapId, source, drops, context)
             correlationId = cfg.correlationId,
             sourceBossId = cfg.bossId,
             sourceQuestId = cfg.questId,
+            worldId = cfg.worldId,
+            channelId = cfg.channelId,
+            runtimeInstanceId = cfg.runtimeInstanceId,
+            ownerScope = cfg.ownerScope,
         }
         self.activeDrops[dropId] = record
         mapDrops[dropId] = record

@@ -131,6 +131,14 @@ function WorldRepository:_commitKey(revision)
     return tostring(self.key) .. '__commit_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
 end
 
+function WorldRepository:_stageKey(revision)
+    return tostring(self.key) .. '__stage_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
+function WorldRepository:_finalizeKey(revision)
+    return tostring(self.key) .. '__finalize_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
 function WorldRepository:_headHistorySize()
     return math.max(2, self.slotCount)
 end
@@ -260,6 +268,16 @@ function WorldRepository:_isCommittedRevision(storage, revision)
     return normalizeRevision(value.revision) == normalized
 end
 
+function WorldRepository:_isFinalizedRevision(storage, revision)
+    local normalized = normalizeRevision(revision)
+    if normalized == nil or normalized <= 0 then return true end
+    local envelope = self:_readEnvelope(storage, self:_finalizeKey(normalized))
+    if type(envelope) ~= 'table' then return false end
+    local value = envelope.value
+    if type(value) ~= 'table' then return false end
+    return normalizeRevision(value.revision) == normalized and tostring(value.phase or '') == 'finalized'
+end
+
 function WorldRepository:load()
     if not self.runtimeAdapter then
         if self.state == nil then return nil end
@@ -307,8 +325,13 @@ function WorldRepository:load()
                 local envelopeRevision = normalizeRevision(envelope.revision) or 0
                 local bestRevision = normalizeRevision(bestEnvelope and bestEnvelope.revision) or 0
                 local envelopeCommitted = self:_isCommittedRevision(storage, envelopeRevision)
+                local envelopeFinalized = self:_isFinalizedRevision(storage, envelopeRevision)
                 local bestCommitted = bestEnvelope and self:_isCommittedRevision(storage, bestRevision) or false
-                if (not bestEnvelope) or (envelopeCommitted and not bestCommitted) or (envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
+                local bestFinalized = bestEnvelope and self:_isFinalizedRevision(storage, bestRevision) or false
+                if (not bestEnvelope)
+                    or (envelopeFinalized and not bestFinalized)
+                    or (envelopeFinalized == bestFinalized and envelopeCommitted and not bestCommitted)
+                    or (envelopeFinalized == bestFinalized and envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
                     bestEnvelope = envelope
                 end
             end
@@ -360,11 +383,14 @@ function WorldRepository:save(state)
         revision = nextRevision,
         savedAt = self.runtimeAdapter:now(),
         previousRevision = currentRevision,
+        phase = 'staged',
         value = deepcopy(state),
     }
 
     local encodedEnvelope = self.runtimeAdapter:encodeData(envelope)
-    local ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
+    local ok, err = writeStorage(storage, self:_stageKey(nextRevision), encodedEnvelope)
+    if not ok then return false, err end
+    ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
     if not ok then return false, err end
 
     ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
@@ -414,9 +440,19 @@ function WorldRepository:save(state)
     local commitEnvelope = {
         revision = nextRevision,
         savedAt = envelope.savedAt,
-        value = { revision = nextRevision, slot = nextSlot, writer = writerFingerprint },
+        phase = 'committed',
+        value = { revision = nextRevision, slot = nextSlot, writer = writerFingerprint, previousRevision = currentRevision },
     }
     ok, err = writeStorage(storage, self:_commitKey(nextRevision), self.runtimeAdapter:encodeData(commitEnvelope))
+    if not ok then return false, err end
+
+    local finalizeEnvelope = {
+        revision = nextRevision,
+        savedAt = envelope.savedAt,
+        phase = 'finalized',
+        value = { revision = nextRevision, slot = nextSlot, writer = writerFingerprint, previousRevision = currentRevision, phase = 'finalized' },
+    }
+    ok, err = writeStorage(storage, self:_finalizeKey(nextRevision), self.runtimeAdapter:encodeData(finalizeEnvelope))
     if not ok then return false, err end
 
     local trimKey = self:_oldRevisionKey(nextRevision)
@@ -429,6 +465,8 @@ function WorldRepository:save(state)
     if oldCommitKey ~= nil then
         writeStorage(storage, oldCommitKey, '')
         if self.metrics then self.metrics:increment('world_repository.trimmed_commit', 1) end
+        writeStorage(storage, self:_stageKey(nextRevision - self.maxCommits), '')
+        writeStorage(storage, self:_finalizeKey(nextRevision - self.maxCommits), '')
     end
 
     self.savedRevision = nextRevision

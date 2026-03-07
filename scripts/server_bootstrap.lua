@@ -109,6 +109,7 @@ local function buildBoss(rows, worldConfig)
             modelId = runtimeBoss and runtimeBoss.modelId or row.asset_key,
             parentPath = runtimeBoss and runtimeBoss.parentPath or nil,
             position = runtimeBoss and deepcopy(runtimeBoss.spawnPosition) or nil,
+            uniqueness = runtimeBoss and runtimeBoss.uniqueness or (worldConfig and worldConfig.runtime and worldConfig.runtime.defaultBossUniquenessScope) or 'channel_unique',
         }
     end
     return out
@@ -521,6 +522,7 @@ function ServerBootstrap.boot(basePath, config)
         channelId = tostring((worldConfig.runtime and worldConfig.runtime.channelId) or 'channel-1'),
         runtimeInstanceId = tostring((worldConfig.runtime and worldConfig.runtime.runtimeInstanceId) or 'runtime-main'),
         ownerId = tostring((worldConfig.runtime and worldConfig.runtime.worldWriterOwnerId) or 'default'),
+        runtimeEpoch = math.max(0, math.floor(tonumber(worldConfig.runtime and worldConfig.runtime.worldWriterEpoch) or 0)),
         ownerEpoch = math.max(0, math.floor(tonumber(worldConfig.runtime and worldConfig.runtime.worldWriterEpoch) or 0)),
         coordinatorEpoch = math.max(0, math.floor(tonumber(worldConfig.runtime and worldConfig.runtime.coordinatorEpoch) or 0)),
         schemaVersion = 2,
@@ -558,7 +560,15 @@ function ServerBootstrap.boot(basePath, config)
             lowDiversity = 0,
             duplicateRisk = 0,
             savePressure = 0,
-            ownershipConflict = 0,
+            entityDensity = 0,
+            entityDensityPressure = 0,
+            replayPressure = 0,
+            ownershipConflictPressure = 0,
+            rewardInflationPressure = 0,
+            duplicateRiskPressure = 0,
+            instabilityPressure = 0,
+            farmRepetitionPressure = 0,
+            saveBacklog = 0,
             repetitiveFarming = 0,
         },
         containment = {
@@ -568,12 +578,14 @@ function ServerBootstrap.boot(basePath, config)
             migrationBlocked = false,
             replayOnly = false,
             ownershipReject = false,
+            persistenceQuarantine = false,
         },
         escalation = {
             level = 0,
             reason = 'none',
             at = 0,
             history = {},
+            severity = 'warning',
         },
         recovery = {
             mode = 'cold_start',
@@ -597,6 +609,8 @@ function ServerBootstrap.boot(basePath, config)
         _savingFailures = 0,
         _ownershipConflicts = 0,
         _rewardMutationCountWindow = {},
+        _ownershipConflictWindow = {},
+        _recentFarmSignals = {},
         _lastPolicyId = nil,
         actionGuard = actionGuard,
         journal = journal,
@@ -627,13 +641,75 @@ function ServerBootstrap.boot(basePath, config)
         return math.floor(tonumber(self.clock()) or os.time())
     end
 
+    function world:_policy()
+        return self.policyBundle:snapshot() or {}
+    end
+
+    function world:_policySection(name)
+        local policy = self:_policy()
+        return type(policy[name]) == 'table' and policy[name] or {}
+    end
+
+    function world:_severityName(level)
+        if level >= 4 then return 'replay_restore' end
+        if level >= 3 then return 'safe_mode' end
+        if level >= 2 then return 'quarantine' end
+        if level >= 1 then return 'repair' end
+        return 'warning'
+    end
+
+    function world:_lineageReference(kind, subject)
+        return table.concat({
+            tostring(kind or 'runtime'),
+            tostring(subject or 'unknown'),
+            tostring(self.runtimeIdentity.worldId),
+            tostring(self.runtimeIdentity.channelId),
+            tostring(self.runtimeIdentity.runtimeInstanceId),
+            tostring(self.runtimeIdentity.runtimeEpoch),
+        }, ':')
+    end
+
+    function world:_ledgerContext(base)
+        local ctx = deepcopy(base or {})
+        ctx.world_id = ctx.world_id or self.runtimeIdentity.worldId
+        ctx.channel_id = ctx.channel_id or self.runtimeIdentity.channelId
+        ctx.runtime_instance_id = ctx.runtime_instance_id or self.runtimeIdentity.runtimeInstanceId
+        ctx.owner_id = ctx.owner_id or self.runtimeIdentity.ownerId
+        ctx.runtime_epoch = ctx.runtime_epoch or self.runtimeIdentity.runtimeEpoch
+        ctx.coordinator_epoch = ctx.coordinator_epoch or self.runtimeIdentity.coordinatorEpoch
+        ctx.lineage_reference = ctx.lineage_reference or self:_lineageReference(ctx.source_system or 'runtime', ctx.item_instance_id or ctx.item_id or ctx.boss_id or ctx.quest_id or ctx.map_id or ctx.actor_id)
+        return ctx
+    end
+
+    function world:_recordOwnershipConflict(reason, detail)
+        local now = self:_now()
+        local window = self._ownershipConflictWindow or {}
+        window[#window + 1] = now
+        while #window > 0 and (now - window[1]) > 120 do table.remove(window, 1) end
+        self._ownershipConflictWindow = window
+        self.pressure.ownershipConflictPressure = #window
+        self:_recordRuntimeEvent('ownership_conflict', { reason = reason, detail = detail, count = #window })
+    end
+
+    function world:_recordFarmSignal(player, targetId)
+        local now = self:_now()
+        local signals = self._recentFarmSignals or {}
+        signals[#signals + 1] = { at = now, playerId = player and player.id or nil, targetId = tostring(targetId or 'unknown') }
+        while #signals > 0 and (now - (signals[1].at or now)) > 120 do table.remove(signals, 1) end
+        self._recentFarmSignals = signals
+        self.pressure.farmRepetitionPressure = #signals
+    end
+
     function world:appendLedgerEvent(event)
         if not self.journal or type(self.journal.appendLedgerEvent) ~= 'function' then return nil end
-        local appended, duplicate = self.journal:appendLedgerEvent(event)
+        local enriched = self:_ledgerContext(event)
+        local appended, duplicate = self.journal:appendLedgerEvent(enriched)
         if duplicate then
             self.pressure.duplicateRisk = math.max(0, (self.pressure.duplicateRisk or 0) + 1)
+            self.pressure.duplicateRiskPressure = self.pressure.duplicateRisk
         else
             self.pressure.rewardInflation = math.max(0, (self.pressure.rewardInflation or 0) + 1)
+            self.pressure.rewardInflationPressure = self.pressure.rewardInflation
         end
         self:_recomputePressure()
         return appended, duplicate
@@ -664,7 +740,7 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, err end
         local snapshot = self.policyBundle:snapshot()
         self._lastPolicyId = tostring(snapshot.policyId) .. '@' .. tostring(snapshot.policyVersion)
-        self:_recordRuntimeEvent('policy_bundle_replaced', { policy = snapshot })
+        self:_recordRuntimeEvent('policy_bundle_replaced', { policy = snapshot, policyVersion = self._lastPolicyId })
         self:_recomputePressure()
         return true
     end
@@ -680,6 +756,10 @@ function ServerBootstrap.boot(basePath, config)
         local containment = policy and policy.containment or {}
         if level >= (tonumber(containment.rewardQuarantineOnEscalation) or 99) then
             self.containment.rewardQuarantine = true
+        end
+        if level >= (tonumber(containment.persistenceQuarantineOnEscalation) or 99) then
+            self.containment.persistenceQuarantine = true
+            self.containment.saveQuarantine = true
         end
         if level >= (tonumber(containment.migrationBlockOnEscalation) or 99) then
             self.containment.migrationBlocked = true
@@ -703,11 +783,13 @@ function ServerBootstrap.boot(basePath, config)
         self.escalation.level = nextLevel
         self.escalation.reason = tostring(reason or 'unspecified')
         self.escalation.at = self:_now()
+        self.escalation.severity = self:_severityName(nextLevel)
         local history = self.escalation.history or {}
         history[#history + 1] = {
             at = self.escalation.at,
             level = nextLevel,
             reason = self.escalation.reason,
+            severity = self.escalation.severity,
             detail = detail,
         }
         while #history > 32 do table.remove(history, 1) end
@@ -718,6 +800,7 @@ function ServerBootstrap.boot(basePath, config)
         end
         self:_recordRuntimeEvent('failure_escalated', {
             level = nextLevel,
+            severity = self.escalation.severity,
             reason = reason,
             detail = detail,
         })
@@ -736,7 +819,11 @@ function ServerBootstrap.boot(basePath, config)
         self.pressure.backlog = backlog
         self.pressure.savePressure = backlog
         self.pressure.instability = instability
-        self.pressure.ownershipConflict = math.max(0, tonumber(self._ownershipConflicts) or 0)
+        self.pressure.entityDensity = density
+        self.pressure.entityDensityPressure = density
+        self.pressure.saveBacklog = backlog
+        self.pressure.replayPressure = tonumber(self.recovery and self.recovery.divergence and 2 or 0)
+        self.pressure.instabilityPressure = instability
 
         local now = self:_now()
         local window = self._rewardMutationCountWindow or {}
@@ -744,6 +831,7 @@ function ServerBootstrap.boot(basePath, config)
         while #window > 0 and (now - window[1]) > 60 do table.remove(window, 1) end
         self._rewardMutationCountWindow = window
         self.pressure.rewardInflation = #window
+        self.pressure.rewardInflationPressure = #window
 
         local recent = self.journal:snapshot(math.max(0, self.journal.nextSeq - 25))
         local diversity = {}
@@ -754,6 +842,10 @@ function ServerBootstrap.boot(basePath, config)
 
         local replayPressure = self.recovery and self.recovery.divergence and 2 or 0
         self.pressure.replay = replayPressure
+        self.pressure.replayPressure = replayPressure
+        self.pressure.ownershipConflictPressure = #(self._ownershipConflictWindow or {})
+        self.pressure.duplicateRiskPressure = tonumber(self.pressure.duplicateRisk or 0)
+        self.pressure.farmRepetitionPressure = #(self._recentFarmSignals or {})
 
         if self.metrics then
             self.metrics:gauge('pressure.density', density)
@@ -763,7 +855,9 @@ function ServerBootstrap.boot(basePath, config)
             self.metrics:gauge('pressure.low_diversity', self.pressure.lowDiversity)
             self.metrics:gauge('pressure.instability', instability)
             self.metrics:gauge('pressure.duplicate_risk', self.pressure.duplicateRisk or 0)
-            self.metrics:gauge('pressure.ownership_conflict', self.pressure.ownershipConflict or 0)
+            self.metrics:gauge('pressure.ownership_conflict', self.pressure.ownershipConflictPressure or 0)
+            self.metrics:gauge('pressure.farm_repetition', self.pressure.farmRepetitionPressure or 0)
+            self.metrics:gauge('pressure.entity_density', self.pressure.entityDensityPressure or 0)
             self.metrics:gauge('pressure.repetitive_farming', self.pressure.repetitiveFarming or 0)
         end
 
@@ -777,8 +871,14 @@ function ServerBootstrap.boot(basePath, config)
             self:_recordRuntimeEvent('failure_collapse_diversity_repair', { instability = instability })
             self:_escalate('world_instability_pressure', { instability = instability })
         end
-        if (self.pressure.ownershipConflict or 0) >= self:_pressureThreshold('ownershipConflict') then
-            self:_escalate('ownership_conflict_pressure', { conflicts = self.pressure.ownershipConflict })
+        if (self.pressure.ownershipConflictPressure or 0) >= self:_pressureThreshold('ownershipConflict') then
+            self:_escalate('ownership_conflict_pressure', { count = self.pressure.ownershipConflictPressure })
+        end
+        if (self.pressure.duplicateRiskPressure or 0) >= self:_pressureThreshold('duplicateRisk') then
+            self:_escalate('duplicate_risk_pressure', { count = self.pressure.duplicateRiskPressure })
+        end
+        if (self.pressure.farmRepetitionPressure or 0) >= self:_pressureThreshold('farmRepetition') then
+            self:_recordRuntimeEvent('failure_plateau_exploration', { farmRepetition = self.pressure.farmRepetitionPressure })
         end
     end
 
@@ -786,6 +886,7 @@ function ServerBootstrap.boot(basePath, config)
         return {
             runtimeIdentity = deepcopy(self.runtimeIdentity),
             policy = self.policyBundle:snapshot(),
+            policyVersion = self._lastPolicyId or (tostring((self:_policy().policyId or 'unknown')) .. '@' .. tostring((self:_policy().policyVersion or 'unknown'))),
             pressure = deepcopy(self.pressure),
             containment = deepcopy(self.containment),
             escalation = deepcopy(self.escalation),
@@ -793,6 +894,14 @@ function ServerBootstrap.boot(basePath, config)
             pendingSave = {
                 count = self._pendingWorldSaveCount,
                 reason = self._pendingWorldSaveReason,
+            },
+            ownership = {
+                worldId = self.runtimeIdentity.worldId,
+                channelId = self.runtimeIdentity.channelId,
+                runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+                ownerId = self.runtimeIdentity.ownerId,
+                runtimeEpoch = self.runtimeIdentity.runtimeEpoch,
+                coordinatorEpoch = self.runtimeIdentity.coordinatorEpoch,
             },
             watermark = {
                 journalSeq = self.journal.nextSeq - 1,
@@ -861,7 +970,10 @@ function ServerBootstrap.boot(basePath, config)
         player.runtimeScope.worldId = self.runtimeIdentity.worldId
         player.runtimeScope.channelId = self.runtimeIdentity.channelId
         player.runtimeScope.runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId
+        player.runtimeScope.ownerId = self.runtimeIdentity.ownerId
+        player.runtimeScope.runtimeEpoch = self.runtimeIdentity.runtimeEpoch
         player.runtimeScope.ownerEpoch = self.runtimeIdentity.ownerEpoch
+        player.runtimeScope.coordinatorEpoch = self.runtimeIdentity.coordinatorEpoch
         return true
     end
 
@@ -970,9 +1082,10 @@ function ServerBootstrap.boot(basePath, config)
                 schema_version = 2,
                 journal_watermark = self.journal.nextSeq - 1,
                 ledger_watermark = self.journal.nextLedgerEventId - 1,
-                world_owner_epoch = self.runtimeIdentity.ownerEpoch,
+                owner_epoch = self.runtimeIdentity.ownerEpoch,
+                runtime_epoch = self.runtimeIdentity.runtimeEpoch,
                 coordinator_epoch = self.runtimeIdentity.coordinatorEpoch,
-                created_at = self:_now(),
+                timestamp = self:_now(),
                 replay_base_revision = self.worldRepository and self.worldRepository:lastLoadedRevision() or 0,
                 runtime_scope = {
                     world_id = self.runtimeIdentity.worldId,
@@ -981,6 +1094,7 @@ function ServerBootstrap.boot(basePath, config)
                     owner_id = self.runtimeIdentity.ownerId,
                 },
                 policy = self.policyBundle:snapshot(),
+                truth_source = 'append_only_journal',
             },
             boss = self.bossSystem:snapshot(),
             drops = limitDropSnapshot(self.dropSystem:snapshot(), persistedDropsPerMap),
@@ -998,10 +1112,20 @@ function ServerBootstrap.boot(basePath, config)
         local now = self:_now()
         local startedAt = os.clock()
         local snapshot = self:snapshotWorldState()
+        self:_recordRuntimeEvent('world_checkpoint_stage', {
+            reason = reason,
+            checkpoint = snapshot.checkpoint,
+            policyVersion = self._lastPolicyId,
+        })
         local ok, err = self.worldRepository:save(snapshot)
         self._savingWorldState = false
         local elapsedMs = math.floor((os.clock() - startedAt) * 1000)
         if ok then
+            self:_recordRuntimeEvent('world_checkpoint_commit', {
+                reason = reason,
+                checkpoint = snapshot.checkpoint,
+                duration_ms = elapsedMs,
+            })
             self._lastWorldSaveAt = now
             self._pendingWorldSaveReason = nil
             self._pendingWorldSaveReasons = {}
@@ -1020,12 +1144,26 @@ function ServerBootstrap.boot(basePath, config)
                 checkpoint = snapshot.checkpoint,
                 duration_ms = elapsedMs,
             })
+            self:_recordRuntimeEvent('world_checkpoint_finalize', {
+                reason = reason,
+                checkpoint = snapshot.checkpoint,
+                duration_ms = elapsedMs,
+            })
         else
             self._savingFailures = (self._savingFailures or 0) + 1
             if self.metrics then
                 self.metrics:increment('world_state.save_error', 1, { reason = tostring(reason) })
                 self.metrics:error('world_state_save_failed', { reason = tostring(reason), error = tostring(err) })
             end
+            self:appendLedgerEvent({
+                event_type = 'repair_compensation',
+                actor_id = self.runtimeIdentity.ownerId,
+                source_system = 'world_repository',
+                correlation_id = snapshot.checkpoint and snapshot.checkpoint.checkpoint_id,
+                map_id = reason,
+                rollback_of = snapshot.checkpoint and snapshot.checkpoint.checkpoint_id,
+                metadata = { reason = reason, error = tostring(err), action = 'world_save_rollback' },
+            })
             self:_recordRuntimeEvent('world_checkpoint_save_failed', { reason = reason, error = tostring(err) })
             self:_escalate('world_save_failed', { reason = reason, error = tostring(err), failures = self._savingFailures })
         end
@@ -1063,9 +1201,15 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:flushPendingWorldSave(reason)
         if not self._worldStateDirty then return true, 'clean' end
-        local runtimeCfg = self.worldConfig.runtime or {}
-        local debounceSec = math.max(0, tonumber(runtimeCfg.worldStateSaveDebounceSec) or 0)
+        local debounceSec = math.max(0, tonumber(self:_policySection('savePolicy').debounceSec) or 0)
         local now = self:_now()
+        if self.containment.persistenceQuarantine then return false, 'save_quarantined' end
+        if (self.pressure.replayPressure or 0) > 0 and self:_policySection('savePolicy').immediateWhenReplayPressure == true then
+            return self:saveWorldState(reason or self._pendingWorldSaveReason)
+        end
+        if (self.pressure.ownershipConflictPressure or 0) > 0 and self:_policySection('savePolicy').immediateWhenOwnershipConflict == true then
+            return self:saveWorldState(reason or self._pendingWorldSaveReason)
+        end
         if debounceSec > 0 and self._lastWorldSaveAt and (now - self._lastWorldSaveAt) < debounceSec then
             if self.metrics then self.metrics:increment('world_state.save_debounced', 1, { reason = tostring(reason or self._pendingWorldSaveReason) }) end
             return true, 'debounced'
@@ -1077,13 +1221,13 @@ function ServerBootstrap.boot(basePath, config)
         self.recoveryInvariants = { claimedDrops = {}, bossRewardClaims = {}, itemInstanceIds = {} }
         local ledger = self.journal:ledgerSnapshot()
         for _, entry in ipairs(ledger) do
-            if entry.event_type == 'reward_claim' and entry.idempotency_key then
+            if entry.event_type == 'boss_reward_claim' and entry.idempotency_key then
                 if self.recoveryInvariants.bossRewardClaims[entry.idempotency_key] then
                     return false, 'duplicate_boss_reward_claim'
                 end
                 self.recoveryInvariants.bossRewardClaims[entry.idempotency_key] = true
             end
-            if entry.event_type == 'inventory_add' then
+            if entry.event_type == 'item_create' then
                 local iid = entry.item_instance_id
                 if iid and self.recoveryInvariants.itemInstanceIds[iid] then
                     return false, 'duplicate_item_instance'
@@ -1106,6 +1250,27 @@ function ServerBootstrap.boot(basePath, config)
             end
         end
         return true
+    end
+
+    function world:_replayJournalEntries(entries, sinceSeq)
+        local replayed = 0
+        local minSeq = math.max(0, math.floor(tonumber(sinceSeq) or 0))
+        for _, entry in ipairs(entries or {}) do
+            local seq = math.max(0, math.floor(tonumber(entry.seq) or 0))
+            if seq > minSeq then
+                local eventName = tostring(entry.event or 'unknown')
+                if eventName == 'ownership_conflict' then
+                    self:_recordOwnershipConflict('replay', entry.payload)
+                elseif eventName == 'mob_killed' or eventName == 'boss_killed' then
+                    self:_recordFarmSignal({ id = entry.payload and entry.payload.playerId or nil }, entry.payload and (entry.payload.mobId or entry.payload.bossId))
+                elseif eventName == 'failure_escalated' then
+                    self.escalation.level = math.max(self.escalation.level or 0, math.floor(tonumber(entry.payload and entry.payload.level) or 0))
+                    self.escalation.severity = self:_severityName(self.escalation.level)
+                end
+                replayed = replayed + 1
+            end
+        end
+        return replayed
     end
 
     function world:restoreWorldState()
@@ -1174,11 +1339,12 @@ function ServerBootstrap.boot(basePath, config)
         end
 
         local checkpoint = snapshot.checkpoint or {}
+        local replayedEntries = self:_replayJournalEntries(self.journal:snapshot(), tonumber(checkpoint.journal_watermark) or 0)
         self.recovery.mode = 'open_runtime'
         self.recovery.valid = true
         self.recovery.checkpointId = checkpoint.checkpoint_id
         self.recovery.replayBaseRevision = tonumber(checkpoint.replay_base_revision) or 0
-        self.recovery.replayedEntries = #self.journal:snapshot((tonumber(checkpoint.journal_watermark) or 0) - 1)
+        self.recovery.replayedEntries = replayedEntries
         self.recovery.divergence = false
         self.recovery.checkpointRevision = self.worldRepository:lastLoadedRevision() or 0
 
@@ -1285,6 +1451,7 @@ function ServerBootstrap.boot(basePath, config)
         end
 
         self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_begin' })
+        self:_recordRuntimeEvent('player_lifecycle_save_stage', { playerId = player.id, runtimeScope = deepcopy(player.runtimeScope) })
         local ok, err = self.playerRepository:save(player)
         if not ok then
             self.journal:append('player_save_staged', { playerId = player.id, requireWorldSave = requireWorldSave == true, phase = 'player_save_failed', error = tostring(err) })
@@ -1294,6 +1461,7 @@ function ServerBootstrap.boot(basePath, config)
             end
             return false, err
         end
+        self:_recordRuntimeEvent('player_lifecycle_save_commit', { playerId = player.id, runtimeScope = deepcopy(player.runtimeScope) })
 
         if requireWorldSave then
             local worldSaved, worldErr = self:saveWorldState('player_save:' .. tostring(player.id))
@@ -1313,6 +1481,14 @@ function ServerBootstrap.boot(basePath, config)
                         rollbackError = rollbackOk and nil or tostring(rollbackErr),
                     })
                 end
+                self:appendLedgerEvent({
+                    event_type = 'repair_compensation',
+                    actor_id = player.id,
+                    correlation_id = string.format('player_save:%s:%s', tostring(player.id), tostring(self:_now())),
+                    source_system = 'player_repository',
+                    rollback_of = tostring(player.id),
+                    metadata = { action = 'player_save_rollback', error = tostring(worldErr) },
+                })
                 if not rollbackOk then
                     self.journal:append('player_save_staged', { playerId = player.id, phase = 'rollback_failed', error = tostring(rollbackErr) })
                     return false, 'world_state_save_failed:' .. tostring(worldErr) .. ';rollback_failed:' .. tostring(rollbackErr)
@@ -1325,6 +1501,7 @@ function ServerBootstrap.boot(basePath, config)
         player.dirty = false
         player.lastSavedAt = self:_now()
         self.journal:append('player_save_staged', { playerId = player.id, phase = 'commit_complete' })
+        self:_recordRuntimeEvent('player_lifecycle_save_finalize', { playerId = player.id, at = player.lastSavedAt, runtimeScope = deepcopy(player.runtimeScope) })
         self.journal:append('player_saved', { playerId = player.id, version = player.version, at = player.lastSavedAt })
         return true
     end
@@ -1420,6 +1597,7 @@ function ServerBootstrap.boot(basePath, config)
             power = self.itemSystem:getPower(player),
             currentMapId = player.currentMapId,
             position = deepcopy(player.position),
+            runtimeScope = deepcopy(player.runtimeScope),
             stats = player.stats,
             inventory = self.itemSystem:exportInventory(player),
             equipment = player.equipment,
@@ -1529,7 +1707,7 @@ function ServerBootstrap.boot(basePath, config)
             for _, drop in ipairs(rawDrops) do
                 self.itemSystem:addItem(player, drop.itemId, drop.quantity, nil, { source = ctx.source or 'auto_drop_pickup', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, boss_id = ctx.bossId })
                 self.questSystem:onItemAcquired(player, drop.itemId, drop.quantity)
-                self:_emitRewardLedger(player, 'reward_claim', { source_system = 'drop_system', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, map_id = mapId, boss_id = ctx.bossId, item_id = drop.itemId, quantity = drop.quantity, idempotency_key = string.format('reward:auto:%s:%s:%s', tostring(player.id), tostring(drop.itemId), tostring(ctx.correlationId or os.time())), metadata = { mode = 'auto_pickup', reason = ctx.source } })
+                self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, map_id = mapId, boss_id = ctx.bossId, item_id = drop.itemId, quantity = drop.quantity, idempotency_key = string.format('reward:auto:%s:%s:%s', tostring(player.id), tostring(drop.itemId), tostring(ctx.correlationId or os.time())), lineage_reference = self:_lineageReference('drop_auto', drop.itemId), metadata = { mode = 'auto_pickup', reason = ctx.source } })
             end
             return rawDrops
         end
@@ -1542,12 +1720,17 @@ function ServerBootstrap.boot(basePath, config)
             sourceEventId = ctx.sourceEventId,
             correlationId = ctx.correlationId,
             bossId = ctx.bossId,
+            worldId = self.runtimeIdentity.worldId,
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            ownerScope = deepcopy(player.runtimeScope),
         })
         for _, record in ipairs(records) do self:_emit('onDropSpawned', record) end
         return records
     end
 
     function world:_applyMobRewards(player, mob, forceAutoPickup)
+        self:_recordFarmSignal(player, mob.mobId)
         self.expSystem:grant(player, mob.template.exp or 0)
         local correlationId = string.format('mob_reward:%s:%s:%s', tostring(player.id), tostring(mob.spawnId), tostring(self:_now()))
         self.economySystem:grantMesos(player, self:_rollMesos(mob.template.mesos_min, mob.template.mesos_max), 'mob_drop', { correlationId = correlationId, mapId = mob.mapId })
@@ -1610,6 +1793,14 @@ function ServerBootstrap.boot(basePath, config)
         local actionOk, actionErr = self:_checkAction(player, 'drop_pickup', 1)
         if not actionOk then return false, actionErr end
         if self.containment.rewardQuarantine then return false, 'reward_quarantined' end
+        if record.worldId and tostring(record.worldId) ~= tostring(self.runtimeIdentity.worldId) then
+            self:_recordOwnershipConflict('drop_world_scope_conflict', { expected = record.worldId, actual = self.runtimeIdentity.worldId, dropId = dropId })
+            return false, 'runtime_world_conflict'
+        end
+        if record.channelId and tostring(record.channelId) ~= tostring(self.runtimeIdentity.channelId) then
+            self:_recordOwnershipConflict('drop_channel_scope_conflict', { expected = record.channelId, actual = self.runtimeIdentity.channelId, dropId = dropId })
+            return false, 'runtime_channel_conflict'
+        end
         local claimKey = string.format('%s:%s:%s:%s', tostring(self.runtimeIdentity.worldId), tostring(self.runtimeIdentity.channelId), tostring(self.runtimeIdentity.runtimeInstanceId), tostring(dropId))
         if self.recoveryInvariants.claimedDrops[claimKey] then
             self:_escalate('duplicate_drop_claim_attempt', { dropId = dropId, playerId = player.id })
@@ -1620,7 +1811,7 @@ function ServerBootstrap.boot(basePath, config)
         self.recoveryInvariants.claimedDrops[claimKey] = true
         self.questSystem:onItemAcquired(player, recordOrErr.itemId, recordOrErr.quantity)
         self.journal:append('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId })
-        self:_emitRewardLedger(player, 'reward_claim', { source_system = 'drop_system', map_id = record.mapId, item_id = recordOrErr.itemId, quantity = recordOrErr.quantity, source_event_id = tostring(dropId), correlation_id = recordOrErr.correlationId, idempotency_key = string.format('reward:pickup:%s:%s', tostring(player.id), tostring(dropId)), metadata = { mode = 'manual_pickup' } })
+        self:_emitRewardLedger(player, 'drop_claim', { source_system = 'drop_system', map_id = record.mapId, item_id = recordOrErr.itemId, quantity = recordOrErr.quantity, source_event_id = tostring(dropId), correlation_id = recordOrErr.correlationId, idempotency_key = string.format('reward:pickup:%s:%s', tostring(player.id), tostring(dropId)), lineage_reference = self:_lineageReference('drop', dropId), metadata = { mode = 'manual_pickup' } })
         self:_emit('onDropPicked', recordOrErr, player)
         self:publishPlayerSnapshot(player)
         return true, recordOrErr
@@ -1629,6 +1820,9 @@ function ServerBootstrap.boot(basePath, config)
     function world:spawnBoss(bossId, mapId)
         local def = self.bossSystem.bossTable[bossId]
         local targetMapId = mapId or (def and def.mapId)
+        if (self.pressure.ownershipConflictPressure or 0) >= (tonumber(self:_policySection('bossUniqueness').worldUniqueThrottle) or math.huge) then
+            return false, 'boss_throttled_by_pressure'
+        end
         local encounter, err, remaining = self.bossSystem:spawnEncounter(bossId, targetMapId)
         if type(encounter) == 'table' then
             if not encounter.position then encounter.position = deepcopy(def and def.position) end
@@ -1651,7 +1845,7 @@ function ServerBootstrap.boot(basePath, config)
             return false, 'duplicate_boss_reward'
         end
         self.recoveryInvariants.bossRewardClaims[claimKey] = true
-        self:_emitRewardLedger(player, 'reward_claim', { source_system = 'boss_system', correlation_id = correlationId, map_id = encounter.mapId, boss_id = encounter.bossId, idempotency_key = claimKey, metadata = { reward_kind = 'boss_clear' } })
+        self:_emitRewardLedger(player, 'boss_reward_claim', { source_system = 'boss_system', correlation_id = correlationId, map_id = encounter.mapId, boss_id = encounter.bossId, idempotency_key = claimKey, lineage_reference = self:_lineageReference('boss', encounter.bossId), metadata = { reward_kind = 'boss_clear', uniqueness = encounter.uniqueness or 'channel_unique' } })
         self.questSystem:onKill(player, encounter.bossId, 1)
         player.killLog[encounter.bossId] = (player.killLog[encounter.bossId] or 0) + 1
         player.dirty = true
@@ -1704,6 +1898,9 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:tickBosses()
         if next(self.players) == nil then return 0 end
+        if (self.pressure.ownershipConflictPressure or 0) > 0 and self.containment.safeMode then
+            return 0
+        end
         local before = {}
         for mapId, encounter in pairs(self.bossSystem.encounters) do
             before[mapId] = encounter
@@ -1719,6 +1916,21 @@ function ServerBootstrap.boot(basePath, config)
         end
         if self.metrics then self.metrics:gauge('boss.auto_spawned', spawned) end
         return spawned
+    end
+
+    function world:tickSpawns()
+        local spawnPolicy = self:_policySection('spawnRegulation')
+        local original = self.spawnSystem.maxSpawnPerTick
+        local scale = 1.0
+        if (self.pressure.entityDensityPressure or 0) >= (tonumber(spawnPolicy.densityThrottleThreshold) or math.huge) then
+            scale = math.min(scale, tonumber(spawnPolicy.minTickScale) or 0.5)
+        end
+        if (self.pressure.farmRepetitionPressure or 0) >= (tonumber(spawnPolicy.farmRepetitionThrottleThreshold) or math.huge) then
+            scale = math.min(scale, tonumber(spawnPolicy.minTickScale) or 0.5)
+        end
+        self.spawnSystem.maxSpawnPerTick = math.max(1, math.floor(original * scale))
+        self.spawnSystem:tick()
+        self.spawnSystem.maxSpawnPerTick = original
     end
 
     function world:expireDrops()
@@ -1752,6 +1964,7 @@ function ServerBootstrap.boot(basePath, config)
         local correlationId = string.format('shop_buy:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
         local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
         if not ok then return false, err end
+        self:_emitRewardLedger(player, 'shop_buy', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_buy', itemId), metadata = { action = 'buy' } })
         self.questSystem:onItemAcquired(player, itemId, quantity)
         self.journal:append('npc_buy', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
         self:publishPlayerSnapshot(player)
@@ -1772,6 +1985,7 @@ function ServerBootstrap.boot(basePath, config)
         local correlationId = string.format('shop_sell:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
         local ok, err = self.economySystem:sellToNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
         if not ok then return false, err end
+        self:_emitRewardLedger(player, 'shop_sell', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_sell', itemId), metadata = { action = 'sell' } })
         self.questSystem:onItemRemoved(player, itemId, quantity)
         self.journal:append('npc_sell', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
         self:publishPlayerSnapshot(player)
@@ -1803,7 +2017,7 @@ function ServerBootstrap.boot(basePath, config)
     function world:changeMap(player, mapId, sourceMapId)
         if not player then return false, 'invalid_player' end
         if self.containment.migrationBlocked then return false, 'migration_blocked' end
-        if self.containment.ownershipReject then return false, 'ownership_reject' end
+        if self.containment.ownershipReject then return false, 'ownership_rejected' end
         if not mapId or mapId == '' or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
         if sourceMapId ~= nil and sourceMapId ~= '' and player.currentMapId ~= sourceMapId then return false, 'wrong_map' end
         local scope = player.runtimeScope or {}
@@ -1832,7 +2046,18 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)
         if not ok then return false, err end
-        self:_recordRuntimeEvent('player_runtime_migrated', { playerId = player.id, fromMapId = source, toMapId = mapId, scope = deepcopy(player.runtimeScope) })
+        self:_recordRuntimeEvent('map_route_committed', {
+            playerId = player.id,
+            fromMapId = source,
+            toMapId = mapId,
+            source_scope = deepcopy(player.runtimeScope),
+            target_scope = {
+                worldId = self.runtimeIdentity.worldId,
+                channelId = self.runtimeIdentity.channelId,
+                runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            },
+            scope = deepcopy(player.runtimeScope),
+        })
         self:publishPlayerSnapshot(player)
         return true
     end
@@ -1864,6 +2089,7 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self.questSystem:turnIn(player, questId)
         if not ok then return false, err end
+        self:_emitRewardLedger(player, 'quest_reward_claim', { source_system = 'quest_system', correlation_id = string.format('quest_turnin:%s:%s:%s', tostring(player.id), tostring(questId), tostring(self:_now())), quest_id = questId, lineage_reference = self:_lineageReference('quest', questId), metadata = { action = 'turn_in' } })
         self.journal:append('quest_completed', { playerId = player.id, questId = questId, npc = binding.npc, mapId = binding.mapId })
         self:publishPlayerSnapshot(player)
         return true
@@ -1879,7 +2105,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     local runtimeCfg = worldConfig.runtime or {}
-    scheduler:every('spawn_tick', tonumber(runtimeCfg.spawnTickSec) or 5, function() spawnSystem:tick() end)
+    scheduler:every('spawn_tick', tonumber(runtimeCfg.spawnTickSec) or 5, function() world:tickSpawns() end)
     scheduler:every('boss_tick', tonumber(runtimeCfg.bossTickSec) or 15, function() world:tickBosses() end)
     scheduler:every('autosave_tick', tonumber(runtimeCfg.autosaveTickSec) or 30, function() world:flushDirtyPlayers({ requireWorldSave = world.strictRuntimeBoundary }) end)
     scheduler:every('world_state_autosave_tick', tonumber(runtimeCfg.worldStateAutosaveTickSec) or 15, function() world:flushPendingWorldSave(world._pendingWorldSaveReason or 'periodic') end)

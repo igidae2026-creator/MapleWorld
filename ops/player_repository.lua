@@ -55,6 +55,7 @@ local function classifyLoadError(err)
     local msg = tostring(err or '')
     if msg == '' then return 'unknown_error' end
     if msg:find('storage_unavailable', 1, true) then return 'storage_unavailable' end
+    if msg:find('replay', 1, true) or msg:find('restore', 1, true) then return 'replay_recovery' end
     if msg:find('decode', 1, true) or msg:find('json', 1, true) then return 'corrupted_envelope' end
     if msg:find('error_code_', 1, true) then return 'storage_error' end
     return 'storage_error'
@@ -127,6 +128,14 @@ end
 
 function PlayerRepository:_commitKey(revision)
     return tostring(self.key) .. '__commit_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
+function PlayerRepository:_stageKey(revision)
+    return tostring(self.key) .. '__stage_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
+function PlayerRepository:_finalizeKey(revision)
+    return tostring(self.key) .. '__finalize_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
 end
 
 function PlayerRepository:_headHistorySize()
@@ -214,6 +223,17 @@ function PlayerRepository:_isCommittedRevision(storage, revision)
     return math.max(0, math.floor(tonumber(value.revision) or 0)) == normalized
 end
 
+function PlayerRepository:_isFinalizedRevision(storage, revision)
+    local normalized = math.max(0, math.floor(tonumber(revision) or 0))
+    if normalized <= 0 then return true end
+    local envelope = self:_readEnvelope(storage, self:_finalizeKey(normalized))
+    if type(envelope) ~= 'table' then return false end
+    local value = envelope.value
+    if type(value) ~= 'table' then return false end
+    return math.max(0, math.floor(tonumber(value.revision) or 0)) == normalized
+        and tostring(value.phase or '') == 'finalized'
+end
+
 function PlayerRepository:_loadFromStorage(playerId)
     local storage = self:_storage(playerId)
     if not storage then return nil, 'storage_unavailable' end
@@ -256,8 +276,13 @@ function PlayerRepository:_loadFromStorage(playerId)
                 local envelopeRevision = math.max(0, math.floor(tonumber(envelope.revision) or 0))
                 local bestRevision = math.max(0, math.floor(tonumber(bestEnvelope and bestEnvelope.revision) or 0))
                 local envelopeCommitted = self:_isCommittedRevision(storage, envelopeRevision)
+                local envelopeFinalized = self:_isFinalizedRevision(storage, envelopeRevision)
                 local bestCommitted = bestEnvelope and self:_isCommittedRevision(storage, bestRevision) or false
-                if (not bestEnvelope) or (envelopeCommitted and not bestCommitted) or (envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
+                local bestFinalized = bestEnvelope and self:_isFinalizedRevision(storage, bestRevision) or false
+                if (not bestEnvelope)
+                    or (envelopeFinalized and not bestFinalized)
+                    or (envelopeFinalized == bestFinalized and envelopeCommitted and not bestCommitted)
+                    or (envelopeFinalized == bestFinalized and envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
                     bestEnvelope = envelope
                     bestKey = key
                 end
@@ -294,11 +319,14 @@ function PlayerRepository:_saveToStorage(player)
         revision = nextRevision,
         savedAt = self.runtimeAdapter:now(),
         previousRevision = currentRevision,
+        phase = 'staged',
         value = deepcopy(player),
     }
 
     local encodedEnvelope = self.runtimeAdapter:encodeData(envelope)
-    local ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
+    local ok, err = writeStorage(storage, self:_stageKey(nextRevision), encodedEnvelope)
+    if not ok then return false, err end
+    ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
     if not ok then return false, err end
 
     ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
@@ -314,7 +342,8 @@ function PlayerRepository:_saveToStorage(player)
     local commitEnvelope = {
         revision = nextRevision,
         savedAt = envelope.savedAt,
-        value = { revision = nextRevision, slot = nextSlot },
+        phase = 'committed',
+        value = { revision = nextRevision, slot = nextSlot, previousRevision = currentRevision },
     }
     ok, err = writeStorage(storage, self:_commitKey(nextRevision), self.runtimeAdapter:encodeData(commitEnvelope))
     if not ok then return false, err end
@@ -338,6 +367,15 @@ function PlayerRepository:_saveToStorage(player)
         return false, err
     end
 
+    local finalizeEnvelope = {
+        revision = nextRevision,
+        savedAt = envelope.savedAt,
+        phase = 'finalized',
+        value = { revision = nextRevision, slot = nextSlot, previousRevision = currentRevision },
+    }
+    ok, err = writeStorage(storage, self:_finalizeKey(nextRevision), self.runtimeAdapter:encodeData(finalizeEnvelope))
+    if not ok then return false, err end
+
     local trimKey = self:_oldRevisionKey(nextRevision)
     if trimKey ~= nil then
         writeStorage(storage, trimKey, '')
@@ -348,6 +386,12 @@ function PlayerRepository:_saveToStorage(player)
     if oldCommitKey ~= nil then
         writeStorage(storage, oldCommitKey, '')
         if self.metrics then self.metrics:increment('repository.trimmed_commit', 1, { kind = 'msw' }) end
+    end
+
+    local oldStageKey = self:_oldCommitKey(nextRevision)
+    if oldStageKey ~= nil then
+        writeStorage(storage, self:_stageKey(nextRevision - self.maxCommits), '')
+        writeStorage(storage, self:_finalizeKey(nextRevision - self.maxCommits), '')
     end
 
     if self.metrics then

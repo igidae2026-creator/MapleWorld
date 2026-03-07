@@ -207,13 +207,28 @@ function WorldServerBridge:_validateActorScope(player, actor)
         if self.world and self.world._recordRuntimeEvent then
             self.world:_recordRuntimeEvent('runtime_scope_conflict', { playerId = player.id, field = 'worldId', expected = ps.worldId, actual = scope.worldId })
         end
+        if self.world and self.world._recordOwnershipConflict then
+            self.world:_recordOwnershipConflict('runtime_world_conflict', { playerId = player.id, expected = ps.worldId, actual = scope.worldId })
+        end
         return false, 'runtime_world_conflict'
     end
     if ps.channelId and scope.channelId and tostring(ps.channelId) ~= tostring(scope.channelId) then
         if self.world and self.world._recordRuntimeEvent then
             self.world:_recordRuntimeEvent('runtime_scope_conflict', { playerId = player.id, field = 'channelId', expected = ps.channelId, actual = scope.channelId })
         end
+        if self.world and self.world._recordOwnershipConflict then
+            self.world:_recordOwnershipConflict('runtime_channel_conflict', { playerId = player.id, expected = ps.channelId, actual = scope.channelId })
+        end
         return false, 'runtime_channel_conflict'
+    end
+    if ps.runtimeInstanceId and scope.runtimeInstanceId and tostring(ps.runtimeInstanceId) ~= tostring(scope.runtimeInstanceId) then
+        if self.world and self.world._recordRuntimeEvent then
+            self.world:_recordRuntimeEvent('runtime_scope_conflict', { playerId = player.id, field = 'runtimeInstanceId', expected = ps.runtimeInstanceId, actual = scope.runtimeInstanceId })
+        end
+        if self.world and self.world._recordOwnershipConflict then
+            self.world:_recordOwnershipConflict('runtime_instance_conflict', { playerId = player.id, expected = ps.runtimeInstanceId, actual = scope.runtimeInstanceId })
+        end
+        return false, 'runtime_instance_conflict'
     end
     return true
 end
