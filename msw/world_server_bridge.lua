@@ -397,7 +397,7 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
         local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, true)
         if not ok then return nil, updateErr end
         session.lastSeenAt = self.runtimeAdapter:now()
-        return player
+        return player, nil, actor
     end
 
     local actor, err = self.runtimeAdapter:resolveActorContext(requestContext, { authoritativeOnly = false })
@@ -411,7 +411,58 @@ function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
     local mapId = actor.mapId or player.currentMapId or requestedMapId or self:_defaultMapId()
     local ok, updateErr = self.world:updatePlayerRuntimeState(player, mapId, actor.position, false)
     if not ok then return nil, updateErr end
-    return player
+    return player, nil, actor
+end
+
+function WorldServerBridge:_isAllowedMapTransition(sourceMapId, destinationMapId)
+    local transitions = (self.worldConfig and self.worldConfig.mapTransitions)
+        or (self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.mapTransitions)
+    if type(transitions) ~= 'table' then return false end
+    local source = transitions[sourceMapId]
+    if type(source) ~= 'table' then return false end
+    if source[destinationMapId] == true then return true end
+    for _, candidate in ipairs(source) do
+        if candidate == destinationMapId then return true end
+    end
+    return false
+end
+
+function WorldServerBridge:_validateChangeMapContext(player, actor, destinationMapId, sourceMapId)
+    if not destinationMapId or destinationMapId == '' then return false, 'invalid_map' end
+    if not self.worldConfig.maps or not self.worldConfig.maps[destinationMapId] then return false, 'invalid_map' end
+
+    if not self.runtimeAdapter:isLive() then return true end
+    if not player then return false, 'invalid_player' end
+
+    local playerMapId = player.currentMapId
+    local actorMapId = actor and actor.mapId or nil
+    local source = sourceMapId
+    if source == nil or source == '' then return false, 'missing_transition_source' end
+    if playerMapId and source ~= playerMapId then return false, 'wrong_map' end
+    if actorMapId and source ~= actorMapId then return false, 'wrong_map' end
+    if destinationMapId == source then return true end
+
+    if not self:_isAllowedMapTransition(source, destinationMapId) then
+        return false, 'invalid_map_transition'
+    end
+    return true
+end
+
+function WorldServerBridge:_validateNpcActionContext(player, npcId, itemId)
+    if npcId == nil or npcId == '' then return false, 'invalid_npc' end
+    local npc, npcErr = self.world:_resolveNpcBinding(npcId)
+    if not npc then return false, npcErr end
+
+    local shopOk, shopErr = self.world:_validateNpcShop(npc)
+    if not shopOk then return false, shopErr end
+
+    local boundaryOk, boundaryErr = self.world:_requireActionBoundary(player, npc.mapId, npc.position, 'questNpcRange')
+    if not boundaryOk then return false, boundaryErr end
+
+    if itemId == nil or itemId == '' then return false, 'invalid_item' end
+    if not self.world:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
+
+    return true
 end
 
 function WorldServerBridge:onUserEnter(event)
@@ -514,6 +565,8 @@ end
 function WorldServerBridge:buyFromNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:buyFromNpc(player, npcId, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -522,6 +575,8 @@ end
 function WorldServerBridge:sellToNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:sellToNpc(player, npcId, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
@@ -544,8 +599,10 @@ function WorldServerBridge:unequipItem(requestContext, slot)
 end
 
 function WorldServerBridge:changeMap(requestContext, mapId, sourceMapId)
-    local player, err = self:_resolvePlayer(requestContext, nil)
+    local player, err, actor = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateChangeMapContext(player, actor, mapId, sourceMapId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result = self.world:changeMap(player, mapId, sourceMapId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
