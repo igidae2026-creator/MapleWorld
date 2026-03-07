@@ -133,9 +133,14 @@ function QuestSystem:turnIn(player, questId)
     local state = player.questState[questId]
     if not quest or not state or state.completed or not self:isComplete(player, questId) then return false, 'not_ready' end
 
+    local correlationId = string.format('quest_turnin:%s:%s:%s', tostring(player.id), tostring(questId), tostring(os.time()))
     for _, objective in ipairs(quest.objectives) do
         if objective.type == 'collect' then
-            local ok = self.itemSystem:removeItem(player, objective.targetId, objective.required)
+            local ok = self.itemSystem:removeItem(player, objective.targetId, objective.required, nil, {
+                source = 'quest_turnin_requirement',
+                quest_id = questId,
+                correlation_id = correlationId,
+            })
             if not ok then return false, 'missing_required_items' end
             self:onItemRemoved(player, objective.targetId, objective.required)
         end
@@ -144,14 +149,18 @@ function QuestSystem:turnIn(player, questId)
     state.completed = true
     if quest.rewardMesos and quest.rewardMesos > 0 then
         if self.economySystem then
-            self.economySystem:grantMesos(player, quest.rewardMesos, 'quest_reward')
+            self.economySystem:grantMesos(player, quest.rewardMesos, 'quest_reward', { questId = questId, correlationId = correlationId })
         else
             player.mesos = (player.mesos or 0) + quest.rewardMesos
         end
     end
     if quest.rewardItems then
         for _, reward in ipairs(quest.rewardItems) do
-            self.itemSystem:addItem(player, reward.itemId, reward.quantity)
+            self.itemSystem:addItem(player, reward.itemId, reward.quantity, nil, {
+                source = 'quest_reward',
+                quest_id = questId,
+                correlation_id = correlationId,
+            })
             self:onItemAcquired(player, reward.itemId, reward.quantity)
         end
     end

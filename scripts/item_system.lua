@@ -28,10 +28,13 @@ local function observeInstanceId(player, instanceId)
 end
 
 function ItemSystem.new(config)
+    local cfg = config or {}
     local self = {
-        items = (config or {}).items or {},
-        logger = (config or {}).logger,
-        metrics = (config or {}).metrics,
+        items = cfg.items or {},
+        logger = cfg.logger,
+        metrics = cfg.metrics,
+        ledgerSink = cfg.ledgerSink,
+        suspiciousItemQuantity = tonumber(cfg.suspiciousItemQuantity) or 1000,
     }
     setmetatable(self, { __index = ItemSystem })
     return self
@@ -62,6 +65,11 @@ function ItemSystem:_slotFor(itemDef)
     return SLOT_BY_TYPE[itemDef.type]
 end
 
+function ItemSystem:_emitLedger(event)
+    if type(self.ledgerSink) ~= 'function' then return nil end
+    return self.ledgerSink(event)
+end
+
 function ItemSystem:_makeInstance(player, itemId, template)
     template = template or {}
     local instanceId = template.instanceId
@@ -71,10 +79,18 @@ function ItemSystem:_makeInstance(player, itemId, template)
     else
         observeInstanceId(player, instanceId)
     end
+    local lineage = type(template.lineage) == 'table' and template.lineage or {}
     return {
         itemId = itemId,
         instanceId = instanceId,
         enhancement = tonumber(template.enhancement) or 0,
+        lineage = {
+            created_by_event = lineage.created_by_event or template.created_by_event,
+            created_from_source = lineage.created_from_source or template.created_from_source,
+            current_owner = lineage.current_owner or player.id,
+            last_mutation_event = lineage.last_mutation_event,
+            destruction_event = lineage.destruction_event,
+        },
     }
 end
 
@@ -97,7 +113,6 @@ function ItemSystem:sanitizePlayerProfile(player, playerId)
     profile.questState = type(profile.questState) == 'table' and profile.questState or {}
     profile.killLog = type(profile.killLog) == 'table' and profile.killLog or {}
     profile.flags = type(profile.flags) == 'table' and profile.flags or {}
-    profile.currentMapId = profile.currentMapId
     profile.nextItemInstanceId = math.max(1, math.floor(tonumber(profile.nextItemInstanceId) or 1))
     profile.version = tonumber(profile.version) or 0
     profile.dirty = profile.dirty == true
@@ -108,11 +123,7 @@ function ItemSystem:sanitizePlayerProfile(player, playerId)
         if quantity <= 0 then
             profile.inventory[itemId] = nil
         else
-            local normalized = {
-                itemId = itemId,
-                quantity = quantity,
-                enhancement = tonumber(entry and entry.enhancement) or 0,
-            }
+            local normalized = { itemId = itemId, quantity = quantity, enhancement = tonumber(entry and entry.enhancement) or 0 }
             if itemDef and itemDef.stackable == false then
                 normalized.instances = {}
                 if type(entry.instances) == 'table' then
@@ -125,9 +136,7 @@ function ItemSystem:sanitizePlayerProfile(player, playerId)
                 while #normalized.instances < quantity do
                     normalized.instances[#normalized.instances + 1] = self:_makeInstance(profile, itemId, { enhancement = normalized.enhancement })
                 end
-                while #normalized.instances > quantity do
-                    table.remove(normalized.instances)
-                end
+                while #normalized.instances > quantity do table.remove(normalized.instances) end
                 normalized.quantity = #normalized.instances
             end
             profile.inventory[itemId] = normalized
@@ -141,6 +150,7 @@ function ItemSystem:sanitizePlayerProfile(player, playerId)
                 itemId = equipped.itemId,
                 instanceId = equipped.instanceId,
                 enhancement = tonumber(equipped.enhancement) or 0,
+                lineage = equipped.lineage,
             }
             if equipped.instanceId then observeInstanceId(profile, equipped.instanceId) end
         else
@@ -158,11 +168,7 @@ end
 function ItemSystem:exportInventory(player)
     local out = {}
     for itemId, entry in pairs((player and player.inventory) or {}) do
-        local copy = {
-            itemId = itemId,
-            quantity = math.floor(tonumber(entry.quantity) or 0),
-            enhancement = tonumber(entry.enhancement) or 0,
-        }
+        local copy = { itemId = itemId, quantity = math.floor(tonumber(entry.quantity) or 0), enhancement = tonumber(entry.enhancement) or 0 }
         if type(entry.instances) == 'table' then
             copy.instances = {}
             for i, instance in ipairs(entry.instances) do
@@ -170,6 +176,7 @@ function ItemSystem:exportInventory(player)
                     itemId = instance.itemId,
                     instanceId = instance.instanceId,
                     enhancement = tonumber(instance.enhancement) or 0,
+                    lineage = instance.lineage,
                 }
             end
         end
@@ -178,7 +185,7 @@ function ItemSystem:exportInventory(player)
     return out
 end
 
-function ItemSystem:addItem(player, itemId, quantity, metadata)
+function ItemSystem:addItem(player, itemId, quantity, metadata, context)
     local amount = math.floor(tonumber(quantity or 1) or 0)
     if not player then return false, 'invalid_player' end
     if not isPositiveInteger(amount) then return false, 'invalid_quantity' end
@@ -186,30 +193,64 @@ function ItemSystem:addItem(player, itemId, quantity, metadata)
     local itemDef = self.items[itemId]
     if not itemDef then return false, 'unknown_item' end
 
+    local ctx = type(context) == 'table' and context or {}
     local entry = player.inventory[itemId]
     if not entry then
         entry = { itemId = itemId, quantity = 0, enhancement = 0 }
         player.inventory[itemId] = entry
     end
 
+    local createdInstances = {}
     if itemDef.stackable then
-        entry.quantity = math.floor(tonumber(entry.quantity) or 0) + amount
+        local before = math.floor(tonumber(entry.quantity) or 0)
+        entry.quantity = before + amount
         entry.enhancement = tonumber(entry.enhancement) or 0
+        self:_emitLedger({
+            event_type = 'item_grant', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+            correlation_id = ctx.correlation_id, source_event_id = ctx.source_event_id, item_id = itemId, quantity = amount,
+            pre_state = { quantity = before }, post_state = { quantity = entry.quantity },
+            idempotency_key = ctx.idempotency_key or string.format('item_add:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(ctx.correlation_id or os.time())),
+            metadata = { source = ctx.source or 'unknown', stackable = true },
+        })
     else
         entry.instances = type(entry.instances) == 'table' and entry.instances or {}
         if type(metadata) == 'table' and type(metadata.instances) == 'table' then
             for _, instance in ipairs(metadata.instances) do
-                entry.instances[#entry.instances + 1] = self:_makeInstance(player, itemId, instance)
+                local made = self:_makeInstance(player, itemId, instance)
+                entry.instances[#entry.instances + 1] = made
+                createdInstances[#createdInstances + 1] = made
             end
-            while #entry.instances < ((math.floor(tonumber(entry.quantity) or 0)) + amount) do
-                entry.instances[#entry.instances + 1] = self:_makeInstance(player, itemId, metadata)
+            while #createdInstances < amount do
+                local made = self:_makeInstance(player, itemId, metadata)
+                entry.instances[#entry.instances + 1] = made
+                createdInstances[#createdInstances + 1] = made
             end
         else
             for _ = 1, amount do
-                entry.instances[#entry.instances + 1] = self:_makeInstance(player, itemId, metadata)
+                local made = self:_makeInstance(player, itemId, metadata)
+                entry.instances[#entry.instances + 1] = made
+                createdInstances[#createdInstances + 1] = made
             end
         end
         entry.quantity = #entry.instances
+        for _, instance in ipairs(createdInstances) do
+            local ledgerEntry = self:_emitLedger({
+                event_type = 'item_create', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+                correlation_id = ctx.correlation_id, source_event_id = ctx.source_event_id, item_id = itemId,
+                item_instance_id = instance.instanceId, quantity = 1, pre_state = { owner = nil }, post_state = { owner = player.id, location = 'inventory' },
+                idempotency_key = string.format('item_create:%s:%s', tostring(player.id), tostring(instance.instanceId)),
+                metadata = { source = ctx.source or 'unknown' },
+            })
+            instance.lineage.created_by_event = instance.lineage.created_by_event or (ledgerEntry and ledgerEntry.ledger_event_id)
+            instance.lineage.created_from_source = instance.lineage.created_from_source or (ctx.source or 'unknown')
+            instance.lineage.current_owner = player.id
+            instance.lineage.last_mutation_event = ledgerEntry and ledgerEntry.ledger_event_id or instance.lineage.last_mutation_event
+        end
+    end
+
+    if amount >= self.suspiciousItemQuantity then
+        if self.metrics then self.metrics:increment('item.suspicious_grant', 1, { item = tostring(itemId) }) end
+        if self.logger and self.logger.info then self.logger:info('item_suspicious_grant', { playerId = player.id, itemId = itemId, amount = amount }) end
     end
 
     markDirty(player)
@@ -218,7 +259,7 @@ function ItemSystem:addItem(player, itemId, quantity, metadata)
     return true
 end
 
-function ItemSystem:removeItem(player, itemId, quantity, instanceId)
+function ItemSystem:removeItem(player, itemId, quantity, instanceId, context)
     local amount = math.floor(tonumber(quantity or 1) or 0)
     if not player then return false, 'invalid_player' end
     if not isPositiveInteger(amount) then return false, 'invalid_quantity' end
@@ -227,12 +268,15 @@ function ItemSystem:removeItem(player, itemId, quantity, instanceId)
     local entry = player.inventory[itemId]
     if not entry then return false, 'insufficient_items' end
 
+    local ctx = type(context) == 'table' and context or {}
+    local removedInstances = {}
     if itemDef and itemDef.stackable == false and type(entry.instances) == 'table' then
         if entry.quantity < amount then return false, 'insufficient_items' end
         local removed = 0
         if instanceId then
             for index, instance in ipairs(entry.instances) do
                 if instance.instanceId == instanceId then
+                    removedInstances[#removedInstances + 1] = instance
                     table.remove(entry.instances, index)
                     removed = removed + 1
                     break
@@ -242,16 +286,39 @@ function ItemSystem:removeItem(player, itemId, quantity, instanceId)
         end
         while removed < amount do
             if #entry.instances == 0 then return false, 'insufficient_items' end
-            table.remove(entry.instances)
+            removedInstances[#removedInstances + 1] = table.remove(entry.instances)
             removed = removed + 1
         end
         entry.quantity = #entry.instances
     else
         if entry.quantity < amount then return false, 'insufficient_items' end
+        local before = entry.quantity
         entry.quantity = entry.quantity - amount
+        self:_emitLedger({
+            event_type = 'item_destroy', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+            correlation_id = ctx.correlation_id, source_event_id = ctx.source_event_id, item_id = itemId, quantity = amount,
+            pre_state = { quantity = before }, post_state = { quantity = entry.quantity },
+            idempotency_key = ctx.idempotency_key or string.format('item_remove:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(ctx.correlation_id or os.time())),
+            metadata = { source = ctx.source or 'unknown', stackable = true },
+        })
+    end
+
+    for _, instance in ipairs(removedInstances) do
+        local ledgerEntry = self:_emitLedger({
+            event_type = 'item_destroy', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+            correlation_id = ctx.correlation_id, source_event_id = ctx.source_event_id, item_id = itemId, item_instance_id = instance.instanceId, quantity = 1,
+            pre_state = { owner = player.id }, post_state = { owner = nil },
+            idempotency_key = string.format('item_destroy:%s:%s:%s', tostring(player.id), tostring(instance.instanceId), tostring(ctx.correlation_id or os.time())),
+            metadata = { source = ctx.source or 'unknown' },
+        })
+        instance.lineage = instance.lineage or {}
+        instance.lineage.current_owner = nil
+        instance.lineage.last_mutation_event = ledgerEntry and ledgerEntry.ledger_event_id or instance.lineage.last_mutation_event
+        instance.lineage.destruction_event = ledgerEntry and ledgerEntry.ledger_event_id or instance.lineage.destruction_event
     end
 
     if entry.quantity <= 0 then player.inventory[itemId] = nil end
+    if entry.quantity < 0 then return false, 'negative_inventory' end
     markDirty(player)
     if self.metrics then self.metrics:increment('item.remove', amount, { item = itemId }) end
     return true
@@ -266,22 +333,19 @@ function ItemSystem:_takeEquipInstance(player, itemId, instanceId)
     if #entry.instances ~= math.floor(tonumber(entry.quantity) or 0) then return false, 'inventory_state_invalid' end
 
     local chosen = nil
-    if type(entry.instances) == 'table' then
-        if instanceId then
-            for index, instance in ipairs(entry.instances) do
-                if instance.instanceId == instanceId then
-                    chosen = instance
-                    table.remove(entry.instances, index)
-                    break
-                end
+    if instanceId then
+        for index, instance in ipairs(entry.instances) do
+            if instance.instanceId == instanceId then
+                chosen = instance
+                table.remove(entry.instances, index)
+                break
             end
-            if not chosen then return false, 'instance_not_found' end
-        else
-            chosen = table.remove(entry.instances)
         end
-        entry.quantity = #entry.instances
+        if not chosen then return false, 'instance_not_found' end
+    else
+        chosen = table.remove(entry.instances)
     end
-
+    entry.quantity = #entry.instances
     if not chosen then return false, 'instance_not_found' end
     if entry.quantity <= 0 then player.inventory[itemId] = nil end
     return true, chosen
@@ -301,13 +365,12 @@ function ItemSystem:_peekEquipInstance(player, itemId, instanceId)
         end
         return false, 'instance_not_found'
     end
-
     local selected = entry.instances[#entry.instances]
     if not selected then return false, 'instance_not_found' end
     return true, selected
 end
 
-function ItemSystem:equip(player, itemId, instanceId)
+function ItemSystem:equip(player, itemId, instanceId, context)
     if not player then return false, 'invalid_player' end
 
     local itemDef = self.items[itemId]
@@ -328,25 +391,31 @@ function ItemSystem:equip(player, itemId, instanceId)
 
     local current = player.equipment[slot]
     if current then
-        local ok, err = self:addItem(player, current.itemId, 1, { instances = { current } })
+        local ok, err = self:addItem(player, current.itemId, 1, { instances = { current } }, { source = 'unequip_swap' })
         if not ok then
-            self:addItem(player, itemId, 1, { instances = { instanceOrError } })
+            self:addItem(player, itemId, 1, { instances = { instanceOrError } }, { source = 'equip_rollback' })
             return false, err
         end
     end
 
-    player.equipment[slot] = {
-        itemId = itemId,
-        instanceId = instanceOrError.instanceId,
-        enhancement = tonumber(instanceOrError.enhancement) or 0,
-    }
+    player.equipment[slot] = { itemId = itemId, instanceId = instanceOrError.instanceId, enhancement = tonumber(instanceOrError.enhancement) or 0, lineage = instanceOrError.lineage }
+    local ledgerEntry = self:_emitLedger({
+        event_type = 'item_transfer', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+        correlation_id = context and context.correlation_id, item_id = itemId, item_instance_id = instanceOrError.instanceId, quantity = 1,
+        pre_state = { owner = player.id, location = 'inventory' }, post_state = { owner = player.id, location = 'equipment:' .. tostring(slot) },
+        idempotency_key = string.format('equip:%s:%s', tostring(player.id), tostring(instanceOrError.instanceId)),
+        metadata = { action = 'equip', slot = slot },
+    })
+    instanceOrError.lineage = instanceOrError.lineage or {}
+    instanceOrError.lineage.current_owner = player.id
+    instanceOrError.lineage.last_mutation_event = ledgerEntry and ledgerEntry.ledger_event_id or instanceOrError.lineage.last_mutation_event
     markDirty(player)
     if self.metrics then self.metrics:increment('item.equip', 1, { item = itemId, slot = slot }) end
     if self.logger and self.logger.info then self.logger:info('item_equipped', { playerId = player.id, itemId = itemId, slot = slot }) end
     return true
 end
 
-function ItemSystem:unequip(player, slot)
+function ItemSystem:unequip(player, slot, context)
     if not player then return false, 'invalid_player' end
     local equipped = player.equipment[slot]
     if not equipped then return false, 'slot_empty' end
@@ -355,9 +424,18 @@ function ItemSystem:unequip(player, slot)
     local expectedSlot = self:_slotFor(itemDef)
     if expectedSlot ~= slot then return false, 'invalid_equipment_state' end
 
-    local ok, err = self:addItem(player, equipped.itemId, 1, { instances = { equipped } })
+    local ok, err = self:addItem(player, equipped.itemId, 1, { instances = { equipped } }, { source = 'unequip', correlation_id = context and context.correlation_id })
     if not ok then return false, err end
     player.equipment[slot] = nil
+    local ledgerEntry = self:_emitLedger({
+        event_type = 'item_transfer', actor_id = player.id, player_id = player.id, source_system = 'item_system',
+        correlation_id = context and context.correlation_id, item_id = equipped.itemId, item_instance_id = equipped.instanceId, quantity = 1,
+        pre_state = { owner = player.id, location = 'equipment:' .. tostring(slot) }, post_state = { owner = player.id, location = 'inventory' },
+        idempotency_key = string.format('unequip:%s:%s', tostring(player.id), tostring(equipped.instanceId)),
+        metadata = { action = 'unequip', slot = slot },
+    })
+    equipped.lineage = equipped.lineage or {}
+    equipped.lineage.last_mutation_event = ledgerEntry and ledgerEntry.ledger_event_id or equipped.lineage.last_mutation_event
     markDirty(player)
     if self.metrics then self.metrics:increment('item.unequip', 1, { slot = tostring(slot) }) end
     return true

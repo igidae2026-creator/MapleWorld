@@ -171,6 +171,7 @@ local function requireWorldConfig()
             persistedJournalEntries = 2000,
             journalMaxEntries = 5000,
             journalMaxPayloadBytes = 2048,
+            ledgerMaxEntries = 20000,
             worldStateSaveDebounceSec = 5,
             worldStateMaxPendingReasons = 200,
             worldRevisionRetention = 32,
@@ -459,7 +460,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     local rng = config.rng or math.random
-    local journal = config.eventJournal or EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries, maxPayloadBytes = worldConfig.runtime and worldConfig.runtime.journalMaxPayloadBytes })
+    local journal = config.eventJournal or EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries, maxPayloadBytes = worldConfig.runtime and worldConfig.runtime.journalMaxPayloadBytes, maxLedgerEntries = worldConfig.runtime and worldConfig.runtime.ledgerMaxEntries })
     local actionGuard = config.actionGuard or ActionGuard.new({
         limits = worldConfig.actionRateLimits,
         time = runtimeClock,
@@ -535,6 +536,9 @@ function ServerBootstrap.boot(basePath, config)
             warnings = warnings,
         },
     }
+    itemSystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
+    economySystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
+
     if world.autoPickupDrops == nil then
         world.autoPickupDrops = worldConfig.runtime and worldConfig.runtime.autoPickupDrops ~= false
     end
@@ -547,6 +551,11 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_now()
         return math.floor(tonumber(self.clock()) or os.time())
+    end
+
+    function world:appendLedgerEvent(event)
+        if not self.journal or type(self.journal.appendLedgerEvent) ~= 'function' then return nil end
+        return self.journal:appendLedgerEvent(event)
     end
 
     function world:_emit(hookName, ...)
@@ -827,6 +836,11 @@ function ServerBootstrap.boot(basePath, config)
         world:markWorldStateDirty('journal:' .. tostring(entry and entry.event))
     end
 
+    journal.onLedgerAppend = function(entry)
+        if world._restoringWorldState then return end
+        world:markWorldStateDirty('ledger:' .. tostring(entry and entry.event_type))
+    end
+
     spawnSystem.callbacks = {
         onSpawn = function(mob)
             world.journal:append('mob_spawned', { mapId = mob.mapId, mobId = mob.mobId, spawnId = mob.spawnId })
@@ -1089,12 +1103,40 @@ function ServerBootstrap.boot(basePath, config)
         return requested
     end
 
-    function world:_processDropAcquisition(player, mapId, source, rawDrops, forceAutoPickup)
+    function world:_emitRewardLedger(player, eventType, payload)
+        local base = payload or {}
+        return self:appendLedgerEvent({
+            event_type = eventType,
+            actor_id = player and player.id or nil,
+            player_id = player and player.id or nil,
+            source_system = base.source_system or 'world_runtime',
+            source_event_id = base.source_event_id,
+            correlation_id = base.correlation_id,
+            map_id = base.map_id,
+            boss_id = base.boss_id,
+            quest_id = base.quest_id,
+            npc_id = base.npc_id,
+            item_id = base.item_id,
+            item_instance_id = base.item_instance_id,
+            quantity = base.quantity,
+            mesos_delta = base.mesos_delta,
+            pre_state = base.pre_state,
+            post_state = base.post_state,
+            idempotency_key = base.idempotency_key,
+            compensation_of = base.compensation_of,
+            rollback_of = base.rollback_of,
+            metadata = base.metadata,
+        })
+    end
+
+    function world:_processDropAcquisition(player, mapId, source, rawDrops, forceAutoPickup, context)
         local autoPickup = forceAutoPickup == true or self.autoPickupDrops == true
+        local ctx = context or {}
         if autoPickup then
             for _, drop in ipairs(rawDrops) do
-                self.itemSystem:addItem(player, drop.itemId, drop.quantity)
+                self.itemSystem:addItem(player, drop.itemId, drop.quantity, nil, { source = ctx.source or 'auto_drop_pickup', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, boss_id = ctx.bossId })
                 self.questSystem:onItemAcquired(player, drop.itemId, drop.quantity)
+                self:_emitRewardLedger(player, 'reward_claim', { source_system = 'drop_system', correlation_id = ctx.correlationId, source_event_id = ctx.sourceEventId, map_id = mapId, boss_id = ctx.bossId, item_id = drop.itemId, quantity = drop.quantity, idempotency_key = string.format('reward:auto:%s:%s:%s', tostring(player.id), tostring(drop.itemId), tostring(ctx.correlationId or os.time())), metadata = { mode = 'auto_pickup', reason = ctx.source } })
             end
             return rawDrops
         end
@@ -1103,6 +1145,10 @@ function ServerBootstrap.boot(basePath, config)
             ownerId = player.id,
             ownerWindowSec = self.worldConfig.runtime and self.worldConfig.runtime.dropOwnerWindowSec,
             now = self:_now(),
+            sourceSystem = 'drop_system',
+            sourceEventId = ctx.sourceEventId,
+            correlationId = ctx.correlationId,
+            bossId = ctx.bossId,
         })
         for _, record in ipairs(records) do self:_emit('onDropSpawned', record) end
         return records
@@ -1110,9 +1156,10 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_applyMobRewards(player, mob, forceAutoPickup)
         self.expSystem:grant(player, mob.template.exp or 0)
-        self.economySystem:grantMesos(player, self:_rollMesos(mob.template.mesos_min, mob.template.mesos_max), 'mob_drop')
+        local correlationId = string.format('mob_reward:%s:%s:%s', tostring(player.id), tostring(mob.spawnId), tostring(self:_now()))
+        self.economySystem:grantMesos(player, self:_rollMesos(mob.template.mesos_min, mob.template.mesos_max), 'mob_drop', { correlationId = correlationId, mapId = mob.mapId })
         local rawDrops = self.dropSystem:rollDrops(mob, player)
-        local delivered = self:_processDropAcquisition(player, mob.mapId, mob, rawDrops, forceAutoPickup)
+        local delivered = self:_processDropAcquisition(player, mob.mapId, mob, rawDrops, forceAutoPickup, { source = 'mob_drop', correlationId = correlationId, sourceEventId = tostring(mob.spawnId) })
         self.questSystem:onKill(player, mob.mobId, 1)
         player.killLog[mob.mobId] = (player.killLog[mob.mobId] or 0) + 1
         player.dirty = true
@@ -1173,6 +1220,7 @@ function ServerBootstrap.boot(basePath, config)
         if not ok then return false, recordOrErr end
         self.questSystem:onItemAcquired(player, recordOrErr.itemId, recordOrErr.quantity)
         self.journal:append('drop_picked', { playerId = player.id, mapId = record.mapId, dropId = dropId, itemId = recordOrErr.itemId })
+        self:_emitRewardLedger(player, 'reward_claim', { source_system = 'drop_system', map_id = record.mapId, item_id = recordOrErr.itemId, quantity = recordOrErr.quantity, source_event_id = tostring(dropId), correlation_id = recordOrErr.correlationId, idempotency_key = string.format('reward:pickup:%s:%s', tostring(player.id), tostring(dropId)), metadata = { mode = 'manual_pickup' } })
         self:_emit('onDropPicked', recordOrErr, player)
         self:publishPlayerSnapshot(player)
         return true, recordOrErr
@@ -1193,9 +1241,11 @@ function ServerBootstrap.boot(basePath, config)
     function world:_applyBossRewards(player, encounter, rawDrops)
         local bossDef = self.mobs[encounter.bossId] or {}
         self.expSystem:grant(player, bossDef.exp or 0)
-        self.economySystem:grantMesos(player, self:_rollMesos(bossDef.mesos_min, bossDef.mesos_max), 'boss_drop')
+        local correlationId = string.format('boss_reward:%s:%s:%s', tostring(player.id), tostring(encounter.bossId), tostring(self:_now()))
+        self.economySystem:grantMesos(player, self:_rollMesos(bossDef.mesos_min, bossDef.mesos_max), 'boss_drop', { bossId = encounter.bossId, mapId = encounter.mapId, correlationId = correlationId })
         local position = self:_bossPosition(encounter)
-        local delivered = self:_processDropAcquisition(player, encounter.mapId, position, rawDrops, self.autoPickupDrops == true)
+        local delivered = self:_processDropAcquisition(player, encounter.mapId, position, rawDrops, self.autoPickupDrops == true, { source = 'boss_drop', correlationId = correlationId, bossId = encounter.bossId, sourceEventId = tostring(encounter.bossId) })
+        self:_emitRewardLedger(player, 'reward_claim', { source_system = 'boss_system', correlation_id = correlationId, map_id = encounter.mapId, boss_id = encounter.bossId, idempotency_key = string.format('boss_claim:%s:%s:%s', tostring(player.id), tostring(encounter.bossId), tostring(correlationId)), metadata = { reward_kind = 'boss_clear' } })
         self.questSystem:onKill(player, encounter.bossId, 1)
         player.killLog[encounter.bossId] = (player.killLog[encounter.bossId] or 0) + 1
         player.dirty = true
@@ -1270,7 +1320,8 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:grantItem(player, itemId, quantity, metadata, reason)
-        local ok, err = self.itemSystem:addItem(player, itemId, quantity, metadata)
+        local corr = string.format('grant_item:%s:%s:%s', tostring(player and player.id), tostring(itemId), tostring(self:_now()))
+        local ok, err = self.itemSystem:addItem(player, itemId, quantity, metadata, { source = reason or 'grant_item', correlation_id = corr })
         if not ok then return false, err end
         self.questSystem:onItemAcquired(player, itemId, quantity)
         self.journal:append('item_granted', { playerId = player.id, itemId = itemId, quantity = quantity, reason = reason })
@@ -1289,7 +1340,8 @@ function ServerBootstrap.boot(basePath, config)
         if not self:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
-        local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity)
+        local correlationId = string.format('shop_buy:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
+        local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
         if not ok then return false, err end
         self.questSystem:onItemAcquired(player, itemId, quantity)
         self.journal:append('npc_buy', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
@@ -1308,7 +1360,8 @@ function ServerBootstrap.boot(basePath, config)
         if not self:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
-        local ok, err = self.economySystem:sellToNpc(player, itemId, quantity)
+        local correlationId = string.format('shop_sell:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
+        local ok, err = self.economySystem:sellToNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
         if not ok then return false, err end
         self.questSystem:onItemRemoved(player, itemId, quantity)
         self.journal:append('npc_sell', { playerId = player.id, npcId = npcId, itemId = itemId, quantity = quantity })
@@ -1320,7 +1373,7 @@ function ServerBootstrap.boot(basePath, config)
         if not player then return false, 'invalid_player' end
         local actionOk, actionErr = self:_checkAction(player, 'equip', 1)
         if not actionOk then return false, actionErr end
-        local ok, err = self.itemSystem:equip(player, itemId, instanceId)
+        local ok, err = self.itemSystem:equip(player, itemId, instanceId, { correlation_id = string.format('equip:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now())) })
         if not ok then return false, err end
         self.journal:append('item_equipped', { playerId = player.id, itemId = itemId })
         self:publishPlayerSnapshot(player)
@@ -1331,7 +1384,7 @@ function ServerBootstrap.boot(basePath, config)
         if not player then return false, 'invalid_player' end
         local actionOk, actionErr = self:_checkAction(player, 'equip', 1)
         if not actionOk then return false, actionErr end
-        local ok, err = self.itemSystem:unequip(player, slot)
+        local ok, err = self.itemSystem:unequip(player, slot, { correlation_id = string.format('unequip:%s:%s:%s', tostring(player.id), tostring(slot), tostring(self:_now())) })
         if not ok then return false, err end
         self.journal:append('item_unequipped', { playerId = player.id, slot = slot })
         self:publishPlayerSnapshot(player)

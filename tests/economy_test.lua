@@ -22,3 +22,11 @@ for _, evt in ipairs(auditEvents) do
 end
 assert(foundAudit, 'economy mutation events were not journaled for auditability')
 print('economy_test: ok')
+
+local ledger = world.journal:ledgerSnapshot()
+assert(#ledger > 0, 'ledger snapshot should not be empty')
+local hasNpcBuy = false
+for _, evt in ipairs(ledger) do
+    if evt.event_type == 'mesos_spend' and evt.metadata and evt.metadata.reason == 'npc_buy' then hasNpcBuy = true end
+end
+assert(hasNpcBuy, 'ledger missing npc buy mesos spend')

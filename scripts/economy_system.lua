@@ -23,6 +23,7 @@ function EconomySystem.new(config)
         transactions = {},
         maxTransactions = cfg.maxTransactions or 256,
         auditSink = cfg.auditSink,
+        ledgerSink = cfg.ledgerSink,
         nextTransactionId = 1,
         maxPlayerLedgerEntries = cfg.maxPlayerLedgerEntries or 64,
         suspiciousTransactionMesos = cfg.suspiciousTransactionMesos or 5000000,
@@ -59,9 +60,7 @@ function EconomySystem:_appendPlayerLedger(player, entry)
         afterMesos = entry.afterMesos,
         at = entry.at,
     }
-    while #player.economyLedger > cap do
-        table.remove(player.economyLedger, 1)
-    end
+    while #player.economyLedger > cap do table.remove(player.economyLedger, 1) end
 end
 
 function EconomySystem:_emitAudit(entry)
@@ -69,12 +68,38 @@ function EconomySystem:_emitAudit(entry)
     local ok, err = pcall(self.auditSink, entry)
     if not ok then
         if self.metrics then self.metrics:increment('economy.audit_sink_error', 1) end
-        if self.logger and self.logger.error then
-            self.logger:error('economy_audit_sink_failed', { error = tostring(err), txId = entry.txId })
-        end
+        if self.logger and self.logger.error then self.logger:error('economy_audit_sink_failed', { error = tostring(err), txId = entry.txId }) end
     elseif self.metrics then
         self.metrics:increment('economy.audit_sink_ok', 1)
     end
+end
+
+function EconomySystem:_emitLedgerEvent(player, eventType, mesosDelta, context)
+    if type(self.ledgerSink) ~= 'function' then return nil end
+    local ctx = type(context) == 'table' and context or {}
+    local key = ctx.idempotencyKey or string.format('%s:%s:%s:%s', tostring(eventType), tostring(player and player.id or 'system'), tostring(ctx.reason or 'na'), tostring(ctx.correlationId or os.time()))
+    local payload = {
+        event_type = eventType,
+        actor_id = player and player.id or nil,
+        player_id = player and player.id or nil,
+        source_system = 'economy_system',
+        source_event_id = tostring(ctx.txId or ''),
+        correlation_id = ctx.correlationId,
+        map_id = ctx.mapId,
+        boss_id = ctx.bossId,
+        quest_id = ctx.questId,
+        npc_id = ctx.npcId,
+        item_id = ctx.itemId,
+        quantity = ctx.quantity,
+        mesos_delta = mesosDelta,
+        pre_state = { mesos = ctx.beforeMesos },
+        post_state = { mesos = ctx.afterMesos },
+        idempotency_key = key,
+        compensation_of = ctx.compensationOf,
+        rollback_of = ctx.rollbackOf,
+        metadata = { reason = ctx.reason, tx_kind = ctx.kind },
+    }
+    return self.ledgerSink(payload)
 end
 
 function EconomySystem:_record(kind, player, amount, meta)
@@ -107,21 +132,33 @@ function EconomySystem:_record(kind, player, amount, meta)
     self:_appendPlayerLedger(player, entry)
     self:_emitAudit(entry)
 
+    local delta = kind == 'spend' and -amount or amount
+    self:_emitLedgerEvent(player, 'mesos_' .. tostring(kind), delta, {
+        txId = entry.txId,
+        beforeMesos = beforeMesos,
+        afterMesos = afterMesos,
+        reason = entry.meta.reason,
+        kind = kind,
+        itemId = entry.meta.itemId,
+        quantity = entry.meta.quantity,
+        npcId = entry.meta.npcId,
+        questId = entry.meta.questId,
+        bossId = entry.meta.bossId,
+        correlationId = entry.meta.correlationId,
+        idempotencyKey = entry.meta.idempotencyKey,
+        compensationOf = entry.meta.compensationOf,
+        rollbackOf = entry.meta.rollbackOf,
+    })
+
     if amount >= math.max(1, math.floor(tonumber(self.suspiciousTransactionMesos) or 1)) then
         if self.metrics then self.metrics:increment('economy.suspicious_large_flow', 1, { kind = kind }) end
         if self.logger and self.logger.info then
-            self.logger:info('economy_suspicious_large_flow', {
-                txId = entry.txId,
-                playerId = entry.playerId,
-                kind = kind,
-                amount = amount,
-                reason = entry.meta.reason,
-            })
+            self.logger:info('economy_suspicious_large_flow', { txId = entry.txId, playerId = entry.playerId, kind = kind, amount = amount, reason = entry.meta.reason })
         end
     end
 end
 
-function EconomySystem:grantMesos(player, amount, reason)
+function EconomySystem:grantMesos(player, amount, reason, meta)
     local mesos = self:_normalizeAmount(amount)
     if not player then return false, 'invalid_player' end
     if not mesos then return false, 'invalid_amount' end
@@ -130,7 +167,12 @@ function EconomySystem:grantMesos(player, amount, reason)
     player.mesos = math.min(self.maxMesos, previous + mesos)
     local applied = player.mesos - previous
     self.faucets[reason or 'unknown'] = (self.faucets[reason or 'unknown'] or 0) + applied
-    self:_record('grant', player, applied, { reason = reason, requested = mesos, beforeMesos = previous, afterMesos = player.mesos })
+    local details = meta or {}
+    details.reason = reason
+    details.requested = mesos
+    details.beforeMesos = previous
+    details.afterMesos = player.mesos
+    self:_record('grant', player, applied, details)
     markDirty(player)
     if self.metrics then
         self.metrics:increment('economy.mesos_in', applied, { reason = reason or 'unknown' })
@@ -140,15 +182,20 @@ function EconomySystem:grantMesos(player, amount, reason)
     return true
 end
 
-function EconomySystem:spendMesos(player, amount, reason)
+function EconomySystem:spendMesos(player, amount, reason, meta)
     local mesos = self:_normalizeAmount(amount)
     if not player then return false, 'invalid_player' end
     if not mesos then return false, 'invalid_amount' end
     if (tonumber(player.mesos) or 0) < mesos then return false, 'insufficient_mesos' end
 
+    local before = player.mesos
     player.mesos = player.mesos - mesos
     self.sinks[reason or 'unknown'] = (self.sinks[reason or 'unknown'] or 0) + mesos
-    self:_record('spend', player, mesos, { reason = reason, beforeMesos = player.mesos + mesos, afterMesos = player.mesos })
+    local details = meta or {}
+    details.reason = reason
+    details.beforeMesos = before
+    details.afterMesos = player.mesos
+    self:_record('spend', player, mesos, details)
     markDirty(player)
     if self.metrics then
         self.metrics:increment('economy.mesos_out', mesos, { reason = reason or 'unknown' })
@@ -174,39 +221,49 @@ function EconomySystem:quoteNpcSell(itemId, quantity)
     return math.max(0, math.floor(npcPrice * self.npcSellRate) * amount)
 end
 
-function EconomySystem:sellToNpc(player, itemId, quantity)
+function EconomySystem:sellToNpc(player, itemId, quantity, context)
     local amount = math.floor(tonumber(quantity) or 0)
     if not isPositiveInteger(amount) then return false, 'invalid_quantity' end
 
     local payout, err = self:quoteNpcSell(itemId, amount)
     if payout == nil then return false, err end
 
-    local removed, removeErr = self.itemSystem:removeItem(player, itemId, amount)
+    local ctx = type(context) == 'table' and context or {}
+    local removed, removeErr = self.itemSystem:removeItem(player, itemId, amount, nil, {
+        source = 'shop_sell',
+        source_event_id = ctx.sourceEventId,
+        correlation_id = ctx.correlationId,
+        npc_id = ctx.npcId,
+    })
     if not removed then return false, removeErr end
-    local ok, grantErr = self:grantMesos(player, payout, 'npc_sell')
+    local ok, grantErr = self:grantMesos(player, payout, 'npc_sell', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId })
     if not ok then
-        self.itemSystem:addItem(player, itemId, amount)
+        self.itemSystem:addItem(player, itemId, amount, nil, { source = 'shop_sell_rollback', correlation_id = ctx.correlationId })
         return false, grantErr
     end
-    self:_record('npc_sell', player, payout, { itemId = itemId, quantity = amount, reason = 'npc_sell' })
     return true
 end
 
-function EconomySystem:buyFromNpc(player, itemId, quantity)
+function EconomySystem:buyFromNpc(player, itemId, quantity, context)
     local amount = math.floor(tonumber(quantity) or 0)
     if not isPositiveInteger(amount) then return false, 'invalid_quantity' end
 
     local totalPrice, err = self:quoteNpcBuy(itemId, amount)
     if totalPrice == nil then return false, err end
 
-    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy')
+    local ctx = type(context) == 'table' and context or {}
+    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId })
     if not spent then return false, spendErr end
-    local added, addErr = self.itemSystem:addItem(player, itemId, amount)
+    local added, addErr = self.itemSystem:addItem(player, itemId, amount, nil, {
+        source = 'shop_buy',
+        correlation_id = ctx.correlationId,
+        npc_id = ctx.npcId,
+        source_event_id = ctx.sourceEventId,
+    })
     if not added then
-        self:grantMesos(player, totalPrice, 'npc_buy_rollback')
+        self:grantMesos(player, totalPrice, 'npc_buy_rollback', { rollbackOf = ctx.sourceEventId, correlationId = ctx.correlationId })
         return false, addErr
     end
-    self:_record('npc_buy', player, totalPrice, { itemId = itemId, quantity = amount, reason = 'npc_buy' })
     return true
 end
 
