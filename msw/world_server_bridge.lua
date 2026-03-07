@@ -217,7 +217,7 @@ function WorldServerBridge:bootstrap()
             self:_destroyMobEntity(mob)
         end,
         onMobDamaged = function(world, player, mob)
-            self:_cacheMapState(mob.mapId, world:getMapState(mob.mapId))
+            self.mapStateById[mob.mapId] = nil
         end,
         onDropSpawned = function(world, drop)
             self:_spawnDropEntity(drop)
@@ -232,7 +232,7 @@ function WorldServerBridge:bootstrap()
             self:_spawnBossEntity(encounter)
         end,
         onBossDamaged = function(world, encounter)
-            self:_cacheMapState(encounter.mapId, world:getMapState(encounter.mapId))
+            self.mapStateById[encounter.mapId] = nil
         end,
         onBossKilled = function(world, encounter)
             self:_destroyBossEntity(encounter)
@@ -257,14 +257,13 @@ function WorldServerBridge:tick(delta)
     self.world.scheduler:tick(tonumber(delta) or 0)
 end
 
-function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId, senderUserId)
+function WorldServerBridge:_resolvePlayer(requestContext, requestedMapId)
     self:bootstrap()
     local authoritative = self.runtimeAdapter:isLive()
 
     if authoritative then
         local actor, err = self.runtimeAdapter:resolveActorContext(requestContext, {
             authoritativeOnly = true,
-            senderUserId = senderUserId,
         })
         if not actor or not actor.userId then return nil, err or 'invalid_user' end
 
@@ -317,18 +316,24 @@ function WorldServerBridge:onUserLeave(event)
     return true
 end
 
-function WorldServerBridge:getPlayerState(requestContext, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:getPlayerState(requestContext)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local snapshot = self.world:publishPlayerSnapshot(player)
     return response(self.runtimeAdapter, true, snapshot)
 end
 
-function WorldServerBridge:getMapState(mapId, senderUserId)
+function WorldServerBridge:getMapState(requestContext, mapId)
     self:bootstrap()
     local targetMapId = mapId
+
+    if mapId == nil and type(requestContext) == 'string' then
+        targetMapId = requestContext
+        requestContext = nil
+    end
+
     if (targetMapId == nil or targetMapId == '') and self.runtimeAdapter:isLive() then
-        local player, err = self:_resolvePlayer(nil, nil, senderUserId)
+        local player, err = self:_resolvePlayer(requestContext, nil)
         if not player then return response(self.runtimeAdapter, false, nil, err) end
         targetMapId = player.currentMapId
     end
@@ -336,8 +341,8 @@ function WorldServerBridge:getMapState(mapId, senderUserId)
     return response(self.runtimeAdapter, true, self.world:getMapState(targetMapId))
 end
 
-function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage)
+    local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result, mobOrErr = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
@@ -349,72 +354,72 @@ function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDa
     })
 end
 
-function WorldServerBridge:pickupDrop(requestContext, mapId, dropId, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+function WorldServerBridge:pickupDrop(requestContext, mapId, dropId)
+    local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId))
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { drop = payload, player = self.world:publishPlayerSnapshot(player) })
 end
 
-function WorldServerBridge:damageBoss(requestContext, mapId, requestedDamage, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, mapId, senderUserId)
+function WorldServerBridge:damageBoss(requestContext, mapId, requestedDamage)
+    local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, payload = self.world:damageBoss(player, player.currentMapId, tonumber(requestedDamage))
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { result = payload, map = self.world:getMapState(player.currentMapId), player = self.world:publishPlayerSnapshot(player) })
 end
 
-function WorldServerBridge:acceptQuest(requestContext, questId, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:acceptQuest(requestContext, questId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:acceptQuest(player, questId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:turnInQuest(requestContext, questId, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:turnInQuest(requestContext, questId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:turnInQuest(player, questId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:buyFromNpc(requestContext, itemId, quantity, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:buyFromNpc(requestContext, itemId, quantity)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:buyFromNpc(player, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:sellToNpc(requestContext, itemId, quantity, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:sellToNpc(requestContext, itemId, quantity)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:sellToNpc(player, itemId, tonumber(quantity))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:equipItem(requestContext, itemId, instanceId, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:equipItem(requestContext, itemId, instanceId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:equipItem(player, itemId, instanceId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:unequipItem(requestContext, slot, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:unequipItem(requestContext, slot)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:unequipItem(player, slot)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
 
-function WorldServerBridge:changeMap(requestContext, mapId, senderUserId)
-    local player, err = self:_resolvePlayer(requestContext, nil, senderUserId)
+function WorldServerBridge:changeMap(requestContext, mapId)
+    local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local ok, result = self.world:changeMap(player, mapId)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end

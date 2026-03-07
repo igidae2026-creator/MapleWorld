@@ -106,10 +106,7 @@ function RuntimeAdapter.new(config)
 end
 
 function RuntimeAdapter:isLive()
-    for _, service in pairs(self.services) do
-        if service ~= nil then return true end
-    end
-    return false
+    return self.services.UserService ~= nil
 end
 
 function RuntimeAdapter:hasDataStorage()
@@ -305,15 +302,12 @@ function RuntimeAdapter:resolveActorContext(source, options)
     if authoritativeOnly == nil then authoritativeOnly = self:isLive() end
 
     if authoritativeOnly then
-        local senderUserId = normalizeUserId(opts.senderUserId)
-        local userId = senderUserId
-        local entity = senderUserId and self:getUserEntityByUserId(senderUserId) or nil
-        if not userId then
-            userId = self:getUserId(source, { authoritativeOnly = true })
+        if source == nil or not self:isAuthoritativeSource(source) then
+            return nil, 'invalid_user'
         end
-        if not entity and userId then
-            entity = self:getUserEntityByUserId(userId)
-        end
+
+        local userId = self:getUserId(source, { authoritativeOnly = true })
+        local entity = userId and self:getUserEntityByUserId(userId) or nil
         if not userId and entity then
             userId = self:getUserId(entity, { authoritativeOnly = true })
         end
@@ -323,7 +317,6 @@ function RuntimeAdapter:resolveActorContext(source, options)
         local position = self:getPosition(entity, { authoritativeOnly = true }) or self:getPosition(source, { authoritativeOnly = true })
         return {
             userId = userId,
-            senderUserId = senderUserId,
             entity = entity,
             mapId = mapId,
             position = position,
