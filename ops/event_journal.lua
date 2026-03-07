@@ -29,9 +29,14 @@ end
 
 function EventJournal:_trim()
     if self.maxEntries <= 0 then return end
-    while #self.entries > self.maxEntries do
-        table.remove(self.entries, 1)
+    if #self.entries <= self.maxEntries then return end
+
+    local keepFrom = (#self.entries - self.maxEntries) + 1
+    local trimmed = {}
+    for i = keepFrom, #self.entries do
+        trimmed[#trimmed + 1] = self.entries[i]
     end
+    self.entries = trimmed
 end
 
 function EventJournal:append(eventType, payload)

@@ -67,8 +67,13 @@ function WorldServerBridge:_cachePlayerState(playerId, snapshot)
 end
 
 function WorldServerBridge:_cacheMapState(mapId, state)
+    if not mapId then return end
     self.mapStateById[mapId] = state
     self:_setComponentField('LastMapStateJson', self.runtimeAdapter:encodeData(state))
+end
+
+function WorldServerBridge:_invalidateMapState(mapId)
+    if mapId then self.mapStateById[mapId] = nil end
 end
 
 function WorldServerBridge:_defaultMapId()
@@ -121,14 +126,14 @@ function WorldServerBridge:_spawnMobEntity(mob)
     local modelId = (runtime and runtime.mobModelIds and runtime.mobModelIds[mob.mobId]) or (mobDef and mobDef.assetKey) or nil
     local entity = self:_spawnRuntimeEntity(modelId, 'mob_' .. tostring(mob.spawnId), mob.x, mob.y, mob.z or 0, runtime and runtime.mobParentPath)
     if entity then self.mobEntities[mob.spawnId] = entity end
-    self:_cacheMapState(mob.mapId, self.world:getMapState(mob.mapId))
+    self:_invalidateMapState(mob.mapId)
 end
 
 function WorldServerBridge:_destroyMobEntity(mob)
     local entity = self.mobEntities[mob.spawnId]
     if entity then self.runtimeAdapter:destroyEntity(entity) end
     self.mobEntities[mob.spawnId] = nil
-    self:_cacheMapState(mob.mapId, self.world:getMapState(mob.mapId))
+    self:_invalidateMapState(mob.mapId)
 end
 
 function WorldServerBridge:_spawnDropEntity(drop)
@@ -138,14 +143,14 @@ function WorldServerBridge:_spawnDropEntity(drop)
     local modelId = (dropCfg.modelIds and dropCfg.modelIds[drop.itemId]) or dropCfg.defaultModelId or (itemDef and itemDef.assetKey) or nil
     local entity = self:_spawnRuntimeEntity(modelId, 'drop_' .. tostring(drop.dropId), drop.x, drop.y, drop.z or 0, mapRuntime and mapRuntime.dropParentPath)
     if entity then self.dropEntities[drop.dropId] = entity end
-    self:_cacheMapState(drop.mapId, self.world:getMapState(drop.mapId))
+    self:_invalidateMapState(drop.mapId)
 end
 
 function WorldServerBridge:_destroyDropEntity(drop)
     local entity = self.dropEntities[drop.dropId]
     if entity then self.runtimeAdapter:destroyEntity(entity) end
     self.dropEntities[drop.dropId] = nil
-    self:_cacheMapState(drop.mapId, self.world:getMapState(drop.mapId))
+    self:_invalidateMapState(drop.mapId)
 end
 
 function WorldServerBridge:_spawnBossEntity(encounter)
@@ -157,14 +162,14 @@ function WorldServerBridge:_spawnBossEntity(encounter)
     local parentPath = bossCfg.parentPath or (bossDef and bossDef.parentPath) or (mapRuntime and mapRuntime.bossParentPath) or self:_rootAttachPath()
     local entity = self:_spawnRuntimeEntity(modelId, 'boss_' .. tostring(encounter.bossId), pos.x, pos.y, pos.z, parentPath)
     if entity then self.bossEntities[encounter.mapId] = entity end
-    self:_cacheMapState(encounter.mapId, self.world:getMapState(encounter.mapId))
+    self:_invalidateMapState(encounter.mapId)
 end
 
 function WorldServerBridge:_destroyBossEntity(encounter)
     local entity = self.bossEntities[encounter.mapId]
     if entity then self.runtimeAdapter:destroyEntity(entity) end
     self.bossEntities[encounter.mapId] = nil
-    self:_cacheMapState(encounter.mapId, self.world:getMapState(encounter.mapId))
+    self:_invalidateMapState(encounter.mapId)
 end
 
 function WorldServerBridge:bootstrap()
@@ -195,7 +200,7 @@ function WorldServerBridge:bootstrap()
                 lastSeenAt = self.runtimeAdapter:now(),
             }
             self:_cachePlayerState(player.id, world:publishPlayerSnapshot(player))
-            self:_cacheMapState(player.currentMapId, world:getMapState(player.currentMapId))
+            self:_invalidateMapState(player.currentMapId)
         end,
         onPlayerLeave = function(world, player)
             self.playerStateById[player.id] = nil
@@ -208,7 +213,7 @@ function WorldServerBridge:bootstrap()
             self:_cachePlayerState(player.id, snapshot)
         end,
         onPlayerMapChanged = function(world, player, mapId)
-            self:_cacheMapState(mapId, world:getMapState(mapId))
+            self:_invalidateMapState(mapId)
         end,
         onMobSpawned = function(world, mob)
             self:_spawnMobEntity(mob)
@@ -217,7 +222,7 @@ function WorldServerBridge:bootstrap()
             self:_destroyMobEntity(mob)
         end,
         onMobDamaged = function(world, player, mob)
-            self.mapStateById[mob.mapId] = nil
+            self:_invalidateMapState(mob.mapId)
         end,
         onDropSpawned = function(world, drop)
             self:_spawnDropEntity(drop)
@@ -232,7 +237,7 @@ function WorldServerBridge:bootstrap()
             self:_spawnBossEntity(encounter)
         end,
         onBossDamaged = function(world, encounter)
-            self.mapStateById[encounter.mapId] = nil
+            self:_invalidateMapState(encounter.mapId)
         end,
         onBossKilled = function(world, encounter)
             self:_destroyBossEntity(encounter)
@@ -338,7 +343,12 @@ function WorldServerBridge:getMapState(requestContext, mapId)
         targetMapId = player.currentMapId
     end
     targetMapId = targetMapId or self:_defaultMapId()
-    return response(self.runtimeAdapter, true, self.world:getMapState(targetMapId))
+    local cached = self.mapStateById[targetMapId]
+    if cached == nil then
+        cached = self.world:getMapState(targetMapId)
+        self:_cacheMapState(targetMapId, cached)
+    end
+    return response(self.runtimeAdapter, true, cached)
 end
 
 function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage)
