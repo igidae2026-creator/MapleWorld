@@ -28,15 +28,7 @@ function EventJournal.new(config)
 end
 
 function EventJournal:_trim()
-    if self.maxEntries <= 0 then return end
-    if #self.entries <= self.maxEntries then return end
-
-    local keepFrom = (#self.entries - self.maxEntries) + 1
-    local trimmed = {}
-    for i = keepFrom, #self.entries do
-        trimmed[#trimmed + 1] = self.entries[i]
-    end
-    self.entries = trimmed
+    return
 end
 
 function EventJournal:append(eventType, payload)

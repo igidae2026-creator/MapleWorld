@@ -76,6 +76,32 @@ function WorldServerBridge:_invalidateMapState(mapId)
     if mapId then self.mapStateById[mapId] = nil end
 end
 
+
+function WorldServerBridge:_updateCachedMob(mapId, spawnId, hp)
+    local cached = mapId and self.mapStateById[mapId] or nil
+    local mobs = cached and cached.mobs or nil
+    if type(mobs) ~= 'table' then return false end
+    local targetId = tonumber(spawnId)
+    for _, mob in ipairs(mobs) do
+        if tonumber(mob.spawnId) == targetId then
+            mob.hp = math.max(0, math.floor(tonumber(hp) or 0))
+            return true
+        end
+    end
+    return false
+end
+
+function WorldServerBridge:_updateCachedBoss(mapId, encounter)
+    local cached = mapId and self.mapStateById[mapId] or nil
+    if not cached or type(cached) ~= 'table' or type(cached.boss) ~= 'table' then return false end
+    cached.boss.hp = math.max(0, math.floor(tonumber(encounter and encounter.hp) or 0))
+    cached.boss.maxHp = math.max(1, math.floor(tonumber(encounter and encounter.maxHp) or cached.boss.maxHp or 1))
+    cached.boss.phase = math.max(1, math.floor(tonumber(encounter and encounter.phase) or cached.boss.phase or 1))
+    cached.boss.alive = encounter and encounter.alive == true
+    cached.boss.enraged = encounter and encounter.enraged == true
+    return true
+end
+
 function WorldServerBridge:_defaultMapId()
     return self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId or 'henesys_hunting_ground'
 end
@@ -222,7 +248,9 @@ function WorldServerBridge:bootstrap()
             self:_destroyMobEntity(mob)
         end,
         onMobDamaged = function(world, player, mob)
-            self:_invalidateMapState(mob.mapId)
+            if not self:_updateCachedMob(mob.mapId, mob.spawnId, mob.hp) then
+                self:_invalidateMapState(mob.mapId)
+            end
         end,
         onDropSpawned = function(world, drop)
             self:_spawnDropEntity(drop)
@@ -237,7 +265,9 @@ function WorldServerBridge:bootstrap()
             self:_spawnBossEntity(encounter)
         end,
         onBossDamaged = function(world, encounter)
-            self:_invalidateMapState(encounter.mapId)
+            if not self:_updateCachedBoss(encounter.mapId, encounter) then
+                self:_invalidateMapState(encounter.mapId)
+            end
         end,
         onBossKilled = function(world, encounter)
             self:_destroyBossEntity(encounter)

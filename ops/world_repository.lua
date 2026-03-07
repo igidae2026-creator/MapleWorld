@@ -77,6 +77,11 @@ function WorldRepository:_slotKey(index)
     return tostring(self.key) .. '__slot_' .. tostring(index)
 end
 
+
+function WorldRepository:_revisionKey(revision)
+    return tostring(self.key) .. '__rev_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
 function WorldRepository:_headKey()
     return tostring(self.key) .. '__head'
 end
@@ -150,11 +155,23 @@ function WorldRepository:load()
     local bestEnvelope = nil
 
     local prioritized = {}
+    local highestRevision = 0
     for _, head in ipairs(self:_headCandidates(storage)) do
         if type(head) == 'table' and tonumber(head.slot) then
             prioritized[#prioritized + 1] = self:_slotKey(math.floor(tonumber(head.slot)))
         end
+        if type(head) == 'table' and tonumber(head.revision) then
+            highestRevision = math.max(highestRevision, math.floor(tonumber(head.revision) or 0))
+        end
     end
+
+    local revisionWindow = math.max(self.slotCount * 6, self:_headHistorySize() * 4)
+    if highestRevision > 0 then
+        for rev = highestRevision, math.max(1, highestRevision - revisionWindow), -1 do
+            prioritized[#prioritized + 1] = self:_revisionKey(rev)
+        end
+    end
+
     for i = 1, self.slotCount do
         prioritized[#prioritized + 1] = self:_slotKey(i)
     end
@@ -207,7 +224,11 @@ function WorldRepository:save(state)
         value = deepcopy(state),
     }
 
-    local ok, err = writeStorage(storage, self:_slotKey(nextSlot), self.runtimeAdapter:encodeData(envelope))
+    local encodedEnvelope = self.runtimeAdapter:encodeData(envelope)
+    local ok, err = writeStorage(storage, self:_revisionKey(nextRevision), encodedEnvelope)
+    if not ok then return false, err end
+
+    ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
     if not ok then return false, err end
 
     local headSnapshot = {
