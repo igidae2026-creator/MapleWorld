@@ -476,7 +476,45 @@ function WorldServerBridge:_validateNpcActionContext(player, npcId, itemId)
     if itemId == nil or itemId == '' then return false, 'invalid_item' end
     if not self.world:_isNpcItemAllowed(npc, itemId) then return false, 'item_not_sold_by_npc' end
 
-    return true
+    return true, npc
+end
+
+function WorldServerBridge:_validateMobActionContext(player, requestedMapId, spawnId)
+    if spawnId == nil then return false, 'invalid_spawn' end
+    local requestedSpawnId = tonumber(spawnId)
+    if not requestedSpawnId then return false, 'invalid_spawn' end
+    if requestedMapId ~= nil and requestedMapId ~= '' and requestedMapId ~= player.currentMapId then
+        return false, 'wrong_map'
+    end
+    local mapId = player.currentMapId
+    local mob = self.world.spawnSystem:getMob(mapId, requestedSpawnId)
+    if not mob then return false, 'mob_not_found' end
+    return true, mob
+end
+
+function WorldServerBridge:_validateDropActionContext(player, requestedMapId, dropId)
+    if dropId == nil then return false, 'invalid_drop' end
+    local requestedDropId = tonumber(dropId)
+    if not requestedDropId then return false, 'invalid_drop' end
+    if requestedMapId ~= nil and requestedMapId ~= '' and requestedMapId ~= player.currentMapId then
+        return false, 'wrong_map'
+    end
+    local drop = self.world.dropSystem:getDrop(requestedDropId)
+    if not drop then return false, 'drop_not_found' end
+    if drop.mapId ~= player.currentMapId then return false, 'wrong_map' end
+    return true, drop
+end
+
+function WorldServerBridge:_validateBossActionContext(player, requestedMapId, bossId)
+    if requestedMapId ~= nil and requestedMapId ~= '' and requestedMapId ~= player.currentMapId then
+        return false, 'wrong_map'
+    end
+    local encounter = self.world.bossSystem:getEncounter(player.currentMapId)
+    if not encounter then return false, 'no_active_encounter' end
+    if bossId ~= nil and bossId ~= '' and encounter.bossId ~= bossId then
+        return false, 'boss_not_found'
+    end
+    return true, encounter
 end
 
 function WorldServerBridge:onUserEnter(event)
@@ -538,6 +576,8 @@ end
 function WorldServerBridge:attackMob(requestContext, mapId, spawnId, requestedDamage)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateMobActionContext(player, mapId, spawnId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, result, mobOrErr = self.world:attackMob(player, player.currentMapId, tonumber(spawnId), tonumber(requestedDamage))
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, {
@@ -551,15 +591,23 @@ end
 function WorldServerBridge:pickupDrop(requestContext, mapId, dropId)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
+    local contextOk, contextErr = self:_validateDropActionContext(player, mapId, dropId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
     local ok, payload = self.world:pickupDrop(player, player.currentMapId, tonumber(dropId))
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { drop = payload, player = self.world:publishPlayerSnapshot(player) })
 end
 
-function WorldServerBridge:damageBoss(requestContext, mapId, requestedDamage)
+function WorldServerBridge:damageBoss(requestContext, mapId, bossId, requestedDamage)
     local player, err = self:_resolvePlayer(requestContext, mapId)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local ok, payload = self.world:damageBoss(player, player.currentMapId, tonumber(requestedDamage))
+    if requestedDamage == nil and bossId ~= nil and type(bossId) ~= 'string' then
+        requestedDamage = bossId
+        bossId = nil
+    end
+    local contextOk, contextErr = self:_validateBossActionContext(player, mapId, bossId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
+    local ok, payload = self.world:damageBoss(player, player.currentMapId, bossId, tonumber(requestedDamage))
     if not ok then return response(self.runtimeAdapter, false, nil, payload) end
     return response(self.runtimeAdapter, true, { result = payload, map = self:_cachedMapState(player.currentMapId), player = self.world:publishPlayerSnapshot(player) })
 end
@@ -583,9 +631,9 @@ end
 function WorldServerBridge:buyFromNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
-    local ok, result = self.world:buyFromNpc(player, npcId, itemId, tonumber(quantity))
+    local contextOk, npcOrErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, npcOrErr) end
+    local ok, result = self.world:buyFromNpc(player, npcId, itemId, tonumber(quantity), npcOrErr)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end
@@ -593,9 +641,9 @@ end
 function WorldServerBridge:sellToNpc(requestContext, npcId, itemId, quantity)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local contextOk, contextErr = self:_validateNpcActionContext(player, npcId, itemId)
-    if not contextOk then return response(self.runtimeAdapter, false, nil, contextErr) end
-    local ok, result = self.world:sellToNpc(player, npcId, itemId, tonumber(quantity))
+    local contextOk, npcOrErr = self:_validateNpcActionContext(player, npcId, itemId)
+    if not contextOk then return response(self.runtimeAdapter, false, nil, npcOrErr) end
+    local ok, result = self.world:sellToNpc(player, npcId, itemId, tonumber(quantity), npcOrErr)
     if not ok then return response(self.runtimeAdapter, false, nil, result) end
     return response(self.runtimeAdapter, true, self.world:publishPlayerSnapshot(player))
 end

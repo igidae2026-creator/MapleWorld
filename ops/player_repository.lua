@@ -1,5 +1,12 @@
 local PlayerRepository = {}
 
+local NOT_FOUND_ERROR_CODES = {
+    [404] = true,
+    [1004] = true,
+    [1005] = true,
+    [1010] = true,
+}
+
 local function deepcopy(value, seen)
     if type(value) ~= 'table' then return value end
     if seen and seen[value] then return seen[value] end
@@ -24,6 +31,9 @@ local function readStorage(storage, key)
         encoded = first
     end
     if type(errorCode) == 'number' and errorCode ~= 0 then
+        if NOT_FOUND_ERROR_CODES[math.floor(errorCode)] then
+            return true, nil
+        end
         return false, nil, 'error_code_' .. tostring(errorCode)
     end
     return true, encoded
@@ -105,6 +115,10 @@ function PlayerRepository:_headHistoryKey(index)
     return tostring(self.key) .. '__head_history_' .. tostring(index)
 end
 
+function PlayerRepository:_commitKey(revision)
+    return tostring(self.key) .. '__commit_' .. tostring(math.max(1, math.floor(tonumber(revision) or 1)))
+end
+
 function PlayerRepository:_headHistorySize()
     return math.max(2, self.slotCount)
 end
@@ -173,6 +187,16 @@ function PlayerRepository:_candidateKeys()
     return keys
 end
 
+function PlayerRepository:_isCommittedRevision(storage, revision)
+    local normalized = math.max(0, math.floor(tonumber(revision) or 0))
+    if normalized <= 0 then return true end
+    local envelope = self:_readEnvelope(storage, self:_commitKey(normalized))
+    if type(envelope) ~= 'table' then return false end
+    local value = envelope.value
+    if type(value) ~= 'table' then return false end
+    return math.max(0, math.floor(tonumber(value.revision) or 0)) == normalized
+end
+
 function PlayerRepository:_loadFromStorage(playerId)
     local storage = self:_storage(playerId)
     if not storage then return nil, 'storage_unavailable' end
@@ -212,7 +236,11 @@ function PlayerRepository:_loadFromStorage(playerId)
             if err then
                 loadErr = loadErr or err
             elseif envelope and envelope.value ~= nil then
-                if not bestEnvelope or (tonumber(envelope.revision) or 0) > (tonumber(bestEnvelope.revision) or 0) then
+                local envelopeRevision = math.max(0, math.floor(tonumber(envelope.revision) or 0))
+                local bestRevision = math.max(0, math.floor(tonumber(bestEnvelope and bestEnvelope.revision) or 0))
+                local envelopeCommitted = self:_isCommittedRevision(storage, envelopeRevision)
+                local bestCommitted = bestEnvelope and self:_isCommittedRevision(storage, bestRevision) or false
+                if (not bestEnvelope) or (envelopeCommitted and not bestCommitted) or (envelopeCommitted == bestCommitted and envelopeRevision > bestRevision) then
                     bestEnvelope = envelope
                     bestKey = key
                 end
@@ -259,15 +287,27 @@ function PlayerRepository:_saveToStorage(player)
     ok, err = writeStorage(storage, self:_slotKey(nextSlot), encodedEnvelope)
     if not ok then return false, err end
 
+    local commitEnvelope = {
+        revision = nextRevision,
+        savedAt = envelope.savedAt,
+        value = { revision = nextRevision, slot = nextSlot },
+    }
+    ok, err = writeStorage(storage, self:_commitKey(nextRevision), self.runtimeAdapter:encodeData(commitEnvelope))
+    if not ok then return false, err end
+
     local headSnapshot = {
         revision = nextRevision,
         slot = nextSlot,
         savedAt = envelope.savedAt,
     }
 
-    writeStorage(storage, self:_shadowHeadKey(), self.runtimeAdapter:encodeData(currentHead))
+    local shadowOk
+    shadowOk, err = writeStorage(storage, self:_shadowHeadKey(), self.runtimeAdapter:encodeData(currentHead))
+    if not shadowOk then return false, err end
     local historySlot = ((nextRevision - 1) % self:_headHistorySize()) + 1
-    writeStorage(storage, self:_headHistoryKey(historySlot), self.runtimeAdapter:encodeData(headSnapshot))
+    local historyOk
+    historyOk, err = writeStorage(storage, self:_headHistoryKey(historySlot), self.runtimeAdapter:encodeData(headSnapshot))
+    if not historyOk then return false, err end
     ok, err = writeStorage(storage, self:_headKey(), self.runtimeAdapter:encodeData(headSnapshot))
     if not ok then
         writeStorage(storage, self:_headKey(), self.runtimeAdapter:encodeData(currentHead))

@@ -152,4 +152,21 @@ local okC, errC = repoC:save({ version = 'from_c' })
 assert(okC == false and errC == 'world_owner_epoch_stale', 'stale writer epoch was not rejected')
 
 _G._DataStorageService = previousStorage
+
+
+-- recovery journal deduplicates duplicated sequence numbers
+local restoreJournal = EventJournal.new({ maxEntries = 10, time = function() return 0 end })
+restoreJournal:restore({
+    entries = {
+        { seq = 1, at = 1, event = 'a', payload = {} },
+        { seq = 1, at = 2, event = 'b', payload = {} },
+        { seq = 2, at = 3, event = 'c', payload = {} },
+    },
+    nextSeq = 2,
+})
+local restored = restoreJournal:snapshot()
+assert(#restored == 2, 'journal restore did not dedupe duplicate sequence numbers')
+assert(restored[1].event == 'b' and restored[2].event == 'c', 'journal restore did not keep latest duplicate sequence entry')
+assert(restoreJournal.nextSeq == 3, 'journal restore nextSeq was not normalized after dedupe')
+
 print('storage_guardrails_test: ok')

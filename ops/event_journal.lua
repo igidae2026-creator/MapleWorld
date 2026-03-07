@@ -143,6 +143,7 @@ function EventJournal:restore(snapshot)
     end
 
     local maxSeq = 0
+    local dedupedBySeq = {}
     if type(entries) == 'table' then
         for _, entry in ipairs(entries) do
             if type(entry) == 'table' then
@@ -153,15 +154,21 @@ function EventJournal:restore(snapshot)
                     event = entry.event,
                     payload = deepcopy(entry.payload or {}),
                 }
-                self.entries[#self.entries + 1] = restored
-                if seq > maxSeq then maxSeq = seq end
+                if restored.event ~= nil then
+                    dedupedBySeq[seq] = restored
+                    if seq > maxSeq then maxSeq = seq end
+                end
             end
         end
     end
 
+    for _, restored in pairs(dedupedBySeq) do
+        self.entries[#self.entries + 1] = restored
+    end
     table.sort(self.entries, function(a, b) return a.seq < b.seq end)
     self:_trim()
-    self.nextSeq = math.max(maxSeq + 1, nextSeq or 1)
+    local floorNext = (self.entries[#self.entries] and (self.entries[#self.entries].seq + 1)) or 1
+    self.nextSeq = math.max(floorNext, maxSeq + 1, nextSeq or 1)
 end
 
 function EventJournal:latest()

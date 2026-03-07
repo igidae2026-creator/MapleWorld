@@ -293,26 +293,66 @@ end
 local function limitDropSnapshot(snapshot, maxPerMap)
     if type(snapshot) ~= 'table' then return { nextDropId = 1, drops = {}, dropsByMap = {} } end
     local cap = math.floor(tonumber(maxPerMap) or 0)
-    local drops = snapshot.drops or {}
+    local combined = {}
+
+    local function appendRecord(record, inferredMapId)
+        if type(record) ~= 'table' then return end
+        local copy = deepcopy(record)
+        copy.mapId = copy.mapId or inferredMapId
+        if not copy.mapId then return end
+        combined[#combined + 1] = copy
+    end
+
+    for _, record in ipairs(snapshot.drops or {}) do
+        appendRecord(record, nil)
+    end
+    if type(snapshot.dropsByMap) == 'table' then
+        for mapId, records in pairs(snapshot.dropsByMap) do
+            if type(records) == 'table' then
+                for _, record in ipairs(records) do
+                    appendRecord(record, mapId)
+                end
+            end
+        end
+    end
+
+    table.sort(combined, function(a, b)
+        local aId = tonumber(a.dropId) or 0
+        local bId = tonumber(b.dropId) or 0
+        if aId == bId then
+            return tostring(a.mapId or '') < tostring(b.mapId or '')
+        end
+        return aId < bId
+    end)
+
+    local deduped = {}
+    local seenDropIds = {}
+    for _, record in ipairs(combined) do
+        local dropId = tonumber(record.dropId)
+        if dropId == nil or not seenDropIds[dropId] then
+            if dropId ~= nil then seenDropIds[dropId] = true end
+            deduped[#deduped + 1] = record
+        end
+    end
+
     if cap <= 0 then
+        local byMap = {}
+        for _, record in ipairs(deduped) do
+            byMap[record.mapId] = byMap[record.mapId] or {}
+            byMap[record.mapId][#byMap[record.mapId] + 1] = deepcopy(record)
+        end
         return {
             nextDropId = tonumber(snapshot.nextDropId) or 1,
-            drops = deepcopy(drops),
-            dropsByMap = deepcopy(snapshot.dropsByMap or {}),
+            drops = deepcopy(deduped),
+            dropsByMap = byMap,
         }
     end
 
     local byMap = {}
-    for _, record in ipairs(drops) do
-        local mapId = record and record.mapId
-        if mapId then
-            local bucket = byMap[mapId]
-            if not bucket then
-                bucket = {}
-                byMap[mapId] = bucket
-            end
-            bucket[#bucket + 1] = record
-        end
+    for _, record in ipairs(deduped) do
+        local mapId = record.mapId
+        byMap[mapId] = byMap[mapId] or {}
+        byMap[mapId][#byMap[mapId] + 1] = record
     end
 
     local trimmedDrops = {}
@@ -635,6 +675,30 @@ function ServerBootstrap.boot(basePath, config)
         return type(catalog) == 'table' and catalog[itemId] == true
     end
 
+    function world:_resolveValidatedNpc(npcId, validatedNpc)
+        if validatedNpc ~= nil then
+            if type(validatedNpc) ~= 'table' then return nil, 'invalid_npc' end
+            if validatedNpc.npcId ~= npcId then return nil, 'npc_context_mismatch' end
+            local mapId = validatedNpc.mapId
+            if not mapId or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return nil, 'invalid_map' end
+            return validatedNpc
+        end
+        return self:_resolveNpcBinding(npcId)
+    end
+
+    function world:_isAllowedMapTransition(sourceMapId, destinationMapId)
+        local transitions = (self.worldConfig and self.worldConfig.mapTransitions)
+            or (self.worldConfig and self.worldConfig.runtime and self.worldConfig.runtime.mapTransitions)
+        if type(transitions) ~= 'table' then return false end
+        local source = transitions[sourceMapId]
+        if type(source) ~= 'table' then return false end
+        if source[destinationMapId] == true then return true end
+        for _, candidate in ipairs(source) do
+            if candidate == destinationMapId then return true end
+        end
+        return false
+    end
+
     function world:snapshotWorldState()
         local runtimeCfg = self.worldConfig.runtime or {}
         local persistedDropsPerMap = tonumber(runtimeCfg.persistedDropsPerMap) or 0
@@ -720,12 +784,34 @@ function ServerBootstrap.boot(basePath, config)
             return false, err
         end
         if not snapshot then return false end
+        if type(snapshot) ~= 'table' then return false, 'invalid_world_snapshot' end
+
+        local previousJournal = self.journal:serialize()
+        local previousDrops = self.dropSystem:snapshot()
+        local previousBoss = self.bossSystem:snapshot()
 
         self._restoringWorldState = true
-        self.journal:restore(snapshot.journal)
-        self.dropSystem:restore(snapshot.drops)
-        self.bossSystem:restore(snapshot.boss)
+        local ok, restoreErr = pcall(function()
+            self.journal:restore(snapshot.journal)
+            self.dropSystem:restore(snapshot.drops)
+            self.bossSystem:restore(snapshot.boss)
+        end)
         self._restoringWorldState = false
+
+        if not ok then
+            self._restoringWorldState = true
+            pcall(function()
+                self.journal:restore(previousJournal)
+                self.dropSystem:restore(previousDrops)
+                self.bossSystem:restore(previousBoss)
+            end)
+            self._restoringWorldState = false
+            if self.metrics then
+                self.metrics:increment('world_state.restore_error', 1)
+                self.metrics:error('world_state_restore_failed', { error = tostring(restoreErr) })
+            end
+            return false, 'restore_failed:' .. tostring(restoreErr)
+        end
 
         for _, drop in ipairs(self.dropSystem:listAllDrops()) do
             self:_emit('onDropSpawned', drop)
@@ -739,6 +825,11 @@ function ServerBootstrap.boot(basePath, config)
     journal.onAppend = function(entry)
         if world._restoringWorldState then return end
         world:markWorldStateDirty('journal:' .. tostring(entry and entry.event))
+        local saved, saveErr = world:requestWorldSave('journal:' .. tostring(entry and entry.event))
+        if saved == false and world.metrics then
+            world.metrics:increment('world_state.save_error', 1, { reason = 'journal_append' })
+            world.metrics:error('world_state_save_failed', { reason = 'journal_append', error = tostring(saveErr) })
+        end
     end
 
     spawnSystem.callbacks = {
@@ -793,6 +884,19 @@ function ServerBootstrap.boot(basePath, config)
         if not player or not player.id then return false, 'invalid_player' end
         local cfg = options or {}
         local requireWorldSave = cfg.requireWorldSave == true
+        local previousPersisted = nil
+        if requireWorldSave and cfg.capturePrevious ~= false and self.playerRepository and self.playerRepository.load then
+            local loadedPrevious, previousErr = self.playerRepository:load(player.id)
+            if previousErr then
+                if self.metrics then
+                    self.metrics:increment('player_state.save_error', 1, { reason = 'player_preload_failed' })
+                    self.metrics:error('player_state_preload_failed', { playerId = tostring(player.id), error = tostring(previousErr) })
+                end
+                return false, previousErr
+            end
+            previousPersisted = loadedPrevious
+        end
+
         local ok, err = self.playerRepository:save(player)
         if not ok then
             if self.metrics then
@@ -806,8 +910,21 @@ function ServerBootstrap.boot(basePath, config)
             local worldSaved, worldErr = self:saveWorldState('player_save:' .. tostring(player.id))
             if not worldSaved then
                 player.dirty = true
+                local rollbackOk = true
+                local rollbackErr = nil
+                if previousPersisted then
+                    rollbackOk, rollbackErr = self.playerRepository:save(previousPersisted)
+                end
                 if self.metrics then
                     self.metrics:increment('player_state.save_error', 1, { reason = 'world_state_save_failed' })
+                    self.metrics:error('player_world_durability_boundary_failed', {
+                        playerId = tostring(player.id),
+                        worldError = tostring(worldErr),
+                        rollbackError = rollbackOk and nil or tostring(rollbackErr),
+                    })
+                end
+                if not rollbackOk then
+                    return false, 'world_state_save_failed:' .. tostring(worldErr) .. ';rollback_failed:' .. tostring(rollbackErr)
                 end
                 return false, worldErr or 'world_state_save_failed'
             end
@@ -1012,6 +1129,7 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:attackMob(player, mapId, spawnId, requestedDamage)
         if not player then return false, 'invalid_player' end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
         local mob = self.spawnSystem:getMob(targetMapId, spawnId)
         if not mob and mapId and mapId ~= targetMapId and self.spawnSystem:getMob(mapId, spawnId) then
@@ -1044,8 +1162,10 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:pickupDrop(player, mapId, dropId)
         if not player then return false, 'invalid_player' end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local record = self.dropSystem:getDrop(dropId)
         if not record then return false, 'drop_not_found' end
+        if mapId ~= nil and mapId ~= '' and record.mapId ~= mapId then return false, 'wrong_map' end
         local boundaryOk, boundaryErr = self:_requireActionBoundary(player, record.mapId, { x = record.x, y = record.y, z = record.z or 0 }, 'dropPickupRange')
         if not boundaryOk then return false, boundaryErr end
         local actionOk, actionErr = self:_checkAction(player, 'drop_pickup', 1)
@@ -1086,14 +1206,20 @@ function ServerBootstrap.boot(basePath, config)
         return delivered
     end
 
-    function world:damageBoss(player, mapId, amount)
+    function world:damageBoss(player, mapId, bossId, amount)
         if not player then return false, 'invalid_player' end
+        if amount == nil and bossId ~= nil and type(bossId) ~= 'string' then
+            amount = bossId
+            bossId = nil
+        end
+        if mapId ~= nil and mapId ~= '' and mapId ~= player.currentMapId then return false, 'wrong_map' end
         local targetMapId = player.currentMapId or mapId
         local encounter = self.bossSystem:getEncounter(targetMapId)
         if not encounter and mapId and mapId ~= targetMapId and self.bossSystem:getEncounter(mapId) then
             return false, 'wrong_map'
         end
         if not encounter then return false, 'no_active_encounter' end
+        if bossId ~= nil and bossId ~= '' and encounter.bossId ~= bossId then return false, 'boss_not_found' end
 
         local boundaryOk, boundaryErr = self:_requireActionBoundary(player, encounter.mapId, self:_bossPosition(encounter), 'bossAttackRange')
         if not boundaryOk then return false, boundaryErr end
@@ -1152,9 +1278,9 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:buyFromNpc(player, npcId, itemId, quantity)
+    function world:buyFromNpc(player, npcId, itemId, quantity, validatedNpc)
         if not player then return false, 'invalid_player' end
-        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        local npc, npcErr = self:_resolveValidatedNpc(npcId, validatedNpc)
         if not npc then return false, npcErr end
         local shopOk, shopErr = self:_validateNpcShop(npc)
         if not shopOk then return false, shopErr end
@@ -1171,9 +1297,9 @@ function ServerBootstrap.boot(basePath, config)
         return true
     end
 
-    function world:sellToNpc(player, npcId, itemId, quantity)
+    function world:sellToNpc(player, npcId, itemId, quantity, validatedNpc)
         if not player then return false, 'invalid_player' end
-        local npc, npcErr = self:_resolveNpcBinding(npcId)
+        local npc, npcErr = self:_resolveValidatedNpc(npcId, validatedNpc)
         if not npc then return false, npcErr end
         local shopOk, shopErr = self:_validateNpcShop(npc)
         if not shopOk then return false, shopErr end
@@ -1216,6 +1342,9 @@ function ServerBootstrap.boot(basePath, config)
         if not player then return false, 'invalid_player' end
         if not mapId or mapId == '' or not self.worldConfig.maps or not self.worldConfig.maps[mapId] then return false, 'invalid_map' end
         if sourceMapId ~= nil and sourceMapId ~= '' and player.currentMapId ~= sourceMapId then return false, 'wrong_map' end
+        local source = sourceMapId
+        if source == nil or source == '' then source = player.currentMapId end
+        if source ~= mapId and not self:_isAllowedMapTransition(source, mapId) then return false, 'invalid_map_transition' end
         local actionOk, actionErr = self:_checkAction(player, 'map_change', 1)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)
@@ -1262,7 +1391,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     local restoredWorldState, restoreErr = world:restoreWorldState()
-    if restoreErr and world.strictRuntimeBoundary then
+    if restoreErr and config.allowWorldStateRestoreFailure ~= true then
         error('world_state_restore_failed:' .. tostring(restoreErr))
     end
 
