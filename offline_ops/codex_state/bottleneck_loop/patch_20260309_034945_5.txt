@@ -1,0 +1,23 @@
+**Changed Files**
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua)
+- [scripts/trading_system.lua](/home/meta_os/MapleWorld/scripts/trading_system.lua)
+- [tests/economy_runtime_invariant_test.lua](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua)
+
+**Exact Summary**
+- Patched [`tradeMesos`](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua) to accept a request table with `requestId`, cache accepted outcomes by request id, and short-circuit duplicate submissions before any second spend/grant mutation.
+- Added replay-visible runtime events: one `trade_mesos_applied` event for the accepted request and one `trade_mesos_deduped` event for a duplicate retry, so the same request id is not replayed as a second accepted mutation.
+- Patched [`TradingSystem:tradeMesos`](/home/meta_os/MapleWorld/scripts/trading_system.lua) to pass `correlationId`, `sourceEventId`, and per-leg `idempotencyKey` metadata into economy transactions, and to rollback the sender if the credit leg ever fails.
+- Added a regression in [`tests/economy_runtime_invariant_test.lua`](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua) proving that two `tradeMesos` submissions with the same `requestId` produce exactly one transfer, exactly one accepted replay outcome, one deduped outcome, and only one spend/grant pair in the economy audit log.
+
+**Verification Performed**
+- Ran `lua tests/economy_runtime_invariant_test.lua`
+- Ran `lua tests/msw_runtime_boundary_test.lua`
+
+Both passed.
+
+**Unresolved Risks**
+- Request-id dedupe state is in-memory and bounded; it prevents duplicate mutation within the active runtime window but does not survive process restart.
+- The patch is scoped only to `tradeMesos`; other economy intents still need their own explicit idempotency handling if they sit on retryable runtime edges.
+
+**Recommended Next Bottleneck**
+- Apply the same bounded request-id idempotency treatment to the next retryable economy edge with direct spend/grant mutation, most likely auction listing submission or NPC shop purchase intents.

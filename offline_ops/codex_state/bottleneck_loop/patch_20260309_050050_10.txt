@@ -1,0 +1,39 @@
+1. changed files
+
+[data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16)
+
+[data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94)
+
+[ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5)
+
+2. exact summary of changes
+
+In [data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16), changed `variant.control_parameters.potion_sink_pressure` from `0.25` to `0.258`.
+
+In [data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94), added the explicit economy graph node `economy.potion_sink_pressure` under the `economy` domain so this selected sink knob is surfaced in the shard.
+
+In [ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5), added `selected_balance_adjustment: "potion_sink_pressure=0.258"` to record this bounded balance adjustment in progress state.
+
+3. verification performed
+
+Parsed all three edited JSON files successfully with `python3 json.load(...)`.
+
+Confirmed `potion_sink_pressure` now resolves to `0.258` in the active selected architecture.
+
+Confirmed `economy.potion_sink_pressure` exists in the economy design graph.
+
+Confirmed the progress artifact records `selected_balance_adjustment = "potion_sink_pressure=0.258"`.
+
+MSW runtime boundary was untouched; no runtime files were edited.
+
+4. unresolved risks
+
+The repo already had substantial pre-existing uncommitted changes, including in the target selected-state files, so `git diff` against `HEAD` is not a clean isolation of only this turn’s edits.
+
+I did not rerun architecture simulation/scoring, so I cannot yet verify that `economy_pressure_unbounded` is removed or narrowed, or that economy stability improved without side effects.
+
+`data/design_graph/economy.json` is a node graph, not a numeric config surface, so the shard now exposes the knob explicitly but does not itself store the `0.258` value.
+
+5. recommended next bottleneck
+
+`power_curve_replacement_pressure`, unless the next scoring pass shows `economy_pressure_unbounded` still persists after this sink-pressure adjustment.

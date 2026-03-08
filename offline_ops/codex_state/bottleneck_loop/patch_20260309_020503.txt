@@ -1,0 +1,39 @@
+1. changed files
+
+- [content_build/content_registry.lua](/home/meta_os/MapleWorld/content_build/content_registry.lua)
+- [content_build/content_validation.lua](/home/meta_os/MapleWorld/content_build/content_validation.lua)
+- [tests/content_integrity_test.lua](/home/meta_os/MapleWorld/tests/content_integrity_test.lua)
+
+2. exact summary of changes
+
+- `content_build/content_registry.lua`
+  - Replaced duplicated region/map ID construction with `data.regional_progression_tables` as the map source-of-truth.
+  - Added suffix lookup from progression map IDs to existing map templates, so registry map generation now follows the exact progression table order and IDs.
+  - Switched level-derived content generation in the region loop to `recommendedRange.min` from progression instead of standalone region-owned map topology.
+  - Added a fast-fail assertion that every map referenced by `data.rare_spawn_tables` exists in the built registry.
+  - Changed the module export to return the materialized registry table directly while keeping `load()` on that table for loader compatibility.
+
+- `content_build/content_validation.lua`
+  - Added one drift guard: if any progression-defined maps are missing from the provided content, validation emits `registry_progression_map_drift:<region>:<missing_count>` before the rest of structural checks.
+
+- `tests/content_integrity_test.lua`
+  - Added a direct validation check for `ContentValidation.validate(require('content_build.content_registry'))`.
+  - Kept the loader-based integrity assertions aligned with the current `content_build` pipeline and current region/role data.
+
+3. verification performed
+
+- `ContentValidation.validate(require('content_build.content_registry'))`
+  - Result: `ok=true`, `errors=0`
+- `lua tests/content_integrity_test.lua`
+  - Result: `content_integrity_test: ok`
+- `lua tests/regional_progression_tables_test.lua`
+  - Result: `regional_progression_tables_test: ok`
+
+4. unresolved risks
+
+- The new fast-fail guard only covers progression-map drift and the registry-side rare-spawn map presence. It does not add new assertions for rare-spawn mob/reward drift beyond the existing per-entry validation.
+- `content_build/content_registry.lua` still owns region flavor/profile metadata locally; only region/map topology was moved onto the shared progression source in this patch.
+
+5. recommended next bottleneck
+
+- Add the bounded negative regression test for source drift: one test that fails if a progression map or rare-spawn map exists outside the registry surface, without expanding into progression retuning or economy/runtime changes.

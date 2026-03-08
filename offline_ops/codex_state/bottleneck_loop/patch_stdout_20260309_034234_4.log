@@ -1,0 +1,964 @@
+OpenAI Codex v0.111.0 (research preview)
+--------
+workdir: /home/meta_os/MapleWorld
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/meta_os/.codex/memories]
+reasoning effort: none
+reasoning summaries: none
+session id: 019ccec7-a59d-79b1-aa92-41d4c55d4c1c
+--------
+user
+Task:
+Apply the next bottleneck-focused improvement only.
+
+Context:
+MapleWorld is being improved toward efficiency point (~88) on MapleStory Worlds.
+Use the chosen bottleneck and patch boundary below.
+
+Chosen bottleneck:
+[PASTE CHOSEN_BOTTLENECK]
+
+Patch objective:
+[PASTE NEXT_PATCH_OBJECTIVE]
+
+Files:
+[PASTE FILES]
+
+Patch boundary:
+[PASTE PATCH_BOUNDARY]
+
+Rules:
+- do only this bounded improvement
+- do not redesign unrelated systems
+- do not expand architecture scope
+- do not preserve wrong standalone runtime ownership
+- do not add wrappers that keep bad boundaries alive
+- keep runtime gameplay-only inside MSW
+- prefer deletion/simplification over extra abstraction
+- update or add verification where needed
+
+Required output:
+1. changed files
+2. exact summary of changes
+3. verification performed
+4. unresolved risks
+5. recommended next bottleneck
+
+
+Coordinator decision:
+
+CURRENT_EFFICIENCY_ESTIMATE:
+84~87
+
+CHOSEN_BOTTLENECK:
+The MSW runtime public entry surface still exposes admin and economy-report methods that should not be part of the gameplay boundary.
+
+WHY_THIS_ONE:
+This is the smallest safe patch with the highest leverage because it directly tightens platform ownership and exploit surface in a few files, while the other proposals either broaden scope into content redesign or add validation without removing the underlying boundary residue.
+
+NEXT_PATCH_OBJECTIVE:
+Remove `getEconomyReport` and `adminStatus` from the public MSW entry and manifest surface, and add a boundary regression that fails if non-gameplay control-plane methods are exported again.
+
+FILES:
+- `/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua`
+- `/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua`
+- `/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua`
+
+PATCH_BOUNDARY:
+File-bounded runtime API surface cleanup plus one boundary test; no gameplay runtime redesign, no offline pipeline changes, no new standalone logic.
+
+SUCCESS_CHECK:
+- Public exports no longer include `getEconomyReport` or `adminStatus`
+- Boundary test explicitly rejects control-plane style exports from the MSW runtime entry surface
+- `lua tests/msw_runtime_boundary_test.lua` passes
+- `lua tests/msw_runtime_gameplay_test.lua` passes
+- `lua tests/msw_runtime_progression_test.lua` passes
+
+REJECTED_OTHER_BOTTLENECKS:
+- Quest loop variety: valid issue, but it touches design graph, compiled content, runtime quest logic, and multiple tests; too broad for the next safe cycle.
+- Boss and regional content templating: useful, but it is an offline content pass across many files and validation layers, not the narrowest bottleneck-first fix.
+- Economy idempotency regression: strong follow-up candidate, but it is primarily a validation expansion; the boundary leak is the more immediate architecture limiter and should be removed first.
+
+mcp startup: no servers
+codex
+I’m applying the bounded runtime API cleanup in the three specified files first, then I’ll run the boundary and gameplay/progression tests to verify the surface stays gameplay-only.
+exec
+/bin/bash -lc "sed -n '1,220p' msw_runtime/entry/world_server_entry.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,240p' msw_runtime/component_manifest.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,260p' tests/msw_runtime_boundary_test.lua" in /home/meta_os/MapleWorld succeeded in 50ms:
+package.path = package.path .. ';./?.lua;../?.lua'
+
+local function readFile(path)
+    local handle = assert(io.open(path, 'r'))
+    local content = handle:read('*a')
+    handle:close()
+    return content
+end
+
+local files = {}
+local pipe = assert(io.popen("find msw_runtime -type f -name '*.lua' | sort", 'r'))
+for path in pipe:lines() do
+    files[#files + 1] = path
+end
+pipe:close()
+
+assert(#files > 0, 'msw_runtime lua files missing')
+
+local forbiddenPatterns = {
+    "require%(['\"]content_build[%.']",
+ succeeded in 51ms:
+local Component = require('msw_runtime.entry.world_server_component')
+
+local Entry = {}
+local boundRuntimeComponent = nil
+
+local function bindRuntimeComponent(component)
+    if component ~= nil then
+        boundRuntimeComponent = component
+    end
+    return boundRuntimeComponent
+end
+
+local function dispatch(methodName, component, ...)
+    return Component.dispatch(bindRuntimeComponent(component), methodName, ...)
+end
+
+--@ BeginMethod
+--@ MethodExecSpace=ServerOnly
+function OnBeginPlay(component)
+    return dispatch('bootstrap', component)
+ succeeded in 51ms:
+return {
+    singleton = {
+        script = 'msw_runtime/entry/world_server_entry',
+        module = 'msw_runtime/entry/world_server_component',
+        attachTo = '/server_runtime',
+        runtimeContract = {
+            worldScope = 'msw_gameplay_runtime',
+            ownership = 'gameplay_only',
+            lifecycle = { 'bootstrap', 'tick', 'player_enter', 'player_leave' },
+            bindings = { 'player', 'map', 'inventory', 'quest', 'combat' },
+            sync = { 'server_authoritative_mutation' },
+        },
+        attachToAliases = {
+            'server_runtime',
+            'common/server_runtime',
+        },
+        events = {
+            { scope = 'Service', target = 'UserService', eventName = 'UserEnterEvent' },
+            { scope = 'Service', target = 'UserService', eventName = 'UserLeaveEvent' },
+        },
+codex
+I’ve confirmed the target files; now I’m checking whether the leaked methods still exist under different casing or naming so the cleanup and regression test match the actual surface.
+exec
+/bin/bash -lc 'rg -n "getEconomyReport|adminStatus|GetEconomyReport|AdminStatus" -S .' in /home/meta_os/MapleWorld succeeded in 51ms:
+./OPERATIONS.md:13:- `world:adminStatus()`
+./OPERATIONS.md:15:- `world:getEconomyReport()`
+./ECONOMY_MODEL.md:8:- market visibility is exposed through `world:getEconomyReport()`
+./tests/msw_runtime_boundary_test.lua:66:assert(manifest:match("'GetEconomyReport'") == nil, 'manifest must not export economy report control-plane method')
+./tests/msw_runtime_boundary_test.lua:67:assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
+./tests/msw_runtime_boundary_test.lua:70:assert(entry:match("GetEconomyReport%s*=") == nil, 'world_server_entry must not export economy report control-plane method')
+./tests/msw_runtime_boundary_test.lua:71:assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
+./msw_runtime/state/gameplay_runtime.lua:1203:function GameplayRuntime:getEconomyReport()
+./msw_runtime/state/gameplay_runtime.lua:1210:function GameplayRuntime:adminStatus()
+./offline_ops/codex_state/bottleneck_loop/patch_stdout_20260309_023703_1.log:433:function GameplayRuntime:getEconomyReport()
+./offline_ops/codex_state/bottleneck_loop/decision.txt:11:Remove `getEconomyReport` and `adminStatus` from the public MSW entry and manifest surface, and add a boundary regression that fails if non-gameplay control-plane methods are exported again.
+./offline_ops/codex_state/bottleneck_loop/decision.txt:22:- Public exports no longer include `getEconomyReport` or `adminStatus`
+./offline_ops/codex_state/bottleneck_loop/agent1.txt:13:Keep `getEconomyReport` and `adminStatus` internal-only, remove them from the public MSW entry/manifest surface, and lock that rule with a boundary test.
+./offline_ops/codex_state/bottleneck_loop/patch_stdout_20260309_034234_4.log:62:Remove `getEconomyReport` and `adminStatus` from the public MSW entry and manifest surface, and add a boundary regression that fails if non-gameplay control-plane methods are exported again.
+./offline_ops/codex_state/bottleneck_loop/patch_stdout_20260309_034234_4.log:73:- Public exports no longer include `getEconomyReport` or `adminStatus`
+exec
+/bin/bash -lc "sed -n '1,260p' msw_runtime/entry/world_server_component.lua" in /home/meta_os/MapleWorld succeeded in 51ms:
+local Runtime = require('msw_runtime.state.gameplay_runtime')
+
+local Component = {}
+
+local function ensureRuntime(component)
+    component = component or {}
+    local runtime = rawget(component, '__mapleWorldRuntimeState')
+    if runtime == nil then
+        runtime = Runtime:new()
+        rawset(component, '__mapleWorldRuntimeState', runtime)
+    end
+    return component, runtime
+end
+
+local function invoke(component, methodName, ...)
+    component, runtime = ensureRuntime(component)
+    local method = runtime[methodName]
+    assert(type(method) == 'function', 'unknown_runtime_method_' .. tostring(methodName))
+    return method(runtime, ...)
+end
+codex
+The leaked methods are currently internal on `GameplayRuntime`, but the public entry/manifest files don’t actively guard against them being re-exported. I’m tightening those two surfaces and making the boundary test fail on both exact names and the control-plane naming pattern.
+file update
+M /home/meta_os/MapleWorld/msw_runtime/component_manifest.lua
+@@ -1 +1,49 @@
++local forbiddenPublicMethods = {
++    GetEconomyReport = true,
++    AdminStatus = true,
++    getEconomyReport = true,
++    adminStatus = true,
++}
++
++local serverMethods = {
++    'GetPlayerState',
++    'GetMapState',
++    'GetStateDelta',
++    'DispatchRuntimeEvent',
++    'RoutePlayerAction',
++    'GetEventStream',
++    'AttackMob',
++    'PickupDrop',
++    'DamageBoss',
++    'AcceptQuest',
++    'TurnInQuest',
++    'BuyFromNpc',
++    'SellToNpc',
++    'EquipItem',
++    'UnequipItem',
++    'ChangeMap',
++    'AllocateStat',
++    'PromoteJob',
++    'LearnSkill',
++    'CastSkill',
++    'EnhanceEquipment',
++    'CreateParty',
++    'CreateGuild',
++    'AddFriend',
++    'TradeMesos',
++    'ListAuction',
++    'CraftItem',
++    'OpenDialogue',
++    'ChannelTransfer',
++    'GetRuntimeStatus',
++    'GetBuildRecommendation',
++    'GetTutorialState',
++    'ListPartyFinder',
++    'CreateRaid',
++}
++
++for _, methodName in ipairs(serverMethods) do
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_manifest_server_method_' .. tostring(methodName))
++end
++
+ return {
+@@ -21,38 +69,3 @@
+     },
+-    serverMethods = {
+-        'GetPlayerState',
+-        'GetMapState',
+-        'GetStateDelta',
+-        'DispatchRuntimeEvent',
+-        'RoutePlayerAction',
+-        'GetEventStream',
+-        'AttackMob',
+-        'PickupDrop',
+-        'DamageBoss',
+-        'AcceptQuest',
+-        'TurnInQuest',
+-        'BuyFromNpc',
+-        'SellToNpc',
+-        'EquipItem',
+-        'UnequipItem',
+-        'ChangeMap',
+-        'AllocateStat',
+-        'PromoteJob',
+-        'LearnSkill',
+-        'CastSkill',
+-        'EnhanceEquipment',
+-        'CreateParty',
+-        'CreateGuild',
+-        'AddFriend',
+-        'TradeMesos',
+-        'ListAuction',
+-        'CraftItem',
+-        'OpenDialogue',
+-        'ChannelTransfer',
+-        'GetRuntimeStatus',
+-        'GetBuildRecommendation',
+-        'GetTutorialState',
+-        'ListPartyFinder',
+-        'CreateRaid',
+-    },
++    serverMethods = serverMethods,
+ }
+M /home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua
+@@ -67,2 +67,5 @@
+ assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
++assert(manifest:match("'getEconomyReport'") == nil, 'manifest must not expose lower-case economy report control-plane method')
++assert(manifest:match("'adminStatus'") == nil, 'manifest must not expose lower-case admin status control-plane method')
++assert(manifest:match("forbiddenPublicMethods") ~= nil, 'manifest must hard-fail if forbidden control-plane methods are re-exported')
+ 
+@@ -71,2 +74,5 @@
+ assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
++assert(entry:match("getEconomyReport") ~= nil, 'world_server_entry must explicitly reject economy report control-plane routes')
++assert(entry:match("adminStatus") ~= nil, 'world_server_entry must explicitly reject admin status control-plane routes')
++assert(entry:match("forbidden_public_entry_") ~= nil, 'world_server_entry must hard-fail if forbidden control-plane methods are re-exported')
+ 
+M /home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua
+@@ -4,2 +4,6 @@
+ local boundRuntimeComponent = nil
++local forbiddenPublicMethods = {
++    getEconomyReport = true,
++    adminStatus = true,
++}
+ 
+@@ -90,2 +94,4 @@
+ for exportedName, methodName in pairs(routes) do
++    assert(forbiddenPublicMethods[exportedName] == nil, 'forbidden_public_entry_export_' .. tostring(exportedName))
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_public_entry_route_' .. tostring(methodName))
+     local fn = function(...)
+apply_patch(auto_approved=true) exited 0 in 16ms:
+Success. Updated the following files:
+M /home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua
+M /home/meta_os/MapleWorld/msw_runtime/component_manifest.lua
+M /home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua
+file update:
+diff --git a/msw_runtime/component_manifest.lua b/msw_runtime/component_manifest.lua
+index b8818ebd8e3bc0376eb27ac05e6d2d5207e1e69b..c75c5cb378bb6b66f6643e369efff4fe12792c93
+--- a/msw_runtime/component_manifest.lua
++++ b/msw_runtime/component_manifest.lua
+@@ -1,3 +1,51 @@
++local forbiddenPublicMethods = {
++    GetEconomyReport = true,
++    AdminStatus = true,
++    getEconomyReport = true,
++    adminStatus = true,
++}
++
++local serverMethods = {
++    'GetPlayerState',
++    'GetMapState',
++    'GetStateDelta',
++    'DispatchRuntimeEvent',
++    'RoutePlayerAction',
++    'GetEventStream',
++    'AttackMob',
++    'PickupDrop',
++    'DamageBoss',
++    'AcceptQuest',
++    'TurnInQuest',
++    'BuyFromNpc',
++    'SellToNpc',
++    'EquipItem',
++    'UnequipItem',
++    'ChangeMap',
++    'AllocateStat',
++    'PromoteJob',
++    'LearnSkill',
++    'CastSkill',
++    'EnhanceEquipment',
++    'CreateParty',
++    'CreateGuild',
++    'AddFriend',
++    'TradeMesos',
++    'ListAuction',
++    'CraftItem',
++    'OpenDialogue',
++    'ChannelTransfer',
++    'GetRuntimeStatus',
++    'GetBuildRecommendation',
++    'GetTutorialState',
++    'ListPartyFinder',
++    'CreateRaid',
++}
++
++for _, methodName in ipairs(serverMethods) do
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_manifest_server_method_' .. tostring(methodName))
++end
++
+ return {
+     singleton = {
+         script = 'msw_runtime/entry/world_server_entry',
+@@ -19,40 +67,5 @@
+             { scope = 'Service', target = 'UserService', eventName = 'UserLeaveEvent' },
+         },
+     },
+-    serverMethods = {
+-        'GetPlayerState',
+-        'GetMapState',
+-        'GetStateDelta',
+-        'DispatchRuntimeEvent',
+-        'RoutePlayerAction',
+-        'GetEventStream',
+-        'AttackMob',
+-        'PickupDrop',
+-        'DamageBoss',
+-        'AcceptQuest',
+-        'TurnInQuest',
+-        'BuyFromNpc',
+-        'SellToNpc',
+-        'EquipItem',
+-        'UnequipItem',
+-        'ChangeMap',
+-        'AllocateStat',
+-        'PromoteJob',
+-        'LearnSkill',
+-        'CastSkill',
+-        'EnhanceEquipment',
+-        'CreateParty',
+-        'CreateGuild',
+-        'AddFriend',
+-        'TradeMesos',
+-        'ListAuction',
+-        'CraftItem',
+-        'OpenDialogue',
+-        'ChannelTransfer',
+-        'GetRuntimeStatus',
+-        'GetBuildRecommendation',
+-        'GetTutorialState',
+-        'ListPartyFinder',
+-        'CreateRaid',
+-    },
++    serverMethods = serverMethods,
+ }
+diff --git a/msw_runtime/entry/world_server_entry.lua b/msw_runtime/entry/world_server_entry.lua
+index 53818e5ec4fb7a50585b572e10cfe8c8c384cc3f..dc14b7cbd2194c58647b7795c8bc90358e706c38
+--- a/msw_runtime/entry/world_server_entry.lua
++++ b/msw_runtime/entry/world_server_entry.lua
+@@ -2,6 +2,10 @@
+ 
+ local Entry = {}
+ local boundRuntimeComponent = nil
++local forbiddenPublicMethods = {
++    getEconomyReport = true,
++    adminStatus = true,
++}
+ 
+ local function bindRuntimeComponent(component)
+     if component ~= nil then
+@@ -88,6 +92,8 @@
+ }
+ 
+ for exportedName, methodName in pairs(routes) do
++    assert(forbiddenPublicMethods[exportedName] == nil, 'forbidden_public_entry_export_' .. tostring(exportedName))
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_public_entry_route_' .. tostring(methodName))
+     local fn = function(...)
+         local args = { ... }
+         local component = args[#args]
+diff --git a/tests/msw_runtime_boundary_test.lua b/tests/msw_runtime_boundary_test.lua
+index 580a11873c0cecc065c3205b0fd2699701124195..b0799526ca178c60108362aae6fb3ee14d63cecd
+--- a/tests/msw_runtime_boundary_test.lua
++++ b/tests/msw_runtime_boundary_test.lua
+@@ -65,10 +65,16 @@
+ assert(manifest:match("worldScope%s*=%s*'msw_gameplay_runtime'") ~= nil, 'manifest worldScope drifted')
+ assert(manifest:match("'GetEconomyReport'") == nil, 'manifest must not export economy report control-plane method')
+ assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
++assert(manifest:match("'getEconomyReport'") == nil, 'manifest must not expose lower-case economy report control-plane method')
++assert(manifest:match("'adminStatus'") == nil, 'manifest must not expose lower-case admin status control-plane method')
++assert(manifest:match("forbiddenPublicMethods") ~= nil, 'manifest must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local entry = readFile('msw_runtime/entry/world_server_entry.lua')
+ assert(entry:match("GetEconomyReport%s*=") == nil, 'world_server_entry must not export economy report control-plane method')
+ assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
++assert(entry:match("getEconomyReport") ~= nil, 'world_server_entry must explicitly reject economy report control-plane routes')
++assert(entry:match("adminStatus") ~= nil, 'world_server_entry must explicitly reject admin status control-plane routes')
++assert(entry:match("forbidden_public_entry_") ~= nil, 'world_server_entry must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local readme = readFile('msw_runtime/README.md')
+ assert(readme:match('gameplay code') ~= nil, 'runtime README should declare gameplay-only scope')
+
+file update:
+diff --git a/msw_runtime/component_manifest.lua b/msw_runtime/component_manifest.lua
+index b8818ebd8e3bc0376eb27ac05e6d2d5207e1e69b..c75c5cb378bb6b66f6643e369efff4fe12792c93
+--- a/msw_runtime/component_manifest.lua
++++ b/msw_runtime/component_manifest.lua
+@@ -1,3 +1,51 @@
++local forbiddenPublicMethods = {
++    GetEconomyReport = true,
++    AdminStatus = true,
++    getEconomyReport = true,
++    adminStatus = true,
++}
++
++local serverMethods = {
++    'GetPlayerState',
++    'GetMapState',
++    'GetStateDelta',
++    'DispatchRuntimeEvent',
++    'RoutePlayerAction',
++    'GetEventStream',
++    'AttackMob',
++    'PickupDrop',
++    'DamageBoss',
++    'AcceptQuest',
++    'TurnInQuest',
++    'BuyFromNpc',
++    'SellToNpc',
++    'EquipItem',
++    'UnequipItem',
++    'ChangeMap',
++    'AllocateStat',
++    'PromoteJob',
++    'LearnSkill',
++    'CastSkill',
++    'EnhanceEquipment',
++    'CreateParty',
++    'CreateGuild',
++    'AddFriend',
++    'TradeMesos',
++    'ListAuction',
++    'CraftItem',
++    'OpenDialogue',
++    'ChannelTransfer',
++    'GetRuntimeStatus',
++    'GetBuildRecommendation',
++    'GetTutorialState',
++    'ListPartyFinder',
++    'CreateRaid',
++}
++
++for _, methodName in ipairs(serverMethods) do
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_manifest_server_method_' .. tostring(methodName))
++end
++
+ return {
+     singleton = {
+         script = 'msw_runtime/entry/world_server_entry',
+@@ -19,40 +67,5 @@
+             { scope = 'Service', target = 'UserService', eventName = 'UserLeaveEvent' },
+         },
+     },
+-    serverMethods = {
+-        'GetPlayerState',
+-        'GetMapState',
+-        'GetStateDelta',
+-        'DispatchRuntimeEvent',
+-        'RoutePlayerAction',
+-        'GetEventStream',
+-        'AttackMob',
+-        'PickupDrop',
+-        'DamageBoss',
+-        'AcceptQuest',
+-        'TurnInQuest',
+-        'BuyFromNpc',
+-        'SellToNpc',
+-        'EquipItem',
+-        'UnequipItem',
+-        'ChangeMap',
+-        'AllocateStat',
+-        'PromoteJob',
+-        'LearnSkill',
+-        'CastSkill',
+-        'EnhanceEquipment',
+-        'CreateParty',
+-        'CreateGuild',
+-        'AddFriend',
+-        'TradeMesos',
+-        'ListAuction',
+-        'CraftItem',
+-        'OpenDialogue',
+-        'ChannelTransfer',
+-        'GetRuntimeStatus',
+-        'GetBuildRecommendation',
+-        'GetTutorialState',
+-        'ListPartyFinder',
+-        'CreateRaid',
+-    },
++    serverMethods = serverMethods,
+ }
+diff --git a/msw_runtime/entry/world_server_entry.lua b/msw_runtime/entry/world_server_entry.lua
+index 53818e5ec4fb7a50585b572e10cfe8c8c384cc3f..dc14b7cbd2194c58647b7795c8bc90358e706c38
+--- a/msw_runtime/entry/world_server_entry.lua
++++ b/msw_runtime/entry/world_server_entry.lua
+@@ -2,6 +2,10 @@
+ 
+ local Entry = {}
+ local boundRuntimeComponent = nil
++local forbiddenPublicMethods = {
++    getEconomyReport = true,
++    adminStatus = true,
++}
+ 
+ local function bindRuntimeComponent(component)
+     if component ~= nil then
+@@ -88,6 +92,8 @@
+ }
+ 
+ for exportedName, methodName in pairs(routes) do
++    assert(forbiddenPublicMethods[exportedName] == nil, 'forbidden_public_entry_export_' .. tostring(exportedName))
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_public_entry_route_' .. tostring(methodName))
+     local fn = function(...)
+         local args = { ... }
+         local component = args[#args]
+diff --git a/tests/msw_runtime_boundary_test.lua b/tests/msw_runtime_boundary_test.lua
+index 580a11873c0cecc065c3205b0fd2699701124195..b0799526ca178c60108362aae6fb3ee14d63cecd
+--- a/tests/msw_runtime_boundary_test.lua
++++ b/tests/msw_runtime_boundary_test.lua
+@@ -65,10 +65,16 @@
+ assert(manifest:match("worldScope%s*=%s*'msw_gameplay_runtime'") ~= nil, 'manifest worldScope drifted')
+ assert(manifest:match("'GetEconomyReport'") == nil, 'manifest must not export economy report control-plane method')
+ assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
++assert(manifest:match("'getEconomyReport'") == nil, 'manifest must not expose lower-case economy report control-plane method')
++assert(manifest:match("'adminStatus'") == nil, 'manifest must not expose lower-case admin status control-plane method')
++assert(manifest:match("forbiddenPublicMethods") ~= nil, 'manifest must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local entry = readFile('msw_runtime/entry/world_server_entry.lua')
+ assert(entry:match("GetEconomyReport%s*=") == nil, 'world_server_entry must not export economy report control-plane method')
+ assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
++assert(entry:match("getEconomyReport") ~= nil, 'world_server_entry must explicitly reject economy report control-plane routes')
++assert(entry:match("adminStatus") ~= nil, 'world_server_entry must explicitly reject admin status control-plane routes')
++assert(entry:match("forbidden_public_entry_") ~= nil, 'world_server_entry must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local readme = readFile('msw_runtime/README.md')
+ assert(readme:match('gameplay code') ~= nil, 'runtime README should declare gameplay-only scope')
+
+codex
+The file edits are in. I added explicit fail-fast guards in the entry and manifest, and the boundary test now checks for both exact leaked names and the guard presence before I run the three required Lua test suites.
+exec
+/bin/bash -lc 'lua tests/msw_runtime_boundary_test.lua' in /home/meta_os/MapleWorld succeeded in 50ms:
+msw_runtime_boundary_test: ok
+exec
+/bin/bash -lc 'lua tests/msw_runtime_gameplay_test.lua' in /home/meta_os/MapleWorldexec
+/bin/bash -lc 'lua tests/msw_runtime_progression_test.lua' in /home/meta_os/MapleWorld succeeded in 249ms:
+msw_runtime_gameplay_test: ok
+ succeeded in 241ms:
+msw_runtime_progression_test: ok
+file update:
+diff --git a/msw_runtime/component_manifest.lua b/msw_runtime/component_manifest.lua
+index b8818ebd8e3bc0376eb27ac05e6d2d5207e1e69b..c75c5cb378bb6b66f6643e369efff4fe12792c93
+--- a/msw_runtime/component_manifest.lua
++++ b/msw_runtime/component_manifest.lua
+@@ -1,3 +1,51 @@
++local forbiddenPublicMethods = {
++    GetEconomyReport = true,
++    AdminStatus = true,
++    getEconomyReport = true,
++    adminStatus = true,
++}
++
++local serverMethods = {
++    'GetPlayerState',
++    'GetMapState',
++    'GetStateDelta',
++    'DispatchRuntimeEvent',
++    'RoutePlayerAction',
++    'GetEventStream',
++    'AttackMob',
++    'PickupDrop',
++    'DamageBoss',
++    'AcceptQuest',
++    'TurnInQuest',
++    'BuyFromNpc',
++    'SellToNpc',
++    'EquipItem',
++    'UnequipItem',
++    'ChangeMap',
++    'AllocateStat',
++    'PromoteJob',
++    'LearnSkill',
++    'CastSkill',
++    'EnhanceEquipment',
++    'CreateParty',
++    'CreateGuild',
++    'AddFriend',
++    'TradeMesos',
++    'ListAuction',
++    'CraftItem',
++    'OpenDialogue',
++    'ChannelTransfer',
++    'GetRuntimeStatus',
++    'GetBuildRecommendation',
++    'GetTutorialState',
++    'ListPartyFinder',
++    'CreateRaid',
++}
++
++for _, methodName in ipairs(serverMethods) do
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_manifest_server_method_' .. tostring(methodName))
++end
++
+ return {
+     singleton = {
+         script = 'msw_runtime/entry/world_server_entry',
+@@ -19,40 +67,5 @@
+             { scope = 'Service', target = 'UserService', eventName = 'UserLeaveEvent' },
+         },
+     },
+-    serverMethods = {
+-        'GetPlayerState',
+-        'GetMapState',
+-        'GetStateDelta',
+-        'DispatchRuntimeEvent',
+-        'RoutePlayerAction',
+-        'GetEventStream',
+-        'AttackMob',
+-        'PickupDrop',
+-        'DamageBoss',
+-        'AcceptQuest',
+-        'TurnInQuest',
+-        'BuyFromNpc',
+-        'SellToNpc',
+-        'EquipItem',
+-        'UnequipItem',
+-        'ChangeMap',
+-        'AllocateStat',
+-        'PromoteJob',
+-        'LearnSkill',
+-        'CastSkill',
+-        'EnhanceEquipment',
+-        'CreateParty',
+-        'CreateGuild',
+-        'AddFriend',
+-        'TradeMesos',
+-        'ListAuction',
+-        'CraftItem',
+-        'OpenDialogue',
+-        'ChannelTransfer',
+-        'GetRuntimeStatus',
+-        'GetBuildRecommendation',
+-        'GetTutorialState',
+-        'ListPartyFinder',
+-        'CreateRaid',
+-    },
++    serverMethods = serverMethods,
+ }
+diff --git a/msw_runtime/entry/world_server_entry.lua b/msw_runtime/entry/world_server_entry.lua
+index 53818e5ec4fb7a50585b572e10cfe8c8c384cc3f..dc14b7cbd2194c58647b7795c8bc90358e706c38
+--- a/msw_runtime/entry/world_server_entry.lua
++++ b/msw_runtime/entry/world_server_entry.lua
+@@ -2,6 +2,10 @@
+ 
+ local Entry = {}
+ local boundRuntimeComponent = nil
++local forbiddenPublicMethods = {
++    getEconomyReport = true,
++    adminStatus = true,
++}
+ 
+ local function bindRuntimeComponent(component)
+     if component ~= nil then
+@@ -88,6 +92,8 @@
+ }
+ 
+ for exportedName, methodName in pairs(routes) do
++    assert(forbiddenPublicMethods[exportedName] == nil, 'forbidden_public_entry_export_' .. tostring(exportedName))
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_public_entry_route_' .. tostring(methodName))
+     local fn = function(...)
+         local args = { ... }
+         local component = args[#args]
+diff --git a/tests/msw_runtime_boundary_test.lua b/tests/msw_runtime_boundary_test.lua
+index 580a11873c0cecc065c3205b0fd2699701124195..b0799526ca178c60108362aae6fb3ee14d63cecd
+--- a/tests/msw_runtime_boundary_test.lua
++++ b/tests/msw_runtime_boundary_test.lua
+@@ -65,10 +65,16 @@
+ assert(manifest:match("worldScope%s*=%s*'msw_gameplay_runtime'") ~= nil, 'manifest worldScope drifted')
+ assert(manifest:match("'GetEconomyReport'") == nil, 'manifest must not export economy report control-plane method')
+ assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
++assert(manifest:match("'getEconomyReport'") == nil, 'manifest must not expose lower-case economy report control-plane method')
++assert(manifest:match("'adminStatus'") == nil, 'manifest must not expose lower-case admin status control-plane method')
++assert(manifest:match("forbiddenPublicMethods") ~= nil, 'manifest must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local entry = readFile('msw_runtime/entry/world_server_entry.lua')
+ assert(entry:match("GetEconomyReport%s*=") == nil, 'world_server_entry must not export economy report control-plane method')
+ assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
++assert(entry:match("getEconomyReport") ~= nil, 'world_server_entry must explicitly reject economy report control-plane routes')
++assert(entry:match("adminStatus") ~= nil, 'world_server_entry must explicitly reject admin status control-plane routes')
++assert(entry:match("forbidden_public_entry_") ~= nil, 'world_server_entry must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local readme = readFile('msw_runtime/README.md')
+ assert(readme:match('gameplay code') ~= nil, 'runtime README should declare gameplay-only scope')
+
+codex
+1. changed files
+
+- [msw_runtime/entry/world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua)
+- [msw_runtime/component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua)
+- [tests/msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua)
+
+2. exact summary of changes
+
+- Added a `forbiddenPublicMethods` denylist to [world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua) for `getEconomyReport` and `adminStatus`, and assert-failed route registration if either appears as a public export name or routed runtime method.
+- Refactored [component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua) to define `serverMethods` as an explicit local list, added a matching `forbiddenPublicMethods` denylist, and assert-failed manifest construction if `GetEconomyReport`, `AdminStatus`, `getEconomyReport`, or `adminStatus` are ever re-added.
+- Strengthened [msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua) so it rejects both uppercase and lowercase control-plane method names on the public manifest surface, and verifies the entry and manifest contain hard-fail guards against re-exporting those methods.
+
+3. verification performed
+
+- Ran `lua tests/msw_runtime_boundary_test.lua` -> passed
+- Ran `lua tests/msw_runtime_gameplay_test.lua` -> passed
+- Ran `lua tests/msw_runtime_progression_test.lua` -> passed
+
+4. unresolved risks
+
+- `GameplayRuntime:getEconomyReport()` and `GameplayRuntime:adminStatus()` still exist as internal runtime methods in [gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua). They are no longer allowed onto the public MSW entry/manifest surface, but the internal methods remain callable if some future file bypasses the current boundary.
+- The regression is intentionally narrow to this patch boundary; it does not audit docs or other non-runtime references that still mention these methods.
+
+5. recommended next bottleneck
+
+- Economy idempotency regression: add targeted validation around transaction replay/rollback boundaries so meso/item mutations stay idempotent under duplicate delivery and recovery paths.
+file update:
+diff --git a/msw_runtime/component_manifest.lua b/msw_runtime/component_manifest.lua
+index b8818ebd8e3bc0376eb27ac05e6d2d5207e1e69b..c75c5cb378bb6b66f6643e369efff4fe12792c93
+--- a/msw_runtime/component_manifest.lua
++++ b/msw_runtime/component_manifest.lua
+@@ -1,3 +1,51 @@
++local forbiddenPublicMethods = {
++    GetEconomyReport = true,
++    AdminStatus = true,
++    getEconomyReport = true,
++    adminStatus = true,
++}
++
++local serverMethods = {
++    'GetPlayerState',
++    'GetMapState',
++    'GetStateDelta',
++    'DispatchRuntimeEvent',
++    'RoutePlayerAction',
++    'GetEventStream',
++    'AttackMob',
++    'PickupDrop',
++    'DamageBoss',
++    'AcceptQuest',
++    'TurnInQuest',
++    'BuyFromNpc',
++    'SellToNpc',
++    'EquipItem',
++    'UnequipItem',
++    'ChangeMap',
++    'AllocateStat',
++    'PromoteJob',
++    'LearnSkill',
++    'CastSkill',
++    'EnhanceEquipment',
++    'CreateParty',
++    'CreateGuild',
++    'AddFriend',
++    'TradeMesos',
++    'ListAuction',
++    'CraftItem',
++    'OpenDialogue',
++    'ChannelTransfer',
++    'GetRuntimeStatus',
++    'GetBuildRecommendation',
++    'GetTutorialState',
++    'ListPartyFinder',
++    'CreateRaid',
++}
++
++for _, methodName in ipairs(serverMethods) do
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_manifest_server_method_' .. tostring(methodName))
++end
++
+ return {
+     singleton = {
+         script = 'msw_runtime/entry/world_server_entry',
+@@ -19,40 +67,5 @@
+             { scope = 'Service', target = 'UserService', eventName = 'UserLeaveEvent' },
+         },
+     },
+-    serverMethods = {
+-        'GetPlayerState',
+-        'GetMapState',
+-        'GetStateDelta',
+-        'DispatchRuntimeEvent',
+-        'RoutePlayerAction',
+-        'GetEventStream',
+-        'AttackMob',
+-        'PickupDrop',
+-        'DamageBoss',
+-        'AcceptQuest',
+-        'TurnInQuest',
+-        'BuyFromNpc',
+-        'SellToNpc',
+-        'EquipItem',
+-        'UnequipItem',
+-        'ChangeMap',
+-        'AllocateStat',
+-        'PromoteJob',
+-        'LearnSkill',
+-        'CastSkill',
+-        'EnhanceEquipment',
+-        'CreateParty',
+-        'CreateGuild',
+-        'AddFriend',
+-        'TradeMesos',
+-        'ListAuction',
+-        'CraftItem',
+-        'OpenDialogue',
+-        'ChannelTransfer',
+-        'GetRuntimeStatus',
+-        'GetBuildRecommendation',
+-        'GetTutorialState',
+-        'ListPartyFinder',
+-        'CreateRaid',
+-    },
++    serverMethods = serverMethods,
+ }
+diff --git a/msw_runtime/entry/world_server_entry.lua b/msw_runtime/entry/world_server_entry.lua
+index 53818e5ec4fb7a50585b572e10cfe8c8c384cc3f..dc14b7cbd2194c58647b7795c8bc90358e706c38
+--- a/msw_runtime/entry/world_server_entry.lua
++++ b/msw_runtime/entry/world_server_entry.lua
+@@ -2,6 +2,10 @@
+ 
+ local Entry = {}
+ local boundRuntimeComponent = nil
++local forbiddenPublicMethods = {
++    getEconomyReport = true,
++    adminStatus = true,
++}
+ 
+ local function bindRuntimeComponent(component)
+     if component ~= nil then
+@@ -88,6 +92,8 @@
+ }
+ 
+ for exportedName, methodName in pairs(routes) do
++    assert(forbiddenPublicMethods[exportedName] == nil, 'forbidden_public_entry_export_' .. tostring(exportedName))
++    assert(forbiddenPublicMethods[methodName] == nil, 'forbidden_public_entry_route_' .. tostring(methodName))
+     local fn = function(...)
+         local args = { ... }
+         local component = args[#args]
+diff --git a/tests/msw_runtime_boundary_test.lua b/tests/msw_runtime_boundary_test.lua
+index 580a11873c0cecc065c3205b0fd2699701124195..b0799526ca178c60108362aae6fb3ee14d63cecd
+--- a/tests/msw_runtime_boundary_test.lua
++++ b/tests/msw_runtime_boundary_test.lua
+@@ -65,10 +65,16 @@
+ assert(manifest:match("worldScope%s*=%s*'msw_gameplay_runtime'") ~= nil, 'manifest worldScope drifted')
+ assert(manifest:match("'GetEconomyReport'") == nil, 'manifest must not export economy report control-plane method')
+ assert(manifest:match("'AdminStatus'") == nil, 'manifest must not export admin status control-plane method')
++assert(manifest:match("'getEconomyReport'") == nil, 'manifest must not expose lower-case economy report control-plane method')
++assert(manifest:match("'adminStatus'") == nil, 'manifest must not expose lower-case admin status control-plane method')
++assert(manifest:match("forbiddenPublicMethods") ~= nil, 'manifest must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local entry = readFile('msw_runtime/entry/world_server_entry.lua')
+ assert(entry:match("GetEconomyReport%s*=") == nil, 'world_server_entry must not export economy report control-plane method')
+ assert(entry:match("AdminStatus%s*=") == nil, 'world_server_entry must not export admin status control-plane method')
++assert(entry:match("getEconomyReport") ~= nil, 'world_server_entry must explicitly reject economy report control-plane routes')
++assert(entry:match("adminStatus") ~= nil, 'world_server_entry must explicitly reject admin status control-plane routes')
++assert(entry:match("forbidden_public_entry_") ~= nil, 'world_server_entry must hard-fail if forbidden control-plane methods are re-exported')
+ 
+ local readme = readFile('msw_runtime/README.md')
+ assert(readme:match('gameplay code') ~= nil, 'runtime README should declare gameplay-only scope')
+
+tokens used
+10,994
+1. changed files
+
+- [msw_runtime/entry/world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua)
+- [msw_runtime/component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua)
+- [tests/msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua)
+
+2. exact summary of changes
+
+- Added a `forbiddenPublicMethods` denylist to [world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua) for `getEconomyReport` and `adminStatus`, and assert-failed route registration if either appears as a public export name or routed runtime method.
+- Refactored [component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua) to define `serverMethods` as an explicit local list, added a matching `forbiddenPublicMethods` denylist, and assert-failed manifest construction if `GetEconomyReport`, `AdminStatus`, `getEconomyReport`, or `adminStatus` are ever re-added.
+- Strengthened [msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua) so it rejects both uppercase and lowercase control-plane method names on the public manifest surface, and verifies the entry and manifest contain hard-fail guards against re-exporting those methods.
+
+3. verification performed
+
+- Ran `lua tests/msw_runtime_boundary_test.lua` -> passed
+- Ran `lua tests/msw_runtime_gameplay_test.lua` -> passed
+- Ran `lua tests/msw_runtime_progression_test.lua` -> passed
+
+4. unresolved risks
+
+- `GameplayRuntime:getEconomyReport()` and `GameplayRuntime:adminStatus()` still exist as internal runtime methods in [gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua). They are no longer allowed onto the public MSW entry/manifest surface, but the internal methods remain callable if some future file bypasses the current boundary.
+- The regression is intentionally narrow to this patch boundary; it does not audit docs or other non-runtime references that still mention these methods.
+
+5. recommended next bottleneck
+
+- Economy idempotency regression: add targeted validation around transaction replay/rollback boundaries so meso/item mutations stay idempotent under duplicate delivery and recovery paths.

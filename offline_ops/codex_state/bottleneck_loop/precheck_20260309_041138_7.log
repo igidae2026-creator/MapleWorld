@@ -1,0 +1,7 @@
+content_integrity_test: ok
+regional_progression_tables_test: ok
+msw_runtime_boundary_test: ok
+msw_runtime_gameplay_test: ok
+msw_runtime_progression_test: ok
+boss_reward_distribution_test: ok
+economy_runtime_invariant_test: ok

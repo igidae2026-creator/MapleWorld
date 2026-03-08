@@ -21,8 +21,9 @@ Wave 1 does not cover runtime stability or gameplay systems. The following are e
 
 Wave 1 assumes a local repository checkout with these repo-relative areas present:
 - `data/`
-- `msw/`
-- `ops/`
+- `msw_runtime/`
+- `offline_ops/`
+- `ai_evolution_offline/`
 - `scripts/`
 - `tests/`
 
@@ -50,10 +51,10 @@ Development env bootstrap:
 - `.env.example`
 
 Codex runner and workers:
-- `scripts/codex/run_patch.sh`
-- `scripts/codex/worker.sh`
-- `scripts/codex/poll_patch_queue.sh`
-- `scripts/codex/parallel_workers.sh`
+- `ai_evolution_offline/codex/run_patch.sh`
+- `ai_evolution_offline/codex/worker.sh`
+- `ai_evolution_offline/codex/poll_patch_queue.sh`
+- `ai_evolution_offline/codex/parallel_workers.sh`
 
 Makefile entrypoints:
 - `Makefile`
@@ -79,7 +80,7 @@ make setup-wsl
 
 What this checks:
 - whether the environment appears to be WSL
-- whether the repository contains `data/`, `msw/`, `ops/`, `scripts/`, and `tests/`
+- whether the repository contains `data/`, `msw_runtime/`, `offline_ops/`, `ai_evolution_offline/`, `scripts/`, and `tests/`
 - whether `bash`, `git`, `node`, `npm`, and `make` are available
 
 What it intentionally leaves manual:
@@ -136,7 +137,7 @@ Wave 1 behavior of `scripts/env/dev_env.sh`:
 
 ### Intent
 
-`scripts/codex/run_patch.sh` is a wrapper for one non-interactive Codex patch prompt.
+`ai_evolution_offline/codex/run_patch.sh` is a wrapper for one non-interactive Codex patch prompt.
 
 It validates:
 - `codex` is on `PATH`
@@ -161,7 +162,7 @@ Use the wrapper instead of depending on direct CLI composition in your own scrip
 Assuming a prompt file exists at `prompts/patches/PATCH-001.md`:
 
 ```bash
-bash scripts/codex/run_patch.sh \
+bash ai_evolution_offline/codex/run_patch.sh \
   --patch-id PATCH-001 \
   --prompt-file prompts/patches/PATCH-001.md \
   --output-file .codex/logs/PATCH-001.last.txt
@@ -175,7 +176,7 @@ make codex-run-patch ARGS='--patch-id PATCH-001 --prompt-file prompts/patches/PA
 
 ## Worker Scaffold
 
-`scripts/codex/worker.sh` is a one-shot wrapper around `scripts/codex/run_patch.sh`.
+`ai_evolution_offline/codex/worker.sh` is a one-shot wrapper around `ai_evolution_offline/codex/run_patch.sh`.
 
 It does not:
 - poll continuously
@@ -186,7 +187,7 @@ It does not:
 Example:
 
 ```bash
-bash scripts/codex/worker.sh \
+bash ai_evolution_offline/codex/worker.sh \
   --patch-id PATCH-001 \
   --prompt-file prompts/patches/PATCH-001.md \
   --output-file .codex/logs/PATCH-001.last.txt
@@ -224,7 +225,7 @@ PATCH-001	prompts/patches/PATCH-001.md	.codex/logs/PATCH-001.last.txt
 PATCH-002	prompts/patches/PATCH-002.md	.codex/logs/PATCH-002.last.txt
 ```
 
-The default queue path used by `scripts/codex/poll_patch_queue.sh` is:
+The default queue path used by `ai_evolution_offline/codex/poll_patch_queue.sh` is:
 
 ```text
 .codex/patch_queue.tsv
@@ -235,7 +236,7 @@ This file is not auto-created by Wave 1.
 ### Inspect the queue
 
 ```bash
-bash scripts/codex/poll_patch_queue.sh --queue-file .codex/patch_queue.tsv --max-items 10
+bash ai_evolution_offline/codex/poll_patch_queue.sh --queue-file .codex/patch_queue.tsv --max-items 10
 ```
 
 Or:
@@ -247,19 +248,19 @@ make codex-poll-queue ARGS='--queue-file .codex/patch_queue.tsv --max-items 10'
 ### Dispatch the first valid queue item
 
 ```bash
-bash scripts/codex/poll_patch_queue.sh --queue-file .codex/patch_queue.tsv --dispatch-first
+bash ai_evolution_offline/codex/poll_patch_queue.sh --queue-file .codex/patch_queue.tsv --dispatch-first
 ```
 
 This is bounded and one-shot. It does not remove the item from the queue and does not mark state.
 
 ## Parallel Worker Scaffold
 
-`scripts/codex/parallel_workers.sh` starts a fixed number of one-shot workers from the first valid queue entries, then waits for them to finish.
+`ai_evolution_offline/codex/parallel_workers.sh` starts a fixed number of one-shot workers from the first valid queue entries, then waits for them to finish.
 
 Example:
 
 ```bash
-bash scripts/codex/parallel_workers.sh --queue-file .codex/patch_queue.tsv --workers 2
+bash ai_evolution_offline/codex/parallel_workers.sh --queue-file .codex/patch_queue.tsv --workers 2
 ```
 
 Or:
@@ -293,16 +294,16 @@ Basic validation sequence:
 ```bash
 make setup-wsl
 make env-check
-bash scripts/codex/run_patch.sh --help
-bash scripts/codex/worker.sh --help
-bash scripts/codex/poll_patch_queue.sh --help
-bash scripts/codex/parallel_workers.sh --help
+bash ai_evolution_offline/codex/run_patch.sh --help
+bash ai_evolution_offline/codex/worker.sh --help
+bash ai_evolution_offline/codex/poll_patch_queue.sh --help
+bash ai_evolution_offline/codex/parallel_workers.sh --help
 ```
 
 If you have a prompt file and queue file prepared, a practical Wave 1 smoke path is:
 
 ```bash
-bash scripts/codex/run_patch.sh --patch-id PATCH-001 --prompt-file prompts/patches/PATCH-001.md
+bash ai_evolution_offline/codex/run_patch.sh --patch-id PATCH-001 --prompt-file prompts/patches/PATCH-001.md
 ```
 
 ## Known Placeholders in Wave 1
@@ -342,7 +343,7 @@ Check that:
 
 ### Parallel workers do not process the whole queue
 
-That is expected in Wave 1. `scripts/codex/parallel_workers.sh` only launches the first valid `N` entries and waits for them. It is not a scheduler.
+That is expected in Wave 1. `ai_evolution_offline/codex/parallel_workers.sh` only launches the first valid `N` entries and waits for them. It is not a scheduler.
 
 ## Limitations and Deferred Items
 

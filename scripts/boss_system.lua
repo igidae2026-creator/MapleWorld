@@ -27,6 +27,36 @@ function BossSystem.new(config)
     return self
 end
 
+function BossSystem:_eligibleContributors(encounter, killerId)
+    local contributions = encounter and encounter.contributors or {}
+    local totalDamage = 0
+    local out = {}
+    for _, damage in pairs(contributions) do
+        totalDamage = totalDamage + math.max(0, math.floor(tonumber(damage) or 0))
+    end
+    local threshold = math.max(1, math.floor((tonumber(encounter and encounter.maxHp) or 1) * 0.05))
+    for playerId, damage in pairs(contributions) do
+        if math.max(0, math.floor(tonumber(damage) or 0)) >= threshold then
+            out[#out + 1] = tostring(playerId)
+        end
+    end
+    if killerId ~= nil then
+        local normalizedKillerId = tostring(killerId)
+        local seen = false
+        for _, playerId in ipairs(out) do
+            if playerId == normalizedKillerId then
+                seen = true
+                break
+            end
+        end
+        if not seen and contributions[normalizedKillerId] ~= nil then
+            out[#out + 1] = normalizedKillerId
+        end
+    end
+    table.sort(out)
+    return out, totalDamage, threshold
+end
+
 function BossSystem:_now()
     return math.floor(tonumber(self.time()) or os.time())
 end
@@ -172,11 +202,25 @@ function BossSystem:damage(mapId, player, amount)
 
         local position = encounter.position or { x = 0, y = 0, z = 0 }
         local bossLikeMob = { mobId = encounter.bossId, x = position.x or 0, y = position.y or 0, z = position.z or 0, mapId = mapId }
-        local drops = self.dropSystem and self.dropSystem:rollDrops(bossLikeMob, player or { id = 'system' }) or {}
+        local eligibleContributors, totalDamage, threshold = self:_eligibleContributors(encounter, encounter.killedBy)
+        local rewardBundles = {}
+        if self.dropSystem then
+            for _, contributorId in ipairs(eligibleContributors) do
+                rewardBundles[#rewardBundles + 1] = {
+                    playerId = contributorId,
+                    drops = self.dropSystem:rollDrops(bossLikeMob, { id = contributorId }),
+                }
+            end
+        end
+        encounter.rewardDistribution = {
+            eligibleContributors = deepcopy(eligibleContributors),
+            minimumDamage = threshold,
+            totalDamage = totalDamage,
+        }
         if self.metrics then self.metrics:increment('boss.kill', 1, { boss = encounter.bossId }) end
         if self.logger and self.logger.info then self.logger:info('boss_killed', { bossId = encounter.bossId, playerId = player and player.id or nil }) end
         encounter.currentMechanic = encounter.mechanics[encounter.phase]
-        return true, drops, encounter
+        return true, rewardBundles, encounter
     end
     encounter.currentMechanic = encounter.mechanics[encounter.phase]
     return true, nil, encounter

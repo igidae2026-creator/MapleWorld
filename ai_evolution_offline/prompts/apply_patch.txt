@@ -1,0 +1,35 @@
+Task:
+Apply the next bottleneck-focused improvement only.
+
+Context:
+MapleWorld is being improved toward efficiency point (~88) on MapleStory Worlds.
+Use the chosen bottleneck and patch boundary below.
+
+Chosen bottleneck:
+[PASTE CHOSEN_BOTTLENECK]
+
+Patch objective:
+[PASTE NEXT_PATCH_OBJECTIVE]
+
+Files:
+[PASTE FILES]
+
+Patch boundary:
+[PASTE PATCH_BOUNDARY]
+
+Rules:
+- do only this bounded improvement
+- do not redesign unrelated systems
+- do not expand architecture scope
+- do not preserve wrong standalone runtime ownership
+- do not add wrappers that keep bad boundaries alive
+- keep runtime gameplay-only inside MSW
+- prefer deletion/simplification over extra abstraction
+- update or add verification where needed
+
+Required output:
+1. changed files
+2. exact summary of changes
+3. verification performed
+4. unresolved risks
+5. recommended next bottleneck

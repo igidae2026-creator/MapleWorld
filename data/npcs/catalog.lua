@@ -1,1 +1,1 @@
-return require('data.content_loader').load().content.npcs
+return require('data.runtime_content').load().content.npcs

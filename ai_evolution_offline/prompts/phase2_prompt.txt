@@ -1,0 +1,154 @@
+You are working inside an existing MapleWorld repository.
+
+This repository already contains integrated gameplay, data, ops, msw bridge, and tests.
+
+Do NOT regenerate the repository.
+Do NOT introduce a second control plane.
+Do NOT introduce parallel governance layers.
+
+You are executing ONE bounded Phase-2 improvement cycle.
+
+Your task is to evolve the repository toward stronger MapleLand-style long-term gameplay loops.
+
+================================================
+PRIMARY OBJECTIVE
+================================================
+
+Improve the repository so that it supports:
+
+- stronger field-driven progression
+- stronger social density
+- stronger economy pressure loops
+- clearer authority boundaries
+- clearer operator control
+- replay-safe mutation boundaries
+
+while keeping:
+
+- subsystem count small
+- architecture surface controlled
+- mutation paths explicit
+- complexity growth minimal
+
+Do not reward architectural expansion.
+Reward only improvements that materially improve MapleLand-style gameplay pressure.
+
+================================================
+PHASE-2 LAW
+================================================
+
+Prefer the architecture that creates the most MapleLand-like gameplay behavior with the least additional complexity.
+
+A change is valid only if it improves at least one of:
+
+- progression friction quality
+- field competition topology
+- social density anchors
+- meso velocity control
+- consumable burn pressure
+- rare supply throttling
+- boss cadence quality
+- channel congestion behavior
+- operator-visible tuning clarity
+
+while not increasing:
+
+- subsystem overlap
+- hidden interaction risk
+- framework expansion
+- routing fragmentation
+
+================================================
+MAPLELAND DIMENSIONS
+================================================
+
+Evaluate these dimensions:
+
+level_band_bottleneck_quality
+field_ladder_progression_quality
+solo_party_split_quality
+field_competition_topology
+social_density_anchor_quality
+channel_congestion_routing_quality
+economy_source_sink_balance
+meso_velocity_control
+consumable_burn_pressure
+rare_supply_throttling
+boss_cadence_lockout_quality
+save_transaction_boundary_clarity
+server_authority_event_ordering
+anti_bot_anti_macro_runtime_quality
+liveops_intervention_visibility
+power_curve_replacement_pressure
+telemetry_feedback_visibility
+
+================================================
+SCORING MODEL
+================================================
+
+architecture_score =
+  structural_clarity
++ authority_path_integrity
++ economy_control_strength
++ social_density_support
++ field_ladder_progression_quality
++ meso_velocity_control
++ consumable_burn_pressure
++ power_curve_replacement_pressure
++ mapleland_similarity_score
+- complexity_penalty
+
+Do not inflate scores artificially.
+
+================================================
+EXECUTION MODEL
+================================================
+
+Perform exactly ONE bounded cycle:
+
+1. inspect repository
+2. score MapleLand dimensions
+3. find weakest_dimension
+4. create 3-5 small improvement variants
+5. compare variants using lightweight simulation
+6. apply the best low-risk variant
+7. integrate changes into existing systems
+8. update offline_ops/codex_state/progress.json
+9. keep architecture simpler, clearer, and more field-driven
+
+================================================
+RULES
+================================================
+
+Do not add new governance stacks.
+Do not create large manager families.
+Do not explode subsystem count.
+
+Prefer:
+
+- tuning existing data tables
+- simplifying existing systems
+- merging overlapping logic
+- exposing tuning parameters
+
+================================================
+TEST RULE
+================================================
+
+Use existing tests.
+
+Adjust or extend only if necessary.
+
+Do not build a new validation framework.
+
+================================================
+FINAL STATE
+================================================
+
+After execution the repository should be:
+
+- more field-driven
+- more socially dense
+- more economically controlled
+- still structurally clear
+- no architecture explosion

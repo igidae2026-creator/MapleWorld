@@ -1,4 +1,4 @@
-local ContentLoader = require('data.content_loader')
+local ContentLoader = require('data.runtime_content')
 
 local loaded = ContentLoader.load()
 local content = loaded.content

@@ -1,0 +1,212 @@
+You are working inside an existing MapleWorld repository.
+
+This repository already contains integrated gameplay, data, ops, msw bridge, and tests.
+
+Do NOT regenerate the repository.
+Do NOT introduce a second control plane.
+Do NOT introduce parallel governance layers.
+Do NOT create architecture explosions.
+Do NOT expand subsystem count unless absolutely required by the selected P0 task.
+
+You are executing EXACTLY ONE bounded P0 completion cycle.
+
+================================================
+PRIMARY OBJECTIVE
+
+Move MapleWorld closer to MapleLand completion 100% by completing the single highest-priority pending P0 task from:
+
+offline_ops/codex_state/p0_clear_backlog.json
+
+You must complete exactly one bounded P0 task in this run.
+
+================================================
+P0 EXECUTION LAW
+
+Prefer the smallest correct change that materially improves production readiness.
+
+A valid change must improve one of the following without introducing broad uncontrolled refactors:
+
+authoritative runtime correctness
+
+item/economy safety
+
+persistence determinism
+
+replay-safe recovery
+
+operator intervention capability
+
+exploit resistance
+
+release safety
+
+platform integration integrity
+
+Do not reward architecture growth.
+Reward only production reliability and MapleLand-style server trustworthiness.
+
+================================================
+TASK SELECTION RULE
+
+Read offline_ops/codex_state/p0_clear_backlog.json
+
+Find the first task where status == "pending"
+
+That task becomes current_task
+
+Do not skip ahead unless current_task is impossible due to missing repository primitives
+
+If impossible, mark it "blocked" with a short reason in progress.json and move to the next pending task
+
+Otherwise implement exactly one bounded completion cycle for current_task
+
+================================================
+CURRENT P0 TASKS
+
+P0-1 Authoritative entity state sync
+P0-2 Channel transfer integrity
+P0-3 Session authority lock
+P0-4 Bridge crash recovery
+P0-5 Ordered idempotent event routing
+P0-6 Component manifest validation
+P0-7 Shard health watchdog
+P0-8 Canary deployment flow
+P0-9 Runtime kill switches
+P0-10 Live anomaly detection
+P0-11 Operator admin console
+P0-12 Item lifecycle ledger
+P0-13 Inventory atomic operations
+P0-14 Trade two-phase commit
+P0-15 Duplication guard
+P0-16 Economy invariant engine
+P0-17 Auction house abuse prevention
+P0-18 Deterministic save pipeline
+P0-19 Crash replay
+P0-20 Snapshot rollback
+P0-21 Consistency validator
+P0-22 Skill cooldown authority
+P0-23 Deterministic stat calculation
+P0-24 Progression gate validation
+P0-25 Mob reward single-claim
+P0-26 Spawn density control
+P0-27 Exploit regression suite
+P0-28 Deterministic replay tests
+
+================================================
+BOUNDARY RULE
+
+Perform exactly one bounded cycle:
+
+inspect repository
+
+read backlog
+
+select current_task
+
+inspect all existing systems relevant to current_task
+
+create 2-4 low-risk implementation variants
+
+choose the smallest robust variant
+
+implement inside existing systems
+
+update or extend existing tests only where required
+
+run relevant tests
+
+update offline_ops/codex_state/p0_clear_progress.json
+
+update offline_ops/codex_state/p0_clear_backlog.json status for current_task
+
+Do not attempt multiple P0 tasks in one run.
+
+================================================
+IMPLEMENTATION PREFERENCE
+
+Prefer:
+
+extending existing ops/runtime/scripting modules
+
+tightening existing invariants
+
+exposing operator-visible safety controls
+
+adding tests near affected systems
+
+making authority boundaries explicit
+
+making mutations replay-safe
+
+making failure paths auditable
+
+Avoid:
+
+new framework families
+
+duplicate validation stacks
+
+large manager hierarchies
+
+repo-wide rewrites
+
+speculative abstractions
+
+cosmetic refactors unrelated to current_task
+
+================================================
+TEST RULE
+
+Use existing tests first.
+
+If current_task lacks coverage, add the smallest direct regression test needed.
+
+Do not build a new validation framework.
+
+================================================
+STATE UPDATE RULE
+
+You must update:
+
+offline_ops/codex_state/p0_clear_progress.json
+
+offline_ops/codex_state/p0_clear_backlog.json
+
+progress.json must contain:
+
+current_task_id
+
+current_task_title
+
+result: completed | blocked | failed
+
+changed_files
+
+tests_run
+
+short_summary
+
+next_pending_task
+
+If completed, set current_task status to "completed".
+If blocked, set current_task status to "blocked".
+If failed, leave status as "pending" and explain briefly in progress.json.
+
+================================================
+FINAL STATE
+
+After execution the repository should be:
+
+more authoritative
+
+more replay-safe
+
+more operator-controllable
+
+more exploit-resistant
+
+more launch-ready
+
+still structurally clear
+
+without architecture explosion

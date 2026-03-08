@@ -1,0 +1,30 @@
+CONTENT_SCORES:
+- content density: 85~88
+- quest density: 86~89
+- map pressure balance: 80~83
+- boss cadence: 81~84
+
+PRIMARY_BOTTLENECK:
+Late-game story flow above level 80 over-relies on scheduled boss kills while the available boss windows thin out and cooldown pressure rises.
+
+WHY_THIS_IS_THE_BOTTLENECK:
+`81-100` has `38` quests with `16` boss-required steps and only `6` bosses; `101-120` has `20` quests with `11` boss-required steps and only `4` bosses, which matched the weaker boss-quality proxy (`76~79`) and pre-patch late-band cooldown averages above `2400s`.
+
+NEXT_SAFE_IMPROVEMENT:
+One bounded balance patch was applied: trim scheduled boss cooldowns by `18%` for late regions only (`dungeon`/`forest`/`desert` generator path), which brought average boss cooldown to about `2084s` for `81-100` and `2033s` for `101-120` without changing runtime architecture.
+
+FILES:
+- [content_build/content_registry.lua](/home/meta_os/MapleWorld/content_build/content_registry.lua)
+- [data/runtime_compiled_content.lua](/home/meta_os/MapleWorld/data/runtime_compiled_content.lua)
+- [offline_ops/codex_state/simulation_runs/lua_simulation_latest.json](/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/lua_simulation_latest.json)
+- [offline_ops/codex_state/simulation_runs/quality_metrics_latest.json](/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/quality_metrics_latest.json)
+- [data/maps/catalog.lua](/home/meta_os/MapleWorld/data/maps/catalog.lua)
+- [data/quests/catalog.lua](/home/meta_os/MapleWorld/data/quests/catalog.lua)
+- [data/bosses/catalog.lua](/home/meta_os/MapleWorld/data/bosses/catalog.lua)
+
+VERIFICATION:
+- Read simulation outputs and used their range scores as anchors for pacing and boss quality.
+- Counted runtime content totals: `124` maps, `303` quests, `42` bosses.
+- Measured late-band boss-required quest share: `42%` at `81-100`, `55%` at `101-120`.
+- Regenerated compiled runtime content with `lua content_build/export_runtime_payload.lua`.
+- Rechecked late-band cadence after the patch: average boss cooldown dropped from roughly `2471~2480s` to `2033~2084s`.

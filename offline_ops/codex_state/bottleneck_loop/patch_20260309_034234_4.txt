@@ -1,0 +1,26 @@
+1. changed files
+
+- [msw_runtime/entry/world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua)
+- [msw_runtime/component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua)
+- [tests/msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua)
+
+2. exact summary of changes
+
+- Added a `forbiddenPublicMethods` denylist to [world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua) for `getEconomyReport` and `adminStatus`, and assert-failed route registration if either appears as a public export name or routed runtime method.
+- Refactored [component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua) to define `serverMethods` as an explicit local list, added a matching `forbiddenPublicMethods` denylist, and assert-failed manifest construction if `GetEconomyReport`, `AdminStatus`, `getEconomyReport`, or `adminStatus` are ever re-added.
+- Strengthened [msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua) so it rejects both uppercase and lowercase control-plane method names on the public manifest surface, and verifies the entry and manifest contain hard-fail guards against re-exporting those methods.
+
+3. verification performed
+
+- Ran `lua tests/msw_runtime_boundary_test.lua` -> passed
+- Ran `lua tests/msw_runtime_gameplay_test.lua` -> passed
+- Ran `lua tests/msw_runtime_progression_test.lua` -> passed
+
+4. unresolved risks
+
+- `GameplayRuntime:getEconomyReport()` and `GameplayRuntime:adminStatus()` still exist as internal runtime methods in [gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua). They are no longer allowed onto the public MSW entry/manifest surface, but the internal methods remain callable if some future file bypasses the current boundary.
+- The regression is intentionally narrow to this patch boundary; it does not audit docs or other non-runtime references that still mention these methods.
+
+5. recommended next bottleneck
+
+- Economy idempotency regression: add targeted validation around transaction replay/rollback boundaries so meso/item mutations stay idempotent under duplicate delivery and recovery paths.

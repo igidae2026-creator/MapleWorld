@@ -1,0 +1,30 @@
+1. changed files
+
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua#L523)
+- [tests/economy_runtime_invariant_test.lua](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua#L1)
+
+2. exact summary of changes
+
+- In [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua#L523), added a bounded `buyFromNpc` request replay cache alongside the existing trade replay cache.
+- In [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua#L938), updated `buyFromNpc` to accept a request envelope with `requestId`, short-circuit duplicate envelopes, return the original success payload with `deduped = true`, and emit `npc_buy_applied` / `npc_buy_deduped` replay outcomes.
+- In [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua#L971), forwarded `requestId` as the economy `correlationId` so the surviving spend transaction is stable under replay.
+- In [tests/economy_runtime_invariant_test.lua](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua#L107), added one duplicate-submission regression for `buyFromNpc` that selects one affordable NPC item, replays the same request envelope twice, and asserts:
+  - exactly one net meso spend
+  - exactly one inventory grant
+  - exactly one spend transaction
+  - one `npc_buy_applied` event and one `npc_buy_deduped` event
+  - stable spend `correlationId`
+
+3. verification performed
+
+- Ran `lua tests/economy_runtime_invariant_test.lua` -> passed
+- Ran `lua tests/msw_runtime_gameplay_test.lua` -> passed
+
+4. unresolved risks
+
+- The new `buyFromNpc` dedup state is runtime-memory only, matching the existing `tradeMesos` boundary. It prevents duplicate handling within the active runtime, but not across process restart or cross-runtime replay.
+- Failure-path replay caching for repeated invalid `buyFromNpc` envelopes is still not persisted or memoized; this patch only covers duplicate success submission as requested.
+
+5. recommended next bottleneck
+
+- Runtime control-plane method cleanup: remove any remaining standalone runtime ownership leakage where gameplay-only methods still carry control-plane responsibility inside the MSW runtime boundary.

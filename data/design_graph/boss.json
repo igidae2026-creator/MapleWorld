@@ -5,6 +5,66 @@
       "id": "boss",
       "layer": 1,
       "domain": "boss"
+    },
+    {
+      "id": "boss.party_size_band",
+      "layer": 2,
+      "parent": "boss",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.lockout_topology",
+      "layer": 2,
+      "parent": "boss",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.failure_recovery_window",
+      "layer": 2,
+      "parent": "boss",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.reward_chest_policy",
+      "layer": 2,
+      "parent": "boss",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.practice_mode",
+      "layer": 2,
+      "parent": "boss",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.party_size_band.early_raid_4_player",
+      "layer": 3,
+      "parent": "boss.party_size_band",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.lockout_topology.weekly_account_gate",
+      "layer": 3,
+      "parent": "boss.lockout_topology",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.failure_recovery_window.soft_fail_reentry",
+      "layer": 3,
+      "parent": "boss.failure_recovery_window",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.reward_chest_policy.personal_chest_split",
+      "layer": 3,
+      "parent": "boss.reward_chest_policy",
+      "domain": "boss"
+    },
+    {
+      "id": "boss.practice_mode.no_loot_pattern_training",
+      "layer": 3,
+      "parent": "boss.practice_mode",
+      "domain": "boss"
     }
   ]
 }

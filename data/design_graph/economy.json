@@ -91,6 +91,12 @@
       "domain": "economy"
     },
     {
+      "id": "economy.potion_sink_pressure",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+    {
       "id": "economy.player_to_player_tax",
       "layer": 2,
       "parent": "economy",

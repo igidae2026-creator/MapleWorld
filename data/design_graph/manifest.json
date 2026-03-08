@@ -1,5 +1,5 @@
 {
-  "node_count": 74543,
+  "node_count": 74566,
   "frontier_count": 72017,
   "max_layer": 4,
   "domains": [
@@ -66,7 +66,7 @@
     {
       "domain": "equipment",
       "path": "data/design_graph/equipment.json",
-      "count": 1
+      "count": 7
     },
     {
       "domain": "economy",
@@ -96,7 +96,7 @@
     {
       "domain": "boss",
       "path": "data/design_graph/boss.json",
-      "count": 1
+      "count": 11
     },
     {
       "domain": "dungeons",
@@ -106,7 +106,7 @@
     {
       "domain": "quests",
       "path": "data/design_graph/quests.json",
-      "count": 1
+      "count": 8
     },
     {
       "domain": "events",

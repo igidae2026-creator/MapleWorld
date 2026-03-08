@@ -1,9 +1,10 @@
 {
-  "variant_count": 4,
+  "variant_count": 5,
   "variants": [
     "baseline",
     "economy_source_sink_balance_repair_1",
     "economy_source_sink_balance_repair_2",
-    "balanced_control"
+    "balanced_control",
+    "power_curve_replacement_pressure_repair_1"
   ]
 }

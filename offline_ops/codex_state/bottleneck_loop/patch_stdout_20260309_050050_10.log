@@ -1,0 +1,954 @@
+OpenAI Codex v0.111.0 (research preview)
+--------
+workdir: /home/meta_os/MapleWorld
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/meta_os/.codex/memories]
+reasoning effort: none
+reasoning summaries: none
+session id: 019ccf0e-f57e-7193-8d3a-aa2c85f28530
+--------
+user
+Task:
+Apply the next bottleneck-focused improvement only.
+
+Context:
+MapleWorld is being improved toward efficiency point (~88) on MapleStory Worlds.
+Use the chosen bottleneck and patch boundary below.
+
+Chosen bottleneck:
+[PASTE CHOSEN_BOTTLENECK]
+
+Patch objective:
+[PASTE NEXT_PATCH_OBJECTIVE]
+
+Files:
+[PASTE FILES]
+
+Patch boundary:
+[PASTE PATCH_BOUNDARY]
+
+Rules:
+- do only this bounded improvement
+- do not redesign unrelated systems
+- do not expand architecture scope
+- do not preserve wrong standalone runtime ownership
+- do not add wrappers that keep bad boundaries alive
+- keep runtime gameplay-only inside MSW
+- prefer deletion/simplification over extra abstraction
+- update or add verification where needed
+
+Required output:
+1. changed files
+2. exact summary of changes
+3. verification performed
+4. unresolved risks
+5. recommended next bottleneck
+
+
+Coordinator decision:
+
+CURRENT_EFFICIENCY_ESTIMATE:
+84~87
+
+CHOSEN_BOTTLENECK:
+The next cycle should tighten the under-sunk normal-play economy loop by slightly increasing `potion_sink_pressure`.
+
+WHY_THIS_ONE:
+Economy stability is the clearest score drag and still carries an explicit unbounded-pressure violation, while the proposed fix is a single bounded parameter change with higher leverage than doc cleanup, content regeneration, or added regression coverage.
+
+NEXT_PATCH_OBJECTIVE:
+Patch the selected economy configuration to raise `potion_sink_pressure` from `0.25` to `0.258` and refresh the selected-state/progress artifacts that track that choice.
+
+FILES:
+- [data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json)
+- [data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json)
+- [ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json)
+
+PATCH_BOUNDARY:
+Small, file-bounded economy-parameter adjustment only; no runtime boundary changes, no architecture-wide refactor, no standalone logic reintroduction.
+
+SUCCESS_CHECK:
+- `economy_pressure_unbounded` is removed or materially narrowed in the next selected snapshot
+- economy stability moves up without degrading combat, progression, or boss cadence bands
+- `potion_sink_pressure` is the only gameplay balance knob changed in this cycle
+- MSW runtime boundary remains untouched
+
+REJECTED_OTHER_BOTTLENECKS:
+- Control-plane doc ownership drift: valid boundary hygiene fix, but lower leverage on the efficiency target than the active economy pressure miss
+- Content templating repetition: too broad for one safe cycle and pushes toward generator/design refactor scope
+- Offline replay duplicate-envelope regression: useful validation, but it does not relieve the primary efficiency bottleneck as directly as the economy sink adjustment
+
+mcp startup: no servers
+codex
+I’m applying the bounded economy adjustment only: inspect the three target files, change `potion_sink_pressure` to `0.258` where selected state tracks it, then verify no other gameplay knobs moved.
+exec
+/bin/bash -lc "sed -n '1,220p' data/architecture_selected/active_architecture.json" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,220p' data/design_graph/economy.json" in /home/meta_os/MapleWorld succeeded in 50ms:
+{
+  "variant_id": "economy_source_sink_balance_repair_2",
+  "variant": {
+    "variant_id": "economy_source_sink_balance_repair_2",
+    "source": "weakest_dimension_repair",
+    "weakest_dimension_target": "economy_source_sink_balance",
+    "runtime_constraints": {
+      "platform": "maplestory_worlds",
+      "external_backend": false,
+      "server_authoritative": true
+    },
+    "control_parameters": {
+      "field_instance_player_cap": 30,
+      "congestion_routing_threshold": 0.75,
+      "party_incentive_coefficient": 1.13,
+      "potion_sink_pressure": 0.25,
+      "upgrade_cost_curve": 1.075,
+      "market_tax_rate": 0.094,
+      "boss_reward_cadence": 0.63,
+      "dungeon_entry_pressure": 0.57,
+ succeeded in 50ms:
+{
+  "domain": "economy",
+  "nodes": [
+    {
+      "id": "economy",
+      "layer": 1,
+      "domain": "economy"
+    },
+    {
+      "id": "economy.anti_bot_tax",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+    {
+      "id": "economy.auction_house_tax",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+exec
+/bin/bash -lc "sed -n '1,220p' ops/codex_state/progress.json" in /home/meta_os/MapleWorld succeeded in 50ms:
+{
+  "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+  "architecture_candidates": 4,
+  "architecture_last_status": "bounded_phase2_cycle_complete",
+  "architecture_project_complete": true,
+  "variant_id": "economy_source_sink_balance_repair_2",
+  "structural_clarity": 85.0,
+  "authority_path_integrity": 100.0,
+  "persistence_boundary_clarity": 92.5,
+  "rollback_boundary_clarity": 95.83,
+  "economy_control_strength": 87.68,
+  "routing_topology_clarity": 92.47,
+  "operator_control_visibility": 88.13,
+  "social_density_support": 86.27,
+  "level_band_bottleneck_quality": 96.93,
+  "field_ladder_progression_quality": 86.83,
+  "solo_party_split_quality": 87.24,
+  "field_competition_topology": 86.99,
+  "social_density_anchor_quality": 96.54,
+  "channel_congestion_routing_quality": 89.97,
+codex
+I’ve confirmed the selected snapshot currently carries `potion_sink_pressure: 0.25` and the progress artifact mirrors that state. Next I’m locating the exact economy graph node(s) that encode this sink so I can keep the patch strictly bounded.
+exec
+/bin/bash -lc 'rg -n "potion_sink_pressure|potion|sink_pressure" data/design_graph/economy.json data/architecture_selected/active_architecture.json ops/codex_state/progress.json' in /home/meta_os/MapleWorldexec
+/bin/bash -lc 'git diff -- data/architecture_selected/active_architecture.json data/design_graph/economy.json ops/codex_state/progress.json' in /home/meta_os/MapleWorld succeeded in 50ms:
+data/architecture_selected/active_architecture.json:16:      "potion_sink_pressure": 0.25,
+data/architecture_selected/active_architecture.json:48:      "potion_consumption": 13
+data/architecture_selected/active_architecture.json:74:      "potion_burn": 0.9122,
+data/architecture_selected/active_architecture.json:99:      "potion_burn": 0.9122,
+ succeeded in 51ms:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index 0072537..f429866 100644
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -1,8 +1,8 @@
+ {
+-  "variant_id": "baseline",
++  "variant_id": "economy_source_sink_balance_repair_2",
+   "variant": {
+-    "variant_id": "baseline",
+-    "source": "current_selected",
++    "variant_id": "economy_source_sink_balance_repair_2",
++    "source": "weakest_dimension_repair",
+     "weakest_dimension_target": "economy_source_sink_balance",
+     "runtime_constraints": {
+       "platform": "maplestory_worlds",
+@@ -10,20 +10,20 @@
+       "server_authoritative": true
+     },
+     "control_parameters": {
+codex
+The economy graph does not currently expose a `potion_sink_pressure` field by simple text search, while the selected-state files already do. I’m checking whether this parameter is represented indirectly in the graph before editing, so I don’t invent new structure outside the patch boundary.
+exec
+/bin/bash -lc "rg -n \"potion_sink_pressure|consumable_burn_pressure|currency_sink_triggers|currency_sinks|npc_buy_markup|repair_cost_curve|sink_weight|potion\" data/design_graph -g '*.json'" in /home/meta_os/MapleWorld succeeded in 52ms:
+Total output lines: 10474
+
+data/design_graph/frontier.json:7820:    "combat.potion_cooldown.abuse_guardrail.a_b_bucket",
+data/design_graph/frontier.json:7821:    "combat.potion_cooldown.abuse_guardrail.alert_threshold",
+data/design_graph/frontier.json:7822:    "combat.potion_cooldown.abuse_guardrail.anti_abuse_threshold",
+data/design_graph/frontier.json:7823:    "combat.potion_cooldown.abuse_guardrail.anti_bot_threshold",
+data/design_graph/frontier.json:7824:    "combat.potion_cooldown.abuse_guardrail.base_value",
+data/design_graph/frontier.json:7825:    "combat.potion_cooldown.abuse_guardrail.boss_phase_modifier",
+data/design_graph/frontier.json:7826:    "combat.potion_cooldown.abuse_guardrail.channel_scaling",
+data/design_graph/frontier.json:7827:    "combat.potion_cooldown.abuse_guardrail.cooldown_seconds",
+data/design_graph/frontier.json:7828:    "combat.potion_cooldown.abuse_guardrail.decay_interval",
+data/design_graph/frontier.json:7829:    "combat.potion_cooldown.abuse_guardrail.default_value",
+data/design_graph/frontier.json:7830:    "combat.potion_cooldown.abuse_guardrail.economy_state_link",
+data/design_graph/frontier.json:7831:    "combat.potion_cooldown.abuse_guardrail.elite_spawn_modifier",
+data/design_graph/frontier.json:7832:    "combat.potion_cooldown.abuse_guardrail.fail_safe_rule",
+data/design_graph/frontier.json:7833:    "combat.potion_cooldown.abuse_guardrail.inflation_response",
+data/design_graph/frontier.json:7834:    "combat.potion_cooldown.abuse_guardrail.job_group_modifier",
+data/design_graph/frontier.json:7835:    "combat.potion_cooldown.abuse_guardrail.level_band_table",
+data/design_graph/frontier.json:7836:    "combat.potion_cooldown.abuse_guardrail.live_tuning_flag",
+data/design_graph/frontier.json:7837:    "combat.potion_cooldown.abuse_guardrail.map_population_modifier",
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+for key in ('nodes','edges','metadata','parameters','controls'):
+    if key in data:
+        print(key, type(data[key]).__name__, len(data[key]) if hasattr(data[key],'__len__') else '')
+PY" in /home/meta_os/MapleWorld succeeded in 51ms:
+nodes list 12421
+codex
+The broad graph search confirms the parameter isn’t a plain field in `economy.json`; it’s a node graph. I’m extracting the specific potion-related economy nodes now so the graph update stays additive-free and tied to existing node IDs.
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+for item in data.get('nodes',[]):
+    if item.get('id')=='economy.currency_sinks':
+        print(json.dumps(item, indent=2))
+        break
+print('---')
+for item in data.get('nodes',[]):
+    if item.get('parent')=='economy.currency_sinks':
+        print(json.dumps(item, indent=2))
+PY" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+for section in ('nodes','edges'):
+    hits=[]
+    for item in data.get(section,[]):
+        s=json.dumps(item, ensure_ascii=True)
+        if 'potion' in s.lower() or 'consumable' in s.lower():
+            hits.append(item)
+    print(section, len(hits))
+    for item in hits[:40]:
+        print(json.dumps(item, ensure_ascii=True))
+PY" in /home/meta_os/MapleWorld succeeded in 51ms:
+{
+  "id": "economy.currency_sinks",
+  "layer": 2,
+  "parent": "economy",
+  "domain": "economy"
+}
+---
+{
+  "id": "economy.currency_sinks.abuse_guardrail",
+  "layer": 3,
+  "parent": "economy.currency_sinks",
+  "domain": "economy"
+}
+{
+  "id": "economy.currency_sinks.baseline",
+  "layer": 3,
+  "parent": "economy.currency_sinks",
+  "domain": "economy"
+}
+{
+ succeeded in 50ms:
+nodes 0
+edges 0
+codex
+`economy.json` is a pure graph shard, not a simple config map. I’m checking whether this repo encodes chosen numeric settings on the graph root or metadata, because if it doesn’t, the safe move is to update only the existing selected-state artifacts and record the same value in the graph shard using its current schema rather than inventing a new one.
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+print(sorted(data.keys()))
+if 'metadata' in data:
+    print(json.dumps(data['metadata'], indent=2)[:4000])
+PY" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+for item in data['nodes']:
+    if item['id'].startswith('economy.currency_sinks.') and item.get('layer')==4:
+        print(json.dumps(item, indent=2))
+        break
+PY" in /home/meta_os/MapleWorld succeeded in 51ms:
+['domain', 'nodes']
+ succeeded in 51ms:
+{
+  "id": "economy.currency_sinks.abuse_guardrail.a_b_bucket",
+  "layer": 4,
+  "parent": "economy.currency_sinks.abuse_guardrail",
+  "domain": "economy"
+}
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+count=0
+for item in data['nodes']:
+    if any(k not in {'id','layer','parent','domain'} for k in item):
+        count += 1
+        if count <= 20:
+            print(json.dumps(item, indent=2))
+print('nodes_with_extra_keys', count)
+PY" in /home/meta_os/MapleWorld succeeded in 51ms:
+nodes_with_extra_keys 0
+exec
+/bin/bash -lc "rg -n 'potion_sink_pressure' -g '*.json' data ops" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/design_graph/economy.json')
+data=json.loads(p.read_text())
+for target in ['upgrade_cost_curve','market_tax_rate','rare_drop_control','boss_reward_cadence','dungeon_entry_pressure']:
+    hits=[n['id'] for n in data['nodes'] if target in n['id']]
+    print(target, len(hits))
+    for h in hits[:10]:
+        print(' ', h)
+PY" in /home/meta_os/MapleWorld succeeded in 51ms:
+data/architecture_selected/active_architecture.json:16:      "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/save_transaction_boundary_clarity_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/telemetry_feedback_visibility_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/field_competition_topology_repair_1.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/subsystem_overlap_risk_repair_2.json:14:    "potion_sink_pressure": 0.24,
+data/architecture_candidates/current_cycle/solo_party_split_quality_repair_1.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/hidden_interaction_risk_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/hidden_interaction_risk_repair_1.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/liveops_intervention_visibility_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/persistence_boundaries_score_repair_2.json:14:    "potion_sink_pressure": 0.23,
+data/architecture_candidates/current_cycle/level_band_bottleneck_quality_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/complexity_penalty_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/rollback_boundary_clarity_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/solo_party_split_quality_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/low_complexity_field_control.json:14:    "potion_sink_pressure": 0.262,
+data/architecture_candidates/current_cycle/field_ladder_progression_quality_repair_1.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/field_competition_topology_repair_2.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/rollback_boundary_clarity_repair_1.json:14:    "potion_sink_pressure": 0.25,
+data/architecture_candidates/current_cycle/authority_path_integrity_repair_2.json:14:    "potion_sink_pressure": 0.24,
+data/architecture_candidates/current_cycle/save_transaction_boundary_clarity_repair_1.json:14:    "potion_sink_pressure": 0.25,
+ succeeded in 50ms:
+upgrade_cost_curve 621
+  economy.upgrade_cost_curve
+  economy.upgrade_cost_curve.abuse_guardrail
+  economy.upgrade_cost_curve.baseline
+  economy.upgrade_cost_curve.boss_override
+  economy.upgrade_cost_curve.breakpoint_table
+  economy.upgrade_cost_curve.cap
+  economy.upgrade_cost_curve.decay_rate
+  economy.upgrade_cost_curve.early_game_curve
+  economy.upgrade_cost_curve.elite_override
+  economy.upgrade_cost_curve.floor
+market_tax_rate 0
+rare_drop_control 0
+boss_reward_cadence 0
+dungeon_entry_pressure 0
+codex
+I’ve hit a schema constraint: `economy.json` is only node IDs, so there’s no existing numeric slot for `0.258`. I’m checking repo conventions for how a newly surfaced economy knob is represented before I edit that shard; if there isn’t one, I’ll keep the patch to the two artifacts that actually carry the selected value rather than fabricate a graph schema.
+exec
+/bin/bash -lc "rg -n 'design_graph/.+json|\"domain\": \"economy\"|nodes_with_extra_keys|layer\": 2' scripts data -g '*.py' -g '*.json'" in /home/meta_os/MapleWorld succeeded in 51ms:
+Total output lines: 16818
+
+data/design_schema/schema_manifest.json:46:      "domain": "economy",
+data/design_graph/manifest.json:33:      "path": "data/design_graph/progression.json",
+data/design_graph/manifest.json:38:      "path": "data/design_graph/combat.json",
+data/design_graph/manifest.json:43:      "path": "data/design_graph/monsters.json",
+data/design_graph/manifest.json:48:      "path": "data/design_graph/fields.json",
+data/design_graph/manifest.json:53:      "path": "data/design_graph/spawning.json",
+data/design_graph/manifest.json:58:      "path": "data/design_graph/drops.json",
+data/design_graph/manifest.json:63:      "path": "data/design_graph/items.json",
+data/design_graph/manifest.json:68:      "path": "data/design_graph/equipment.json",
+data/design_graph/manifest.json:72:      "domain": "economy",
+data/design_graph/manifest.json:73:      "path": "data/design_graph/economy.json",
+data/design_graph/manifest.json:78:      "path": "data/design_graph/currency.json",
+data/design_graph/manifest.json:83:      "path": "data/design_graph/trading.json",
+data/design_graph/manifest.json:88:      "path": "data/design_graph/party.json",
+data/design_graph/manifest.json:93:      "path": "data/design_graph/guild.json",
+data/design_graph/manifest.json:98:      "path": "data/design_graph/boss.json",
+data/design_graph/manifest.json:103:      "path": "data/design_graph/dungeons.json",
+data/design_graph/manifest.json:108:      "path": "data/design_graph/quests.json",
+exec
+/bin/bash -lc 'rg --files scripts' in /home/meta_os/MapleWorldexec
+/bin/bash -lc "rg -n 'currency_sinks|upgrade_cost_curve|potion_sink_pressure' scripts -g '*.py'" in /home/meta_os/MapleWorld exited 1 in 51ms:
+
+ succeeded in 51ms:
+scripts/progression_system.lua
+scripts/run_tests.sh
+scripts/drop_system.lua
+scripts/map_event_system.lua
+scripts/boss_system.lua
+scripts/quest_system.lua
+scripts/buff_debuff_system.lua
+scripts/item_system.lua
+scripts/anti_abuse_gameplay_hooks.lua
+scripts/build_recommendation_system.lua
+scripts/equipment_progression.lua
+scripts/party_system.lua
+scripts/skill_system.lua
+scripts/trading_system.lua
+scripts/daily_weekly_system.lua
+scripts/inventory_expansion.lua
+scripts/social_system.lua
+scripts/spawn_system.lua
+scripts/combat_feedback.lua
+scripts/env/dev_env.sh
+exec
+/bin/bash -lc "rg -n 'architecture_last_status|bounded_.*cycle|short_summary|changed_files|tests_run' ops data -g '*.json'" in /home/meta_os/MapleWorld succeeded in 51ms:
+data/architecture_selected/last_cycle_summary.json:109:    "architecture_last_status": "bounded_phase2_cycle_complete",
+ops/codex_state/progress.json:4:  "architecture_last_status": "bounded_phase2_cycle_complete",
+exec
+/bin/bash -lc 'git status --short' in /home/meta_os/MapleWorld succeeded in 51ms:
+Total output lines: 453
+
+ M ARCHITECTURE.md
+ M CONTENT_MODEL.md
+ M CONTENT_PIPELINE.md
+ M ITEM_SYSTEM.md
+ M Makefile
+ M README.md
+ M SECURITY_MODEL.md
+ M SERVER_ARCHITECTURE.md
+ M data/architecture_candidates/current_cycle/balanced_control.json
+ M data/architecture_candidates/current_cycle/baseline.json
+ M data/architecture_candidates/current_cycle/economy_source_sink_balance_repair_1.json
+ M data/architecture_candidates/current_cycle/economy_source_sink_balance_repair_2.json
+ M data/architecture_candidates/current_cycle/manifest.json
+ M data/architecture_selected/active_architecture.json
+ M data/architecture_selected/last_cycle_summary.json
+ M data/balance/drops/drop_table.csv
+ M data/balance/economy/sinks.csv
+ M data/balance/progression/level_curve.csv
+codex
+The working tree is already heavily dirty, so I’m isolating this patch to direct edits in the target artifacts only and will verify the exact before/after diff afterwards. Given `progress.json` doesn’t currently carry control parameters, I’m keeping its update to state tracking rather than inventing new balance schema.
+exec
+/bin/bash -lc "sed -n '1,220p' data/architecture_selected/last_cycle_summary.json" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('data/architecture_selected/last_cycle_summary.json')
+data=json.loads(p.read_text())
+for k,v in data.items():
+    if isinstance(v,(dict,list)) and 'potion' in json.dumps(v).lower():
+        print(k)
+        print(json.dumps(v, indent=2)[:3000])
+PY" in /home/meta_os/MapleWorld succeeded in 50ms:
+{
+  "cycle_type": "phase2_bounded",
+  "baseline_review": {
+    "variant_id": "baseline",
+    "weakest_dimension": "economy_source_sink_balance",
+    "scores": {
+      "variant_id": "baseline",
+      "structural_clarity": 85.0,
+      "authority_path_integrity": 100.0,
+      "persistence_boundary_clarity": 92.5,
+      "rollback_boundary_clarity": 95.83,
+      "economy_control_strength": 87.95,
+      "routing_topology_clarity": 92.47,
+      "operator_control_visibility": 88.13,
+      "social_density_support": 86.27,
+      "level_band_bottleneck_quality": 96.93,
+      "field_ladder_progression_quality": 86.83,
+      "solo_party_split_quality": 87.24,
+      "field_competition_topology": 86.99,
+      "social_density_anchor_quality": 96.54,
+ succeeded in 51ms:
+
+codex
+I have enough context to edit. The patch will do three things only: raise the selected control parameter in the active snapshot, surface `potion_sink_pressure` as an explicit economy graph node so the knob exists in the shard, and add a minimal progress marker for this bounded balance adjustment.
+exec
+/bin/bash -lc "sed -n '70,115p' data/design_graph/economy.json" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,30p' ops/codex_state/progress.json" in /home/meta_os/MapleWorld succeeded in 51ms:
+      "id": "economy.inflation_target",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+    {
+      "id": "economy.market_listing_duration",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+    {
+      "id": "economy.npc_buy_markup",
+      "layer": 2,
+      "parent": "economy",
+      "domain": "economy"
+    },
+    {
+      "id": "economy.npc_sell_ratio",
+      "layer": 2,
+ succeeded in 50ms:
+{
+  "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+  "architecture_candidates": 4,
+  "architecture_last_status": "bounded_phase2_cycle_complete",
+  "architecture_project_complete": true,
+  "variant_id": "economy_source_sink_balance_repair_2",
+  "structural_clarity": 85.0,
+  "authority_path_integrity": 100.0,
+  "persistence_boundary_clarity": 92.5,
+  "rollback_boundary_clarity": 95.83,
+  "economy_control_strength": 87.68,
+  "routing_topology_clarity": 92.47,
+  "operator_control_visibility": 88.13,
+  "social_density_support": 86.27,
+  "level_band_bottleneck_quality": 96.93,
+  "field_ladder_progression_quality": 86.83,
+  "solo_party_split_quality": 87.24,
+  "field_competition_topology": 86.99,
+  "social_density_anchor_quality": 96.54,
+  "channel_congestion_routing_quality": 89.97,
+file update
+M /home/meta_os/MapleWorld/ops/codex_state/progress.json
+@@ -4,2 +4,3 @@
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+M /home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json
+@@ -15,3 +15,3 @@
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+M /home/meta_os/MapleWorld/data/design_graph/economy.json
+@@ -93,2 +93,8 @@
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+apply_patch(auto_approved=true) exited 0 in 53ms:
+Success. Updated the following files:
+M /home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json
+M /home/meta_os/MapleWorld/data/design_graph/economy.json
+M /home/meta_os/MapleWorld/ops/codex_state/progress.json
+file update:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index f4298665ced62f9821e766476928db128087a446..803a233c27db8451a0cd37ae9b43211db2c8dd1a
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -13,7 +13,7 @@
+       "field_instance_player_cap": 30,
+       "congestion_routing_threshold": 0.75,
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+       "market_tax_rate": 0.094,
+       "boss_reward_cadence": 0.63,
+diff --git a/data/design_graph/economy.json b/data/design_graph/economy.json
+index f99116148b3bc96179526f96ec181d3624b67d5d..944ebe23132bd0782a02b0217e0cca35c628e886
+--- a/data/design_graph/economy.json
++++ b/data/design_graph/economy.json
+@@ -91,6 +91,12 @@
+       "domain": "economy"
+     },
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+       "layer": 2,
+       "parent": "economy",
+diff --git a/ops/codex_state/progress.json b/ops/codex_state/progress.json
+index 3599dd483f79cb7af3329303a352582e7c06fb21..4dd5c2bc2751905c61cbb873ce1973fee7e70c15
+--- a/ops/codex_state/progress.json
++++ b/ops/codex_state/progress.json
+@@ -2,6 +2,7 @@
+   "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+   "architecture_candidates": 4,
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+   "variant_id": "economy_source_sink_balance_repair_2",
+   "structural_clarity": 85.0,
+
+file update:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index f4298665ced62f9821e766476928db128087a446..803a233c27db8451a0cd37ae9b43211db2c8dd1a
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -13,7 +13,7 @@
+       "field_instance_player_cap": 30,
+       "congestion_routing_threshold": 0.75,
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+       "market_tax_rate": 0.094,
+       "boss_reward_cadence": 0.63,
+diff --git a/data/design_graph/economy.json b/data/design_graph/economy.json
+index f99116148b3bc96179526f96ec181d3624b67d5d..944ebe23132bd0782a02b0217e0cca35c628e886
+--- a/data/design_graph/economy.json
++++ b/data/design_graph/economy.json
+@@ -91,6 +91,12 @@
+       "domain": "economy"
+     },
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+       "layer": 2,
+       "parent": "economy",
+diff --git a/ops/codex_state/progress.json b/ops/codex_state/progress.json
+index 3599dd483f79cb7af3329303a352582e7c06fb21..4dd5c2bc2751905c61cbb873ce1973fee7e70c15
+--- a/ops/codex_state/progress.json
++++ b/ops/codex_state/progress.json
+@@ -2,6 +2,7 @@
+   "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+   "architecture_candidates": 4,
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+   "variant_id": "economy_source_sink_balance_repair_2",
+   "structural_clarity": 85.0,
+
+codex
+The edits are in. I’m validating JSON integrity and checking the diff so this turn only changes the selected potion sink knob plus the minimal tracking surfaces around it.
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+for path in [
+    'data/architecture_selected/active_architecture.json',
+    'data/design_graph/economy.json',
+    'ops/codex_state/progress.json',
+]:
+    with open(path) as f:
+        json.load(f)
+    print('OK', path)
+PY" in /home/meta_os/MapleWorldexec
+/bin/bash -lc 'git diff -- data/architecture_selected/active_architecture.json data/design_graph/economy.json ops/codex_state/progress.json' in /home/meta_os/MapleWorld succeeded in 51ms:
+OK data/architecture_selected/active_architecture.json
+OK data/design_graph/economy.json
+OK ops/codex_state/progress.json
+ succeeded in 51ms:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index 0072537..803a233 100644
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -1,8 +1,8 @@
+ {
+-  "variant_id": "baseline",
++  "variant_id": "economy_source_sink_balance_repair_2",
+   "variant": {
+-    "variant_id": "baseline",
+-    "source": "current_selected",
++    "variant_id": "economy_source_sink_balance_repair_2",
++    "source": "weakest_dimension_repair",
+     "weakest_dimension_target": "economy_source_sink_balance",
+     "runtime_constraints": {
+       "platform": "maplestory_worlds",
+@@ -10,20 +10,20 @@
+       "server_authoritative": true
+     },
+     "control_parameters": {
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+active=json.loads(Path('data/architecture_selected/active_architecture.json').read_text())
+progress=json.loads(Path('ops/codex_state/progress.json').read_text())
+economy=json.loads(Path('data/design_graph/economy.json').read_text())
+print('potion_sink_pressure', active['variant']['control_parameters']['potion_sink_pressure'])
+other_control_keys = [k for k,v in active['variant']['control_parameters'].items() if k"'!='"'potion_sink_pressure']
+print('control_parameter_count', len(active['variant']['control_parameters']))
+print('progress_selected_balance_adjustment', progress.get('selected_balance_adjustment'))
+print('economy_has_potion_sink_pressure_node', any(n['id']=='economy.potion_sink_pressure' for n in economy['nodes']))
+PY" in /home/meta_os/MapleWorld succeeded in 50ms:
+potion_sink_pressure 0.258
+control_parameter_count 24
+progress_selected_balance_adjustment potion_sink_pressure=0.258
+economy_has_potion_sink_pressure_node True
+file update:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index f4298665ced62f9821e766476928db128087a446..803a233c27db8451a0cd37ae9b43211db2c8dd1a
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -13,7 +13,7 @@
+       "field_instance_player_cap": 30,
+       "congestion_routing_threshold": 0.75,
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+       "market_tax_rate": 0.094,
+       "boss_reward_cadence": 0.63,
+diff --git a/data/design_graph/economy.json b/data/design_graph/economy.json
+index f99116148b3bc96179526f96ec181d3624b67d5d..944ebe23132bd0782a02b0217e0cca35c628e886
+--- a/data/design_graph/economy.json
++++ b/data/design_graph/economy.json
+@@ -91,6 +91,12 @@
+       "domain": "economy"
+     },
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+       "layer": 2,
+       "parent": "economy",
+diff --git a/ops/codex_state/progress.json b/ops/codex_state/progress.json
+index 3599dd483f79cb7af3329303a352582e7c06fb21..4dd5c2bc2751905c61cbb873ce1973fee7e70c15
+--- a/ops/codex_state/progress.json
++++ b/ops/codex_state/progress.json
+@@ -2,6 +2,7 @@
+   "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+   "architecture_candidates": 4,
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+   "variant_id": "economy_source_sink_balance_repair_2",
+   "structural_clarity": 85.0,
+
+codex
+The verification passed for JSON syntax and the intended values. I’m pulling exact line numbers now so the final report is precise and doesn’t blur this bounded patch with the repository’s pre-existing dirty state.
+exec
+/bin/bash -lc "nl -ba data/architecture_selected/active_architecture.json | sed -n '10,22p'" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "nl -ba data/design_graph/economy.json | sed -n '86,102p'" in /home/meta_os/MapleWorld succeeded in 50ms:
+    10	      "server_authoritative": true
+    11	    },
+    12	    "control_parameters": {
+    13	      "field_instance_player_cap": 30,
+    14	      "congestion_routing_threshold": 0.75,
+    15	      "party_incentive_coefficient": 1.13,
+    16	      "potion_sink_pressure": 0.258,
+    17	      "upgrade_cost_curve": 1.075,
+    18	      "market_tax_rate": 0.094,
+    19	      "boss_reward_cadence": 0.63,
+    20	      "dungeon_entry_pressure": 0.57,
+    21	      "spawn_density_scaling": 1.01,
+    22	      "rare_drop_control": 0.84,
+ succeeded in 50ms:
+    86	    },
+    87	    {
+    88	      "id": "economy.npc_sell_ratio",
+    89	      "layer": 2,
+    90	      "parent": "economy",
+    91	      "domain": "economy"
+    92	    },
+    93	    {
+    94	      "id": "economy.potion_sink_pressure",
+    95	      "layer": 2,
+    96	      "parent": "economy",
+    97	      "domain": "economy"
+    98	    },
+    99	    {
+   100	      "id": "economy.player_to_player_tax",
+   101	      "layer": 2,
+   102	      "parent": "economy",
+exec
+/bin/bash -lc "nl -ba ops/codex_state/progress.json | sed -n '1,10p'" in /home/meta_os/MapleWorld succeeded in 51ms:
+     1	{
+     2	  "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+     3	  "architecture_candidates": 4,
+     4	  "architecture_last_status": "bounded_phase2_cycle_complete",
+     5	  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+     6	  "architecture_project_complete": true,
+     7	  "variant_id": "economy_source_sink_balance_repair_2",
+     8	  "structural_clarity": 85.0,
+     9	  "authority_path_integrity": 100.0,
+    10	  "persistence_boundary_clarity": 92.5,
+file update:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index f4298665ced62f9821e766476928db128087a446..803a233c27db8451a0cd37ae9b43211db2c8dd1a
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -13,7 +13,7 @@
+       "field_instance_player_cap": 30,
+       "congestion_routing_threshold": 0.75,
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+       "market_tax_rate": 0.094,
+       "boss_reward_cadence": 0.63,
+diff --git a/data/design_graph/economy.json b/data/design_graph/economy.json
+index f99116148b3bc96179526f96ec181d3624b67d5d..944ebe23132bd0782a02b0217e0cca35c628e886
+--- a/data/design_graph/economy.json
++++ b/data/design_graph/economy.json
+@@ -91,6 +91,12 @@
+       "domain": "economy"
+     },
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+       "layer": 2,
+       "parent": "economy",
+diff --git a/ops/codex_state/progress.json b/ops/codex_state/progress.json
+index 3599dd483f79cb7af3329303a352582e7c06fb21..4dd5c2bc2751905c61cbb873ce1973fee7e70c15
+--- a/ops/codex_state/progress.json
++++ b/ops/codex_state/progress.json
+@@ -2,6 +2,7 @@
+   "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+   "architecture_candidates": 4,
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+   "variant_id": "economy_source_sink_balance_repair_2",
+   "structural_clarity": 85.0,
+
+codex
+1. changed files
+
+[data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16)
+
+[data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94)
+
+[ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5)
+
+2. exact summary of changes
+
+In [data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16), changed `variant.control_parameters.potion_sink_pressure` from `0.25` to `0.258`.
+
+In [data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94), added the explicit economy graph node `economy.potion_sink_pressure` under the `economy` domain so this selected sink knob is surfaced in the shard.
+
+In [ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5), added `selected_balance_adjustment: "potion_sink_pressure=0.258"` to record this bounded balance adjustment in progress state.
+
+3. verification performed
+
+Parsed all three edited JSON files successfully with `python3 json.load(...)`.
+
+Confirmed `potion_sink_pressure` now resolves to `0.258` in the active selected architecture.
+
+Confirmed `economy.potion_sink_pressure` exists in the economy design graph.
+
+Confirmed the progress artifact records `selected_balance_adjustment = "potion_sink_pressure=0.258"`.
+
+MSW runtime boundary was untouched; no runtime files were edited.
+
+4. unresolved risks
+
+The repo already had substantial pre-existing uncommitted changes, including in the target selected-state files, so `git diff` against `HEAD` is not a clean isolation of only this turn’s edits.
+
+I did not rerun architecture simulation/scoring, so I cannot yet verify that `economy_pressure_unbounded` is removed or narrowed, or that economy stability improved without side effects.
+
+`data/design_graph/economy.json` is a node graph, not a numeric config surface, so the shard now exposes the knob explicitly but does not itself store the `0.258` value.
+
+5. recommended next bottleneck
+
+`power_curve_replacement_pressure`, unless the next scoring pass shows `economy_pressure_unbounded` still persists after this sink-pressure adjustment.
+file update:
+diff --git a/data/architecture_selected/active_architecture.json b/data/architecture_selected/active_architecture.json
+index f4298665ced62f9821e766476928db128087a446..803a233c27db8451a0cd37ae9b43211db2c8dd1a
+--- a/data/architecture_selected/active_architecture.json
++++ b/data/architecture_selected/active_architecture.json
+@@ -13,7 +13,7 @@
+       "field_instance_player_cap": 30,
+       "congestion_routing_threshold": 0.75,
+       "party_incentive_coefficient": 1.13,
+-      "potion_sink_pressure": 0.25,
++      "potion_sink_pressure": 0.258,
+       "upgrade_cost_curve": 1.075,
+       "market_tax_rate": 0.094,
+       "boss_reward_cadence": 0.63,
+diff --git a/data/design_graph/economy.json b/data/design_graph/economy.json
+index f99116148b3bc96179526f96ec181d3624b67d5d..944ebe23132bd0782a02b0217e0cca35c628e886
+--- a/data/design_graph/economy.json
++++ b/data/design_graph/economy.json
+@@ -91,6 +91,12 @@
+       "domain": "economy"
+     },
+     {
++      "id": "economy.potion_sink_pressure",
++      "layer": 2,
++      "parent": "economy",
++      "domain": "economy"
++    },
++    {
+       "id": "economy.player_to_player_tax",
+       "layer": 2,
+       "parent": "economy",
+diff --git a/ops/codex_state/progress.json b/ops/codex_state/progress.json
+index 3599dd483f79cb7af3329303a352582e7c06fb21..4dd5c2bc2751905c61cbb873ce1973fee7e70c15
+--- a/ops/codex_state/progress.json
++++ b/ops/codex_state/progress.json
+@@ -2,6 +2,7 @@
+   "selected_architecture_variant": "economy_source_sink_balance_repair_2",
+   "architecture_candidates": 4,
+   "architecture_last_status": "bounded_phase2_cycle_complete",
++  "selected_balance_adjustment": "potion_sink_pressure=0.258",
+   "architecture_project_complete": true,
+   "variant_id": "economy_source_sink_balance_repair_2",
+   "structural_clarity": 85.0,
+
+tokens used
+58,263
+1. changed files
+
+[data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16)
+
+[data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94)
+
+[ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5)
+
+2. exact summary of changes
+
+In [data/architecture_selected/active_architecture.json](/home/meta_os/MapleWorld/data/architecture_selected/active_architecture.json#L16), changed `variant.control_parameters.potion_sink_pressure` from `0.25` to `0.258`.
+
+In [data/design_graph/economy.json](/home/meta_os/MapleWorld/data/design_graph/economy.json#L94), added the explicit economy graph node `economy.potion_sink_pressure` under the `economy` domain so this selected sink knob is surfaced in the shard.
+
+In [ops/codex_state/progress.json](/home/meta_os/MapleWorld/ops/codex_state/progress.json#L5), added `selected_balance_adjustment: "potion_sink_pressure=0.258"` to record this bounded balance adjustment in progress state.
+
+3. verification performed
+
+Parsed all three edited JSON files successfully with `python3 json.load(...)`.
+
+Confirmed `potion_sink_pressure` now resolves to `0.258` in the active selected architecture.
+
+Confirmed `economy.potion_sink_pressure` exists in the economy design graph.
+
+Confirmed the progress artifact records `selected_balance_adjustment = "potion_sink_pressure=0.258"`.
+
+MSW runtime boundary was untouched; no runtime files were edited.
+
+4. unresolved risks
+
+The repo already had substantial pre-existing uncommitted changes, including in the target selected-state files, so `git diff` against `HEAD` is not a clean isolation of only this turn’s edits.
+
+I did not rerun architecture simulation/scoring, so I cannot yet verify that `economy_pressure_unbounded` is removed or narrowed, or that economy stability improved without side effects.
+
+`data/design_graph/economy.json` is a node graph, not a numeric config surface, so the shard now exposes the knob explicitly but does not itself store the `0.258` value.
+
+5. recommended next bottleneck
+
+`power_curve_replacement_pressure`, unless the next scoring pass shows `economy_pressure_unbounded` still persists after this sink-pressure adjustment.

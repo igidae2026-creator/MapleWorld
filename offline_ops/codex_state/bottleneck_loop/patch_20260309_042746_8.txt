@@ -1,0 +1,24 @@
+1. changed files
+
+- [tests/economy_balance_table_test.lua](/home/meta_os/MapleWorld/tests/economy_balance_table_test.lua)
+
+2. exact summary of changes
+
+- Added duplicate full-row detection for `data/balance/economy/sinks.csv` by hashing each CSV row across all sink columns.
+- Added duplicate level-band detection and explicit coverage checks so the table must contain exactly one sink row for each band `1` through `24`.
+- Sorted and rechecked boss ticket bands so `boss_entry_ticket` remains constrained to level bands `9` and `21`.
+- No edit was needed to [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv) in the current workspace because it is already collapsed to the canonical 24-row sink set.
+- No edit was needed to [scripts/run_tests.sh](/home/meta_os/MapleWorld/scripts/run_tests.sh) because it already runs the economy balance test.
+
+3. verification performed
+
+- Ran `lua tests/economy_balance_table_test.lua` -> passed.
+- Ran `bash scripts/run_tests.sh` -> passed.
+
+4. unresolved risks
+
+- The CSV parser in the test is still intentionally narrow and assumes unquoted comma-separated values. That is fine for the current sink table, but future quoted CSV fields would need parser hardening.
+
+5. recommended next bottleneck
+
+- Runtime control-plane method removal at the export-layer boundary. It is still a bounded structural hardening step and is the next smallest safe improvement after this data-integrity fix.

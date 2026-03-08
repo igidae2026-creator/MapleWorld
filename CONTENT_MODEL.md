@@ -2,10 +2,10 @@
 
 Content is generated and loaded through:
 
-- `data/content_registry.lua`
-- `data/content_loader.lua`
-- `data/content_index.lua`
-- `data/content_validation.lua`
+- `content_build/content_registry.lua`
+- `content_build/content_loader.lua`
+- `content_build/content_index.lua`
+- `content_build/content_validation.lua`
 
 Supported content domains:
 
@@ -23,4 +23,4 @@ Runtime-connected support tables:
 
 - `data/regional_progression_tables.lua`: region ladder, milestone rewards, valued drops, and social-loop identity.
 - `data/rare_spawn_tables.lua`: map-by-map elite cadence, reward bias, and rare behavior definitions.
-- `data/world_runtime.lua`: spawn placement, route metadata, and map runtime bindings derived from loaded content.
+- `deleted (world runtime ownership removed from live runtime)`: spawn placement, route metadata, and map runtime bindings derived from loaded content.

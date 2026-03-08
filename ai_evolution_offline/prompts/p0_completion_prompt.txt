@@ -1,0 +1,135 @@
+You are working inside an existing MapleWorld repository.
+
+This repository already contains integrated gameplay, data, ops, msw bridge, and tests.
+
+Do NOT regenerate the repository.
+Do NOT create a second server architecture.
+Do NOT introduce a parallel runtime stack.
+Do NOT add architectural vanity systems.
+Do NOT switch to unrelated tracks such as network gateway, generic infra expansion, or new bridge families.
+Do NOT replace the progress file schema.
+
+You are executing EXACTLY ONE bounded P0 completion cycle.
+
+================================================
+PRIMARY OBJECTIVE
+================================================
+
+Close the highest-priority remaining MapleLand gameplay P0 gaps with the smallest safe change set.
+
+Allowed focus domains only:
+
+- combat
+- skills
+- mobs
+- bosses
+- items
+- drops
+- quests
+- npc dialogue
+- maps
+- progression
+- inventory
+- equipment
+- trade
+- auction
+- economy
+- party
+- guild
+- world events
+
+You must prioritize gameplay completeness over infrastructure drift.
+
+================================================
+MANDATORY TARGET LIST
+================================================
+
+Use ONLY this checklist as the completion basis:
+
+combat_system
+critical_hit_system
+status_effect_system
+mob_defense_evasion
+combat_feedback_system
+skill_tree_system
+skill_cooldown_system
+skill_animation_event_hooks
+buff_debuff_duration_management
+mob_behavior_patterns
+mob_aggro_system
+boss_pattern_logic
+mob_spawn_management
+equipment_stat_resolution
+item_enhancement_system
+drop_table_binding
+item_rarity_system
+quest_state_management
+quest_chain_progression
+quest_reward_distribution
+npc_dialogue_tree_system
+trade_system
+auction_house_system
+source_sink_economy_balance
+gold_sink_mechanisms
+map_loading_and_transfer
+world_event_triggering
+boss_spawn_system
+level_up_logic
+experience_curve_system
+inventory_management
+equipment_equip_unequip_flow
+party_system
+guild_system
+
+================================================
+EXECUTION MODEL
+================================================
+
+Perform exactly ONE bounded cycle:
+
+1. inspect repository
+2. inspect offline_ops/codex_state/p0_prog.json
+3. choose ONE target or ONE tightly related target cluster from remaining_targets
+4. implement the smallest safe completion-oriented change
+5. integrate into existing scripts/data/tests
+6. update offline_ops/codex_state/p0_prog.json WITHOUT changing its schema
+
+================================================
+PROGRESS FILE CONTRACT
+================================================
+
+You MUST preserve this exact top-level schema:
+
+{
+  "completed_targets": [...],
+  "remaining_targets": [...],
+  "current_blocker": "...",
+  "last_cycle_summary": "...",
+  "regression_risk": "...",
+  "next_priority_candidates": [...]
+}
+
+Rules:
+- remaining_targets must remain an array
+- completed_targets must remain an array
+- move only actually completed targets from remaining_targets to completed_targets
+- do not delete unrelated remaining targets
+- do not replace the file with another schema
+
+================================================
+TEST RULE
+================================================
+
+Use existing tests first.
+Adjust or extend tests only if needed for the chosen gameplay target.
+Do not create a new testing framework.
+
+================================================
+FINAL STATE
+================================================
+
+After this ONE cycle:
+- repository is more playable
+- one blocker or blocker cluster is reduced
+- progress file remains valid
+- architecture stays small

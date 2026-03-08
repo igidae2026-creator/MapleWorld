@@ -32,7 +32,7 @@ Options:
 What this script checks:
   - Whether the current environment appears to be WSL.
   - Whether the repo root contains expected directories:
-    data/, msw/, ops/, scripts/, tests/
+    data/, msw_runtime/, offline_ops/, ai_evolution_offline/, scripts/, tests/
   - Whether baseline development tools are available:
     bash, git, node, npm, make
 
@@ -173,7 +173,7 @@ else
   warn "this does not appear to be WSL based on /proc/version"
 fi
 
-for dir_name in data msw ops scripts tests; do
+for dir_name in data msw_runtime offline_ops ai_evolution_offline scripts tests; do
   check_repo_dir "$dir_name"
 done
 

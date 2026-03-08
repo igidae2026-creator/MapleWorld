@@ -5,7 +5,7 @@ The item layer combines progression, rarity, and economy hooks.
 Implemented surfaces:
 
 - equipment slots and equipping in `scripts/item_system.lua`
-- rarity and progression metadata from `data/content_registry.lua`
+- rarity and progression metadata from `content_build/content_registry.lua`
 - set bonuses and gear power inside `scripts/item_system.lua`
 - upgrade paths in content/runtime tables
 - drop anticipation and loot visibility through `scripts/drop_system.lua` and `scripts/combat_feedback.lua`

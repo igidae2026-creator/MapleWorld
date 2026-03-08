@@ -1,0 +1,36 @@
+CONTENT_SCORES:
+- progression pacing: 84~87
+- content density: 82~85
+- boss / raid quality: 80~83
+- economy stability: 83~86
+
+PRIMARY_BOTTLENECK:
+Boss and dungeon tuning outputs are too pattern-generated and repetitive across level bands, which weakens encounter identity and makes content density feel thinner than the raw volume suggests.
+
+WHY_THIS_IS_THE_BOTTLENECK:
+The repository has broad coverage and passing validation, but `boss_rewards.csv`, `dungeon_cadence.csv`, and the minimal boss rule layer show repeated reward/lockout/cadence cycles with limited mechanical differentiation, so boss quality and mid-to-late pacing cap out before the efficiency target.
+
+NEXT_SAFE_IMPROVEMENT:
+Replace the current repeating boss/dungeon reward-cadence pattern with a small offline-authored tier template set by progression band and party role, then regenerate the CSV outputs without changing runtime ownership or live gameplay code paths.
+
+FILES:
+- `shared_rules/boss_mechanics_system.lua`
+- `content_build/content_validation.lua`
+- `data/balance/bosses/boss_rewards.csv`
+- `data/balance/dungeons/dungeon_cadence.csv`
+- `data/balance/progression/party_windows.csv`
+- `data/balance/drops/drop_table.csv`
+- `data/balance/manifest.json`
+- `tests/content_density_test.lua`
+- `tests/boss_reward_distribution_test.lua`
+- `tests/economy_balance_table_test.lua`
+
+VERIFICATION:
+- Reviewed `shared_rules` scope and boss mechanic depth for runtime-safe rule quality.
+- Sampled progression, drops, boss rewards, and dungeon cadence tables for tuning structure and repetition.
+- Confirmed content/build validation emphasis is mostly integrity and coverage, not differentiation.
+- Ran `lua tests/content_integrity_test.lua`
+- Ran `lua tests/content_density_test.lua`
+- Ran `lua tests/regional_progression_tables_test.lua`
+- Ran `lua tests/economy_balance_table_test.lua`
+- Ran `lua tests/boss_reward_distribution_test.lua`

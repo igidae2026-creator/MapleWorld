@@ -1,0 +1,36 @@
+1. changed files
+
+- [msw_runtime/anti_abuse_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/anti_abuse_runtime.lua)
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua)
+- [tests/msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua)
+
+2. exact summary of changes
+
+- Added `msw_runtime/anti_abuse_runtime.lua` as the MSW-owned authority slice for:
+  - anti-abuse action observation/flag accumulation
+  - world-event activation state
+  - regional world-event bonus projection
+- Removed the patched slice’s legacy imports from `gameplay_runtime.lua`:
+  - `require('scripts.anti_abuse_gameplay_hooks')`
+  - `require('scripts.world_event_system')`
+- Rewired `gameplay_runtime.lua` to use `AntiAbuseRuntime` for:
+  - mob-kill anti-abuse observation
+  - regional event state returned by `getMapState`
+  - `activate_world_event` handling in `dispatchRuntimeEvent`
+- Hardened `tests/msw_runtime_boundary_test.lua` to fail if:
+  - `msw_runtime/anti_abuse_runtime.lua` imports any `scripts/*` module
+  - `msw_runtime/state/gameplay_runtime.lua` reintroduces the two removed legacy imports
+
+3. verification performed
+
+- Ran `lua tests/msw_runtime_boundary_test.lua` -> passed
+- Ran `lua tests/msw_runtime_gameplay_test.lua` -> passed
+
+4. unresolved risks
+
+- `msw_runtime/state/gameplay_runtime.lua` still depends on other legacy `scripts/*` systems; this patch only removed the anti-abuse/world-event slice by design.
+- The new boundary regression is slice-specific, not a global ban on all `msw_runtime -> scripts/*` imports.
+
+5. recommended next bottleneck
+
+- Extract the next authority-path constructor dependency still instantiated directly from `scripts/*`, specifically the `daily_weekly_system` / `achievements_system` runtime ownership in [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua).

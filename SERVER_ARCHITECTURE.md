@@ -1,18 +1,18 @@
 # Server Architecture
 
-MapleWorld runs as a single-server, single-world MMO runtime.
+MapleWorld is being reduced from a standalone MMO runtime into a gameplay-only MSW runtime plus offline control surfaces.
 
 Core loop:
 
-1. `scripts/server_bootstrap.lua` assembles content, gameplay systems, persistence, metrics, and operator surfaces.
-2. Scheduler ticks spawns, bosses, autosave, health, drop expiry, and world-ops batching.
-3. Player state, world state, snapshots, replay validation, and event batching stay inside one authoritative runtime.
-4. `msw/` exposes the authoritative runtime bridge for in-world server methods.
+1. `msw_runtime/` exposes only gameplay entrypoints and runtime-facing state.
+2. Control-plane, replay, scheduling, failover, and clustering live under `offline_ops/`.
+3. Content loading and validation live under `content_build/`.
+4. The previous bridge/bootstrap ownership model has been removed.
 
-Robustness inside the single-server model comes from snapshots, replay validation, entity indexing, event batching, and performance counters rather than multi-server expansion.
+Robustness now depends on a clear boundary: gameplay remains in the MSW runtime, while replay/audit/control systems live offline.
 
 Key runtime-connected support layers:
 
-- `data/world_runtime.lua` materializes regional progression metadata, rare-spawn tables, map routes, and runtime attach points.
-- `ops/memory_guard.lua`, `ops/duplication_guard.lua`, and `ops/inflation_guard.lua` feed live stability reporting rather than static diagnostics only.
-- `ops/live_event_controller.lua` and `scripts/world_event_system.lua` drive seasonal, invasion, and world-boss state through one authoritative world tick surface.
+- `content_build/` owns content preparation and validation.
+- `offline_ops/` owns replay, audit, telemetry, stability, and control-plane tooling.
+- `scripts/` remains temporary gameplay logic pending further extraction into `msw_runtime/` and `shared_rules/`.

@@ -1,1 +1,1 @@
-return require('data.content_loader').load().content.maps
+return require('data.runtime_content').load().content.maps

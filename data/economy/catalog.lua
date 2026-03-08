@@ -1,1 +1,1 @@
-return require('data.content_loader').load().content.economy
+return require('data.runtime_content').load().content.economy

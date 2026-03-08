@@ -1,0 +1,370 @@
+You are working inside the MapleWorld repository.
+
+Goal:
+Add a simulation and quality-evaluation layer to the existing autonomous bottleneck loop without breaking the current loop, MSW runtime boundary, or gameplay runtime structure.
+
+Critical constraints:
+- Do NOT redesign the existing loop.
+- Do NOT modify live gameplay logic beyond what is strictly required for simulation inputs.
+- Do NOT let msw_runtime import simulation_py, simulation_lua, metrics_engine, offline_ops, or ai_evolution_offline.
+- Do NOT reintroduce bootstrap/bridge/server-runtime patterns.
+- Do NOT create a standalone runtime inside MSW.
+- Keep all new simulation/evaluation systems offline-only.
+
+Current state assumptions:
+- run_bottleneck_loop.sh already works unattended
+- rollback/stop conditions/boundary tests already exist
+- msw_runtime is gameplay-only
+- shared_rules contains pure or mostly pure rules
+- content_build contains built content outputs
+- tests already exist for runtime boundary and basic gameplay regression
+
+Task:
+Implement the minimum viable simulation layer in bounded slices inside one execution.
+
+You must create only the smallest usable version of:
+
+1. simulation_lua/
+2. simulation_py/
+3. metrics_engine/
+4. two new prompts for agent_simulation and agent_meta_quality
+5. coordinator integration for those two new agents
+6. verify pipeline extension so simulation results can be checked safely
+
+================================================
+SLICE 1 — DIRECTORY AND CONTRACT SETUP
+================================================
+
+Create these directories if missing:
+
+simulation_lua/
+simulation_py/
+simulation_py/agents/
+metrics_engine/
+
+Add README.md in each with concise responsibility definitions.
+
+Requirements:
+
+simulation_lua:
+- fast deterministic offline simulation
+- no MSW imports
+- no live runtime ownership
+- consumes shared_rules and built content data only
+
+simulation_py:
+- large-scale player/economy/content simulation
+- offline only
+- no MSW imports
+
+metrics_engine:
+- computes quality metrics from simulation outputs
+- emits machine-readable reports
+
+Also create:
+
+offline_ops/codex_state/simulation_runs/
+
+Do not change gameplay code in this slice.
+
+================================================
+SLICE 2 — MINIMUM LUA SIMULATION
+================================================
+
+Create a minimum viable deterministic Lua simulation layer with these files:
+
+simulation_lua/combat_sim.lua
+simulation_lua/progression_sim.lua
+simulation_lua/drop_sim.lua
+simulation_lua/boss_sim.lua
+
+Rules:
+- keep each file minimal
+- use shared_rules and content_build outputs where possible
+- no filesystem crawling
+- no runtime mutation
+- no persistence
+- deterministic given input
+
+Minimum responsibilities:
+
+combat_sim.lua
+- simulate repeated damage resolution for a small set of attacker/target profiles
+- output aggregate metrics:
+  avg_damage
+  crit_rate_observed
+  hit_rate_observed
+
+progression_sim.lua
+- simulate level progression over repeated hunt/quest reward loops
+- output:
+  levels_gained
+  exp_per_loop
+  loops_to_target
+
+drop_sim.lua
+- simulate repeated drop resolution
+- output:
+  avg_drops_per_kill
+  rare_drop_rate_observed
+
+boss_sim.lua
+- simulate simple boss encounter outcome loops
+- output:
+  avg_time_to_clear
+  clear_rate
+  failure_rate
+
+Also create a thin runner:
+
+simulation_lua/run_all.lua
+
+It should run all 4 modules and emit a single JSON file to:
+
+offline_ops/codex_state/simulation_runs/lua_simulation_latest.json
+
+Use the simplest safe method available in the repo. If no JSON helper exists, write minimal structured text in JSON format manually.
+
+================================================
+SLICE 3 — MINIMUM PYTHON SIMULATION
+================================================
+
+Create a minimum viable Python simulation layer with these files:
+
+simulation_py/player_model.py
+simulation_py/economy_sim.py
+simulation_py/world_sim.py
+simulation_py/agents/solo_grinder.py
+simulation_py/agents/party_grinder.py
+simulation_py/agents/quest_player.py
+simulation_py/run_all.py
+
+Keep this intentionally minimal.
+
+Requirements:
+
+player_model.py
+- define a minimal player state model:
+  level
+  mesos
+  progression_stage
+  play_style
+
+economy_sim.py
+- simulate mesos source/sink balance over repeated loops
+- output:
+  total_mesos_created
+  total_mesos_removed
+  net_inflation_signal
+
+world_sim.py
+- simulate a population of players across a short horizon
+- output:
+  progression_speed_distribution
+  mesos_distribution
+  activity_mix
+
+agents/*
+- define simple action preference weights for each archetype
+
+run_all.py
+- run a small population simulation
+- write output to:
+  offline_ops/codex_state/simulation_runs/python_simulation_latest.json
+
+Do not overbuild.
+Do not add external package dependencies unless already standard.
+Use stdlib only if possible.
+
+================================================
+SLICE 4 — METRICS ENGINE
+================================================
+
+Create:
+
+metrics_engine/quality_metrics.py
+metrics_engine/run_quality_eval.py
+
+quality_metrics.py should combine the two simulation outputs into coarse range-friendly metrics.
+
+Required output keys:
+- combat_quality
+- progression_pacing
+- economy_stability
+- content_pressure_proxy
+- boss_quality_proxy
+- overall_quality_estimate
+
+Rules:
+- use ranges, not fake precision
+- example values:
+  "82~85"
+  "86~88"
+- do not pretend to know real player fun
+- label outputs as proxy metrics
+
+run_quality_eval.py should read:
+- offline_ops/codex_state/simulation_runs/lua_simulation_latest.json
+- offline_ops/codex_state/simulation_runs/python_simulation_latest.json
+
+and write:
+- offline_ops/codex_state/simulation_runs/quality_metrics_latest.json
+
+================================================
+SLICE 5 — NEW AGENT PROMPTS
+================================================
+
+Create these prompt files under:
+
+ai_evolution_offline/prompts/
+
+Files:
+- agent7_simulation.txt
+- agent8_meta_quality.txt
+
+agent7_simulation.txt responsibilities:
+- read latest simulation outputs
+- identify one simulation-derived bottleneck
+- propose one bounded patch candidate
+- use range scoring only
+
+Required output format:
+
+SIMULATION_SCORES:
+- progression pacing: [range]
+- economy stability: [range]
+- boss quality proxy: [range]
+
+PRIMARY_BOTTLENECK:
+[one sentence]
+
+WHY_THIS_IS_THE_BOTTLENECK:
+[short]
+
+NEXT_SAFE_IMPROVEMENT:
+[short]
+
+FILES:
+[list]
+
+VERIFICATION:
+[list]
+
+agent8_meta_quality.txt responsibilities:
+- read latest quality_metrics_latest.json
+- identify one meta-quality bottleneck
+- propose one bounded patch candidate
+- keep within gameplay/content/balance scope only
+
+Required output format:
+
+META_QUALITY_SCORES:
+- combat quality: [range]
+- progression pacing: [range]
+- economy stability: [range]
+- overall quality estimate: [range]
+
+PRIMARY_BOTTLENECK:
+[one sentence]
+
+WHY_THIS_IS_THE_BOTTLENECK:
+[short]
+
+NEXT_SAFE_IMPROVEMENT:
+[short]
+
+FILES:
+[list]
+
+VERIFICATION:
+[list]
+
+================================================
+SLICE 6 — COORDINATOR INTEGRATION
+================================================
+
+Update the coordinator prompt or coordinator flow so it can consider 8 agents instead of the previous set.
+
+Rules:
+- still choose exactly one bottleneck
+- simulation/meta-quality bottlenecks may only propose:
+  balance/content/rules changes
+- simulation/meta-quality agents must not trigger runtime architecture refactors
+- preserve existing safety rules
+- reject patches that cross runtime boundary
+
+If needed, update the loop script in the smallest possible way so:
+- simulation_lua/run_all.lua runs before simulation/meta-quality agents
+- simulation_py/run_all.py runs before simulation/meta-quality agents
+- metrics_engine/run_quality_eval.py runs before simulation/meta-quality agents
+
+But keep changes minimal.
+Do not destabilize the loop.
+
+================================================
+SLICE 7 — VERIFY PIPELINE EXTENSION
+================================================
+
+Extend verification in the smallest possible way.
+
+Required additions:
+- run Lua simulation runner
+- run Python simulation runner
+- run quality metrics evaluation
+- ensure all three outputs exist before simulation/meta-quality agents run
+
+Add lightweight tests if missing:
+
+tests/simulation_lua_smoke_test.lua
+tests/test_simulation_py_smoke.py
+tests/test_quality_metrics_smoke.py
+
+Requirements:
+- smoke-level only
+- confirm outputs are generated
+- no broad new framework
+
+Integrate with existing make test or scripts/run_tests.sh in the least disruptive way possible.
+
+================================================
+SLICE 8 — HARD BOUNDARY GUARDS
+================================================
+
+Add or extend tests to ensure:
+- msw_runtime does not import simulation_lua
+- msw_runtime does not import simulation_py
+- msw_runtime does not import metrics_engine
+
+If a boundary test file already exists, extend it.
+If not, add a minimal one.
+
+================================================
+OUTPUT REQUIREMENTS
+================================================
+
+At the end, output only:
+
+1. files added
+2. files modified
+3. slices completed
+4. exact commands used for verification
+5. verification result summary
+6. remaining risks
+7. recommended next bottleneck after simulation integration
+
+================================================
+QUALITY BAR
+================================================
+
+This is not a research rewrite.
+This is a minimum viable, loop-safe, offline simulation integration.
+
+Prefer:
+- minimal files
+- explicit boundaries
+- no runtime contamination
+- no overengineering
+- no external deps
+- usable outputs for the existing loop
+
+Do not overbuild.

@@ -1,0 +1,27 @@
+{
+  "deterministic": true,
+  "economy": {
+    "net_inflation_signal": "high_positive",
+    "total_mesos_created": 22330,
+    "total_mesos_removed": 10745
+  },
+  "generator": "simulation_py.run_all",
+  "population_size": 6,
+  "world": {
+    "activity_mix": {
+      "party_grinder": 2,
+      "quest_player": 2,
+      "solo_grinder": 2
+    },
+    "mesos_distribution": {
+      "high": 7200,
+      "low": 1950,
+      "mid": 4815
+    },
+    "progression_speed_distribution": {
+      "high": 84,
+      "low": 26,
+      "mid": 57
+    }
+  }
+}

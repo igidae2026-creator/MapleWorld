@@ -5,6 +5,48 @@
       "id": "quests",
       "layer": 1,
       "domain": "quests"
+    },
+    {
+      "id": "quests.onboarding_band_variation",
+      "layer": 2,
+      "parent": "quests",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.quest_shape_distribution",
+      "layer": 2,
+      "parent": "quests",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.onboarding_band_variation.henesys_01_06_slice",
+      "layer": 3,
+      "parent": "quests.onboarding_band_variation",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.onboarding_band_variation.henesys_01_06_slice.target_shape_count",
+      "layer": 4,
+      "parent": "quests.onboarding_band_variation.henesys_01_06_slice",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.onboarding_band_variation.henesys_01_06_slice.allowed_shapes",
+      "layer": 4,
+      "parent": "quests.onboarding_band_variation.henesys_01_06_slice",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.quest_shape_distribution.onboarding_mix",
+      "layer": 3,
+      "parent": "quests.quest_shape_distribution",
+      "domain": "quests"
+    },
+    {
+      "id": "quests.quest_shape_distribution.onboarding_mix.monitoring_metric",
+      "layer": 4,
+      "parent": "quests.quest_shape_distribution.onboarding_mix",
+      "domain": "quests"
     }
   ]
 }

@@ -1,0 +1,26 @@
+1. Changed files
+
+- [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L10)
+- [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L22)
+
+2. Exact summary of changes
+
+- Increased `boss_entry_ticket_band_09` meso cost from `2285` to `2760` at [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L10).
+- Increased `boss_entry_ticket_band_21` meso cost from `10472` to `12320` at [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L22).
+- Kept both `boss_entry_ticket` rows in the same two level windows and left `sink_weight`, boss rewards, runtime logic, and all non-economy files unchanged.
+
+3. Verification performed
+
+- Ran `lua tests/economy_balance_table_test.lua` -> passed.
+- Ran a CSV-derived sink check -> `boss_entry_sink_mean` stayed `1.75`; `boss_entry_effective_total` increased from `22897.84` to `27059.20`.
+- Ran `python3 - <<'PY' ... simulate_world() ...` via `ai_evolution_offline.codex.design_pipeline` -> `status='stable'`; `sink_source_ratio` improved from `0.9193` to `0.9415`; `boss_reward_inflation_pressure` stayed `0.9172`.
+- Reran `python3 simulation_py/run_all.py` and `python3 metrics_engine/run_quality_eval.py` -> official `python_simulation_latest.json` and `quality_metrics_latest.json` stayed at `high_positive` / `71~74` because that simulator does not read `sinks.csv`.
+
+4. Unresolved risks
+
+- The official offline simulation path still ignores `data/balance/economy/sinks.csv`, so it cannot yet prove the required one-band `economy_stability` improvement even though the CSV-driven sink/source ratio improved.
+- This patch raises boss-entry costs only; if boss-loop inflation remains high in live scoring, the next fix will need either another narrow ticket-cost pass or simulator parity work to measure the effect correctly.
+
+5. Recommended next bottleneck
+
+- Offline economy simulation parity with balance tables: the current `simulation_py` path is the immediate bottleneck to validating further economy-only sink tuning, because it leaves `python_simulation_latest.json` and `quality_metrics_latest.json` disconnected from `sinks.csv`.

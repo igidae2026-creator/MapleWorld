@@ -1,4 +1,4 @@
-local DamageFormula = require('scripts.damage_formula')
+local DamageFormula = require('shared_rules.damage_formula')
 
 local CombatResolution = {}
 

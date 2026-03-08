@@ -1,0 +1,36 @@
+ARCH_SCORE:
+- platform fit: 84~87
+- runtime stability: 85~88
+- exploit resistance: 86~89
+
+PRIMARY_BOTTLENECK:
+`msw_runtime/state/gameplay_runtime.lua` still acts as a custom monolithic runtime/bootstrap container, so bridge/bootstrap residue remains inside the MSW gameplay boundary.
+
+WHY_THIS_IS_THE_BOTTLENECK:
+Boundary tests are passing, but ownership is still centered on `runtime:bootstrap()` plus generic dispatch instead of explicit MSW-native gameplay components, which keeps platform alignment and long-term boundary clarity below the 88-tier.
+
+NEXT_SAFE_IMPROVEMENT:
+Remove the public `bootstrap` runtime contract from the MSW entry path and replace it with a thin MSW-native composition layer that initializes only gameplay-owned modules, without moving control-plane or redesigning gameplay systems.
+
+FILES:
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua)
+- [msw_runtime/entry/world_server_component.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_component.lua)
+- [msw_runtime/entry/world_server_entry.lua](/home/meta_os/MapleWorld/msw_runtime/entry/world_server_entry.lua)
+- [msw_runtime/component_manifest.lua](/home/meta_os/MapleWorld/msw_runtime/component_manifest.lua)
+- [SERVER_ARCHITECTURE.md](/home/meta_os/MapleWorld/SERVER_ARCHITECTURE.md)
+- [tests/msw_runtime_boundary_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua)
+- [tests/msw_runtime_gameplay_test.lua](/home/meta_os/MapleWorld/tests/msw_runtime_gameplay_test.lua)
+
+DO_NOT_TOUCH:
+- [offline_ops](/home/meta_os/MapleWorld/offline_ops)
+- [ai_evolution_offline](/home/meta_os/MapleWorld/ai_evolution_offline)
+- [content_build](/home/meta_os/MapleWorld/content_build)
+- [simulation_py](/home/meta_os/MapleWorld/simulation_py)
+- [simulation_lua](/home/meta_os/MapleWorld/simulation_lua)
+
+VERIFICATION:
+- `lua tests/msw_runtime_boundary_test.lua`
+- `lua tests/msw_runtime_transitive_boundary_test.lua`
+- `lua tests/msw_runtime_gameplay_test.lua`
+- Confirm `world_server_entry` no longer depends on a public `bootstrap` route.
+- Confirm `world_server_component` owns MSW lifecycle directly and only for gameplay state.

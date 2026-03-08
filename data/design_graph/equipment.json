@@ -5,6 +5,42 @@
       "id": "equipment",
       "layer": 1,
       "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window",
+      "layer": 2,
+      "parent": "equipment",
+      "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window.boundary",
+      "layer": 3,
+      "parent": "equipment.replacement_window",
+      "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window.boundary.field_drop_tier_plus_one_cap",
+      "layer": 4,
+      "parent": "equipment.replacement_window.boundary",
+      "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window.safe_patch",
+      "layer": 3,
+      "parent": "equipment.replacement_window",
+      "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window.safe_patch.upgrade_cost_curve_1_055",
+      "layer": 4,
+      "parent": "equipment.replacement_window.safe_patch",
+      "domain": "equipment"
+    },
+    {
+      "id": "equipment.replacement_window.safe_patch.goal_reduce_midband_stall_without_rare_inflation",
+      "layer": 4,
+      "parent": "equipment.replacement_window.safe_patch",
+      "domain": "equipment"
     }
   ]
 }

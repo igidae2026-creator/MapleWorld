@@ -12,7 +12,7 @@
     "congestion_routing_threshold": 0.74,
     "party_incentive_coefficient": 1.14,
     "potion_sink_pressure": 0.26,
-    "upgrade_cost_curve": 1.06,
+    "upgrade_cost_curve": 1.09,
     "market_tax_rate": 0.096,
     "boss_reward_cadence": 0.61,
     "dungeon_entry_pressure": 0.57,

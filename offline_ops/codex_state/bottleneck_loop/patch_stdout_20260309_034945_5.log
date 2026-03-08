@@ -1,0 +1,2015 @@
+OpenAI Codex v0.111.0 (research preview)
+--------
+workdir: /home/meta_os/MapleWorld
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/meta_os/.codex/memories]
+reasoning effort: none
+reasoning summaries: none
+session id: 019cced1-41c3-71a3-a5d8-0def520f0e87
+--------
+user
+Task:
+Apply the next bottleneck-focused improvement only.
+
+Context:
+MapleWorld is being improved toward efficiency point (~88) on MapleStory Worlds.
+Use the chosen bottleneck and patch boundary below.
+
+Chosen bottleneck:
+[PASTE CHOSEN_BOTTLENECK]
+
+Patch objective:
+[PASTE NEXT_PATCH_OBJECTIVE]
+
+Files:
+[PASTE FILES]
+
+Patch boundary:
+[PASTE PATCH_BOUNDARY]
+
+Rules:
+- do only this bounded improvement
+- do not redesign unrelated systems
+- do not expand architecture scope
+- do not preserve wrong standalone runtime ownership
+- do not add wrappers that keep bad boundaries alive
+- keep runtime gameplay-only inside MSW
+- prefer deletion/simplification over extra abstraction
+- update or add verification where needed
+
+Required output:
+1. changed files
+2. exact summary of changes
+3. verification performed
+4. unresolved risks
+5. recommended next bottleneck
+
+
+Coordinator decision:
+
+CURRENT_EFFICIENCY_ESTIMATE:
+86~88
+
+CHOSEN_BOTTLENECK:
+Duplicate-intent handling on the runtime economy edge is the next bottleneck, specifically `tradeMesos` retry/resubmit idempotency.
+
+WHY_THIS_ONE:
+It is the narrowest high-leverage fix that directly targets the still-open `economy_pressure_unbounded` risk without widening scope into content redesign or boundary refactors.
+
+NEXT_PATCH_OBJECTIVE:
+Add one request-id dedupe regression for `tradeMesos` and patch the runtime path so the same intent can mutate state only once while emitting one replay/audit outcome.
+
+FILES:
+- `/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua`
+- `/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua`
+- `/home/meta_os/MapleWorld/scripts/trading_system.lua`
+
+PATCH_BOUNDARY:
+One economy intent, one runtime contract, one regression test; no architecture-wide refactor, no new standalone runtime logic, no multi-system patch set.
+
+SUCCESS_CHECK:
+- Duplicate `tradeMesos` submissions with the same request id produce exactly one meso transfer.
+- The second submission is recorded as deduped or no-op, not replayed as a second mutation.
+- Replay or audit output contains one accepted outcome for that request id.
+- `lua tests/economy_runtime_invariant_test.lua` passes.
+- `lua tests/msw_runtime_boundary_test.lua` still passes.
+
+REJECTED_OTHER_BOTTLENECKS:
+- Offline/runtime adapter ownership cleanup is valid but lower leverage for the current efficiency constraint than closing an unbounded economy exploit edge.
+- Ellinia quest-shape variation is useful, but it is a broader content pass and not the smallest fix against the current limiting risk.
+- Boss archetype variance is the broadest proposal here and exceeds the one-cycle, file-bounded patch rule.
+
+mcp startup: no servers
+codex
+I’m applying the bounded `tradeMesos` idempotency fix in the three specified files. First I’m reading the current runtime, trading path, and regression tests to patch the existing boundary rather than layering new ownership on top.
+exec
+/bin/bash -lc "sed -n '1,260p' /home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,240p' /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '1,260p' /home/meta_os/MapleWorld/scripts/trading_system.lua" in /home/meta_os/MapleWorld succeeded in 51ms:
+local TradingSystem = {}
+
+function TradingSystem.new(config)
+    local self = {
+        itemSystem = (config or {}).itemSystem,
+        economySystem = (config or {}).economySystem,
+        activeTrades = {},
+        nextId = 1,
+    }
+    setmetatable(self, { __index = TradingSystem })
+    return self
+end
+
+function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
+    amount = math.max(1, math.floor(tonumber(amount) or 0))
+    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
+    if not ok then return false, err end
+    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
+    return true
+end
+ succeeded in 51ms:
+package.path = package.path .. ';./?.lua;../?.lua'
+
+local Runtime = require('msw_runtime.state.gameplay_runtime')
+
+local runtime = Runtime:new()
+assert(runtime:bootstrap().ok == true, 'runtime bootstrap failed')
+assert(runtime:onUserEnter({ playerId = 'p1' }).ok == true, 'player enter failed')
+
+local player = runtime.players.p1
+local itemId = runtime.starterWeaponId
+assert(itemId ~= nil, 'starter weapon missing')
+
+local startingMesos = player.mesos
+local beforeInventoryCount = player.inventory[itemId] and #player.inventory[itemId] or 0
+local buyPrice = assert(runtime.economySystem:quoteNpcBuy(itemId, 1))
+
+local originalAddItem = runtime.itemSystem.addItem
+runtime.itemSystem.addItem = function(_, targetPlayer, targetItemId, quantity, instanceId, context)
+    if targetPlayer == player and targetItemId == itemId then
+        return false, 'forced_add_failure'
+ succeeded in 51ms:
+local RuntimeTables = require('data.runtime_tables')
+local BossCatalog = require('data.bosses.catalog')
+local DialogueCatalog = require('data.dialogues.catalog')
+local DropTableCatalog = require('data.drop_tables.catalog')
+local EventCatalog = require('data.events.catalog')
+local ItemCatalog = require('data.items.catalog')
+local JobCatalog = require('data.jobs.catalog')
+local MapCatalog = require('data.maps.catalog')
+local MobCatalog = require('data.mobs.catalog')
+local NpcCatalog = require('data.npcs.catalog')
+local QuestCatalog = require('data.quests.catalog')
+local SkillCatalog = require('data.skills.catalog')
+
+local ItemSystem = require('scripts.item_system')
+local EconomySystem = require('scripts.economy_system')
+local ExpSystem = require('scripts.exp_system')
+local StatSystem = require('scripts.stat_system')
+local JobSystem = require('scripts.job_system')
+local BuildRecommendationSystem = require('scripts.build_recommendation_system')
+local PlayerClassSystem = require('scripts.player_class_system')
+codex
+I have the narrow trading implementation now; next I’m locating the existing runtime contract and any audit/replay structures so the fix lands in the current state mutation path and produces the expected single outcome semantics.
+exec
+/bin/bash -lc "sed -n '240,520p' /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc 'rg -n "tradeMesos|audit|replay|requestId|dedupe|duplicate|intent" /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua /home/meta_os/MapleWorld/scripts/trading_system.lua /home/meta_os/MapleWorld/tests /home/meta_os/MapleWorld/scripts' in /home/meta_os/MapleWorld succeeded in 51ms:
+local function firstKey(tbl)
+    local keys = {}
+    for key in pairs(tbl or {}) do
+        keys[#keys + 1] = key
+    end
+    table.sort(keys)
+    return keys[1]
+end
+
+local function selectQuestId(quests, maxLevel)
+    local chosenId, chosenLevel = nil, math.huge
+    for questId, quest in pairs(quests or {}) do
+        local required = tonumber(quest.requiredLevel) or math.huge
+        if required <= (maxLevel or math.huge) then
+            if required < chosenLevel then
+                chosenId, chosenLevel = questId, required
+            elseif required == chosenLevel and tostring(questId) < tostring(chosenId or '') then
+                chosenId = questId
+            end
+        end
+ succeeded in 50ms:
+/home/meta_os/MapleWorld/scripts/item_system.lua:105:            return false, 'duplicate_instance:' .. tostring(instanceId)
+/home/meta_os/MapleWorld/scripts/trading_system.lua:14:function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
+/home/meta_os/MapleWorld/scripts/dev/setup_wsl_env.sh:39:What this script intentionally leaves manual:
+/home/meta_os/MapleWorld/scripts/economy_system.lua:32:        auditSink = cfg.auditSink,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:147:    if type(self.auditSink) ~= 'function' then return end
+/home/meta_os/MapleWorld/scripts/economy_system.lua:148:    local ok, err = pcall(self.auditSink, entry)
+/home/meta_os/MapleWorld/scripts/economy_system.lua:150:        if self.metrics then self.metrics:increment('economy.audit_sink_error', 1) end
+/home/meta_os/MapleWorld/scripts/economy_system.lua:151:        if self.logger and self.logger.error then self.logger:error('economy_audit_sink_failed', { error = tostring(err), txId = entry.txId }) end
+/home/meta_os/MapleWorld/scripts/economy_system.lua:153:        self.metrics:increment('economy.audit_sink_ok', 1)
+/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua:34:assert(afterInventoryCount == beforeInventoryCount, 'inventory should not gain duplicate items on rollback')
+/home/meta_os/MapleWorld/scripts/trading_system.lua:14:function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
+/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua:1122:function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
+/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua:1127:    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
+exec
+/bin/bash -lc "sed -n '520,760p' /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '760,1180p' /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua" in /home/meta_os/MapleWorld succeeded in 50ms:
+        ticks = 0,
+        lastDelta = 0,
+        eventSeq = 0,
+        maxEvents = 256,
+        eventStream = {},
+        logger = makeLogger(),
+        metrics = makeMetrics(),
+        content = content,
+        normalized = {
+            items = normalizeItems(content.items),
+            mobs = normalizeMobs(content.mobs),
+            quests = normalizeQuests(content.quests),
+            bosses = normalizeBosses(content.bosses),
+            dropTables = normalizeDropTables(content.drop_tables),
+        },
+        players = {},
+    }
+    setmetatable(runtime, { __index = GameplayRuntime })
+
+    local expCurve = buildExpCurve(RuntimeTables)
+ succeeded in 51ms:
+        turn_in_quest = 'turnInQuest',
+        equip_item = 'equipItem',
+        unequip_item = 'unequipItem',
+        change_map = 'changeMap',
+        allocate_stat = 'allocateStat',
+        promote_job = 'promoteJob',
+        learn_skill = 'learnSkill',
+        cast_skill = 'castSkill',
+    }
+    local methodName = routes[action]
+    if not methodName or type(self[methodName]) ~= 'function' then
+        return { ok = false, error = 'unknown_player_action' }
+    end
+    payload = payload or {}
+    return self[methodName](self, payload.playerId, payload.a, payload.b, payload.c)
+end
+
+function GameplayRuntime:changeMap(playerId, mapId)
+    local player, err = GameplayRuntime._resolvePlayer(self, playerId)
+    if not player then return { ok = false, error = err } end
+exec
+/bin/bash -lc "sed -n '1,260p' /home/meta_os/MapleWorld/scripts/economy_system.lua" in /home/meta_os/MapleWorld succeeded in 51ms:
+local EconomySystem = {}
+
+local function isPositiveInteger(value)
+    return type(value) == 'number' and value > 0 and value == math.floor(value)
+end
+
+local function clamp(value, low, high)
+    value = tonumber(value) or 0
+    if value < low then return low end
+    if value > high then return high end
+    return value
+end
+
+local function markDirty(player)
+    if not player then return end
+    player.version = (tonumber(player.version) or 0) + 1
+    player.dirty = true
+end
+
+function EconomySystem.new(config)
+exec
+/bin/bash -lc "sed -n '1,260p' /home/meta_os/MapleWorld/tests/msw_runtime_boundary_test.lua" in /home/meta_os/MapleWorldexec
+/bin/bash -lc "sed -n '260,520p' /home/meta_os/MapleWorld/scripts/economy_system.lua" in /home/meta_os/MapleWorld succeeded in 51ms:
+package.path = package.path .. ';./?.lua;../?.lua'
+
+local function readFile(path)
+    local handle = assert(io.open(path, 'r'))
+    local content = handle:read('*a')
+    handle:close()
+    return content
+end
+
+local files = {}
+local pipe = assert(io.popen("find msw_runtime -type f -name '*.lua' | sort", 'r'))
+for path in pipe:lines() do
+    files[#files + 1] = path
+end
+pipe:close()
+
+assert(#files > 0, 'msw_runtime lua files missing')
+
+local forbiddenPatterns = {
+    "require%(['\"]content_build[%.']",
+ succeeded in 50ms:
+    markDirty(player)
+    if self.metrics then
+        self.metrics:increment('economy.mesos_in', applied, { reason = reason or 'unknown' })
+        self.metrics:gauge('economy.player_balance', tonumber(player.mesos) or 0, { playerId = tostring(player.id) })
+    end
+    if self.logger and self.logger.info then self.logger:info('mesos_granted', { playerId = player.id, amount = applied, reason = reason }) end
+    return true
+end
+
+function EconomySystem:spendMesos(player, amount, reason, meta)
+    local mesos = self:_normalizeAmount(amount)
+    if not player then return false, 'invalid_player' end
+    if not mesos then return false, 'invalid_amount' end
+    if (tonumber(player.mesos) or 0) < mesos then return false, 'insufficient_mesos' end
+
+    local before = player.mesos
+    player.mesos = player.mesos - mesos
+    self.sinks[reason or 'unknown'] = (self.sinks[reason or 'unknown'] or 0) + mesos
+    self.sinkPressure = self.sinkPressure + mesos
+    local details = meta or {}
+exec
+/bin/bash -lc 'rg -n "_coerceRequest|requestId|correlationId|idempotencyKey|sourceEventId" /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua /home/meta_os/MapleWorld/scripts' in /home/meta_os/MapleWorld succeeded in 51ms:
+/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua:398:function GameplayRuntime._coerceRequest(...)
+/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua:1073:                sourceEventId = tostring(updated.bossId) .. ':' .. tostring(updated.killedAt or self.ticks),
+/home/meta_os/MapleWorld/scripts/drop_system.lua:141:            sourceEventId = cfg.sourceEventId,
+/home/meta_os/MapleWorld/scripts/drop_system.lua:142:            correlationId = cfg.correlationId,
+/home/meta_os/MapleWorld/scripts/drop_system.lua:208:        correlation_id = record.correlationId or cfg.correlationId,
+/home/meta_os/MapleWorld/scripts/drop_system.lua:209:        source_event_id = record.sourceEventId,
+/home/meta_os/MapleWorld/scripts/quest_system.lua:139:    local correlationId = string.format('quest_turnin:%s:%s:%s', tostring(player.id), tostring(questId), tostring(os.time()))
+/home/meta_os/MapleWorld/scripts/quest_system.lua:145:                correlation_id = correlationId,
+/home/meta_os/MapleWorld/scripts/quest_system.lua:155:            self.economySystem:grantMesos(player, quest.rewardMesos, 'quest_reward', { questId = questId, correlationId = correlationId })
+/home/meta_os/MapleWorld/scripts/quest_system.lua:165:                correlation_id = correlationId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:160:    local key = ctx.idempotencyKey or string.format('%s:%s:%s:%s', tostring(eventType), tostring(player and player.id or 'system'), tostring(ctx.reason or 'na'), tostring(ctx.correlationId or os.time()))
+/home/meta_os/MapleWorld/scripts/economy_system.lua:167:        correlation_id = ctx.correlationId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:231:        correlationId = entry.meta.correlationId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:232:        idempotencyKey = entry.meta.idempotencyKey,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:319:        source_event_id = ctx.sourceEventId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:320:        correlation_id = ctx.correlationId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:324:    local ok, grantErr = self:grantMesos(player, payout, 'npc_sell', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId, unitPrice = math.max(1, math.floor(payout / math.max(1, amount))) })
+/home/meta_os/MapleWorld/scripts/economy_system.lua:326:        self.itemSystem:addItem(player, itemId, amount, nil, { source = 'shop_sell_rollback', correlation_id = ctx.correlationId })
+/home/meta_os/MapleWorld/scripts/economy_system.lua:346:        correlationId = ctx.correlationId,
+/home/meta_os/MapleWorld/scripts/economy_system.lua:356:        correlation_id = ctx.correlationId,
+codex
+I’ve confirmed the current gap: `tradeMesos` is a direct spend/grant pair with no request identity and no replay-safe outcome record. I’m patching that path in-place so a repeated request id short-circuits before any second mutation, while the first accepted transfer carries the request id through the economy audit metadata.
+codex
+I’m editing the existing runtime and trading system now. The change is limited to adding request-id aware `tradeMesos` handling plus a regression that proves duplicate submission stays single-mutation and single accepted replay outcome.
+file update
+M /home/meta_os/MapleWorld/scripts/trading_system.lua
+@@ -13,7 +13,32 @@
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+M /home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua
+@@ -43,2 +43,55 @@
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+M /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua
+@@ -90,2 +90,7 @@
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+@@ -524,2 +529,5 @@
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+@@ -1122,2 +1130,8 @@
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+@@ -1126,6 +1140,27 @@
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+@@ -1133,2 +1168,22 @@
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+apply_patch(auto_approved=true) exited 0 in 30ms:
+Success. Updated the following files:
+M /home/meta_os/MapleWorld/scripts/trading_system.lua
+M /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua
+M /home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..6954dbc2c75b83df8256bfb1664c61bc723e9c84
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,64 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..6954dbc2c75b83df8256bfb1664c61bc723e9c84
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,64 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+codex
+The patch is in place. I’m running the two required Lua suites now to verify the duplicate request id path, the audit metadata, and that the gameplay-only runtime boundary still holds.
+exec
+/bin/bash -lc 'lua tests/msw_runtime_boundary_test.lua' in /home/meta_os/MapleWorld succeeded in 51ms:
+msw_runtime_boundary_test: ok
+exec
+/bin/bash -lc 'lua tests/economy_runtime_invariant_test.lua' in /home/meta_os/MapleWorld exited 1 in 155ms:
+lua: tests/economy_runtime_invariant_test.lua:59: first tradeMesos request should succeed
+stack traceback:
+	[C]: in function 'assert'
+	tests/economy_runtime_invariant_test.lua:59: in main chunk
+	[C]: ?
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..6954dbc2c75b83df8256bfb1664c61bc723e9c84
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,64 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+codex
+The regression exposed a call-shape bug, not the idempotency logic itself: the method form `runtime:tradeMesos({ ... })` wasn’t being recognized because the existing request coercion helper only matches a single raw argument. I’m tightening that method signature handling without widening the patch.
+file update
+M /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua
+@@ -1130,3 +1130,8 @@
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
+-    local request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    local request = nil
++    if type(fromPlayerId) == 'table' and toPlayerId == nil and amount == nil then
++        request = fromPlayerId
++    else
++        request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    end
+     if request then
+apply_patch(auto_approved=true) exited 0 in 28ms:
+Success. Updated the following files:
+M /home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..2ae2ffb836a02797631a2abeb4bd5b12840fdde1
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,69 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = nil
++    if type(fromPlayerId) == 'table' and toPlayerId == nil and amount == nil then
++        request = fromPlayerId
++    else
++        request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    end
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..2ae2ffb836a02797631a2abeb4bd5b12840fdde1
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,69 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = nil
++    if type(fromPlayerId) == 'table' and toPlayerId == nil and amount == nil then
++        request = fromPlayerId
++    else
++        request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    end
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+exec
+/bin/bash -lc 'lua tests/msw_runtime_boundary_test.lua' in /home/meta_os/MapleWorld succeeded in 51ms:
+msw_runtime_boundary_test: ok
+exec
+/bin/bash -lc 'lua tests/economy_runtime_invariant_test.lua' in /home/meta_os/MapleWorld succeeded in 169ms:
+economy_runtime_invariant_test: ok
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..2ae2ffb836a02797631a2abeb4bd5b12840fdde1
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,69 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = nil
++    if type(fromPlayerId) == 'table' and toPlayerId == nil and amount == nil then
++        request = fromPlayerId
++    else
++        request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    end
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+codex
+**Changed Files**
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua)
+- [scripts/trading_system.lua](/home/meta_os/MapleWorld/scripts/trading_system.lua)
+- [tests/economy_runtime_invariant_test.lua](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua)
+
+**Exact Summary**
+- Patched [`tradeMesos`](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua) to accept a request table with `requestId`, cache accepted outcomes by request id, and short-circuit duplicate submissions before any second spend/grant mutation.
+- Added replay-visible runtime events: one `trade_mesos_applied` event for the accepted request and one `trade_mesos_deduped` event for a duplicate retry, so the same request id is not replayed as a second accepted mutation.
+- Patched [`TradingSystem:tradeMesos`](/home/meta_os/MapleWorld/scripts/trading_system.lua) to pass `correlationId`, `sourceEventId`, and per-leg `idempotencyKey` metadata into economy transactions, and to rollback the sender if the credit leg ever fails.
+- Added a regression in [`tests/economy_runtime_invariant_test.lua`](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua) proving that two `tradeMesos` submissions with the same `requestId` produce exactly one transfer, exactly one accepted replay outcome, one deduped outcome, and only one spend/grant pair in the economy audit log.
+
+**Verification Performed**
+- Ran `lua tests/economy_runtime_invariant_test.lua`
+- Ran `lua tests/msw_runtime_boundary_test.lua`
+
+Both passed.
+
+**Unresolved Risks**
+- Request-id dedupe state is in-memory and bounded; it prevents duplicate mutation within the active runtime window but does not survive process restart.
+- The patch is scoped only to `tradeMesos`; other economy intents still need their own explicit idempotency handling if they sit on retryable runtime edges.
+
+**Recommended Next Bottleneck**
+- Apply the same bounded request-id idempotency treatment to the next retryable economy edge with direct spend/grant mutation, most likely auction listing submission or NPC shop purchase intents.
+file update:
+diff --git a/msw_runtime/state/gameplay_runtime.lua b/msw_runtime/state/gameplay_runtime.lua
+index 8b83e602726daac06097aaba220ddcb0ecee6fec..2ae2ffb836a02797631a2abeb4bd5b12840fdde1
+--- a/msw_runtime/state/gameplay_runtime.lua
++++ b/msw_runtime/state/gameplay_runtime.lua
+@@ -88,6 +88,11 @@
+     }
+ end
+ 
++local function cloneResult(result)
++    if type(result) ~= 'table' then return result end
++    return deepcopy(result)
++end
++
+ local function normalizeItems(items)
+     local out = {}
+     for itemId, item in pairs(items or {}) do
+@@ -522,6 +527,9 @@
+         eventSeq = 0,
+         maxEvents = 256,
+         eventStream = {},
++        processedTradeRequests = {},
++        processedTradeRequestOrder = {},
++        maxProcessedTradeRequests = 128,
+         logger = makeLogger(),
+         metrics = makeMetrics(),
+         content = content,
+@@ -1120,17 +1128,69 @@
+ end
+ 
+ function GameplayRuntime:tradeMesos(fromPlayerId, toPlayerId, amount)
++    local request = nil
++    if type(fromPlayerId) == 'table' and toPlayerId == nil and amount == nil then
++        request = fromPlayerId
++    else
++        request = GameplayRuntime._coerceRequest(fromPlayerId, toPlayerId, amount)
++    end
++    if request then
++        fromPlayerId = request.fromPlayerId
++        toPlayerId = request.toPlayerId
++        amount = request.amount
++    end
+     local fromPlayer, err = GameplayRuntime._resolvePlayer(self, fromPlayerId)
+     if not fromPlayer then return { ok = false, error = err } end
+     local toPlayer, toErr = GameplayRuntime._resolvePlayer(self, toPlayerId)
+     if not toPlayer then return { ok = false, error = toErr } end
+-    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++    local requestId = request and request.requestId or nil
++    if requestId ~= nil then
++        local prior = self.processedTradeRequests[tostring(requestId)]
++        if prior then
++            GameplayRuntime._emit(self, 'trade_mesos_deduped', {
++                requestId = tostring(requestId),
++                fromPlayerId = fromPlayer.id,
++                toPlayerId = toPlayer.id,
++                amount = prior.amount,
++                outcome = prior.kind,
++            })
++            local replay = cloneResult(prior.result)
++            replay.deduped = true
++            replay.requestId = tostring(requestId)
++            return replay
++        end
++    end
++    local ok, tradeErr = self.tradingSystem:tradeMesos(fromPlayer, toPlayer, amount, {
++        requestId = requestId,
++        correlationId = requestId,
++    })
+     if not ok then return { ok = false, error = tradeErr } end
+-    return {
++    local result = {
+         ok = true,
++        requestId = requestId and tostring(requestId) or nil,
+         from = snapshotPlayer(self, fromPlayer),
+         to = snapshotPlayer(self, toPlayer),
+     }
++    if requestId ~= nil then
++        local key = tostring(requestId)
++        self.processedTradeRequests[key] = {
++            kind = 'accepted',
++            amount = math.max(1, math.floor(tonumber(amount) or 0)),
++            result = cloneResult(result),
++        }
++        self.processedTradeRequestOrder[#self.processedTradeRequestOrder + 1] = key
++        while #self.processedTradeRequestOrder > self.maxProcessedTradeRequests do
++            local evicted = table.remove(self.processedTradeRequestOrder, 1)
++            self.processedTradeRequests[evicted] = nil
++        end
++    end
++    GameplayRuntime._emit(self, 'trade_mesos_applied', {
++        requestId = requestId and tostring(requestId) or nil,
++        fromPlayerId = fromPlayer.id,
++        toPlayerId = toPlayer.id,
++        amount = math.max(1, math.floor(tonumber(amount) or 0)),
++    })
++    return result
+ end
+ 
+ function GameplayRuntime:listAuction(playerId, itemId, quantity, price)
+diff --git a/scripts/trading_system.lua b/scripts/trading_system.lua
+index deece394ce0b7345d98868c2b85af942cdd2a604..b01da4af4ef09033fb1d4c5a1647bb1e74793761
+--- a/scripts/trading_system.lua
++++ b/scripts/trading_system.lua
+@@ -11,11 +11,36 @@
+     return self
+ end
+ 
+-function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount)
++function TradingSystem:tradeMesos(fromPlayer, toPlayer, amount, context)
+     amount = math.max(1, math.floor(tonumber(amount) or 0))
+-    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade')
++    local ctx = type(context) == 'table' and context or {}
++    local requestId = ctx.requestId
++    local correlationId = ctx.correlationId or requestId
++    local spendMeta = {
++        counterpartyId = toPlayer and toPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    local grantMeta = {
++        counterpartyId = fromPlayer and fromPlayer.id or nil,
++        correlationId = correlationId,
++        sourceEventId = requestId,
++    }
++    if requestId ~= nil then
++        spendMeta.idempotencyKey = string.format('tradeMesos:%s:spend', tostring(requestId))
++        grantMeta.idempotencyKey = string.format('tradeMesos:%s:grant', tostring(requestId))
++    end
++    local ok, err = self.economySystem:spendMesos(fromPlayer, amount, 'player_trade', spendMeta)
+     if not ok then return false, err end
+-    self.economySystem:grantMesos(toPlayer, amount, 'player_trade')
++    local granted, grantErr = self.economySystem:grantMesos(toPlayer, amount, 'player_trade', grantMeta)
++    if not granted then
++        self.economySystem:grantMesos(fromPlayer, amount, 'player_trade_rollback', {
++            correlationId = correlationId,
++            rollbackOf = requestId,
++            counterpartyId = toPlayer and toPlayer.id or nil,
++        })
++        return false, grantErr
++    end
+     return true
+ end
+ 
+diff --git a/tests/economy_runtime_invariant_test.lua b/tests/economy_runtime_invariant_test.lua
+index 609c6140d39958bedea85a9ccebb460bcdca4f0f..b767f7eecbe2b3750e620d5250ecd40e184cb718
+--- a/tests/economy_runtime_invariant_test.lua
++++ b/tests/economy_runtime_invariant_test.lua
+@@ -41,4 +41,57 @@
+ assert(rollbackTx.kind == 'grant' and rollbackTx.meta.reason == 'npc_buy_rollback', 'expected npc buy rollback transaction')
+ assert((rollbackTx.amount or 0) == buyPrice, 'rollback amount should match original buy price')
+ 
++assert(runtime:onUserEnter({ playerId = 'p2' }).ok == true, 'second player enter failed')
++
++local tradeFrom = runtime.players.p1
++local tradeTo = runtime.players.p2
++local tradeStartFromMesos = tradeFrom.mesos
++local tradeStartToMesos = tradeTo.mesos
++local tradeStartTxCount = #runtime.economySystem.transactions
++local tradeStartSeq = runtime.eventSeq
++
++local firstTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(firstTrade.ok == true, 'first tradeMesos request should succeed')
++assert(firstTrade.requestId == 'trade:req:001', 'first tradeMesos request id missing')
++
++local duplicateTrade = runtime:tradeMesos({
++    fromPlayerId = 'p1',
++    toPlayerId = 'p2',
++    amount = 125,
++    requestId = 'trade:req:001',
++})
++assert(duplicateTrade.ok == true, 'duplicate tradeMesos request should replay as success')
++assert(duplicateTrade.deduped == true, 'duplicate tradeMesos request should be marked deduped')
++assert(duplicateTrade.requestId == 'trade:req:001', 'duplicate tradeMesos request id missing')
++
++assert(tradeFrom.mesos == tradeStartFromMesos - 125, 'tradeMesos should debit sender only once')
++assert(tradeTo.mesos == tradeStartToMesos + 125, 'tradeMesos should credit receiver only once')
++assert(#runtime.economySystem.transactions == tradeStartTxCount + 2, 'tradeMesos duplicate should only record one spend and one grant')
++
++local acceptedEvents = 0
++local dedupedEvents = 0
++for _, event in ipairs(runtime.eventStream) do
++    if event.seq > tradeStartSeq and event.payload and event.payload.requestId == 'trade:req:001' then
++        if event.kind == 'trade_mesos_applied' then
++            acceptedEvents = acceptedEvents + 1
++        elseif event.kind == 'trade_mesos_deduped' then
++            dedupedEvents = dedupedEvents + 1
++        end
++    end
++end
++assert(acceptedEvents == 1, 'tradeMesos replay output should contain one accepted outcome for request id')
++assert(dedupedEvents == 1, 'tradeMesos duplicate should emit one deduped outcome')
++
++local tradeSpendTx = runtime.economySystem.transactions[tradeStartTxCount + 1]
++local tradeGrantTx = runtime.economySystem.transactions[tradeStartTxCount + 2]
++assert(tradeSpendTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:spend', 'trade spend tx should carry idempotency key')
++assert(tradeGrantTx.meta.idempotencyKey == 'tradeMesos:trade:req:001:grant', 'trade grant tx should carry idempotency key')
++assert(tradeSpendTx.meta.correlationId == 'trade:req:001', 'trade spend tx should carry correlation id')
++assert(tradeGrantTx.meta.correlationId == 'trade:req:001', 'trade grant tx should carry correlation id')
++
+ print('economy_runtime_invariant_test: ok')
+
+tokens used
+35,640
+**Changed Files**
+- [msw_runtime/state/gameplay_runtime.lua](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua)
+- [scripts/trading_system.lua](/home/meta_os/MapleWorld/scripts/trading_system.lua)
+- [tests/economy_runtime_invariant_test.lua](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua)
+
+**Exact Summary**
+- Patched [`tradeMesos`](/home/meta_os/MapleWorld/msw_runtime/state/gameplay_runtime.lua) to accept a request table with `requestId`, cache accepted outcomes by request id, and short-circuit duplicate submissions before any second spend/grant mutation.
+- Added replay-visible runtime events: one `trade_mesos_applied` event for the accepted request and one `trade_mesos_deduped` event for a duplicate retry, so the same request id is not replayed as a second accepted mutation.
+- Patched [`TradingSystem:tradeMesos`](/home/meta_os/MapleWorld/scripts/trading_system.lua) to pass `correlationId`, `sourceEventId`, and per-leg `idempotencyKey` metadata into economy transactions, and to rollback the sender if the credit leg ever fails.
+- Added a regression in [`tests/economy_runtime_invariant_test.lua`](/home/meta_os/MapleWorld/tests/economy_runtime_invariant_test.lua) proving that two `tradeMesos` submissions with the same `requestId` produce exactly one transfer, exactly one accepted replay outcome, one deduped outcome, and only one spend/grant pair in the economy audit log.
+
+**Verification Performed**
+- Ran `lua tests/economy_runtime_invariant_test.lua`
+- Ran `lua tests/msw_runtime_boundary_test.lua`
+
+Both passed.
+
+**Unresolved Risks**
+- Request-id dedupe state is in-memory and bounded; it prevents duplicate mutation within the active runtime window but does not survive process restart.
+- The patch is scoped only to `tradeMesos`; other economy intents still need their own explicit idempotency handling if they sit on retryable runtime edges.
+
+**Recommended Next Bottleneck**
+- Apply the same bounded request-id idempotency treatment to the next retryable economy edge with direct spend/grant mutation, most likely auction listing submission or NPC shop purchase intents.

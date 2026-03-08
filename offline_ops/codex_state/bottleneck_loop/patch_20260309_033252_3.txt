@@ -1,0 +1,31 @@
+**Changed Files**
+- [data/balance/drops/drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv)
+
+**Exact Summary**
+- Tuned one bounded CSV patch only in [data/balance/drops/drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv).
+- Reduced `drop_rate` for field armor rows matching `overall`, `glove`, or `shoe` in saturated tiers `09`, `10`, `21`, and `22`.
+- Kept `monster_id`, `item_id`, `drop_profile`, and `rarity_band` unchanged. No runtime logic or architecture changes.
+- Applied these exact reductions across 251 rows:
+  - Tier `09`: `29` common rows at `0.70x`, `33` uncommon rows at `0.78x`
+  - Tier `10`: `30` common rows at `0.70x`, `33` uncommon rows at `0.78x`
+  - Tier `21`: `30` common rows at `0.70x`, `33` uncommon rows at `0.78x`
+  - Tier `22`: `30` common rows at `0.70x`, `33` uncommon rows at `0.78x`
+- Example adjusted rows:
+  - [data/balance/drops/drop_table.csv#L249](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L249): `0.1166 -> 0.0909`
+  - [data/balance/drops/drop_table.csv#L275](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L275): `0.2398 -> 0.1679`
+  - [data/balance/drops/drop_table.csv#L582](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L582): `0.1100 -> 0.0858`
+  - [data/balance/drops/drop_table.csv#L1297](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L1297): `0.1100 -> 0.0858`
+  - [data/balance/drops/drop_table.csv#L9160](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L9160): `0.1199 -> 0.0935`
+
+**Verification Performed**
+- `lua tests/boss_reward_distribution_test.lua` -> `ok`
+- `lua tests/regional_progression_tables_test.lua` -> `ok`
+- `lua tests/msw_runtime_gameplay_test.lua` -> `ok`
+- Diff verification confirmed only `251` targeted rows changed, all within the intended armor tiers and rarity bands.
+
+**Unresolved Risks**
+- The required simulation outcome checks for replacement pressure and rarity compression were not run in this turn, so those trend improvements are still pending confirmation.
+- Because this was a bulk CSV rewrite, `git diff` shows the full file as rewritten even though the content change is limited to the targeted 251 rows.
+
+**Recommended Next Bottleneck**
+- `runtime payload freshness parity`: it is the next safest bounded fix after this data-tuning patch and does not require a wider architecture refactor.

@@ -1,0 +1,25 @@
+SIMULATION_SCORES:
+- progression pacing: 87~90
+- economy stability: 71~74
+- boss quality proxy: 76~79
+
+PRIMARY_BOTTLENECK:
+Economy stability is the primary bottleneck because the offline simulations show sustained meso oversupply relative to current sink pressure.
+
+WHY_THIS_IS_THE_BOTTLENECK:
+`python_simulation_latest.json` shows `total_mesos_created` 22330 vs `total_mesos_removed` 10745 with `net_inflation_signal` `high_positive`, while progression is already on-target and boss quality is only secondary.
+
+NEXT_SAFE_IMPROVEMENT:
+Apply one bounded balance patch by raising recurring mid-game sinks only: increase `repair_bill_band_14`, `storage_rent_band_16`, `market_listing_fee_band_17`, and `market_tax_band_18` in `data/balance/economy/sinks.csv` to add meso removal in lv131~180 without touching progression, drops, bosses, or runtime architecture.
+
+FILES:
+- `offline_ops/codex_state/simulation_runs/lua_simulation_latest.json`
+- `offline_ops/codex_state/simulation_runs/python_simulation_latest.json`
+- `offline_ops/codex_state/simulation_runs/quality_metrics_latest.json`
+- `data/balance/economy/sinks.csv`
+
+VERIFICATION:
+- Read offline outputs only; no new simulation was run.
+- Confirmed score ranges directly from `quality_metrics_latest.json`: progression `87~90`, economy `71~74`, boss `76~79`.
+- Confirmed inflation signal directly from `python_simulation_latest.json`: `high_positive`, created `22330`, removed `10745`.
+- Confirmed bounded patch rows in [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L15), [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L17), [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L18), [data/balance/economy/sinks.csv](/home/meta_os/MapleWorld/data/balance/economy/sinks.csv#L19).

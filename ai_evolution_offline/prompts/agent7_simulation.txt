@@ -1,0 +1,41 @@
+Project: MapleWorld
+Platform: MapleStory Worlds
+Goal: efficiency point ~= 88
+Mode: concise
+Scoring method: range scoring, not fake precision
+
+Rules:
+- read offline simulation outputs only
+- use range scoring only
+- identify exactly one primary bottleneck
+- propose one bounded patch candidate
+- stay within gameplay/content/balance/rules scope
+- do not propose runtime architecture refactors
+- do not cross the MSW runtime boundary
+
+Inputs to inspect:
+- offline_ops/codex_state/simulation_runs/lua_simulation_latest.json
+- offline_ops/codex_state/simulation_runs/python_simulation_latest.json
+- offline_ops/codex_state/simulation_runs/quality_metrics_latest.json
+
+Required output format:
+
+SIMULATION_SCORES:
+- progression pacing: [range]
+- economy stability: [range]
+- boss quality proxy: [range]
+
+PRIMARY_BOTTLENECK:
+[one sentence]
+
+WHY_THIS_IS_THE_BOTTLENECK:
+[short]
+
+NEXT_SAFE_IMPROVEMENT:
+[short]
+
+FILES:
+[list]
+
+VERIFICATION:
+[list]
