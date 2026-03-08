@@ -1,0 +1,27 @@
+{
+  "variant_id": "low_complexity_field_control",
+  "violations": [
+    "economy_pressure_unbounded",
+    "interaction_visibility_low",
+    "reward_sink_coherence_low"
+  ],
+  "stability_score": 0.7,
+  "simulation_reference": {
+    "exp_hour_pressure": 0.875,
+    "meso_hour_pressure": 0.6352,
+    "potion_burn": 0.8056,
+    "map_density_distribution": 0.7448,
+    "party_formation": 0.5,
+    "congestion_profile": 0.6555,
+    "item_replacement_pacing": 0.7653,
+    "boss_reward_distortion": 0.6803,
+    "market_turnover_pressure": 0.7321,
+    "level_band_transition_pressure": 0.8492,
+    "field_competition_pressure": 0.7941,
+    "anti_bot_signal_quality": 0.8333,
+    "liveops_visibility": 0.6806,
+    "interaction_traceability": 0.55,
+    "control_surface_efficiency": 0.7933,
+    "reward_sink_coherence": 0.4498
+  }
+}

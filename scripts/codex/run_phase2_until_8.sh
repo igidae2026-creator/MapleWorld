@@ -14,7 +14,9 @@ count=${count:-0}
 
 while [ "$count" -lt 8 ]; do
   next=$((count + 1))
+
   echo "========== PHASE 2 RUN $next / 8 =========="
+
   codex exec --cd "$REPO" --full-auto < "$PROMPT_FILE" \
     | tee "$LOG_DIR/run_${next}.log"
 
@@ -26,4 +28,4 @@ while [ "$count" -lt 8 ]; do
   echo
 done
 
-echo "Completed 8 Phase 2 runs."
+echo "Completed 8 Phase-2 cycles."

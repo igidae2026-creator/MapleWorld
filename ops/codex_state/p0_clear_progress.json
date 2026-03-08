@@ -1,0 +1,21 @@
+{
+  "current_task_id": "P0-1",
+  "current_task_title": "Authoritative entity state sync",
+  "result": "completed",
+  "changed_files": [
+    "msw/world_server_bridge.lua",
+    "tests/msw_entity_sync_test.lua",
+    "ops/codex_state/p0_clear_backlog.json",
+    "ops/codex_state/p0_clear_progress.json",
+    "ops/codex_state/p0_clear_counter.txt",
+    "ops/codex_state/p0_clear_runs/run_1_P0-1.log"
+  ],
+  "tests_run": [
+    "luac -p msw/world_server_bridge.lua",
+    "lua tests/msw_entity_sync_test.lua (blocked by existing scripts/server_bootstrap.lua upvalue limit)",
+    "lua tests/runtime_bridge_test.lua (blocked by existing scripts/server_bootstrap.lua upvalue limit)",
+    "lua tests/msw_manifest_expansion_test.lua"
+  ],
+  "short_summary": "Locked state sync to the player's authoritative scope, added authority metadata to player/map/delta/reconcile responses, and extended entity sync coverage for foreign-scope rejection.",
+  "next_pending_task": "P0-2"
+}

@@ -1,22 +1,26 @@
 {
   "variant_id": "complexity_penalty_repair_1",
   "violations": [
-    "boss_distortion_high"
+    "interaction_visibility_low",
+    "reward_sink_coherence_low"
   ],
-  "stability_score": 0.9,
+  "stability_score": 0.8,
   "simulation_reference": {
-    "exp_hour_pressure": 0.7407,
-    "meso_hour_pressure": 0.9194,
-    "potion_burn": 0.7208,
-    "map_density_distribution": 0.8521,
-    "party_formation": 0.6996,
-    "congestion_profile": 0.5888,
-    "item_replacement_pacing": 0.7102,
-    "boss_reward_distortion": 0.4703,
-    "market_turnover_pressure": 0.9143,
-    "level_band_transition_pressure": 0.8267,
-    "field_competition_pressure": 0.8667,
-    "anti_bot_signal_quality": 0.8667,
-    "liveops_visibility": 1.0
+    "exp_hour_pressure": 0.875,
+    "meso_hour_pressure": 0.7991,
+    "potion_burn": 0.9056,
+    "map_density_distribution": 0.9564,
+    "party_formation": 0.5417,
+    "congestion_profile": 0.5555,
+    "item_replacement_pacing": 0.8139,
+    "boss_reward_distortion": 0.7784,
+    "market_turnover_pressure": 0.8987,
+    "level_band_transition_pressure": 0.8492,
+    "field_competition_pressure": 0.9607,
+    "anti_bot_signal_quality": 0.875,
+    "liveops_visibility": 0.6806,
+    "interaction_traceability": 0.625,
+    "control_surface_efficiency": 0.7933,
+    "reward_sink_coherence": 0.4744
   }
 }

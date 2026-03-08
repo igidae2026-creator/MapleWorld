@@ -1,0 +1,258 @@
+You are working inside an existing MapleWorld repository.
+
+This repository already contains gameplay, data, ops, msw bridge, and tests.
+
+Do NOT regenerate the repository.
+Do NOT create a second architecture beside the existing one.
+Do NOT create a parallel governance stack.
+Do NOT introduce framework sprawl.
+Do NOT solve multiple major objectives in one run.
+
+You are executing ONE bounded P0 completion cycle toward MapleLand-complete server architecture.
+
+================================================
+PRIMARY OBJECTIVE
+================================================
+
+Advance the repository toward production-grade MapleLand backend completion by completing exactly ONE highest-priority unfinished P0 item from the tracked backlog.
+
+A valid run must:
+
+- inspect current repository state
+- inspect ops/codex_state/p0_prog_codex_isolated_01.json
+- pick exactly ONE unfinished highest-priority P0 item
+- implement one bounded low-risk integrated change for that item
+- use existing systems whenever possible
+- update progress tracking
+- leave the repository in a cleaner, more explicit, more testable state
+
+Do not attempt broad redesign.
+Do not fan out into unrelated refactors.
+Do not create speculative abstractions.
+
+================================================
+P0 COMPLETION LAW
+================================================
+
+Prefer the smallest integrated change that materially closes the largest remaining completion gap.
+
+A change is valid only if it directly advances one of these P0 categories:
+
+1. network_gateway
+2. packet_protocol
+3. packet_codec
+4. session_lifecycle
+5. auth_handshake
+6. heartbeat_ping
+7. reconnect_flow
+8. interest_management
+9. packet_rate_limit
+10. malformed_packet_rejection
+
+11. world_runtime
+12. channel_routing
+13. map_runtime_manager
+14. map_transfer_protocol
+15. cross_channel_transfer
+16. runtime_ownership_enforcement
+17. map_crash_recovery
+
+18. character_persistence_schema
+19. inventory_persistence
+20. item_instance_model
+21. atomic_trade_transaction
+22. currency_ledger
+23. checkpoint_save_pipeline
+24. db_failover_recovery
+
+25. item_ownership_invariant
+26. trade_commit_atomicity
+27. auction_settlement_integrity
+28. exploit_detection_rules
+
+29. authoritative_movement
+30. authoritative_combat
+31. skill_execution_validation
+32. client_trust_boundary
+
+33. map_runtime_scaling
+34. channel_autoscaling
+35. hot_map_load_balancing
+36. distributed_session_routing
+37. runtime_node_registry
+38. backpressure_handling
+
+39. crash_safe_checkpointing
+40. replay_state_recovery
+41. session_fencing
+42. runtime_restart_recovery
+
+43. metrics_export
+44. centralized_logging
+45. admin_control_plane
+46. live_event_toggle
+
+47. movement_anomaly_detection
+48. attack_rate_validation
+49. packet_replay_protection
+50. economy_abuse_detection
+
+51. load_test_1000_ccu
+52. soak_test_24h
+
+================================================
+EXECUTION MODEL
+================================================
+
+Perform exactly ONE bounded cycle:
+
+1. inspect repository
+2. inspect ops/codex_state/p0_prog_codex_isolated_01.json
+3. identify the highest-priority unfinished P0 item
+4. inspect existing files related to that item
+5. generate 2-4 small implementation options mentally
+6. choose the lowest-risk option with the highest completion value
+7. implement only that bounded change
+8. add or extend only the minimum tests needed
+9. update ops/codex_state/p0_prog_codex_isolated_01.json
+10. append a concise execution note to ops/codex_state/p0_last_run_codex_isolated_01.txt
+
+================================================
+PRIORITY ORDER
+================================================
+
+Use this priority order when selecting the next unfinished P0 item:
+
+Tier A
+- network_gateway
+- packet_protocol
+- packet_codec
+- session_lifecycle
+- auth_handshake
+- authoritative_movement
+- authoritative_combat
+- skill_execution_validation
+- client_trust_boundary
+- world_runtime
+- channel_routing
+- map_runtime_manager
+- map_transfer_protocol
+- runtime_ownership_enforcement
+- character_persistence_schema
+- inventory_persistence
+- item_instance_model
+- atomic_trade_transaction
+- currency_ledger
+
+Tier B
+- heartbeat_ping
+- reconnect_flow
+- packet_rate_limit
+- malformed_packet_rejection
+- cross_channel_transfer
+- map_crash_recovery
+- checkpoint_save_pipeline
+- db_failover_recovery
+- item_ownership_invariant
+- trade_commit_atomicity
+- session_fencing
+- crash_safe_checkpointing
+- replay_state_recovery
+- runtime_restart_recovery
+- metrics_export
+- centralized_logging
+- movement_anomaly_detection
+- attack_rate_validation
+- packet_replay_protection
+- economy_abuse_detection
+
+Tier C
+- interest_management
+- auction_settlement_integrity
+- exploit_detection_rules
+- map_runtime_scaling
+- channel_autoscaling
+- hot_map_load_balancing
+- distributed_session_routing
+- runtime_node_registry
+- backpressure_handling
+- admin_control_plane
+- live_event_toggle
+- load_test_1000_ccu
+- soak_test_24h
+
+Always choose the earliest unfinished item from the highest non-empty tier.
+
+================================================
+IMPLEMENTATION RULES
+================================================
+
+Prefer:
+
+- extending existing ops, msw, scripts, tests, data paths
+- explicit data flow
+- strong authority boundaries
+- deterministic state transitions
+- idempotent persistence mutations
+- bounded runtime ownership
+- simple config-driven behavior
+- additive tests over new frameworks
+
+Avoid:
+
+- creating new subsystem families
+- duplicating runtime authority paths
+- introducing fake distributed systems without integration value
+- changing unrelated gameplay balance
+- giant rewrites
+- placeholder-only implementations
+
+================================================
+TEST RULE
+================================================
+
+Use existing tests first.
+
+Add only the minimum needed tests to validate the bounded P0 change.
+
+Do not build a new validation framework.
+Do not add mock-heavy complexity unless required by the current codebase.
+
+================================================
+PROGRESS FILE RULE
+================================================
+
+Read and update:
+
+ops/codex_state/p0_prog_codex_isolated_01.json
+
+For the selected P0 item:
+- set status to one of: pending, in_progress, complete
+- update completed_runs
+- update last_touched_files
+- update notes
+- update completion_percent conservatively
+
+If a bounded run materially completes the item, mark it complete.
+If not fully complete, leave it in_progress with updated notes.
+
+Also update:
+ops/codex_state/p0_last_run_codex_isolated_01.txt
+
+with:
+- selected item
+- files changed
+- tests run
+- result summary
+
+================================================
+FINAL STATE FOR THIS RUN
+================================================
+
+After this run the repository should be:
+
+- closer to MapleLand-complete architecture
+- improved in exactly one P0 direction
+- still structurally coherent
+- simpler than a speculative redesign
+- more explicit in authority, persistence, runtime, or networking behavior

@@ -28,6 +28,7 @@ return {
         'ReconcileRuntimeState',
         'DispatchRuntimeEvent',
         'RoutePlayerAction',
+        'HandleGatewayRequest',
         'GetEventStream',
         'AttackMob',
         'PickupDrop',

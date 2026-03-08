@@ -1,0 +1,37 @@
+[x] P0-01 server_bootstrap_full_boot_success
+[ ] P0-02 data_content_loader_full_coverage
+[ ] P0-03 content_registry_runtime_binding
+[ ] P0-04 bootstrap_world_runtime_initialization
+[ ] P0-05 all_tests_smoke_pass_path
+[ ] P0-06 dev_boot_command_stabilization
+
+[ ] P0-07 stat_system_full_runtime_binding
+[ ] P0-08 job_system_progression_binding
+[ ] P0-09 skill_system_active_runtime_execution
+[ ] P0-10 buff_debuff_system_stack_duration_removal
+[ ] P0-11 combat_resolution_integrity
+[ ] P0-12 damage_formula_balance_sanity
+[ ] P0-13 exp_system_curve_binding
+[ ] P0-14 equipment_progression_runtime_binding
+[ ] P0-15 drop_system_table_binding
+
+[ ] P0-16 map_dataset_runtime_completeness
+[ ] P0-17 mob_dataset_runtime_completeness
+[ ] P0-18 boss_dataset_runtime_completeness
+[ ] P0-19 npc_dataset_runtime_completeness
+[ ] P0-20 quest_dataset_runtime_completeness
+[ ] P0-21 rare_spawn_tables_runtime_binding
+[ ] P0-22 world_event_system_trigger_binding
+
+[ ] P0-23 regional_progression_route_quality
+[ ] P0-24 monster_ecosystem_identity
+[ ] P0-25 exploration_hooks_hidden_routes
+[ ] P0-26 quest_narrative_non_genericity
+[ ] P0-27 environment_storytelling_landmarks
+
+[ ] P0-28 party_system_core_viability
+[ ] P0-29 loot_distribution_integrity
+[ ] P0-30 guild_system_baseline_viability
+[ ] P0-31 party_finder_viability
+
+[ ] P0-32 event_journal_replay_recovery_stabilization

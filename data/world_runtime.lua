@@ -63,6 +63,10 @@ local runtime = {
         defaultBossUniquenessScope = 'channel_unique',
         suspiciousTransactionMesos = 7500000,
         maxPlayerEconomyLedgerEntries = 96,
+        economyFieldPricePressureRate = 0.14,
+        economyFieldPricePressureCap = 0.2,
+        auctionListingFeeRate = 0.045,
+        auctionListingFeeFloor = 18,
     },
     combat = {
         minimumDamage = 1,

@@ -1,0 +1,482 @@
+{
+  "goal": "MapleWorld P0 completion toward MapleLand 100%",
+  "total_items": 52,
+  "completed_items": 0,
+  "completed_runs": 1,
+  "items": [
+    {
+      "id": 1,
+      "key": "network_gateway",
+      "tier": "A",
+      "status": "in_progress",
+      "completion_percent": 24,
+      "last_touched_files": [
+        "msw/world_server_bridge.lua",
+        "tests/network_gateway_test.lua",
+        "ops/codex_state/p0_prog.json",
+        "ops/codex_state/p0_last_run.txt"
+      ],
+      "notes": "Added explicit gateway exposure policy at the bridge boundary, rejecting internal/admin operations from HandleGatewayRequest and publishing only exposed operations in gateway diagnostics. Extended focused gateway regression coverage for exposure rejection and catalog filtering. Runtime execution remains blocked by the pre-existing scripts/server_bootstrap.lua upvalue-limit load failure.",
+      "completed_runs": 1
+    },
+    {
+      "id": 2,
+      "key": "packet_protocol",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "key": "packet_codec",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 4,
+      "key": "session_lifecycle",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 5,
+      "key": "auth_handshake",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "key": "heartbeat_ping",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "key": "reconnect_flow",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 8,
+      "key": "interest_management",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 9,
+      "key": "packet_rate_limit",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 10,
+      "key": "malformed_packet_rejection",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 11,
+      "key": "world_runtime",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 12,
+      "key": "channel_routing",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "key": "map_runtime_manager",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 14,
+      "key": "map_transfer_protocol",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 15,
+      "key": "cross_channel_transfer",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 16,
+      "key": "runtime_ownership_enforcement",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 17,
+      "key": "map_crash_recovery",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 18,
+      "key": "character_persistence_schema",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 19,
+      "key": "inventory_persistence",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 20,
+      "key": "item_instance_model",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 21,
+      "key": "atomic_trade_transaction",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 22,
+      "key": "currency_ledger",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 23,
+      "key": "checkpoint_save_pipeline",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 24,
+      "key": "db_failover_recovery",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 25,
+      "key": "item_ownership_invariant",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 26,
+      "key": "trade_commit_atomicity",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 27,
+      "key": "auction_settlement_integrity",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 28,
+      "key": "exploit_detection_rules",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 29,
+      "key": "authoritative_movement",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 30,
+      "key": "authoritative_combat",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 31,
+      "key": "skill_execution_validation",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 32,
+      "key": "client_trust_boundary",
+      "tier": "A",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 33,
+      "key": "map_runtime_scaling",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 34,
+      "key": "channel_autoscaling",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 35,
+      "key": "hot_map_load_balancing",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 36,
+      "key": "distributed_session_routing",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 37,
+      "key": "runtime_node_registry",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 38,
+      "key": "backpressure_handling",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 39,
+      "key": "crash_safe_checkpointing",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 40,
+      "key": "replay_state_recovery",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 41,
+      "key": "session_fencing",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 42,
+      "key": "runtime_restart_recovery",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 43,
+      "key": "metrics_export",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 44,
+      "key": "centralized_logging",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 45,
+      "key": "admin_control_plane",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 46,
+      "key": "live_event_toggle",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 47,
+      "key": "movement_anomaly_detection",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 48,
+      "key": "attack_rate_validation",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 49,
+      "key": "packet_replay_protection",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 50,
+      "key": "economy_abuse_detection",
+      "tier": "B",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 51,
+      "key": "load_test_1000_ccu",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    },
+    {
+      "id": 52,
+      "key": "soak_test_24h",
+      "tier": "C",
+      "status": "pending",
+      "completion_percent": 0,
+      "last_touched_files": [],
+      "notes": ""
+    }
+  ]
+}

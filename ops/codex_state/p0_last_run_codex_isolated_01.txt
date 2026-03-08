@@ -1,0 +1,4 @@
+selected item: network_gateway
+files changed: msw/world_server_bridge.lua, tests/network_gateway_test.lua, ops/codex_state/p0_progress.json, ops/codex_state/p0_last_run.txt
+tests run: luac -p msw/world_server_bridge.lua; luac -p tests/network_gateway_test.lua; lua tests/network_gateway_test.lua (blocked by scripts/server_bootstrap.lua upvalue limit); lua tests/component_entry_test.lua (blocked by same issue)
+result summary: added explicit gateway route argument-count validation before dispatch and extended the focused gateway regression test; runtime execution is currently blocked by a pre-existing bootstrap module load failure.

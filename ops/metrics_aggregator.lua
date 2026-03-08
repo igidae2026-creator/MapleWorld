@@ -64,6 +64,10 @@ function Aggregator:controlSurface(world)
             rollbackWindowMinutes = savePolicy.rollbackWindowMinutes,
             npcSellRate = economy.npcSellRate,
             suspiciousTransactionMesos = economy.suspiciousTransactionMesos,
+            fieldPricePressureRate = economy.fieldPricePressureRate,
+            fieldPricePressureCap = economy.fieldPricePressureCap,
+            auctionListingFeeRate = economy.auctionListingFeeRate,
+            auctionListingFeeFloor = economy.auctionListingFeeFloor,
         },
         routing = routing,
         economy = {
@@ -71,6 +75,8 @@ function Aggregator:controlSurface(world)
             sinks = economy.sinks and next(economy.sinks) ~= nil and deepcopy(economy.sinks) or {},
             faucets = economy.faucets and next(economy.faucets) ~= nil and deepcopy(economy.faucets) or {},
             mutationBoundaries = economyControl.mutationBoundaries or {},
+            dynamicSinkTotals = economy.dynamicSinkTotals and next(economy.dynamicSinkTotals) ~= nil and deepcopy(economy.dynamicSinkTotals) or {},
+            recentDynamicPricing = economy.recentDynamicPricing and next(economy.recentDynamicPricing) ~= nil and deepcopy(economy.recentDynamicPricing) or {},
         },
         ownership = {
             worldId = runtimeIdentity.worldId,

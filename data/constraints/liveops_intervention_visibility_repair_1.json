@@ -1,0 +1,23 @@
+{
+  "variant_id": "liveops_intervention_visibility_repair_1",
+  "violations": [],
+  "stability_score": 1.0,
+  "simulation_reference": {
+    "exp_hour_pressure": 0.835,
+    "meso_hour_pressure": 0.8453,
+    "potion_burn": 0.9122,
+    "map_density_distribution": 0.8147,
+    "party_formation": 0.6511,
+    "congestion_profile": 0.8537,
+    "item_replacement_pacing": 0.8381,
+    "boss_reward_distortion": 0.9719,
+    "market_turnover_pressure": 0.913,
+    "level_band_transition_pressure": 0.8211,
+    "field_competition_pressure": 0.8993,
+    "anti_bot_signal_quality": 0.875,
+    "liveops_visibility": 0.7083,
+    "interaction_traceability": 0.95,
+    "control_surface_efficiency": 0.8633,
+    "reward_sink_coherence": 0.8162
+  }
+}

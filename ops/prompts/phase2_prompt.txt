@@ -1,201 +1,90 @@
-codex exec --cd ~/MapleWorld --full-auto <<'EOF'
 You are working inside an existing MapleWorld repository.
 
-This repository already has integrated gameplay, data, ops, msw bridge, and tests.
-Do NOT create a second control plane.
-Do NOT create a parallel architecture-governance stack.
-Do NOT regenerate the repository from scratch.
+This repository already contains integrated gameplay, data, ops, msw bridge, and tests.
 
-You are now in Phase 2.
+Do NOT regenerate the repository.
+Do NOT introduce a second control plane.
+Do NOT introduce parallel governance layers.
 
-Phase 1 should already have stabilized authority paths, persistence boundaries, rollback-sensitive mutations, economy mutation visibility, and lightweight variant comparison.
+You are executing ONE bounded Phase-2 improvement cycle.
 
-Your task now is to evolve the current repository toward the Complexity Peak with strong MapleLand-style long-term loop fidelity.
+Your task is to evolve the repository toward stronger MapleLand-style long-term gameplay loops.
 
 ================================================
 PRIMARY OBJECTIVE
 ================================================
 
-Optimize the repository for:
+Improve the repository so that it supports:
 
-- high structural clarity
-- high operator control
-- high long-term field-driven progression quality
-- high social density
-- high economy pressure coherence
-- high replay-safe authority
-- high MapleLand-like loop behavior
+- stronger field-driven progression
+- stronger social density
+- stronger economy pressure loops
+- clearer authority boundaries
+- clearer operator control
+- replay-safe mutation boundaries
 
 while keeping:
 
-- subsystem count moderate
-- mutation boundaries explicit
-- complexity growth minimal
+- subsystem count small
 - architecture surface controlled
+- mutation paths explicit
+- complexity growth minimal
 
-Do not reward decorative architecture.
-Do not reward framework growth.
-Do not reward generic MMO abstractions.
-Reward only structures that materially improve long-term MapleLand-style play pressure.
+Do not reward architectural expansion.
+Reward only improvements that materially improve MapleLand-style gameplay pressure.
 
 ================================================
-CORE PHASE-2 LAW
+PHASE-2 LAW
 ================================================
 
-Prefer the architecture that creates the most MapleLand-like long-term gameplay behavior with the least additional complexity.
+Prefer the architecture that creates the most MapleLand-like gameplay behavior with the least additional complexity.
 
-A change is valid only if it improves:
+A change is valid only if it improves at least one of:
+
 - progression friction quality
 - field competition topology
 - social density anchors
 - meso velocity control
 - consumable burn pressure
 - rare supply throttling
-- power replacement pressure
 - boss cadence quality
-- channel congestion quality
-- liveops-visible tuning clarity
+- channel congestion behavior
+- operator-visible tuning clarity
 
-and does not explode:
+while not increasing:
+
 - subsystem overlap
 - hidden interaction risk
-- framework surface
+- framework expansion
 - routing fragmentation
-- economy mutation ambiguity
 
 ================================================
-MANDATORY REPO-SPECIFIC CONSTRAINTS
+MAPLELAND DIMENSIONS
 ================================================
 
-Use the existing repository as the substrate.
+Evaluate these dimensions:
 
-That means:
-- reuse current ops, scripts, data, and tests
-- deepen existing routing/economy/runtime paths before adding anything new
-- prefer tuning and consolidating existing files over creating new orchestration families
-- use existing state/reporting paths if possible
-- if an existing file can absorb a responsibility, extend it instead of creating a new one
-
-Do not create:
-- a new supervisor family
-- a new replay family
-- a new policy family
-- a new architecture meta-layer
-- a large prompt forest
-- a giant codex_state surface
-
-================================================
-MAPLELAND-LIKE DIMENSIONS
-================================================
-
-You must explicitly review and improve these dimensions:
-
-1. level_band_bottleneck_quality
-2. field_ladder_progression_quality
-3. solo_party_split_quality
-4. field_competition_topology
-5. social_density_anchor_quality
-6. channel_congestion_routing_quality
-7. economy_source_sink_balance
-8. meso_velocity_control
-9. consumable_burn_pressure
-10. rare_supply_throttling
-11. boss_cadence_lockout_quality
-12. save_transaction_boundary_clarity
-13. server_authority_event_ordering
-14. anti_bot_anti_macro_runtime_quality
-15. liveops_intervention_visibility
-16. power_curve_replacement_pressure
-17. telemetry_feedback_visibility
-
-If a dimension is vague or weak, its score must stay low.
-
-================================================
-PHASE-2 REVIEW AREAS
-================================================
-
-Review the current repo through these lenses:
-
-A. Level band progression
-- whether beginner / mid / high bands have meaningful transitions
-- whether dead zones exist
-- whether reward jumps are clear but controlled
-- whether replacement pressure exists across bands
-
-B. Field ladder structure
-- whether fields create natural movement
-- whether better fields are more rewarding but more contested
-- whether field progression remains central instead of being bypassed
-
-C. Solo vs party split
-- whether solo remains viable
-- whether party offers meaningful but not overwhelming gains
-- whether party incentives create healthy clustering
-
-D. Competition topology
-- whether high-value maps become socially dense
-- whether congestion policy preserves competition instead of dissolving it
-- whether monopoly patterns can be mitigated
-
-E. Social density anchors
-- town / market / guild / party coordination spaces
-- whether these are structurally active rather than decorative
-- whether loops bring players back into visible shared hubs
-
-F. Economy pressure
-- whether mesos sources are bounded
-- whether mesos sinks are meaningful
-- whether potion, repair, tax, upgrade, and entry pressures create healthy burn
-- whether rare items are throttled enough to preserve replacement pressure
-
-G. Boss / dungeon role
-- whether bosses complement field progression rather than replacing it
-- whether lockout / cadence avoids progression collapse
-- whether raid rewards distort economy
-
-H. Persistence / rollback
-- whether reward commit boundaries are explicit
-- whether save timing aligns with rollback-sensitive mutations
-- whether replay-safe ordering remains intact
-
-I. LiveOps / telemetry
-- whether operators can safely tune drop pressure, congestion, sink pressure, cadence, and event pressure
-- whether these tuning points are explicit and measurable
+level_band_bottleneck_quality
+field_ladder_progression_quality
+solo_party_split_quality
+field_competition_topology
+social_density_anchor_quality
+channel_congestion_routing_quality
+economy_source_sink_balance
+meso_velocity_control
+consumable_burn_pressure
+rare_supply_throttling
+boss_cadence_lockout_quality
+save_transaction_boundary_clarity
+server_authority_event_ordering
+anti_bot_anti_macro_runtime_quality
+liveops_intervention_visibility
+power_curve_replacement_pressure
+telemetry_feedback_visibility
 
 ================================================
 SCORING MODEL
 ================================================
-
-Extend the existing architecture scoring path.
-Do not build a separate competing scoring stack.
-
-Minimum fields:
-
-- structural_clarity
-- authority_path_integrity
-- persistence_boundary_clarity
-- rollback_boundary_clarity
-- economy_control_strength
-- routing_topology_clarity
-- operator_control_visibility
-- social_density_support
-- level_band_bottleneck_quality
-- field_ladder_progression_quality
-- solo_party_split_quality
-- field_competition_topology
-- meso_velocity_control
-- consumable_burn_pressure
-- rare_supply_throttling
-- boss_cadence_lockout_quality
-- power_curve_replacement_pressure
-- mapleland_similarity_score
-- hidden_interaction_risk
-- subsystem_overlap_risk
-- complexity_penalty
-- architecture_score
-- weakest_dimension
-
-Use this principle:
 
 architecture_score =
   structural_clarity
@@ -209,143 +98,57 @@ architecture_score =
 + mapleland_similarity_score
 - complexity_penalty
 
-Do not inflate scores through metric gaming.
-Every score change must be justified by repository structure, runtime behavior, or bounded simulation output.
+Do not inflate scores artificially.
 
 ================================================
-LIGHTWEIGHT PHASE-2 EXPLORATION
+EXECUTION MODEL
 ================================================
 
-Reuse the bounded exploration model from Phase 1.
+Perform exactly ONE bounded cycle:
 
-Do NOT escalate into endless search.
-
-Use:
-- lightweight player behavior simulation
-- bounded parameter mutation
-- 3-5 variants maximum
-
-Simulation should compare variants on:
-- exp/hour pressure
-- meso/hour pressure
-- potion burn
-- map density distribution
-- party formation
-- congestion profile
-- item replacement pacing
-- boss reward distortion
-- market turnover pressure
-
-Allowed mutation dimensions include:
-- field caps
-- congestion thresholds
-- party incentive coefficients
-- potion burn coefficients
-- upgrade cost curves
-- market tax
-- repair pressure
-- entry pressure
-- rare drop control
-- boss cadence / lockout parameters
-- reward distribution ratios
-
-Do not mutate arbitrary architecture shape.
-Prefer parameter and boundary tuning first.
+1. inspect repository
+2. score MapleLand dimensions
+3. find weakest_dimension
+4. create 3-5 small improvement variants
+5. compare variants using lightweight simulation
+6. apply the best low-risk variant
+7. integrate changes into existing systems
+8. update ops/codex_state/progress.json
+9. keep architecture simpler, clearer, and more field-driven
 
 ================================================
-FORBIDDEN PHASE-2 MOVES
+RULES
 ================================================
 
-Do NOT:
-- convert the repo into a giant evolutionary framework
-- add broad new manager families
-- add new governance stacks parallel to current ops
-- replace field progression with dungeon-centric progression
-- dissolve competition by over-instancing everything
-- make party play mandatory at all times
-- make bosses the dominant progression source
-- weaken sink pressure for convenience
-- flatten replacement pressure into generic linear progression
-
-================================================
-SIMPLIFICATION RULE
-================================================
-
-If a MapleLand-style gain can be achieved by simplifying existing routing, economy, reward, or progression logic, simplify first.
-
-If two systems overlap:
-- merge them
-
-If a wrapper adds abstraction but not control:
-- remove it
-
-If a tuning point is hidden:
-- expose it cleanly
-
-If complexity rises faster than MapleLand-style gain:
-- reject the change
-
-================================================
-WEAKEST-DIMENSION-FIRST RULE
-================================================
-
-Always repair weakest_dimension first.
-
-Examples:
-- field_competition_topology -> improve contested field reward/congestion policy
-- social_density_support -> strengthen return-to-hub loops and party/guild anchor relevance
-- meso_velocity_control -> strengthen sink cadence or reduce unchecked source pressure
-- consumable_burn_pressure -> improve meaningful sustain cost
-- power_curve_replacement_pressure -> improve equipment turnover pacing
-- boss_cadence_lockout_quality -> reduce boss bypass distortion
-- routing_topology_clarity -> unify congestion ownership
-- persistence_boundary_clarity -> isolate reward commit/save boundaries
-
-================================================
-TEST INTEGRATION RULE
-================================================
-
-Use the existing tests as the backbone.
+Do not add new governance stacks.
+Do not create large manager families.
+Do not explode subsystem count.
 
 Prefer:
-- adjusting relevant tests
-- adding only targeted tests for new pressure rules
-- proving that architecture changes preserve authority, transfer integrity, economy invariants, and persistence guarantees
 
-Do not create a separate validation universe.
-
-================================================
-SAFE EXECUTION
-================================================
-
-Run exactly one safe bounded Phase 2 cycle:
-
-1. inspect current stabilized baseline
-2. score MapleLand-like dimensions
-3. identify weakest dimension
-4. generate 3-5 bounded variants
-5. run lightweight comparative simulation
-6. score variants with complexity penalty
-7. select best low-risk variant
-8. apply only meaningful beneficial changes
-9. update score/progress state
-10. leave the repository more field-driven, more socially dense, more economically controlled, and still structurally clear
-
-Avoid repository explosion.
+- tuning existing data tables
+- simplifying existing systems
+- merging overlapping logic
+- exposing tuning parameters
 
 ================================================
-FINAL REQUIREMENTS
+TEST RULE
 ================================================
 
-1. Do not treat this as a documentation task.
-2. Do not stop at scaffolding.
-3. Do not build a second control plane.
-4. Reuse existing ops/scripts/tests wherever possible.
-5. Prefer simplification and tuning over expansion.
-6. Strengthen MapleLand-like field-driven long-term loops.
-7. Keep authority, rollback, and persistence explicit.
-8. Keep exploration bounded.
-9. Perform real repository improvements now.
-10. Leave the repository in a stronger Phase 2 peak state.
+Use existing tests.
 
-EOF
+Adjust or extend only if necessary.
+
+Do not build a new validation framework.
+
+================================================
+FINAL STATE
+================================================
+
+After execution the repository should be:
+
+- more field-driven
+- more socially dense
+- more economically controlled
+- still structurally clear
+- no architecture explosion

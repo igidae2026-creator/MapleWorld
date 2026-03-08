@@ -1,0 +1,4 @@
+selected item: network_gateway
+files changed: msw/world_server_bridge.lua, tests/network_gateway_test.lua, ops/codex_state/p0_prog.json, ops/codex_state/p0_last_run.txt
+tests run: luac -p msw/world_server_bridge.lua; luac -p tests/network_gateway_test.lua; luajit tests/network_gateway_test.lua (blocked by pre-existing scripts/server_bootstrap.lua upvalue-limit load failure); luajit tests/component_entry_test.lua (blocked by same issue)
+result summary: hardened the existing network gateway by making route exposure explicit, blocking internal/admin operations at HandleGatewayRequest, and aligning gateway diagnostics with the true exposed catalog.

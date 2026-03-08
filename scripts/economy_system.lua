@@ -4,6 +4,13 @@ local function isPositiveInteger(value)
     return type(value) == 'number' and value > 0 and value == math.floor(value)
 end
 
+local function clamp(value, low, high)
+    value = tonumber(value) or 0
+    if value < low then return low end
+    if value > high then return high end
+    return value
+end
+
 local function markDirty(player)
     if not player then return end
     player.version = (tonumber(player.version) or 0) + 1
@@ -29,6 +36,14 @@ function EconomySystem.new(config)
         suspiciousTransactionMesos = cfg.suspiciousTransactionMesos or 5000000,
         priceSignals = {},
         sinkPressure = 0,
+        dynamicFeeResolver = cfg.dynamicFeeResolver,
+        fieldPricePressureRate = tonumber(cfg.fieldPricePressureRate) or 0.14,
+        fieldPricePressureCap = tonumber(cfg.fieldPricePressureCap) or 0.2,
+        auctionListingFeeRate = tonumber(cfg.auctionListingFeeRate) or 0.045,
+        auctionListingFeeFloor = math.max(0, math.floor(tonumber(cfg.auctionListingFeeFloor) or 18)),
+        recentDynamicPricing = {},
+        maxRecentDynamicPricing = math.max(1, math.floor(tonumber(cfg.maxRecentDynamicPricing) or 24)),
+        dynamicSinkTotals = {},
     }
     setmetatable(self, { __index = EconomySystem })
     return self
@@ -44,6 +59,69 @@ function EconomySystem:_itemNpcPrice(itemId)
     local itemDef = self.itemSystem and self.itemSystem.items and self.itemSystem.items[itemId] or nil
     if not itemDef then return nil end
     return tonumber(itemDef.npcPrice or itemDef.npc_price) or 0
+end
+
+function EconomySystem:_recordDynamicPricing(sample)
+    if type(sample) ~= 'table' then return end
+    local copy = {}
+    for k, v in pairs(sample) do copy[k] = v end
+    self.recentDynamicPricing[#self.recentDynamicPricing + 1] = copy
+    while #self.recentDynamicPricing > self.maxRecentDynamicPricing do
+        table.remove(self.recentDynamicPricing, 1)
+    end
+    local key = tostring(copy.action or 'unknown')
+    self.dynamicSinkTotals[key] = (tonumber(self.dynamicSinkTotals[key]) or 0) + (tonumber(copy.surcharge) or 0)
+end
+
+function EconomySystem:_resolveDynamicPricing(action, player, baseAmount, context)
+    local amount = math.max(0, math.floor(tonumber(baseAmount) or 0))
+    if amount <= 0 then
+        return 0, {
+            action = action,
+            baseAmount = amount,
+            surcharge = 0,
+            totalAmount = amount,
+            intensity = 0,
+            appliedRate = 0,
+        }
+    end
+
+    local resolved = {}
+    local ctx = type(context) == 'table' and context or {}
+    resolved.intensity = tonumber(ctx.fieldPriceIntensity or ctx.intensity) or 0
+    resolved.mapId = ctx.mapId
+    resolved.region = ctx.region
+    resolved.currentPopulation = ctx.currentPopulation
+    resolved.populationTarget = ctx.populationTarget
+    resolved.congestionPressure = ctx.congestionPressure
+    resolved.routingReason = ctx.routingReason
+    if type(self.dynamicFeeResolver) == 'function' then
+        local ok, dynamicResolved = pcall(self.dynamicFeeResolver, action, player, amount, ctx)
+        if ok and type(dynamicResolved) == 'table' then
+            for k, v in pairs(dynamicResolved) do resolved[k] = v end
+        end
+    end
+    local maxRate = clamp(self.fieldPricePressureCap, 0, 1)
+    local baseRate = clamp(self.fieldPricePressureRate, 0, maxRate)
+    local intensity = clamp(resolved.intensity or 0, 0, 1)
+    local appliedRate = math.min(maxRate, baseRate * intensity)
+    local surcharge = math.max(0, math.floor((amount * appliedRate) + 0.5))
+    local sample = {
+        action = action,
+        baseAmount = amount,
+        surcharge = surcharge,
+        totalAmount = amount + surcharge,
+        intensity = intensity,
+        appliedRate = appliedRate,
+        mapId = resolved.mapId,
+        region = resolved.region,
+        currentPopulation = resolved.currentPopulation,
+        populationTarget = resolved.populationTarget,
+        congestionPressure = resolved.congestionPressure,
+        routingReason = resolved.routingReason,
+    }
+    if surcharge > 0 then self:_recordDynamicPricing(sample) end
+    return surcharge, sample
 end
 
 function EconomySystem:_appendPlayerLedger(player, entry)
@@ -255,11 +333,23 @@ function EconomySystem:buyFromNpc(player, itemId, quantity, context)
     local amount = math.floor(tonumber(quantity) or 0)
     if not isPositiveInteger(amount) then return false, 'invalid_quantity' end
 
-    local totalPrice, err = self:quoteNpcBuy(itemId, amount)
-    if totalPrice == nil then return false, err end
+    local basePrice, err = self:quoteNpcBuy(itemId, amount)
+    if basePrice == nil then return false, err end
 
     local ctx = type(context) == 'table' and context or {}
-    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy', { itemId = itemId, quantity = amount, npcId = ctx.npcId, correlationId = ctx.correlationId, unitPrice = math.max(1, math.floor(totalPrice / math.max(1, amount))) })
+    local surcharge, pricing = self:_resolveDynamicPricing('npc_buy', player, basePrice, ctx)
+    local totalPrice = basePrice + surcharge
+    local spent, spendErr = self:spendMesos(player, totalPrice, 'npc_buy', {
+        itemId = itemId,
+        quantity = amount,
+        npcId = ctx.npcId,
+        correlationId = ctx.correlationId,
+        mapId = ctx.mapId,
+        unitPrice = math.max(1, math.floor(totalPrice / math.max(1, amount))),
+        basePrice = basePrice,
+        dynamicFee = surcharge,
+        dynamicPricing = pricing,
+    })
     if not spent then return false, spendErr end
     local added, addErr = self.itemSystem:addItem(player, itemId, amount, nil, {
         source = 'shop_buy',
@@ -268,10 +358,33 @@ function EconomySystem:buyFromNpc(player, itemId, quantity, context)
         source_event_id = ctx.sourceEventId,
     })
     if not added then
-        self:grantMesos(player, totalPrice, 'npc_buy_rollback', { rollbackOf = ctx.sourceEventId, correlationId = ctx.correlationId })
+        self:grantMesos(player, totalPrice, 'npc_buy_rollback', {
+            rollbackOf = ctx.sourceEventId,
+            correlationId = ctx.correlationId,
+            mapId = ctx.mapId,
+            dynamicFee = surcharge,
+        })
         return false, addErr
     end
     return true
+end
+
+function EconomySystem:quoteAuctionListingFee(player, itemId, quantity, price, context)
+    local amount = math.max(1, math.floor(tonumber(quantity) or 1))
+    local unitPrice = math.max(1, math.floor(tonumber(price) or 1))
+    local listingValue = amount * unitPrice
+    local baseFee = math.max(self.auctionListingFeeFloor, math.floor((listingValue * self.auctionListingFeeRate) + 0.5))
+    local surcharge, pricing = self:_resolveDynamicPricing('auction_listing', player, baseFee, context)
+    return baseFee + surcharge, {
+        itemId = itemId,
+        quantity = amount,
+        unitPrice = unitPrice,
+        listingValue = listingValue,
+        baseFee = baseFee,
+        surcharge = surcharge,
+        totalFee = baseFee + surcharge,
+        pricing = pricing,
+    }
 end
 
 function EconomySystem:snapshot()
@@ -282,6 +395,8 @@ function EconomySystem:snapshot()
         nextTransactionId = self.nextTransactionId,
         priceSignals = self.priceSignals,
         sinkPressure = self.sinkPressure,
+        recentDynamicPricing = self.recentDynamicPricing,
+        dynamicSinkTotals = self.dynamicSinkTotals,
     }
 end
 
@@ -301,6 +416,10 @@ function EconomySystem:controlReport()
             maxMesos = self.maxMesos,
             suspiciousTransactionMesos = self.suspiciousTransactionMesos,
             maxPlayerLedgerEntries = self.maxPlayerLedgerEntries,
+            fieldPricePressureRate = self.fieldPricePressureRate,
+            fieldPricePressureCap = self.fieldPricePressureCap,
+            auctionListingFeeRate = self.auctionListingFeeRate,
+            auctionListingFeeFloor = self.auctionListingFeeFloor,
         },
         observability = {
             sinkPressure = self.sinkPressure,
@@ -308,6 +427,8 @@ function EconomySystem:controlReport()
             sinkReasons = self.sinks,
             trackedPriceSignals = self.priceSignals,
             recentTransactions = self.transactions,
+            recentDynamicPricing = self.recentDynamicPricing,
+            dynamicSinkTotals = self.dynamicSinkTotals,
         },
         mutationBoundaries = {
             recentTransactionCount = #self.transactions,
@@ -315,6 +436,7 @@ function EconomySystem:controlReport()
             rollbackTaggedCount = rollbackTaggedCount,
             idempotentTransactionCount = idempotentCount,
             latestTransaction = self.transactions[#self.transactions],
+            latestDynamicPricing = self.recentDynamicPricing[#self.recentDynamicPricing],
         },
     }
 end

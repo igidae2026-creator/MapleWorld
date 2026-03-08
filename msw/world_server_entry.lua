@@ -109,6 +109,14 @@ Entry.RoutePlayerAction = RoutePlayerAction
 
 --@ BeginMethod
 --@ MethodExecSpace=Server
+function HandleGatewayRequest(requestEnvelope, component)
+    return dispatch('handleGatewayRequest', component, requestEnvelope)
+end
+--@ EndMethod
+Entry.HandleGatewayRequest = HandleGatewayRequest
+
+--@ BeginMethod
+--@ MethodExecSpace=Server
 function GetEventStream(limit, component)
     return dispatch('getEventStream', component, limit)
 end

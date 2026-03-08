@@ -4,6 +4,7 @@ local PlayerRepository = require('ops.player_repository')
 
 local WorldServerBridge = {}
 WorldServerBridge.__index = WorldServerBridge
+local arrayUnpack = table.unpack or unpack
 
 local function safeRequire(name)
     local ok, mod = pcall(require, name)
@@ -52,6 +53,166 @@ local function arrayCount(value)
     return #value
 end
 
+local function isArray(value)
+    if type(value) ~= 'table' then return false end
+    local count = 0
+    for key, _ in pairs(value) do
+        if type(key) ~= 'number' or key <= 0 or key ~= math.floor(key) then
+            return false
+        end
+        count = count + 1
+    end
+    return count == #value
+end
+
+local gatewayRoutes = {
+    get_player_state = 'getPlayerState',
+    get_map_state = 'getMapState',
+    get_state_delta = 'getStateDelta',
+    get_bridge_diagnostics = 'getBridgeDiagnostics',
+    reconcile_runtime_state = 'reconcileRuntimeState',
+    dispatch_runtime_event = 'dispatchRuntimeEvent',
+    route_player_action = 'routePlayerAction',
+    get_event_stream = 'getEventStream',
+    attack_mob = 'attackMob',
+    pickup_drop = 'pickupDrop',
+    damage_boss = 'damageBoss',
+    accept_quest = 'acceptQuest',
+    turn_in_quest = 'turnInQuest',
+    buy_from_npc = 'buyFromNpc',
+    sell_to_npc = 'sellToNpc',
+    equip_item = 'equipItem',
+    unequip_item = 'unequipItem',
+    change_map = 'changeMap',
+    allocate_stat = 'allocateStat',
+    promote_job = 'promoteJob',
+    learn_skill = 'learnSkill',
+    cast_skill = 'castSkill',
+    enhance_equipment = 'enhanceEquipment',
+    create_party = 'createParty',
+    create_guild = 'createGuild',
+    add_friend = 'addFriend',
+    trade_mesos = 'tradeMesos',
+    list_auction = 'listAuction',
+    craft_item = 'craftItem',
+    open_dialogue = 'openDialogue',
+    channel_transfer = 'channelTransfer',
+    get_runtime_status = 'getRuntimeStatus',
+    get_replay_status = 'getReplayStatus',
+    get_ownership_topology = 'getOwnershipTopology',
+    get_control_plane_report = 'getControlPlaneReport',
+    get_event_truth = 'getEventTruth',
+    get_economy_report = 'getEconomyReport',
+    admin_status = 'adminStatus',
+    get_build_recommendation = 'getBuildRecommendation',
+    get_tutorial_state = 'getTutorialState',
+    list_party_finder = 'listPartyFinder',
+    create_raid = 'createRaid',
+}
+
+local gatewayProtocol = {
+    name = 'mapleworld_gateway',
+    currentVersion = 1,
+    supportedVersions = { 1 },
+    requestPacketType = 'request',
+    responsePacketType = 'response',
+}
+
+local gatewayRouteSpecs = {
+    get_player_state = { minArgs = 1, maxArgs = 1, exposure = 'session' },
+    get_map_state = { minArgs = 1, maxArgs = 2, exposure = 'session' },
+    get_state_delta = { minArgs = 1, maxArgs = 3, exposure = 'session' },
+    get_bridge_diagnostics = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    reconcile_runtime_state = { minArgs = 0, maxArgs = 2, exposure = 'internal' },
+    dispatch_runtime_event = { minArgs = 1, maxArgs = 2, exposure = 'internal' },
+    route_player_action = { minArgs = 2, maxArgs = 3, exposure = 'session' },
+    get_event_stream = { minArgs = 0, maxArgs = 1, exposure = 'internal' },
+    attack_mob = { minArgs = 4, maxArgs = 4, exposure = 'session' },
+    pickup_drop = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    damage_boss = { minArgs = 3, maxArgs = 4, exposure = 'session' },
+    accept_quest = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    turn_in_quest = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    buy_from_npc = { minArgs = 4, maxArgs = 4, exposure = 'session' },
+    sell_to_npc = { minArgs = 4, maxArgs = 4, exposure = 'session' },
+    equip_item = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    unequip_item = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    change_map = { minArgs = 2, maxArgs = 3, exposure = 'session' },
+    allocate_stat = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    promote_job = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    learn_skill = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    cast_skill = { minArgs = 2, maxArgs = 3, exposure = 'session' },
+    enhance_equipment = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    create_party = { minArgs = 1, maxArgs = 1, exposure = 'session' },
+    create_guild = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    add_friend = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    trade_mesos = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    list_auction = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    craft_item = { minArgs = 3, maxArgs = 3, exposure = 'session' },
+    open_dialogue = { minArgs = 2, maxArgs = 2, exposure = 'public' },
+    channel_transfer = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+    get_runtime_status = { minArgs = 0, maxArgs = 1, exposure = 'internal' },
+    get_replay_status = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    get_ownership_topology = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    get_control_plane_report = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    get_event_truth = { minArgs = 0, maxArgs = 1, exposure = 'internal' },
+    get_economy_report = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    admin_status = { minArgs = 0, maxArgs = 0, exposure = 'internal' },
+    get_build_recommendation = { minArgs = 1, maxArgs = 1, exposure = 'session' },
+    get_tutorial_state = { minArgs = 1, maxArgs = 1, exposure = 'session' },
+    list_party_finder = { minArgs = 0, maxArgs = 1, exposure = 'public' },
+    create_raid = { minArgs = 2, maxArgs = 2, exposure = 'session' },
+}
+
+local gatewayExposedByDefault = false
+
+local function gatewayRouteSpec(operation)
+    return gatewayRouteSpecs[operation] or {}
+end
+
+local function gatewayRouteExposure(operation)
+    local exposure = gatewayRouteSpec(operation).exposure
+    if exposure == nil or exposure == '' then
+        return gatewayExposedByDefault and 'public' or 'internal'
+    end
+    return exposure
+end
+
+local function isGatewayOperationExposed(operation)
+    local exposure = gatewayRouteExposure(operation)
+    return exposure == 'public' or exposure == 'session'
+end
+
+local function buildGatewayCatalog()
+    local operations = {}
+    for operation, route in pairs(gatewayRoutes) do
+        if isGatewayOperationExposed(operation) then
+            local spec = gatewayRouteSpec(operation)
+            operations[#operations + 1] = {
+                operation = operation,
+                route = route,
+                minArgs = tonumber(spec.minArgs) or 0,
+                maxArgs = tonumber(spec.maxArgs)
+                    or tonumber(spec.minArgs)
+                    or 0,
+                exposure = gatewayRouteExposure(operation),
+            }
+        end
+    end
+    table.sort(operations, function(left, right)
+        return tostring(left.operation) < tostring(right.operation)
+    end)
+    return operations
+end
+
+local function buildGatewayProtocolDescriptor(version)
+    return {
+        name = gatewayProtocol.name,
+        version = tonumber(version) or gatewayProtocol.currentVersion,
+        supportedVersions = deepCopy(gatewayProtocol.supportedVersions),
+        packetType = gatewayProtocol.responsePacketType,
+    }
+end
+
 local function tableCount(value)
     if type(value) ~= 'table' then return 0 end
     local total = 0
@@ -98,6 +259,9 @@ function WorldServerBridge.new(config)
             maxLatencyMs = 0,
             throughputEvents = 0,
             routedPlayerActions = 0,
+            gatewayRequests = 0,
+            gatewaySucceeded = 0,
+            gatewayRejected = 0,
             mobBehaviorTicks = 0,
             combatTicks = 0,
             eventQueueDepth = 0,
@@ -121,6 +285,12 @@ function WorldServerBridge.new(config)
             boss = {},
         },
         eventRouters = {},
+        gatewayRoutes = gatewayRoutes,
+        gatewayState = {
+            lastRequest = nil,
+            lastResponse = nil,
+            requestCount = 0,
+        },
     }
     setmetatable(self, WorldServerBridge)
     self.eventRouters = {
@@ -455,6 +625,52 @@ function WorldServerBridge:_actorScope(actor)
         channelId = actor.channelId or runtimeIdentity.channelId,
         runtimeInstanceId = actor.runtimeInstanceId or runtimeIdentity.runtimeInstanceId,
     }
+end
+
+function WorldServerBridge:_buildAuthoritySyncDescriptor(player, mapId)
+    local runtimeIdentity = self.world and self.world.runtimeIdentity or {}
+    local targetMapId = mapId or (player and player.currentMapId) or self:_defaultMapId()
+    return {
+        playerId = player and player.id or nil,
+        mapId = targetMapId,
+        worldId = runtimeIdentity.worldId,
+        channelId = runtimeIdentity.channelId,
+        runtimeInstanceId = runtimeIdentity.runtimeInstanceId,
+        latestDeltaSequence = self.deltaSequence,
+        playerSyncVersion = player and self.playerVersions[player.id] or nil,
+        mapSyncVersion = targetMapId and self.mapVersions[targetMapId] or nil,
+    }
+end
+
+function WorldServerBridge:_validateSyncScopeRequest(player, scopeId)
+    if not player then return nil, 'invalid_player' end
+    if scopeId == nil or scopeId == '' then
+        return {
+            scopeId = tostring(player.currentMapId or player.id),
+            scopeKind = 'map',
+            mapId = player.currentMapId,
+        }
+    end
+
+    local normalized = tostring(scopeId)
+    if normalized == tostring(player.id) then
+        return {
+            scopeId = normalized,
+            scopeKind = 'player',
+            mapId = player.currentMapId,
+        }
+    end
+
+    local currentMapId = tostring(player.currentMapId or '')
+    if normalized == currentMapId or normalized == self:_entityVersionKey('boss', currentMapId) then
+        return {
+            scopeId = normalized,
+            scopeKind = normalized == currentMapId and 'map' or 'boss',
+            mapId = player.currentMapId,
+        }
+    end
+
+    return nil, 'scope_not_authoritative'
 end
 
 function WorldServerBridge:_validateActorScope(player, actor)
@@ -1126,6 +1342,201 @@ function WorldServerBridge:_routeEvent(routerName, eventName, payload)
     return router(self, eventName, payload)
 end
 
+function WorldServerBridge:_decodeGatewayEnvelope(requestEnvelope)
+    local envelope = requestEnvelope
+    if type(requestEnvelope) == 'string' then
+        envelope = self.runtimeAdapter:decodeData(requestEnvelope)
+    end
+    if type(envelope) ~= 'table' then
+        return nil, 'invalid_gateway_request'
+    end
+    local protocolVersion = envelope.protocolVersion
+    if protocolVersion == nil then
+        protocolVersion = envelope.version
+    end
+    if protocolVersion == nil then
+        protocolVersion = gatewayProtocol.currentVersion
+    end
+    protocolVersion = tonumber(protocolVersion)
+    if protocolVersion == nil or protocolVersion ~= math.floor(protocolVersion) or protocolVersion < 1 then
+        return nil, 'invalid_gateway_protocol_version'
+    end
+    local protocolSupported = false
+    for _, supportedVersion in ipairs(gatewayProtocol.supportedVersions) do
+        if protocolVersion == supportedVersion then
+            protocolSupported = true
+            break
+        end
+    end
+    if not protocolSupported then
+        return nil, 'unsupported_gateway_protocol_version'
+    end
+    local packetType = envelope.packetType
+    if packetType == nil then
+        packetType = gatewayProtocol.requestPacketType
+    end
+    if type(packetType) ~= 'string' or packetType ~= gatewayProtocol.requestPacketType then
+        return nil, 'invalid_gateway_packet_type'
+    end
+    local operation = envelope.operation or envelope.method
+    if type(operation) ~= 'string' or operation == '' then
+        return nil, 'missing_gateway_operation'
+    end
+    local args = envelope.args
+    if args == nil then
+        args = {}
+    elseif not isArray(args) then
+        return nil, 'invalid_gateway_args'
+    end
+    local requestId = envelope.requestId
+    if requestId ~= nil then
+        requestId = tostring(requestId)
+    end
+    return {
+        requestId = requestId,
+        protocolVersion = protocolVersion,
+        packetType = packetType,
+        operation = operation,
+        args = deepCopy(args),
+    }
+end
+
+function WorldServerBridge:_gatewayFailure(requestId, operation, err, protocolVersion)
+    self:_recordMetric('gatewayRejected', 1)
+    local payload = {
+        ok = false,
+        data = nil,
+        error = err,
+        requestId = requestId,
+        operation = operation,
+        protocol = buildGatewayProtocolDescriptor(protocolVersion),
+        gateway = {
+            handledAt = self.runtimeAdapter:now(),
+            route = nil,
+            status = 'rejected',
+        },
+    }
+    self.gatewayState.lastResponse = deepCopy(payload)
+    self:_setEncodedComponentField('LastGatewayResponseJson', payload)
+    return self.runtimeAdapter:encodeData(payload)
+end
+
+function WorldServerBridge:_validateGatewayArgs(operation, args)
+    local spec = gatewayRouteSpecs[operation]
+    if spec == nil then return true end
+    local count = arrayCount(args)
+    local minArgs = tonumber(spec.minArgs) or 0
+    local maxArgs = tonumber(spec.maxArgs) or minArgs
+    if count < minArgs or count > maxArgs then
+        return false, 'invalid_gateway_arg_count'
+    end
+    return true
+end
+
+function WorldServerBridge:_validateGatewayExposure(operation)
+    if not isGatewayOperationExposed(operation) then
+        return false, 'gateway_operation_not_exposed'
+    end
+    return true
+end
+
+function WorldServerBridge:handleGatewayRequest(requestEnvelope)
+    self:_recordMetric('gatewayRequests', 1)
+    local envelope, err = self:_decodeGatewayEnvelope(requestEnvelope)
+    if not envelope then
+        self.gatewayState.requestCount = self.gatewayState.requestCount + 1
+        self.gatewayState.lastRequest = {
+            handledAt = self.runtimeAdapter:now(),
+            status = 'rejected',
+            decodeError = err,
+        }
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(nil, nil, err, nil)
+    end
+
+    self.gatewayState.requestCount = self.gatewayState.requestCount + 1
+    self.gatewayState.lastRequest = {
+        requestId = envelope.requestId,
+        protocolVersion = envelope.protocolVersion,
+        packetType = envelope.packetType,
+        operation = envelope.operation,
+        argsCount = arrayCount(envelope.args),
+        handledAt = self.runtimeAdapter:now(),
+        status = 'pending',
+    }
+    self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+
+    local methodName = self.gatewayRoutes[envelope.operation]
+    if methodName == nil then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.routeError = 'unknown_gateway_operation'
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, 'unknown_gateway_operation', envelope.protocolVersion)
+    end
+
+    local exposureOk, exposureErr = self:_validateGatewayExposure(envelope.operation)
+    if not exposureOk then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.route = methodName
+        self.gatewayState.lastRequest.routeError = exposureErr
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, exposureErr, envelope.protocolVersion)
+    end
+
+    local argsOk, argsErr = self:_validateGatewayArgs(envelope.operation, envelope.args)
+    if not argsOk then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.route = methodName
+        self.gatewayState.lastRequest.routeError = argsErr
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, argsErr, envelope.protocolVersion)
+    end
+
+    local method = self[methodName]
+    if type(method) ~= 'function' then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.routeError = 'invalid_gateway_route'
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, 'invalid_gateway_route', envelope.protocolVersion)
+    end
+
+    local ok, encoded = pcall(method, self, arrayUnpack(envelope.args))
+    if not ok then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.routeError = 'gateway_dispatch_failed'
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, 'gateway_dispatch_failed', envelope.protocolVersion)
+    end
+
+    local decoded = self.runtimeAdapter:decodeData(encoded)
+    if type(decoded) ~= 'table' then
+        self.gatewayState.lastRequest.status = 'rejected'
+        self.gatewayState.lastRequest.routeError = 'invalid_gateway_response'
+        self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+        return self:_gatewayFailure(envelope.requestId, envelope.operation, 'invalid_gateway_response', envelope.protocolVersion)
+    end
+
+    local payload = deepCopy(decoded)
+    payload.requestId = envelope.requestId
+    payload.operation = envelope.operation
+    payload.protocol = buildGatewayProtocolDescriptor(envelope.protocolVersion)
+    payload.gateway = {
+        handledAt = self.runtimeAdapter:now(),
+        route = methodName,
+        status = payload.ok == true and 'ok' or 'error',
+    }
+    self.gatewayState.lastRequest.status = payload.gateway.status
+    self.gatewayState.lastResponse = deepCopy(payload)
+    self:_setEncodedComponentField('LastGatewayRequestJson', self.gatewayState.lastRequest)
+    self:_setEncodedComponentField('LastGatewayResponseJson', payload)
+    if payload.ok == true then
+        self:_recordMetric('gatewaySucceeded', 1)
+    else
+        self:_recordMetric('gatewayRejected', 1)
+    end
+    return self.runtimeAdapter:encodeData(payload)
+end
+
 function WorldServerBridge:onUserEnter(event)
     local world, bootstrapErr = self:bootstrap()
     if not world then return false, bootstrapErr or 'world_bootstrap_failed' end
@@ -1162,6 +1573,7 @@ function WorldServerBridge:getPlayerState(requestContext)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
     local snapshot = self.world:publishPlayerSnapshot(player)
     self:_cachePlayerState(player.id, snapshot, 'get_player_state')
+    snapshot.authority = self:_buildAuthoritySyncDescriptor(player, player.currentMapId)
     return response(self.runtimeAdapter, true, snapshot)
 end
 
@@ -1181,14 +1593,18 @@ function WorldServerBridge:getMapState(requestContext, mapId)
         targetMapId = player.currentMapId
     end
     targetMapId = targetMapId or self:_defaultMapId()
-    local cached = self:_cachedMapState(targetMapId)
+    local cached = deepCopy(self:_cachedMapState(targetMapId))
+    cached.bridgeMeta = cached.bridgeMeta or {}
+    cached.bridgeMeta.authority = self:_buildAuthoritySyncDescriptor(nil, targetMapId)
     return response(self.runtimeAdapter, true, cached)
 end
 
 function WorldServerBridge:getStateDelta(requestContext, scopeId, sinceVersion)
     local player, err = self:_resolvePlayer(requestContext, nil)
     if not player then return response(self.runtimeAdapter, false, nil, err) end
-    local targetScopeId = scopeId or player.currentMapId or player.id
+    local scope, scopeErr = self:_validateSyncScopeRequest(player, scopeId or player.currentMapId or player.id)
+    if not scope then return response(self.runtimeAdapter, false, nil, scopeErr) end
+    local targetScopeId = scope.scopeId
     local minimumVersion = tonumber(sinceVersion) or 0
     local deltas = {}
     for _, item in ipairs(self.deltaQueue) do
@@ -1199,6 +1615,8 @@ function WorldServerBridge:getStateDelta(requestContext, scopeId, sinceVersion)
     return response(self.runtimeAdapter, true, {
         playerId = player.id,
         scopeId = tostring(targetScopeId),
+        scopeKind = scope.scopeKind,
+        authority = self:_buildAuthoritySyncDescriptor(player, scope.mapId),
         sinceVersion = minimumVersion,
         latestSequence = self.deltaSequence,
         deltas = deltas,
@@ -1214,6 +1632,12 @@ function WorldServerBridge:getBridgeDiagnostics()
     if self.metrics.latencySamples > 0 then
         averageLatencyMs = math.floor(self.metrics.totalLatencyMs / self.metrics.latencySamples)
     end
+    local gatewayDiagnostics = deepCopy(self.gatewayState)
+    gatewayDiagnostics.protocol = buildGatewayProtocolDescriptor(gatewayProtocol.currentVersion)
+    gatewayDiagnostics.supportedOperations = buildGatewayCatalog()
+    gatewayDiagnostics.routeCount = #gatewayDiagnostics.supportedOperations
+    gatewayDiagnostics.rejectionCount = tonumber(self.metrics.gatewayRejected) or 0
+    gatewayDiagnostics.successCount = tonumber(self.metrics.gatewaySucceeded) or 0
     return response(self.runtimeAdapter, true, {
         metrics = deepCopy(self.metrics),
         frameState = deepCopy(self.frameState),
@@ -1224,6 +1648,7 @@ function WorldServerBridge:getBridgeDiagnostics()
         desyncIncidents = deepCopy(self.desyncIncidents),
         lifecycle = deepCopy(self.lifecycleHistory),
         recentEvents = self:_flushDeltaQueue(16),
+        gateway = gatewayDiagnostics,
     })
 end
 
@@ -1240,10 +1665,17 @@ function WorldServerBridge:reconcileRuntimeState(requestContext, mapId)
         if not world then return response(self.runtimeAdapter, false, nil, err or 'bootstrap_failed') end
     end
     local targetMapId = mapId
+    local player = nil
     if targetMapId == nil and requestContext ~= nil then
-        local player, err = self:_resolvePlayer(requestContext, nil)
+        player, err = self:_resolvePlayer(requestContext, nil)
         if not player then return response(self.runtimeAdapter, false, nil, err) end
         targetMapId = player.currentMapId
+    elseif requestContext ~= nil then
+        player, err = self:_resolvePlayer(requestContext, nil)
+        if not player then return response(self.runtimeAdapter, false, nil, err) end
+        local scope, scopeErr = self:_validateSyncScopeRequest(player, targetMapId)
+        if not scope then return response(self.runtimeAdapter, false, nil, scopeErr) end
+        targetMapId = scope.mapId
     end
     targetMapId = targetMapId or self:_defaultMapId()
     local state = self:_reconcileMapState(targetMapId)
@@ -1251,6 +1683,7 @@ function WorldServerBridge:reconcileRuntimeState(requestContext, mapId)
     return response(self.runtimeAdapter, true, {
         mapId = targetMapId,
         state = state,
+        authority = self:_buildAuthoritySyncDescriptor(player, targetMapId),
         diagnostics = {
             desyncIncidents = deepCopy(self.desyncIncidents),
             orphanEntities = deepCopy(self.orphanEntities),

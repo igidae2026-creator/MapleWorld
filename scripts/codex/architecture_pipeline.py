@@ -95,8 +95,19 @@ DIMENSION_MUTATIONS = {
         {"spawn_density_scaling": -0.01, "dungeon_entry_pressure": 0.03, "complexity_cost": -0.01},
     ],
     "solo_party_split_quality": [
-        {"party_incentive_coefficient": -0.03, "social_density_support": 0.03, "dungeon_entry_pressure": 0.02},
-        {"party_incentive_coefficient": 0.02, "field_instance_player_cap": -1, "spawn_density_scaling": 0.01},
+        {
+            "party_incentive_coefficient": -0.02,
+            "routing_owner_depth": -0.01,
+            "economy_owner_depth": -0.01,
+            "complexity_cost": -0.01,
+        },
+        {
+            "party_incentive_coefficient": -0.015,
+            "routing_owner_depth": -0.01,
+            "economy_owner_depth": -0.01,
+            "subsystem_overlap": -0.01,
+            "complexity_cost": -0.01,
+        },
     ],
     "field_competition_topology": [
         {"field_instance_player_cap": -2, "congestion_routing_threshold": -0.03, "social_density_support": 0.03},
@@ -111,8 +122,12 @@ DIMENSION_MUTATIONS = {
         {"field_instance_player_cap": -2, "spawn_density_scaling": -0.01, "complexity_cost": -0.01},
     ],
     "economy_source_sink_balance": [
-        {"market_tax_rate": 0.003, "potion_sink_pressure": 0.015, "upgrade_cost_curve": 0.02},
-        {"boss_reward_cadence": -0.03, "rare_drop_control": 0.02, "economy_owner_depth": 0.03},
+        {
+            "upgrade_cost_curve": 0.01,
+        },
+        {
+            "upgrade_cost_curve": 0.005,
+        },
     ],
     "meso_velocity_control": [
         {"market_tax_rate": 0.004, "potion_sink_pressure": 0.01, "boss_reward_cadence": -0.02},
@@ -143,16 +158,40 @@ DIMENSION_MUTATIONS = {
         {"routing_owner_depth": 0.03, "economy_owner_depth": 0.02, "live_tuning_points": 1},
     ],
     "liveops_intervention_visibility": [
-        {"live_tuning_points": 2, "operator_surface_depth": 0.03, "complexity_cost": -0.01},
-        {"live_tuning_points": 1, "market_tax_rate": 0.002, "boss_reward_cadence": -0.01},
+        {
+            "live_tuning_points": -1,
+            "operator_surface_depth": 0.02,
+            "economy_owner_depth": 0.02,
+            "routing_owner_depth": 0.01,
+            "subsystem_overlap": -0.01,
+            "complexity_cost": -0.01,
+        },
+        {
+            "live_tuning_points": -1,
+            "operator_surface_depth": 0.03,
+            "economy_owner_depth": 0.02,
+            "routing_owner_depth": 0.02,
+            "complexity_cost": -0.01,
+        },
     ],
     "power_curve_replacement_pressure": [
         {"upgrade_cost_curve": 0.04, "rare_drop_control": 0.02, "boss_reward_cadence": -0.02},
         {"upgrade_cost_curve": 0.03, "potion_sink_pressure": 0.01, "complexity_cost": -0.01},
     ],
     "telemetry_feedback_visibility": [
-        {"live_tuning_points": 1, "operator_surface_depth": 0.03, "economy_owner_depth": 0.02},
-        {"live_tuning_points": 2, "routing_owner_depth": 0.02, "complexity_cost": -0.01},
+        {
+            "operator_surface_depth": -0.01,
+            "economy_owner_depth": -0.02,
+            "routing_owner_depth": -0.01,
+            "complexity_cost": -0.01,
+        },
+        {
+            "operator_surface_depth": -0.01,
+            "economy_owner_depth": -0.01,
+            "routing_owner_depth": -0.02,
+            "subsystem_overlap": -0.01,
+            "complexity_cost": -0.01,
+        },
     ],
     "structural_clarity": [
         {"complexity_cost": -0.03, "subsystem_overlap": -0.02, "operator_surface_depth": 0.02},
@@ -230,21 +269,17 @@ DIMENSION_MUTATIONS = {
     ],
     "complexity_penalty": [
         {
-            "complexity_cost": -0.03,
+            "complexity_cost": -0.02,
             "subsystem_overlap": -0.02,
             "live_tuning_points": -1,
-            "save_batch_seconds": -1,
-            "rollback_window_minutes": -1,
             "operator_surface_depth": 0.02,
         },
         {
-            "complexity_cost": -0.025,
-            "subsystem_overlap": -0.02,
+            "complexity_cost": -0.015,
+            "subsystem_overlap": -0.015,
             "field_instance_player_cap": -1,
             "congestion_routing_threshold": -0.01,
-            "routing_owner_depth": -0.01,
-            "economy_owner_depth": -0.01,
-            "operator_surface_depth": 0.02,
+            "operator_surface_depth": 0.01,
         },
     ],
 }
@@ -522,21 +557,17 @@ def build_low_complexity_field_variant(baseline: dict[str, float], weakest_dimen
             baseline,
             {
                 "field_instance_player_cap": -1,
-                "congestion_routing_threshold": -0.015,
+                "congestion_routing_threshold": -0.01,
                 "party_incentive_coefficient": -0.01,
-                "potion_sink_pressure": 0.012,
-                "upgrade_cost_curve": 0.025,
-                "market_tax_rate": 0.002,
-                "boss_reward_cadence": -0.025,
+                "potion_sink_pressure": 0.008,
+                "upgrade_cost_curve": 0.02,
+                "market_tax_rate": 0.001,
+                "boss_reward_cadence": -0.02,
                 "rare_drop_control": 0.02,
-                "save_batch_seconds": -1,
-                "rollback_window_minutes": -1,
                 "live_tuning_points": -1,
-                "routing_owner_depth": -0.01,
-                "economy_owner_depth": -0.01,
-                "operator_surface_depth": 0.03,
-                "subsystem_overlap": -0.02,
-                "complexity_cost": -0.03,
+                "operator_surface_depth": 0.02,
+                "subsystem_overlap": -0.015,
+                "complexity_cost": -0.02,
                 "social_density_support": 0.02,
             },
         ),
@@ -604,7 +635,7 @@ def simulate_player_behavior(variant: dict[str, object], agents: int = AGENT_COU
             [
                 closeness(params["spawn_density_scaling"], 1.01, 0.06),
                 closeness(params["dungeon_entry_pressure"], 0.58, 0.08),
-                closeness(profile["dead_zone_share"], 0.12, 0.08),
+                closeness(profile["dead_zone_share"], 0.03, 0.08),
             ]
         )
     )
@@ -683,7 +714,7 @@ def simulate_player_behavior(variant: dict[str, object], agents: int = AGENT_COU
     level_band_transition_pressure = rounded(
         average(
             [
-                closeness(profile["dead_zone_share"], 0.12, 0.07),
+                closeness(profile["dead_zone_share"], 0.03, 0.08),
                 closeness(params["spawn_density_scaling"], 1.0, 0.06),
                 closeness(params["dungeon_entry_pressure"], 0.57, 0.08),
             ]
@@ -710,7 +741,7 @@ def simulate_player_behavior(variant: dict[str, object], agents: int = AGENT_COU
     liveops_visibility = rounded(
         average(
             [
-                closeness(params["live_tuning_points"], 10.0, 3.0),
+                closeness(params["live_tuning_points"], 9.0, 2.5),
                 closeness(params["operator_surface_depth"], 0.92, 0.08),
                 closeness(params["economy_owner_depth"], 1.0, 0.08),
             ]
@@ -834,9 +865,10 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
     structural_clarity = round(
         average(
             [
-                closeness(params["subsystem_overlap"], 0.08, 0.08),
-                closeness(params["complexity_cost"], 0.11, 0.08),
-                closeness(params["operator_surface_depth"], 0.92, 0.08),
+                parameter_closeness(params, "subsystem_overlap"),
+                parameter_closeness(params, "complexity_cost"),
+                parameter_closeness(params, "operator_surface_depth"),
+                metrics["control_surface_efficiency"],
             ]
         )
         * 100.0,
@@ -857,7 +889,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         average(
             [
                 closeness(params["persistence_isolation"], 0.9, 0.08),
-                closeness(params["save_batch_seconds"], 4.5, 1.5),
+                closeness(params["save_batch_seconds"], 4.0, 1.0),
                 constraints["stability_score"],
             ]
         )
@@ -882,6 +914,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
                 closeness(params["potion_sink_pressure"], 0.245, 0.04),
                 closeness(params["rare_drop_control"], 0.84, 0.06),
                 metrics["meso_hour_pressure"],
+                metrics["reward_sink_coherence"],
             ]
         )
         * 100.0,
@@ -903,8 +936,9 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         average(
             [
                 closeness(params["operator_surface_depth"], 0.92, 0.08),
-                closeness(params["live_tuning_points"], 10.0, 3.0),
+                closeness(params["live_tuning_points"], 9.0, 2.5),
                 metrics["liveops_visibility"],
+                metrics["control_surface_efficiency"],
             ]
         )
         * 100.0,
@@ -925,7 +959,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         average(
             [
                 metrics["level_band_transition_pressure"],
-                closeness(profile["dead_zone_share"], 0.12, 0.07),
+                closeness(profile["dead_zone_share"], 0.03, 0.08),
                 closeness(params["dungeon_entry_pressure"], 0.57, 0.08),
             ]
         )
@@ -969,7 +1003,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         average(
             [
                 closeness(params["social_density_support"], 0.9, 0.08),
-                closeness(params["party_incentive_coefficient"], 1.15, 0.08),
+                closeness(params["party_incentive_coefficient"], max(1.12, profile["party_bonus_mean"]), 0.08),
                 closeness(metrics["market_turnover_pressure"], 0.9, 0.2),
             ]
         )
@@ -993,6 +1027,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
                 metrics["meso_hour_pressure"],
                 closeness(profile["sink_weight_mean"], 1.42, 0.3),
                 closeness(profile["boss_entry_sink_mean"], 1.52, 0.35),
+                metrics["reward_sink_coherence"],
             ]
         )
         * 100.0,
@@ -1047,7 +1082,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
             [
                 persistence_boundary_clarity / 100.0,
                 rollback_boundary_clarity / 100.0,
-                closeness(params["save_batch_seconds"], 4.5, 1.5),
+                closeness(params["save_batch_seconds"], 4.0, 1.0),
             ]
         )
         * 100.0,
@@ -1079,7 +1114,7 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         average(
             [
                 metrics["liveops_visibility"],
-                closeness(params["live_tuning_points"], 10.0, 3.0),
+                closeness(params["live_tuning_points"], 9.0, 2.5),
                 closeness(params["operator_surface_depth"], 0.92, 0.08),
             ]
         )
@@ -1100,9 +1135,10 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
     telemetry_feedback_visibility = round(
         average(
             [
-                closeness(params["live_tuning_points"], 10.0, 3.0),
+                closeness(params["live_tuning_points"], 9.0, 2.5),
                 closeness(params["operator_surface_depth"], 0.92, 0.08),
                 closeness(params["economy_owner_depth"] + params["routing_owner_depth"], 2.0, 0.15),
+                metrics["control_surface_efficiency"],
             ]
         )
         * 100.0,
@@ -1122,7 +1158,19 @@ def score_architecture_variant(variant: dict[str, object], *args) -> dict[str, o
         2,
     )
     subsystem_overlap_risk = round(clamp(params["subsystem_overlap"] / 0.36) * 100.0, 2)
-    complexity_penalty = round(clamp(params["complexity_cost"] / 0.36) * 100.0, 2)
+    complexity_penalty = round(
+        average(
+            [
+                clamp(params["complexity_cost"] / 0.22),
+                clamp(params["subsystem_overlap"] / 0.18),
+                clamp(abs(params["live_tuning_points"] - 9.0) / 4.0),
+                clamp(abs(2.02 - (params["routing_owner_depth"] + params["economy_owner_depth"])) / 0.12),
+                1.0 - metrics["control_surface_efficiency"],
+            ]
+        )
+        * 100.0,
+        2,
+    )
 
     mapleland_similarity_score = round(
         average(
@@ -1285,9 +1333,10 @@ def select_best_architecture(scored_variants: list[dict[str, object]]) -> dict[s
         scored_variants,
         key=lambda entry: (
             entry["scores"]["architecture_score"],
-            entry["scores"]["overall_architecture_quality"],
             entry["scores"]["mapleland_similarity_score"],
+            entry["constraints"]["stability_score"],
             -entry["scores"]["complexity_penalty"],
+            entry["scores"]["overall_architecture_quality"],
         ),
     )
     payload = {

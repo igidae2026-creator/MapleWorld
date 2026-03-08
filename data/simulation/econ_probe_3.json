@@ -1,0 +1,51 @@
+{
+  "variant_id": "econ_probe_3",
+  "agent_count": 96,
+  "behavior_modes": {
+    "solo_grind": 31,
+    "party_grind": 21,
+    "boss_hunt": 7,
+    "market_trade": 9,
+    "map_migration": 15,
+    "potion_consumption": 13
+  },
+  "balance_profile": {
+    "zone_count": 900.0,
+    "party_window_count": 44.0,
+    "sink_count": 720.0,
+    "boss_count": 180.0,
+    "contested_mean": 1.0788,
+    "solo_mean": 0.9036,
+    "party_mean": 1.0724,
+    "dead_zone_share": 0.1,
+    "high_contest_share": 0.2333,
+    "party_bonus_mean": 1.1145,
+    "solo_pressure_mean": 1.0682,
+    "party_peak_share": 0.0,
+    "sink_weight_mean": 1.5258,
+    "repair_sink_mean": 1.476,
+    "market_sink_mean": 1.428,
+    "boss_entry_sink_mean": 1.79,
+    "reward_per_member_mean": 1525.7648,
+    "reward_bonus_mean": 1.3337,
+    "double_limit_share": 0.5278
+  },
+  "metrics": {
+    "exp_hour_pressure": 0.875,
+    "meso_hour_pressure": 0.7949,
+    "potion_burn": 0.9056,
+    "map_density_distribution": 0.8231,
+    "party_formation": 0.5417,
+    "congestion_profile": 0.6888,
+    "item_replacement_pacing": 0.7862,
+    "boss_reward_distortion": 0.758,
+    "market_turnover_pressure": 0.871,
+    "level_band_transition_pressure": 0.8492,
+    "field_competition_pressure": 0.8274,
+    "anti_bot_signal_quality": 0.8333,
+    "liveops_visibility": 0.6667,
+    "interaction_traceability": 0.925,
+    "control_surface_efficiency": 0.83,
+    "reward_sink_coherence": 0.4693
+  }
+}

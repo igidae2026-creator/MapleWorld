@@ -33,48 +33,50 @@ local BuildRecommendationSystem = require('scripts.build_recommendation_system')
 local PartyFinder = require('scripts.party_finder')
 local CombatFeedback = require('scripts.combat_feedback')
 local RaidSystem = require('scripts.raid_system')
-local Metrics = require('ops.metrics')
-local Scheduler = require('ops.event_scheduler')
-local AdminTools = require('ops.admin_tools')
-local Healthcheck = require('ops.healthcheck')
-local PlayerRepository = require('ops.player_repository')
-local WorldRepository = require('ops.world_repository')
-local EventJournal = require('ops.event_journal')
-local ActionGuard = require('ops.action_guard')
-local RuntimeAdapter = require('ops.runtime_adapter')
-local RuntimePolicyBundle = require('ops.runtime_policy_bundle')
-local RuntimeKernel = require('ops.runtime_kernel')
-local RecoveryKernel = require('ops.recovery_kernel')
-local EventTruth = require('ops.event_truth')
+local Ops = {
+    Metrics = require('ops.metrics'),
+    Scheduler = require('ops.event_scheduler'),
+    AdminTools = require('ops.admin_tools'),
+    Healthcheck = require('ops.healthcheck'),
+    PlayerRepository = require('ops.player_repository'),
+    WorldRepository = require('ops.world_repository'),
+    EventJournal = require('ops.event_journal'),
+    ActionGuard = require('ops.action_guard'),
+    RuntimeAdapter = require('ops.runtime_adapter'),
+    RuntimePolicyBundle = require('ops.runtime_policy_bundle'),
+    RuntimeKernel = require('ops.runtime_kernel'),
+    RecoveryKernel = require('ops.recovery_kernel'),
+    EventTruth = require('ops.event_truth'),
+    WorldCluster = require('ops.world_cluster'),
+    ChannelRouter = require('ops.channel_router'),
+    ShardRegistry = require('ops.shard_registry'),
+    WorldFailover = require('ops.world_failover'),
+    SessionOrchestrator = require('ops.session_orchestrator'),
+    SnapshotManager = require('ops.snapshot_manager'),
+    ReplayEngine = require('ops.replay_engine'),
+    DeterministicReplayValidator = require('ops.deterministic_replay_validator'),
+    ConsistencyValidator = require('ops.consistency_validator'),
+    TelemetryPipeline = require('ops.telemetry_pipeline'),
+    MetricsAggregator = require('ops.metrics_aggregator'),
+    RuntimeProfiler = require('ops.runtime_profiler'),
+    AdminConsole = require('ops.admin_console'),
+    GMCommandService = require('ops.gm_command_service'),
+    CheatDetection = require('ops.cheat_detection'),
+    ExploitMonitor = require('ops.exploit_monitor'),
+    AnomalyScoring = require('ops.anomaly_scoring'),
+    DistributedRateLimit = require('ops.distributed_rate_limit'),
+    AuditLog = require('ops.audit_log'),
+    PolicyEngine = require('ops.policy_engine'),
+    BootstrapProfiles = require('ops.bootstrap_profiles'),
+    EntityIndex = require('ops.entity_index'),
+    EventBatcher = require('ops.event_batcher'),
+    PerformanceCounters = require('ops.performance_counters'),
+    MemoryGuard = require('ops.memory_guard'),
+    DuplicationGuard = require('ops.duplication_guard'),
+    InflationGuard = require('ops.inflation_guard'),
+    LiveEventController = require('ops.live_event_controller'),
+}
 local ContentLoader = require('data.content_loader')
-local WorldCluster = require('ops.world_cluster')
-local ChannelRouter = require('ops.channel_router')
-local ShardRegistry = require('ops.shard_registry')
-local WorldFailover = require('ops.world_failover')
-local SessionOrchestrator = require('ops.session_orchestrator')
-local SnapshotManager = require('ops.snapshot_manager')
-local ReplayEngine = require('ops.replay_engine')
-local DeterministicReplayValidator = require('ops.deterministic_replay_validator')
-local ConsistencyValidator = require('ops.consistency_validator')
-local TelemetryPipeline = require('ops.telemetry_pipeline')
-local MetricsAggregator = require('ops.metrics_aggregator')
-local RuntimeProfiler = require('ops.runtime_profiler')
-local AdminConsole = require('ops.admin_console')
-local GMCommandService = require('ops.gm_command_service')
-local CheatDetection = require('ops.cheat_detection')
-local ExploitMonitor = require('ops.exploit_monitor')
-local AnomalyScoring = require('ops.anomaly_scoring')
-local DistributedRateLimit = require('ops.distributed_rate_limit')
-local AuditLog = require('ops.audit_log')
-local PolicyEngine = require('ops.policy_engine')
-local BootstrapProfiles = require('ops.bootstrap_profiles')
-local EntityIndex = require('ops.entity_index')
-local EventBatcher = require('ops.event_batcher')
-local PerformanceCounters = require('ops.performance_counters')
-local MemoryGuard = require('ops.memory_guard')
-local DuplicationGuard = require('ops.duplication_guard')
-local InflationGuard = require('ops.inflation_guard')
-local LiveEventController = require('ops.live_event_controller')
 
 local ServerBootstrap = {}
 
@@ -501,14 +503,14 @@ function ServerBootstrap.boot(basePath, config)
     end
     config = config or {}
 
-    local metrics = config.metrics or Metrics.new()
-    local scheduler = config.scheduler or Scheduler.new({ metrics = metrics, maxRunsPerTick = config.maxRunsPerTick or 5 })
+    local metrics = config.metrics or Ops.Metrics.new()
+    local scheduler = config.scheduler or Ops.Scheduler.new({ metrics = metrics, maxRunsPerTick = config.maxRunsPerTick or 5 })
     local logger = config.logger or metrics
     local dataProvider = config.dataProvider or requireRuntimeTables()
     local worldConfig = config.worldConfig or requireWorldConfig()
     local contentBundle = config.contentBundle or ContentLoader.load()
     local warnings, dataSources = {}, {}
-    local runtimeAdapter = config.runtimeAdapter or RuntimeAdapter.new({ metrics = metrics, logger = logger })
+    local runtimeAdapter = config.runtimeAdapter or Ops.RuntimeAdapter.new({ metrics = metrics, logger = logger })
     local runtimeClock = config.time or function() return runtimeAdapter:now() end
 
     local mobsRaw = loadRows(basePath, 'data/mobs.csv', 'mobs', dataProvider, warnings, dataSources)
@@ -517,6 +519,35 @@ function ServerBootstrap.boot(basePath, config)
     local expRaw = loadRows(basePath, 'data/exp_curve.csv', 'exp_curve', dataProvider, warnings, dataSources)
     local bossRaw = loadRows(basePath, 'data/boss.csv', 'boss', dataProvider, warnings, dataSources)
     local questRaw = loadRows(basePath, 'data/quests.csv', 'quests', dataProvider, warnings, dataSources)
+    worldConfig.runtime = worldConfig.runtime or {}
+    if worldConfig.runtime.regionalFieldEconomyProfiles == nil then
+        local regionalBuckets = {}
+        for _, row in ipairs(loadRows(basePath, 'data/balance/fields/population_balance.csv', 'population_balance', dataProvider, warnings, dataSources)) do
+            local region = tostring(row.region or ''):lower():gsub('[^%w]+', '_')
+            region = region:gsub('_+', '_'):gsub('^_', ''):gsub('_$', '')
+            if region ~= '' then
+                local bucket = regionalBuckets[region] or {
+                    populationTargetTotal = 0,
+                    congestionPressureTotal = 0,
+                    samples = 0,
+                }
+                bucket.populationTargetTotal = bucket.populationTargetTotal + (tonumber(row.population_target) or 0)
+                bucket.congestionPressureTotal = bucket.congestionPressureTotal + (tonumber(row.congestion_pressure) or 0)
+                bucket.samples = bucket.samples + 1
+                regionalBuckets[region] = bucket
+            end
+        end
+        worldConfig.runtime.regionalFieldEconomyProfiles = {}
+        for region, bucket in pairs(regionalBuckets) do
+            local sampleCount = math.max(1, bucket.samples)
+            worldConfig.runtime.regionalFieldEconomyProfiles[region] = {
+                region = region,
+                populationTarget = math.max(1, math.floor((bucket.populationTargetTotal / sampleCount) + 0.5)),
+                congestionPressure = bucket.congestionPressureTotal / sampleCount,
+                samples = bucket.samples,
+            }
+        end
+    end
 
     local mobs = indexBy(mobsRaw, 'mob_id')
     for _, mob in pairs(mobs) do
@@ -546,7 +577,7 @@ function ServerBootstrap.boot(basePath, config)
     local playerRepository = config.playerRepository
     if not playerRepository then
         if config.useMapleWorldsDataStorage ~= false and runtimeAdapter:hasDataStorage() then
-            playerRepository = PlayerRepository.newMapleWorldsDataStorage({
+            playerRepository = Ops.PlayerRepository.newMapleWorldsDataStorage({
                 runtimeAdapter = runtimeAdapter,
                 metrics = metrics,
                 logger = logger,
@@ -556,14 +587,14 @@ function ServerBootstrap.boot(basePath, config)
                 maxRevisions = worldConfig.runtime and worldConfig.runtime.playerRevisionRetention,
             })
         else
-            playerRepository = PlayerRepository.newMemory({ metrics = metrics, logger = logger })
+            playerRepository = Ops.PlayerRepository.newMemory({ metrics = metrics, logger = logger })
         end
     end
 
     local worldRepository = config.worldRepository
     if not worldRepository then
         if config.useMapleWorldsDataStorage ~= false and runtimeAdapter:hasDataStorage() then
-            worldRepository = WorldRepository.newMapleWorldsDataStorage({
+            worldRepository = Ops.WorldRepository.newMapleWorldsDataStorage({
                 runtimeAdapter = runtimeAdapter,
                 metrics = metrics,
                 logger = logger,
@@ -577,13 +608,13 @@ function ServerBootstrap.boot(basePath, config)
                 maxCommits = worldConfig.runtime and worldConfig.runtime.worldCommitRetention,
             })
         else
-            worldRepository = WorldRepository.newMemory({ metrics = metrics, logger = logger })
+            worldRepository = Ops.WorldRepository.newMemory({ metrics = metrics, logger = logger })
         end
     end
 
     local rng = config.rng or math.random
-    local journal = config.eventJournal or EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries, maxPayloadBytes = worldConfig.runtime and worldConfig.runtime.journalMaxPayloadBytes, maxLedgerEntries = worldConfig.runtime and worldConfig.runtime.ledgerMaxEntries })
-    local actionGuard = config.actionGuard or ActionGuard.new({
+    local journal = config.eventJournal or Ops.EventJournal.new({ metrics = metrics, logger = logger, time = runtimeClock, maxEntries = worldConfig.runtime and worldConfig.runtime.journalMaxEntries, maxPayloadBytes = worldConfig.runtime and worldConfig.runtime.journalMaxPayloadBytes, maxLedgerEntries = worldConfig.runtime and worldConfig.runtime.ledgerMaxEntries })
+    local actionGuard = config.actionGuard or Ops.ActionGuard.new({
         limits = worldConfig.actionRateLimits,
         time = runtimeClock,
         metrics = metrics,
@@ -613,6 +644,10 @@ function ServerBootstrap.boot(basePath, config)
         maxMesos = config.maxMesos,
         suspiciousTransactionMesos = worldConfig.runtime and worldConfig.runtime.suspiciousTransactionMesos,
         maxPlayerLedgerEntries = worldConfig.runtime and worldConfig.runtime.maxPlayerEconomyLedgerEntries,
+        fieldPricePressureRate = worldConfig.runtime and worldConfig.runtime.economyFieldPricePressureRate,
+        fieldPricePressureCap = worldConfig.runtime and worldConfig.runtime.economyFieldPricePressureCap,
+        auctionListingFeeRate = worldConfig.runtime and worldConfig.runtime.auctionListingFeeRate,
+        auctionListingFeeFloor = worldConfig.runtime and worldConfig.runtime.auctionListingFeeFloor,
     })
     local bossSystem = BossSystem.new({ bossTable = buildBoss(bossRaw, worldConfig), dropSystem = dropSystem, metrics = metrics, logger = logger, time = runtimeClock })
     local questSystem = QuestSystem.new({ quests = buildQuests(questRaw), itemSystem = itemSystem, economySystem = economySystem, expSystem = expSystem, metrics = metrics, logger = logger })
@@ -645,10 +680,10 @@ function ServerBootstrap.boot(basePath, config)
     local partyFinder = PartyFinder.new()
     local combatFeedback = CombatFeedback.new()
     local raidSystem = RaidSystem.new()
-    local healthcheck = Healthcheck.new({ metrics = metrics, scheduler = scheduler })
-    local adminTools = AdminTools.new({ metrics = metrics, scheduler = scheduler })
+    local healthcheck = Ops.Healthcheck.new({ metrics = metrics, scheduler = scheduler })
+    local adminTools = Ops.AdminTools.new({ metrics = metrics, scheduler = scheduler })
 
-    local policyBundle = RuntimePolicyBundle.new(worldConfig, config.policyBundle)
+    local policyBundle = Ops.RuntimePolicyBundle.new(worldConfig, config.policyBundle)
     local runtimeIdentity = {
         worldId = tostring((worldConfig.runtime and worldConfig.runtime.worldId) or 'world-1'),
         channelId = tostring((worldConfig.runtime and worldConfig.runtime.channelId) or 'channel-1'),
@@ -710,6 +745,7 @@ function ServerBootstrap.boot(basePath, config)
         runtimeHooks = config.runtimeHooks or {},
         content = contentBundle,
         worldConfig = worldConfig,
+        regionalFieldEconomyProfiles = worldConfig.runtime.regionalFieldEconomyProfiles or {},
         runtimeIdentity = runtimeIdentity,
         policyBundle = policyBundle,
         pressure = {
@@ -857,36 +893,36 @@ function ServerBootstrap.boot(basePath, config)
             },
         },
     }
-    world.cluster = WorldCluster.new({ worldId = runtimeIdentity.worldId })
+    world.cluster = Ops.WorldCluster.new({ worldId = runtimeIdentity.worldId })
     world.cluster:registerChannel(runtimeIdentity.channelId, {})
-    world.shardRegistry = ShardRegistry.new()
+    world.shardRegistry = Ops.ShardRegistry.new()
     world.shardRegistry:register('shard-main', { worldId = runtimeIdentity.worldId, channelId = runtimeIdentity.channelId })
-    world.channelRouter = ChannelRouter.new({
+    world.channelRouter = Ops.ChannelRouter.new({
         cluster = world.cluster,
         congestionThreshold = worldConfig.runtime and worldConfig.runtime.pressureDensityThreshold,
         perChannelPlayerCap = worldConfig.runtime and worldConfig.runtime.maxPlayersPerChannel,
     })
-    world.failover = WorldFailover.new({ cluster = world.cluster })
-    world.sessionOrchestrator = SessionOrchestrator.new({ time = runtimeClock })
-    world.snapshotManager = SnapshotManager.new({ time = runtimeClock, maxSnapshots = worldConfig.runtime and worldConfig.runtime.maxWorldSnapshots })
-    world.entityIndex = EntityIndex.new()
-    world.eventBatcher = EventBatcher.new({ maxBatch = 24 })
-    world.performanceCounters = PerformanceCounters.new()
-    world.replayEngine = ReplayEngine.new()
-    world.deterministicReplayValidator = DeterministicReplayValidator.new({ replayEngine = world.replayEngine })
-    world.consistencyValidator = ConsistencyValidator.new()
-    world.telemetryPipeline = TelemetryPipeline.new()
-    world.metricsAggregator = MetricsAggregator.new()
-    world.runtimeProfiler = RuntimeProfiler.new()
-    world.memoryGuard = MemoryGuard.new({ softLimitKb = 196608, hardLimitKb = 262144 })
-    world.duplicationGuard = DuplicationGuard.new()
-    world.inflationGuard = InflationGuard.new({ ratioThreshold = 2.0 })
-    world.cheatDetection = CheatDetection.new()
-    world.exploitMonitor = ExploitMonitor.new({ detector = world.cheatDetection })
-    world.anomalyScoring = AnomalyScoring.new()
-    world.distributedRateLimit = DistributedRateLimit.new()
-    world.auditLog = AuditLog.new()
-    world.policyEngine = PolicyEngine.new({
+    world.failover = Ops.WorldFailover.new({ cluster = world.cluster })
+    world.sessionOrchestrator = Ops.SessionOrchestrator.new({ time = runtimeClock })
+    world.snapshotManager = Ops.SnapshotManager.new({ time = runtimeClock, maxSnapshots = worldConfig.runtime and worldConfig.runtime.maxWorldSnapshots })
+    world.entityIndex = Ops.EntityIndex.new()
+    world.eventBatcher = Ops.EventBatcher.new({ maxBatch = 24 })
+    world.performanceCounters = Ops.PerformanceCounters.new()
+    world.replayEngine = Ops.ReplayEngine.new()
+    world.deterministicReplayValidator = Ops.DeterministicReplayValidator.new({ replayEngine = world.replayEngine })
+    world.consistencyValidator = Ops.ConsistencyValidator.new()
+    world.telemetryPipeline = Ops.TelemetryPipeline.new()
+    world.metricsAggregator = Ops.MetricsAggregator.new()
+    world.runtimeProfiler = Ops.RuntimeProfiler.new()
+    world.memoryGuard = Ops.MemoryGuard.new({ softLimitKb = 196608, hardLimitKb = 262144 })
+    world.duplicationGuard = Ops.DuplicationGuard.new()
+    world.inflationGuard = Ops.InflationGuard.new({ ratioThreshold = 2.0 })
+    world.cheatDetection = Ops.CheatDetection.new()
+    world.exploitMonitor = Ops.ExploitMonitor.new({ detector = world.cheatDetection })
+    world.anomalyScoring = Ops.AnomalyScoring.new()
+    world.distributedRateLimit = Ops.DistributedRateLimit.new()
+    world.auditLog = Ops.AuditLog.new()
+    world.policyEngine = Ops.PolicyEngine.new({
         thresholds = {
             safeMode = 10,
             channelLoad = 75,
@@ -897,10 +933,10 @@ function ServerBootstrap.boot(basePath, config)
             lowSinkPressure = 0,
         },
     })
-    world.bootstrapProfiles = BootstrapProfiles
-    world.adminConsole = AdminConsole.new({ world = world, adminTools = adminTools, healthcheck = healthcheck })
-    world.gmCommandService = GMCommandService.new({ world = world })
-    world.liveEventController = LiveEventController.new({ world = world })
+    world.bootstrapProfiles = Ops.BootstrapProfiles
+    world.adminConsole = Ops.AdminConsole.new({ world = world, adminTools = adminTools, healthcheck = healthcheck })
+    world.gmCommandService = Ops.GMCommandService.new({ world = world })
+    world.liveEventController = Ops.LiveEventController.new({ world = world })
     itemSystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
     economySystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
 
@@ -1013,7 +1049,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:_severityName(level)
-        return RuntimeKernel.severityName(level)
+        return Ops.RuntimeKernel.severityName(level)
     end
 
     function world:_lineageReference(kind, subject)
@@ -1074,7 +1110,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:_ownershipScope(mapId, extra)
-        return RuntimeKernel.ownershipScope(self.runtimeIdentity, mapId, extra)
+        return Ops.RuntimeKernel.ownershipScope(self.runtimeIdentity, mapId, extra)
     end
 
     function world:_activePlayerCheckpoint()
@@ -1097,7 +1133,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:_updateSavePlan(reason)
-        local plan = RuntimeKernel.computeSavePlan({
+        local plan = Ops.RuntimeKernel.computeSavePlan({
             policy = self:_policySection('savePolicy'),
             pressure = self.pressure,
             containment = self.containment,
@@ -1110,7 +1146,7 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:_refreshRecoveryVerification()
-        local summary = RecoveryKernel.verificationSummary(self.recovery, self.savePlan)
+        local summary = Ops.RecoveryKernel.verificationSummary(self.recovery, self.savePlan)
         self.recovery.confidence = summary.confidence
         self.recovery.verificationSummary = summary
         return summary
@@ -1134,13 +1170,13 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:_recordTruthEvent(eventType, payload, context)
         local ctx = self:_truthContext(context)
-        local enriched = EventTruth.enrich(eventType, payload, ctx)
+        local enriched = Ops.EventTruth.enrich(eventType, payload, ctx)
         if ctx.forceRecord == true then enriched.__forceRecord = true end
         return self:_recordRuntimeEvent(eventType, enriched)
     end
 
     function world:getEventHistory(filter)
-        return EventTruth.query(self.journal:snapshot(), filter)
+        return Ops.EventTruth.query(self.journal:snapshot(), filter)
     end
 
     function world:_dropClaimKey(recordOrDropId)
@@ -1600,7 +1636,7 @@ function ServerBootstrap.boot(basePath, config)
         end
 
         self:_updateSavePlan('pressure_recompute')
-        local governanceState, governanceReason = RuntimeKernel.determineGovernanceState(self:_policy(), self.containment, self.pressure, instability)
+        local governanceState, governanceReason = Ops.RuntimeKernel.determineGovernanceState(self:_policy(), self.containment, self.pressure, instability)
         if governanceState == 'replay-only' then
             self:_setGovernanceState('replay-only', governanceReason, { replayPressure = self.pressure.replayPressure })
         elseif governanceState == 'degraded-safe' then
@@ -2220,7 +2256,7 @@ function ServerBootstrap.boot(basePath, config)
             snapshot, loadStatus, err = self.worldRepository:loadDetailed()
         else
             snapshot, err = self.worldRepository:load()
-            if err then loadStatus = RecoveryKernel.classifyLoadError(err) elseif snapshot then loadStatus = 'ok' else loadStatus = 'not_found' end
+            if err then loadStatus = Ops.RecoveryKernel.classifyLoadError(err) elseif snapshot then loadStatus = 'ok' else loadStatus = 'not_found' end
         end
         if err then
             if self.metrics then
@@ -2276,7 +2312,7 @@ function ServerBootstrap.boot(basePath, config)
             self.governance = deepcopy(snapshot.governance or self.governance)
             self.repairs = deepcopy(snapshot.repairs or self.repairs)
             self.topology = deepcopy(snapshot.topology or self.topology)
-            self.policyBundle = RuntimePolicyBundle.new(self.worldConfig, snapshot.checkpoint and snapshot.checkpoint.policy or self:_policy())
+            self.policyBundle = Ops.RuntimePolicyBundle.new(self.worldConfig, snapshot.checkpoint and snapshot.checkpoint.policy or self:_policy())
             self.policyBundle.history = deepcopy(snapshot.policyHistory or self.policyBundle:historySnapshot())
             self.policyHistory = deepcopy(snapshot.policyHistory or self.policyBundle:historySnapshot())
             self.savePlan = deepcopy(snapshot.savePlan or self.savePlan)
@@ -3335,7 +3371,35 @@ function ServerBootstrap.boot(basePath, config)
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
         local correlationId = string.format('shop_buy:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
-        local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
+        local mapId = player.currentMapId or npc.mapId
+        local normalizedMapId = tostring(mapId or ''):lower()
+        local profiles = self.regionalFieldEconomyProfiles or {}
+        local region = nil
+        for candidate in pairs(profiles) do
+            if normalizedMapId:find(candidate, 1, true) == 1 and (region == nil or #candidate > #region) then region = candidate end
+        end
+        if region == nil then
+            region = tostring(normalizedMapId:match('^[%w]+') or normalizedMapId):lower():gsub('[^%w]+', '_')
+            region = region:gsub('_+', '_'):gsub('^_', ''):gsub('_$', '')
+        end
+        local profile = profiles[region] or {}
+        local populationTarget = math.max(1, math.floor(tonumber(profile.populationTarget) or 36))
+        local congestionPressure = tonumber(profile.congestionPressure) or 1.0
+        local currentPopulation = self:getMapPopulation(mapId)
+        local populationRatio = currentPopulation / populationTarget
+        local staticIntensity = math.max(0, math.min(1, (congestionPressure - 0.9) / 0.45))
+        local dynamicIntensity = math.max(0, math.min(1, (populationRatio - 0.65) / 0.75))
+        local fieldPriceIntensity = math.max(0, math.min(1, (staticIntensity * 0.6) + (dynamicIntensity * 0.4)))
+        local ok, err = self.economySystem:buyFromNpc(player, itemId, quantity, {
+            npcId = npcId,
+            correlationId = correlationId,
+            mapId = mapId,
+            region = region,
+            currentPopulation = currentPopulation,
+            populationTarget = populationTarget,
+            congestionPressure = congestionPressure,
+            fieldPriceIntensity = fieldPriceIntensity,
+        })
         if not ok then return false, err end
         self:_emitRewardLedger(player, 'shop_buy', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_buy', itemId), metadata = { action = 'buy' } })
         self.questSystem:onItemAcquired(player, itemId, quantity)
@@ -3362,7 +3426,11 @@ function ServerBootstrap.boot(basePath, config)
         local actionOk, actionErr = self:_checkAction(player, 'shop', 1)
         if not actionOk then return false, actionErr end
         local correlationId = string.format('shop_sell:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
-        local ok, err = self.economySystem:sellToNpc(player, itemId, quantity, { npcId = npcId, correlationId = correlationId })
+        local ok, err = self.economySystem:sellToNpc(player, itemId, quantity, {
+            npcId = npcId,
+            correlationId = correlationId,
+            mapId = player.currentMapId,
+        })
         if not ok then return false, err end
         self:_emitRewardLedger(player, 'shop_sell', { source_system = 'economy_system', correlation_id = correlationId, npc_id = npcId, item_id = itemId, quantity = tonumber(quantity), lineage_reference = self:_lineageReference('shop_sell', itemId), metadata = { action = 'sell' } })
         self.questSystem:onItemRemoved(player, itemId, quantity)
@@ -3613,6 +3681,47 @@ function ServerBootstrap.boot(basePath, config)
 
     function world:listAuction(player, itemId, quantity, price)
         if not player then return false, 'invalid_player' end
+        local actionOk, actionErr = self:_checkAction(player, 'market', 1)
+        if not actionOk then return false, actionErr end
+        local listingCorrelationId = string.format('auction_listing:%s:%s:%s', tostring(player.id), tostring(itemId), tostring(self:_now()))
+        local mapId = player.currentMapId or (self.worldConfig.runtime and self.worldConfig.runtime.defaultMapId)
+        local normalizedMapId = tostring(mapId or ''):lower()
+        local profiles = self.regionalFieldEconomyProfiles or {}
+        local region = nil
+        for candidate in pairs(profiles) do
+            if normalizedMapId:find(candidate, 1, true) == 1 and (region == nil or #candidate > #region) then region = candidate end
+        end
+        if region == nil then
+            region = tostring(normalizedMapId:match('^[%w]+') or normalizedMapId):lower():gsub('[^%w]+', '_')
+            region = region:gsub('_+', '_'):gsub('^_', ''):gsub('_$', '')
+        end
+        local profile = profiles[region] or {}
+        local populationTarget = math.max(1, math.floor(tonumber(profile.populationTarget) or 36))
+        local congestionPressure = tonumber(profile.congestionPressure) or 1.0
+        local currentPopulation = self:getMapPopulation(mapId)
+        local populationRatio = currentPopulation / populationTarget
+        local staticIntensity = math.max(0, math.min(1, (congestionPressure - 0.9) / 0.45))
+        local dynamicIntensity = math.max(0, math.min(1, (populationRatio - 0.65) / 0.75))
+        local fieldPriceIntensity = math.max(0, math.min(1, (staticIntensity * 0.6) + (dynamicIntensity * 0.4)))
+        local listingFee, feeDetail = self.economySystem:quoteAuctionListingFee(player, itemId, quantity, price, {
+            correlationId = listingCorrelationId,
+            mapId = mapId,
+            region = region,
+            currentPopulation = currentPopulation,
+            populationTarget = populationTarget,
+            congestionPressure = congestionPressure,
+            fieldPriceIntensity = fieldPriceIntensity,
+        })
+        local feePaid, feeErr = self.economySystem:spendMesos(player, listingFee, 'auction_listing_fee', {
+            correlationId = listingCorrelationId,
+            mapId = mapId,
+            itemId = itemId,
+            quantity = math.max(1, math.floor(tonumber(quantity) or 1)),
+            listingPrice = math.max(1, math.floor(tonumber(price) or 1)),
+            listingValue = feeDetail and feeDetail.listingValue or nil,
+            dynamicPricing = feeDetail,
+        })
+        if not feePaid then return false, feeErr end
         local listing = self.auctionHouse:listItem(player, itemId, quantity, price)
         self:_emitOpsTelemetry('auction_listing', {
             playerId = player.id,
@@ -3620,6 +3729,7 @@ function ServerBootstrap.boot(basePath, config)
             quantity = quantity,
             price = price,
             listingId = listing.id,
+            fee = listingFee,
         })
         self.dailyWeeklySystem:mark(player, 'daily', 'auction:' .. tostring(itemId))
         return true, listing

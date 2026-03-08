@@ -1,0 +1,13 @@
+Completed one bounded isolated P0 cycle for `P0-1 Authoritative entity state sync`.
+
+Changes:
+- tightened `getStateDelta` to reject non-authoritative foreign scopes
+- tightened `reconcileRuntimeState` to reject foreign map reconciles for player-bound requests
+- attached explicit authority metadata to player, map, delta, and reconcile responses
+- extended `tests/msw_entity_sync_test.lua` with authority metadata assertions and foreign-scope rejection checks
+
+Verification:
+- `luac -p msw/world_server_bridge.lua`
+- `lua tests/msw_entity_sync_test.lua` blocked by existing `scripts/server_bootstrap.lua:905` (`function at line 497 has more than 60 upvalues`)
+- `lua tests/runtime_bridge_test.lua` blocked by existing `scripts/server_bootstrap.lua:905` (`function at line 497 has more than 60 upvalues`)
+- `lua tests/msw_manifest_expansion_test.lua`

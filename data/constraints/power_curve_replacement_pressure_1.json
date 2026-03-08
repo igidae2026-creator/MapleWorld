@@ -1,0 +1,25 @@
+{
+  "variant_id": "power_curve_replacement_pressure_1",
+  "violations": [
+    "economy_pressure_unbounded"
+  ],
+  "stability_score": 0.9,
+  "simulation_reference": {
+    "exp_hour_pressure": 0.9492,
+    "meso_hour_pressure": 0.7176,
+    "potion_burn": 0.9122,
+    "map_density_distribution": 0.8537,
+    "party_formation": 0.7344,
+    "congestion_profile": 0.824,
+    "item_replacement_pacing": 0.727,
+    "boss_reward_distortion": 0.8474,
+    "market_turnover_pressure": 0.8019,
+    "level_band_transition_pressure": 0.9353,
+    "field_competition_pressure": 0.9378,
+    "anti_bot_signal_quality": 0.9167,
+    "liveops_visibility": 0.875,
+    "interaction_traceability": 0.9,
+    "control_surface_efficiency": 0.9,
+    "reward_sink_coherence": 0.7851
+  }
+}

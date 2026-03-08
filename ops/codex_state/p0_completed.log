@@ -1,0 +1,5 @@
+RUN 1
+ITEM [ ] P0-01 server_bootstrap_full_boot_success
+LOG  /home/meta_os/MapleWorld/ops/codex_state/p0_runs/run_1.log
+TIME 2026-03-08T13:20:40+09:00
+
