@@ -1,0 +1,10 @@
+{
+  "domain": "guild",
+  "nodes": [
+    {
+      "id": "guild",
+      "layer": 1,
+      "domain": "guild"
+    }
+  ]
+}

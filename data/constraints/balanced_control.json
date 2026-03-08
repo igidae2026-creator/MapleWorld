@@ -1,0 +1,23 @@
+{
+  "variant_id": "balanced_control",
+  "violations": [
+    "economy_pressure_unbounded"
+  ],
+  "stability_score": 0.9,
+  "simulation_reference": {
+    "exp_hour_pressure": 0.7407,
+    "meso_hour_pressure": 0.7047,
+    "potion_burn": 0.8542,
+    "map_density_distribution": 0.7202,
+    "party_formation": 0.783,
+    "congestion_profile": 0.9778,
+    "item_replacement_pacing": 0.8769,
+    "boss_reward_distortion": 0.9179,
+    "market_turnover_pressure": 0.7373,
+    "level_band_transition_pressure": 0.8267,
+    "field_competition_pressure": 0.85,
+    "anti_bot_signal_quality": 0.875,
+    "liveops_visibility": 0.7917,
+    "interaction_traceability": 0.825
+  }
+}

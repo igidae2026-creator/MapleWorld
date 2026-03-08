@@ -1,0 +1,14 @@
+{
+  "agent": "simulator",
+  "instructions": "Write simulation candidate JSON describing operational pressure signals.",
+  "result": {
+    "candidate_path": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00001/simulator/simulation_report.json",
+    "metrics": {
+      "design_node_count": 74543,
+      "schema_item_count": 74543,
+      "balance_row_count": 21000,
+      "liveops_row_count": 2300,
+      "expansion_asset_count": 5100
+    }
+  }
+}

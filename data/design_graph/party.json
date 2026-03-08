@@ -1,0 +1,10 @@
+{
+  "domain": "party",
+  "nodes": [
+    {
+      "id": "party",
+      "layer": 1,
+      "domain": "party"
+    }
+  ]
+}

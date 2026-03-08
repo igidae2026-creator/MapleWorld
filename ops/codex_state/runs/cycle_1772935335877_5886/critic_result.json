@@ -1,0 +1,19 @@
+{
+  "agent": "critic",
+  "instructions": "# Critic\nReject low-quality synthetic output.\nFlag schema-path identities used as monsters, items, sinks, or drops; repetitive numeric cycles; abstract meta entities; placeholder curves; and formally valid but operationally fake CSVs.\nEmit deterministic rejection reasons and repair hints only.\n",
+  "result": {
+    "graph_candidate_count": 0,
+    "balance_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_balance.json",
+    "liveops_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_liveops.json",
+    "expansions_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_expansions.json",
+    "review": {
+      "rejected_count": 0,
+      "issues": [],
+      "useful_asset_ratio": 1.0
+    },
+    "repair": {
+      "repaired": false,
+      "reason": "no_repair_needed"
+    }
+  }
+}

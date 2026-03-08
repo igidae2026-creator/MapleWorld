@@ -1,0 +1,11 @@
+{
+  "role": "merger",
+  "kind": "merge_plan",
+  "cycle_id": "cycle_00001",
+  "nodes_to_merge": [],
+  "frontier_replacement": [],
+  "summary": {
+    "merge_count": 0,
+    "frontier_replacement_count": 0
+  }
+}

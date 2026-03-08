@@ -1,0 +1,11 @@
+{
+  "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+  "candidate_count": 0,
+  "emphasis_domains": [
+    "ai",
+    "boss",
+    "currency",
+    "dungeons",
+    "equipment"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "variant_id": "persistence_boundaries_score_repair_2",
+  "source": "weakest_dimension_repair",
+  "weakest_dimension_target": "persistence_boundaries_score",
+  "runtime_constraints": {
+    "platform": "maplestory_worlds",
+    "external_backend": false,
+    "server_authoritative": true
+  },
+  "control_parameters": {
+    "field_instance_player_cap": 32,
+    "congestion_routing_threshold": 0.78,
+    "party_incentive_coefficient": 1.14,
+    "potion_sink_pressure": 0.23,
+    "upgrade_cost_curve": 1.0,
+    "market_tax_rate": 0.092,
+    "boss_reward_cadence": 0.68,
+    "dungeon_entry_pressure": 0.55,
+    "spawn_density_scaling": 1.0,
+    "rare_drop_control": 0.82,
+    "save_batch_seconds": 5,
+    "rollback_window_minutes": 12,
+    "event_ordering_buffer_ms": 120,
+    "live_tuning_points": 9,
+    "routing_owner_depth": 1.04,
+    "economy_owner_depth": 1.03,
+    "authority_entrypoints": 1.0,
+    "persistence_isolation": 0.88,
+    "rollback_isolation": 0.86,
+    "operator_surface_depth": 0.84,
+    "subsystem_overlap": 0.18,
+    "hidden_mutation_risk": 0.16,
+    "complexity_cost": 0.2,
+    "social_density_support": 0.84
+  }
+}

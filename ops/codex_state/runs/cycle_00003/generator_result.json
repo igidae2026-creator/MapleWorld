@@ -1,0 +1,8 @@
+{
+  "agent": "generator",
+  "instructions": "# Generator\nWrite candidate JSON batches for MapleLand-class operational design assets.\nFavor concrete tuning parameters and deep hierarchy.\n",
+  "result": {
+    "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "candidate_count": 2236
+  }
+}

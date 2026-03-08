@@ -1,0 +1,10 @@
+{
+  "domain": "spawning",
+  "nodes": [
+    {
+      "id": "spawning",
+      "layer": 1,
+      "domain": "spawning"
+    }
+  ]
+}

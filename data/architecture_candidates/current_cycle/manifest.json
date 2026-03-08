@@ -1,0 +1,9 @@
+{
+  "variant_count": 4,
+  "variants": [
+    "baseline",
+    "rollback_boundary_clarity_repair_1",
+    "rollback_boundary_clarity_repair_2",
+    "balanced_control"
+  ]
+}

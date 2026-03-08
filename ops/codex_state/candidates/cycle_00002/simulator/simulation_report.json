@@ -1,0 +1,19 @@
+{
+  "role": "simulator",
+  "kind": "simulation_report",
+  "cycle_id": "cycle_00002",
+  "metrics": {
+    "design_node_count": 74543,
+    "schema_item_count": 74543,
+    "balance_row_count": 21000,
+    "liveops_row_count": 2300,
+    "expansion_asset_count": 5100
+  },
+  "pressure_signals": [
+    "spawn_density_modifier",
+    "market_tax_override",
+    "rare_drop_distribution",
+    "repair_cost_curve",
+    "party_exp_split"
+  ]
+}

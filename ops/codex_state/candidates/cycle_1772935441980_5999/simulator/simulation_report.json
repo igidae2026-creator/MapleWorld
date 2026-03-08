@@ -1,0 +1,14 @@
+{
+  "metrics": {
+    "progression_pacing_drift": 0.2754,
+    "sink_source_ratio": 0.4851,
+    "map_congestion_pressure": 1.1,
+    "solo_party_route_pressure": 1.2914,
+    "boss_reward_inflation_pressure": 1.1189,
+    "item_replacement_pressure": 1.0,
+    "drop_rarity_compression": 3.9604,
+    "power_curve_bottleneck_structure": 216.4185,
+    "equipment_failure_pressure": 0.1807
+  },
+  "status": "stable"
+}

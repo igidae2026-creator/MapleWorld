@@ -1,0 +1,36 @@
+{
+  "variant_id": "rollback_boundary_clarity_repair_2",
+  "source": "weakest_dimension_repair",
+  "weakest_dimension_target": "rollback_boundary_clarity",
+  "runtime_constraints": {
+    "platform": "maplestory_worlds",
+    "external_backend": false,
+    "server_authoritative": true
+  },
+  "control_parameters": {
+    "field_instance_player_cap": 30,
+    "congestion_routing_threshold": 0.75,
+    "party_incentive_coefficient": 1.15,
+    "potion_sink_pressure": 0.25,
+    "upgrade_cost_curve": 1.02,
+    "market_tax_rate": 0.094,
+    "boss_reward_cadence": 0.64,
+    "dungeon_entry_pressure": 0.55,
+    "spawn_density_scaling": 1.0,
+    "rare_drop_control": 0.84,
+    "save_batch_seconds": 3,
+    "rollback_window_minutes": 11,
+    "event_ordering_buffer_ms": 108,
+    "live_tuning_points": 10,
+    "routing_owner_depth": 1.02,
+    "economy_owner_depth": 1.02,
+    "authority_entrypoints": 1.06,
+    "persistence_isolation": 0.91,
+    "rollback_isolation": 0.9,
+    "operator_surface_depth": 0.93,
+    "subsystem_overlap": 0.08,
+    "hidden_mutation_risk": 0.06,
+    "complexity_cost": 0.09,
+    "social_density_support": 0.9
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "domain": "persistence",
+  "items": [
+    {
+      "id": "persistence",
+      "type": "float",
+      "range": [
+        0.0,
+        1.0
+      ],
+      "default": 0.5,
+      "distribution": "weighted",
+      "tuning_priority": "persistence"
+    }
+  ]
+}

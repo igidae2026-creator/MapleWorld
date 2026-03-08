@@ -1,0 +1,11 @@
+{
+  "agent": "merger",
+  "instructions": "# Merger\nPrepare merge-ready candidate plans only. Python scripts perform the actual merge and shard routing.\n",
+  "result": {
+    "graph_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "schema_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_schema.json",
+    "balance_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_balance.json",
+    "liveops_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_liveops.json",
+    "expansions_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_expansions.json"
+  }
+}

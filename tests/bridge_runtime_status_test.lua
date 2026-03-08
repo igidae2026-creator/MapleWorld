@@ -20,6 +20,7 @@ assert(topology and topology.ok == true and topology.data and topology.data.topo
 local controlResp = bridge:getControlPlaneReport()
 local control = bridge.runtimeAdapter:decodeData(controlResp)
 assert(control and control.ok == true and control.data and control.data.runtimeStatus, 'bridge control-plane report missing')
+assert(control.data.operatorSurface ~= nil, 'bridge control-plane operator surface missing')
 
 local eventResp = bridge:getEventTruth()
 local eventTruth = bridge.runtimeAdapter:decodeData(eventResp)

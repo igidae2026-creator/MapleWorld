@@ -1,0 +1,32 @@
+{
+  "role": "supervisor",
+  "kind": "cycle_summary",
+  "cycle_id": "cycle_00002",
+  "status": "complete",
+  "artifacts": {
+    "generator": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/generator/design_node_batch.json",
+    "critic": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/critic/candidate_review.json",
+    "merger": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/merger/merge_plan.json",
+    "simulator": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/simulator/simulation_report.json",
+    "graph_manifest": "data/design_graph/manifest.json",
+    "schema_manifest": "data/design_schema/schema_manifest.json",
+    "balance_manifest": "data/balance/manifest.json",
+    "liveops_manifest": "data/liveops/manifest.json",
+    "expansions_manifest": "data/expansions/manifest.json"
+  },
+  "progress": {
+    "node_count": 74543,
+    "target_nodes": 10000,
+    "target_design_nodes": 10000,
+    "target_schema_items": 10000,
+    "target_balance_rows": 20000,
+    "target_liveops_rows": 2000,
+    "target_expansion_assets": 5000,
+    "design_node_count": 74543,
+    "schema_item_count": 74543,
+    "balance_row_count": 21000,
+    "liveops_row_count": 2300,
+    "expansion_asset_count": 5100,
+    "all_targets_met": true
+  }
+}

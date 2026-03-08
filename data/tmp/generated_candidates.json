@@ -1,0 +1,16 @@
+{
+  "role": "generator",
+  "kind": "design_node_batch",
+  "emphasis_domains": [
+    "ai",
+    "boss",
+    "currency",
+    "dungeons",
+    "equipment"
+  ],
+  "frontier": [],
+  "items": [],
+  "accepted_count": 0,
+  "rejected_count": 0,
+  "rejected": []
+}

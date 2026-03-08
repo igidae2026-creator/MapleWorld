@@ -1,0 +1,36 @@
+{
+  "variant_id": "balanced_control",
+  "source": "bounded_exploration",
+  "weakest_dimension_target": "rollback_boundary_clarity",
+  "runtime_constraints": {
+    "platform": "maplestory_worlds",
+    "external_backend": false,
+    "server_authoritative": true
+  },
+  "control_parameters": {
+    "field_instance_player_cap": 29,
+    "congestion_routing_threshold": 0.74,
+    "party_incentive_coefficient": 1.16,
+    "potion_sink_pressure": 0.26,
+    "upgrade_cost_curve": 1.04,
+    "market_tax_rate": 0.096,
+    "boss_reward_cadence": 0.64,
+    "dungeon_entry_pressure": 0.55,
+    "spawn_density_scaling": 1.0,
+    "rare_drop_control": 0.86,
+    "save_batch_seconds": 4,
+    "rollback_window_minutes": 12,
+    "event_ordering_buffer_ms": 110,
+    "live_tuning_points": 10,
+    "routing_owner_depth": 1.02,
+    "economy_owner_depth": 1.02,
+    "authority_entrypoints": 1.06,
+    "persistence_isolation": 0.91,
+    "rollback_isolation": 0.86,
+    "operator_surface_depth": 0.95,
+    "subsystem_overlap": 0.09,
+    "hidden_mutation_risk": 0.06,
+    "complexity_cost": 0.09,
+    "social_density_support": 0.92
+  }
+}

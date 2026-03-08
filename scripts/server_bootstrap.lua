@@ -261,6 +261,8 @@ local function requireWorldConfig()
             pressureReplayThreshold = 1,
             pressureInstabilityThreshold = 3,
             pressureLowDiversityThreshold = 4,
+            maxPlayersPerChannel = 100,
+            maxWorldSnapshots = 8,
             safeModeSeverityThreshold = 3,
             rewardQuarantineSeverityThreshold = 2,
             migrationBlockSeverityThreshold = 2,
@@ -859,10 +861,14 @@ function ServerBootstrap.boot(basePath, config)
     world.cluster:registerChannel(runtimeIdentity.channelId, {})
     world.shardRegistry = ShardRegistry.new()
     world.shardRegistry:register('shard-main', { worldId = runtimeIdentity.worldId, channelId = runtimeIdentity.channelId })
-    world.channelRouter = ChannelRouter.new({ cluster = world.cluster })
+    world.channelRouter = ChannelRouter.new({
+        cluster = world.cluster,
+        congestionThreshold = worldConfig.runtime and worldConfig.runtime.pressureDensityThreshold,
+        perChannelPlayerCap = worldConfig.runtime and worldConfig.runtime.maxPlayersPerChannel,
+    })
     world.failover = WorldFailover.new({ cluster = world.cluster })
-    world.sessionOrchestrator = SessionOrchestrator.new()
-    world.snapshotManager = SnapshotManager.new()
+    world.sessionOrchestrator = SessionOrchestrator.new({ time = runtimeClock })
+    world.snapshotManager = SnapshotManager.new({ time = runtimeClock, maxSnapshots = worldConfig.runtime and worldConfig.runtime.maxWorldSnapshots })
     world.entityIndex = EntityIndex.new()
     world.eventBatcher = EventBatcher.new({ maxBatch = 24 })
     world.performanceCounters = PerformanceCounters.new()
@@ -880,9 +886,19 @@ function ServerBootstrap.boot(basePath, config)
     world.anomalyScoring = AnomalyScoring.new()
     world.distributedRateLimit = DistributedRateLimit.new()
     world.auditLog = AuditLog.new()
-    world.policyEngine = PolicyEngine.new({ thresholds = { safeMode = 10, channelLoad = 75 } })
+    world.policyEngine = PolicyEngine.new({
+        thresholds = {
+            safeMode = 10,
+            channelLoad = 75,
+            duplicateRisk = 2,
+            rewardInflation = 8,
+            freezeTransfers = 3,
+            freezeRewards = 12,
+            lowSinkPressure = 0,
+        },
+    })
     world.bootstrapProfiles = BootstrapProfiles
-    world.adminConsole = AdminConsole.new({ world = world })
+    world.adminConsole = AdminConsole.new({ world = world, adminTools = adminTools, healthcheck = healthcheck })
     world.gmCommandService = GMCommandService.new({ world = world })
     world.liveEventController = LiveEventController.new({ world = world })
     itemSystem.ledgerSink = function(event) return world:appendLedgerEvent(event) end
@@ -1293,6 +1309,8 @@ function ServerBootstrap.boot(basePath, config)
     function world:_emitOpsTelemetry(kind, payload)
         self.telemetryPipeline:emit(kind, payload)
         self.eventBatcher:push({ event = kind, payload = payload, at = self:_now() })
+        self.metricsAggregator:add('telemetry_events_total', 1)
+        self.metricsAggregator:recordSection('last_telemetry_event', { kind = kind, payload = deepcopy(payload) })
     end
 
     function world:_runStabilityGuards()
@@ -2723,7 +2741,12 @@ function ServerBootstrap.boot(basePath, config)
         if loaded then player.dirty = false else player.dirty = true end
         if not player.position then self:_setPlayerPosition(player, self:_defaultMapPosition(player.currentMapId), not self.strictRuntimeBoundary) end
         self.players[playerId] = player
-        self.sessionOrchestrator:bind(playerId, { channelId = self.runtimeIdentity.channelId, runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId })
+        self.sessionOrchestrator:bind(playerId, {
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            currentMapId = player.currentMapId,
+            transferState = 'idle',
+        })
         self.mapPlayers[player.currentMapId] = self.mapPlayers[player.currentMapId] or {}
         self.mapPlayers[player.currentMapId][playerId] = true
         self:_recordTruthEvent('player_loaded', { playerId = playerId, loaded = loaded ~= nil, scope = deepcopy(player.runtimeScope) }, {
@@ -3430,12 +3453,20 @@ function ServerBootstrap.boot(basePath, config)
         if not actionOk then return false, actionErr end
         local ok, err = self:setPlayerMap(player, mapId)
         if not ok then return false, err end
-        local routedChannel = self.channelRouter:route(mapId)
+        local routeDecision, routedChannel = self.channelRouter:routeDecision(mapId)
+        self.sessionOrchestrator:completeTransfer(player.id, {
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            currentMapId = mapId,
+            sourceMapId = source,
+            targetChannelId = routeDecision and routeDecision.chosenChannelId or self.runtimeIdentity.channelId,
+        })
         self:_recordRuntimeEvent('map_route_committed', {
             playerId = player.id,
             fromMapId = source,
             toMapId = mapId,
             routedChannelId = routedChannel and routedChannel.id or self.runtimeIdentity.channelId,
+            routingDecision = deepcopy(routeDecision),
             source_scope = deepcopy(player.runtimeScope),
             target_scope = {
                 worldId = self.runtimeIdentity.worldId,
@@ -3628,10 +3659,33 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:channelTransfer(player, destinationMapId)
-        local channel = self.channelRouter:route(destinationMapId)
+        local routeDecision, channel = self.channelRouter:routeDecision(destinationMapId)
         if not channel then return false, 'channel_not_found' end
-        self.sessionOrchestrator:bind(player.id, { channelId = channel.id, pendingMapId = destinationMapId })
-        return true, { channelId = channel.id, mapId = destinationMapId }
+        self.sessionOrchestrator:stageTransfer(player.id, {
+            channelId = self.runtimeIdentity.channelId,
+            runtimeInstanceId = self.runtimeIdentity.runtimeInstanceId,
+            sourceMapId = player and player.currentMapId or nil,
+            pendingMapId = destinationMapId,
+            targetChannelId = channel.id,
+            routingDecision = routeDecision,
+        })
+        self:_recordTruthEvent('channel_transfer_staged', {
+            playerId = player and player.id or nil,
+            sourceMapId = player and player.currentMapId or nil,
+            targetMapId = destinationMapId,
+            sourceChannelId = self.runtimeIdentity.channelId,
+            targetChannelId = channel.id,
+            routingDecision = deepcopy(routeDecision),
+        }, {
+            truthType = 'routing.channel_transfer',
+            playerId = player and player.id or nil,
+            mapId = destinationMapId,
+        })
+        return true, {
+            channelId = channel.id,
+            mapId = destinationMapId,
+            routingDecision = routeDecision,
+        }
     end
 
     function world:validateContent()
@@ -3670,42 +3724,23 @@ function ServerBootstrap.boot(basePath, config)
     end
 
     function world:adminStatus()
+        local operator = self.adminTools:getOperatorSnapshot(self)
         local status = self.adminConsole:status()
         local consistent, issues = self.consistencyValidator:validateWorld(self)
-        local anomalyScore = self.anomalyScoring:score({
-            duplicateRisk = self.pressure.duplicateRiskPressure or 0,
-            replay = self.pressure.replayPressure or 0,
-            exploit = #(self.exploitMonitor.incidents or {}),
-        })
-        local policy = self.policyEngine:evaluate({
-            anomalyScore = anomalyScore,
-            channelLoad = self:getActivePlayerCount(),
-        })
         return {
             runtime = status,
             consistent = consistent,
             issues = issues,
-            policy = policy,
+            policy = operator and operator.policy or nil,
             replay = self:replayDeterminismReport(),
-            stability = self:getStabilityReport(),
+            stability = operator and operator.stability or self:getStabilityReport(),
             performance = self.performanceCounters:snapshot(),
             batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
         }
     end
 
     function world:getControlPlaneReport()
-        return {
-            cluster = self.cluster,
-            shards = self.shardRegistry.shards,
-            sessions = self.sessionOrchestrator.sessions,
-            failover = self.failover.history,
-            audit = self.auditLog.entries,
-            telemetry = self.telemetryPipeline.events,
-            performance = self.performanceCounters:snapshot(),
-            batches = { queued = #self.eventBatcher.queue, flushed = #self.eventBatcher.flushed },
-            liveEvents = self.liveEventController:status(),
-            stability = self:getStabilityReport(),
-        }
+        return self.adminTools:getControlPlaneReport(self)
     end
 
     function world:getEconomyReport()
@@ -3716,6 +3751,7 @@ function ServerBootstrap.boot(basePath, config)
             priceHistory = deepcopy(self.auctionHouse.priceHistory),
             priceSignals = deepcopy(self.economySystem.priceSignals),
             sinkPressure = self.economySystem.sinkPressure,
+            control = self.economySystem:controlReport(),
         }
     end
 
@@ -3745,6 +3781,13 @@ function ServerBootstrap.boot(basePath, config)
         world.runtimeProfiler:sample('scheduler_jobs', countTableKeys(world.scheduler.jobs))
         world.runtimeProfiler:sample('event_queue_depth', #world.eventBatcher.queue)
         world.metricsAggregator:add('players_seen', world:getActivePlayerCount())
+        world.metricsAggregator:set('active_players', world:getActivePlayerCount())
+        world.metricsAggregator:set('pending_world_saves', world._pendingWorldSaveCount)
+        world.metricsAggregator:set('duplicate_risk', world.pressure.duplicateRiskPressure or 0)
+        world.metricsAggregator:set('reward_inflation', world.pressure.rewardInflationPressure or 0)
+        world.metricsAggregator:recordSection('routing', world.channelRouter:latestDecision())
+        world.metricsAggregator:recordSection('economy', world.economySystem:controlReport())
+        world.metricsAggregator:recordSection('savePlan', deepcopy(world.savePlan))
         world.performanceCounters:record('entity_count', activeEntities)
         world.performanceCounters:record('combat_throughput', #world.telemetryPipeline.events)
         world.performanceCounters:record('batch_queue_depth', #world.eventBatcher.queue)
@@ -3752,7 +3795,12 @@ function ServerBootstrap.boot(basePath, config)
         world.performanceCounters:record('scheduler_jobs', countTableKeys(world.scheduler.jobs))
         world.performanceCounters:record('duplication_issues', #(guardReport.duplication.issues or {}))
         world.performanceCounters:record('exploit_incidents', #(world.exploitMonitor.incidents or {}))
-        world.snapshotManager:capture(world:snapshotWorldState())
+        world.snapshotManager:capture(world:snapshotWorldState(), {
+            reason = 'world_ops_tick',
+            savePlan = world.savePlan,
+            pendingSaveCount = world._pendingWorldSaveCount,
+            runtimeIdentity = world.runtimeIdentity,
+        })
         world.eventBatcher:flush()
         world.runtimeProfiler:time('world_ops_tick_ms', math.floor((os.clock() - startedAt) * 1000))
     end)

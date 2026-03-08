@@ -1,0 +1,168 @@
+{
+  "cycle_id": "cycle_1772933923531_3671",
+  "emphasis_domains": [
+    "ai",
+    "boss",
+    "currency",
+    "dungeons",
+    "equipment"
+  ],
+  "generator_result": {
+    "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "candidate_count": 0
+  },
+  "critic_result": {
+    "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "candidate_count": 0,
+    "frontier_count": 0
+  },
+  "merger_result": {
+    "graph_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "schema_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_schema.json",
+    "balance_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_balance.json",
+    "liveops_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_liveops.json",
+    "expansions_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_expansions.json"
+  },
+  "score_before_merge": {
+    "design_candidate_score": 0.0,
+    "schema_candidate_score": 0.0,
+    "liveops_candidate_score": 0.0,
+    "simulation": {
+      "signals": {
+        "progression_pacing": 1.0,
+        "economy_balance": 1.0,
+        "drop_pressure": 1.0,
+        "map_saturation": 1.0,
+        "party_vs_solo_pressure": 0.89,
+        "boss_reward_cadence": 0.83,
+        "item_lifecycle_pressure": 0.78
+      },
+      "status": "stable"
+    },
+    "rejected_design_candidates": 0
+  },
+  "simulation_before_merge": {
+    "signals": {
+      "progression_pacing": 1.0,
+      "economy_balance": 1.0,
+      "drop_pressure": 1.0,
+      "map_saturation": 1.0,
+      "party_vs_solo_pressure": 0.89,
+      "boss_reward_cadence": 0.83,
+      "item_lifecycle_pressure": 0.78
+    },
+    "status": "stable"
+  },
+  "graph_stats": {
+    "node_count": 74543,
+    "frontier_count": 0,
+    "max_layer": 4,
+    "applied_count": 0
+  },
+  "schema_candidate_count": 74543,
+  "schema_stats": {
+    "schema_item_count": 74543
+  },
+  "balance_sections": [
+    "bosses",
+    "drops",
+    "dungeons",
+    "economy",
+    "equipment",
+    "fields",
+    "items",
+    "monsters",
+    "progression"
+  ],
+  "balance_stats": {
+    "balance_row_count": 28000,
+    "target_balance_rows": 20000,
+    "files": [
+      "data/balance/progression/level_curve.csv",
+      "data/balance/progression/party_windows.csv",
+      "data/balance/monsters/monster_stats.csv",
+      "data/balance/drops/drop_table.csv",
+      "data/balance/economy/sinks.csv",
+      "data/balance/fields/population_balance.csv",
+      "data/balance/fields/zone_ladder.csv",
+      "data/balance/items/item_stats.csv",
+      "data/balance/equipment/upgrade_curves.csv",
+      "data/balance/bosses/boss_rewards.csv",
+      "data/balance/dungeons/dungeon_cadence.csv"
+    ]
+  },
+  "liveops_sections": [
+    "emergency_controls",
+    "overrides",
+    "rotations"
+  ],
+  "liveops_stats": {
+    "liveops_row_count": 2300
+  },
+  "expansion_sections": [
+    "bosses",
+    "events",
+    "gear",
+    "monsters",
+    "regions"
+  ],
+  "expansion_stats": {
+    "expansion_asset_count": 5100
+  },
+  "progress": {
+    "node_count": 74543,
+    "target_nodes": 10000,
+    "target_design_nodes": 10000,
+    "target_schema_items": 10000,
+    "target_balance_rows": 20000,
+    "target_liveops_rows": 2000,
+    "target_expansion_assets": 5000,
+    "design_node_count": 74543,
+    "schema_item_count": 74543,
+    "balance_row_count": 28000,
+    "liveops_row_count": 2300,
+    "expansion_asset_count": 5100,
+    "all_targets_met": true,
+    "design_nodes": 74543,
+    "schema_items": 74543,
+    "balance_rows": 28000,
+    "liveops_rows": 2300,
+    "expansion_assets": 5100,
+    "last_run_added": 0,
+    "last_status": "complete",
+    "project_complete": true
+  },
+  "supervisor_result": {
+    "status": "complete",
+    "progress": {
+      "node_count": 74543,
+      "target_nodes": 10000,
+      "target_design_nodes": 10000,
+      "target_schema_items": 10000,
+      "target_balance_rows": 20000,
+      "target_liveops_rows": 2000,
+      "target_expansion_assets": 5000,
+      "design_node_count": 74543,
+      "schema_item_count": 74543,
+      "balance_row_count": 28000,
+      "liveops_row_count": 2300,
+      "expansion_asset_count": 5100,
+      "all_targets_met": true,
+      "design_nodes": 74543,
+      "schema_items": 74543,
+      "balance_rows": 28000,
+      "liveops_rows": 2300,
+      "expansion_assets": 5100,
+      "last_run_added": 0,
+      "last_status": "complete",
+      "project_complete": true
+    },
+    "emphasis_domains": [
+      "ai",
+      "boss",
+      "currency",
+      "dungeons",
+      "equipment"
+    ]
+  }
+}

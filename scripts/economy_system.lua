@@ -285,4 +285,38 @@ function EconomySystem:snapshot()
     }
 end
 
+function EconomySystem:controlReport()
+    local correlatedCount = 0
+    local rollbackTaggedCount = 0
+    local idempotentCount = 0
+    for _, entry in ipairs(self.transactions or {}) do
+        local meta = entry.meta or {}
+        if meta.correlationId ~= nil then correlatedCount = correlatedCount + 1 end
+        if meta.rollbackOf ~= nil or meta.compensationOf ~= nil then rollbackTaggedCount = rollbackTaggedCount + 1 end
+        if meta.idempotencyKey ~= nil then idempotentCount = idempotentCount + 1 end
+    end
+    return {
+        tuning = {
+            npcSellRate = self.npcSellRate,
+            maxMesos = self.maxMesos,
+            suspiciousTransactionMesos = self.suspiciousTransactionMesos,
+            maxPlayerLedgerEntries = self.maxPlayerLedgerEntries,
+        },
+        observability = {
+            sinkPressure = self.sinkPressure,
+            faucetReasons = self.faucets,
+            sinkReasons = self.sinks,
+            trackedPriceSignals = self.priceSignals,
+            recentTransactions = self.transactions,
+        },
+        mutationBoundaries = {
+            recentTransactionCount = #self.transactions,
+            correlatedTransactionCount = correlatedCount,
+            rollbackTaggedCount = rollbackTaggedCount,
+            idempotentTransactionCount = idempotentCount,
+            latestTransaction = self.transactions[#self.transactions],
+        },
+    }
+end
+
 return EconomySystem

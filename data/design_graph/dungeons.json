@@ -1,0 +1,10 @@
+{
+  "domain": "dungeons",
+  "nodes": [
+    {
+      "id": "dungeons",
+      "layer": 1,
+      "domain": "dungeons"
+    }
+  ]
+}

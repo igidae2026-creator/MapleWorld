@@ -1,0 +1,14 @@
+{
+  "variant_id": "subsystem_overlap_risk_repair_1",
+  "violations": [],
+  "stability_score": 1.0,
+  "simulation_reference": {
+    "exp_hour_stability": 0.9722,
+    "meso_hour_pressure": 0.9062,
+    "potion_burn_pressure": 0.8,
+    "map_population_spread": 0.9028,
+    "party_formation_tendency": 0.9429,
+    "market_activity": 0.8722,
+    "reward_cadence_pressure": 1.0
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "agent": "supervisor",
+  "instructions": "Write cycle summary JSON and final status only.",
+  "result": {
+    "candidate_path": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/supervisor/cycle_summary.json",
+    "status": "complete"
+  }
+}

@@ -1,0 +1,6604 @@
+{
+  "items": [
+    {
+      "id": "bronze_sword_bundle_0001",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0002",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0003",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0004",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0005",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0006",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0007",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0008",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0009",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0010",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0011",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0012",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0013",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0014",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0015",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0016",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0017",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0018",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0019",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0020",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0021",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0022",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0023",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0024",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0025",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0026",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0027",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0028",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0029",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0030",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0031",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0032",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0033",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0034",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0035",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0036",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0037",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0038",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0039",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0040",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0041",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0042",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0043",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0044",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0045",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0046",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0047",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0048",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0049",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0050",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0051",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0052",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0053",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0054",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0055",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0056",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0057",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0058",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0059",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0060",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0061",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0062",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0063",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0064",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0065",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0066",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0067",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0068",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0069",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0070",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0071",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0072",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0073",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0074",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0075",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0076",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0077",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0078",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0079",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0080",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0081",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0082",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0083",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0084",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0085",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0086",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0087",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0088",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0089",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0090",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0091",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0092",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0093",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0094",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0095",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0096",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0097",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0098",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0099",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0100",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0101",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0102",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0103",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0104",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0105",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0106",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0107",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0108",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0109",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0110",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0111",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0112",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0113",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0114",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0115",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0116",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0117",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0118",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0119",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0120",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0121",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0122",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0123",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0124",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0125",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0126",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0127",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0128",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0129",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0130",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0131",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0132",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0133",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0134",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0135",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0136",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0137",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0138",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0139",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0140",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0141",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0142",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0143",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0144",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0145",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0146",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0147",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0148",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0149",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0150",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0151",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0152",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0153",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0154",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0155",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0156",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0157",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0158",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0159",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0160",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0161",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0162",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0163",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0164",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0165",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0166",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0167",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0168",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0169",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0170",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0171",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0172",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0173",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0174",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0175",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0176",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0177",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0178",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0179",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0180",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0181",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0182",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0183",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0184",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0185",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0186",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0187",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0188",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0189",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0190",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0191",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0192",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0193",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0194",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0195",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0196",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0197",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0198",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0199",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0200",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0201",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0202",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0203",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0204",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0205",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0206",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0207",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0208",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0209",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0210",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0211",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0212",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0213",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0214",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0215",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0216",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0217",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0218",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0219",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0220",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0221",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0222",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0223",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0224",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0225",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0226",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0227",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0228",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0229",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0230",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0231",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0232",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0233",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0234",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0235",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0236",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0237",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0238",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0239",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0240",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0241",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0242",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0243",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0244",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0245",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0246",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0247",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0248",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0249",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0250",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0251",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0252",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0253",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0254",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0255",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0256",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0257",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0258",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0259",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0260",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0261",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0262",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0263",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0264",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0265",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0266",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0267",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0268",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0269",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0270",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0271",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0272",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0273",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0274",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0275",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0276",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0277",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0278",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0279",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0280",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0281",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0282",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0283",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0284",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0285",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0286",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0287",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0288",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0289",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0290",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0291",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0292",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0293",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0294",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0295",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0296",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0297",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0298",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0299",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0300",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0301",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0302",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0303",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0304",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0305",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0306",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0307",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0308",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0309",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0310",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0311",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0312",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0313",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0314",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0315",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0316",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0317",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0318",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0319",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0320",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0321",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0322",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0323",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0324",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0325",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0326",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0327",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0328",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0329",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0330",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0331",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0332",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0333",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0334",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0335",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0336",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0337",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0338",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0339",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0340",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0341",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0342",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0343",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0344",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0345",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0346",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0347",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0348",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0349",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0350",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0351",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0352",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0353",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0354",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0355",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0356",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0357",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0358",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0359",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0360",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0361",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0362",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0363",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0364",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0365",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0366",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0367",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0368",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0369",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0370",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0371",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0372",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0373",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0374",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0375",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0376",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0377",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0378",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0379",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0380",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0381",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0382",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0383",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0384",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0385",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0386",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0387",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0388",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0389",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0390",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0391",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0392",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0393",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0394",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0395",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0396",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0397",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0398",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0399",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0400",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0401",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0402",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0403",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0404",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0405",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0406",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0407",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0408",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0409",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0410",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0411",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0412",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0413",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0414",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0415",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0416",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0417",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0418",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0419",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0420",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0421",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0422",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0423",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0424",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0425",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0426",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0427",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0428",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0429",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0430",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0431",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0432",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0433",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0434",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0435",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0436",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0437",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0438",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0439",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0440",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0441",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0442",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0443",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0444",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0445",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0446",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0447",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0448",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0449",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0450",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0451",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0452",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0453",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0454",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0455",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0456",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0457",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0458",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0459",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0460",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0461",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0462",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0463",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0464",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0465",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0466",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0467",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0468",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0469",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0470",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0471",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0472",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0473",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0474",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0475",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0476",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0477",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0478",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0479",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0480",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0481",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0482",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0483",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0484",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0485",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0486",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0487",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0488",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0489",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0490",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0491",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0492",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0493",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0494",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0495",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0496",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0497",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0498",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0499",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0500",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0501",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0502",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0503",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0504",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0505",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0506",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0507",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0508",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0509",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0510",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0511",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0512",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0513",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0514",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0515",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0516",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0517",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0518",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0519",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0520",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0521",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0522",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0523",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0524",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0525",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0526",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0527",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0528",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0529",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0530",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0531",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0532",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0533",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0534",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0535",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0536",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0537",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0538",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0539",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0540",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0541",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0542",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0543",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0544",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0545",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0546",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0547",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0548",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0549",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0550",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0551",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0552",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0553",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0554",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0555",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0556",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0557",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0558",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0559",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0560",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0561",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0562",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0563",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0564",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0565",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0566",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0567",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0568",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0569",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0570",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0571",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0572",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0573",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0574",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0575",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0576",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0577",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0578",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0579",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0580",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0581",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0582",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0583",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0584",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0585",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0586",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0587",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0588",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0589",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0590",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0591",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0592",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0593",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0594",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0595",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0596",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0597",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0598",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0599",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0600",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0601",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0602",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0603",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0604",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0605",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0606",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0607",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0608",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0609",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0610",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0611",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0612",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0613",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0614",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0615",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0616",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0617",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0618",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0619",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0620",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0621",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0622",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0623",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0624",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0625",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0626",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0627",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0628",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0629",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0630",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0631",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0632",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0633",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0634",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0635",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0636",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0637",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0638",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0639",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0640",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0641",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0642",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0643",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0644",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0645",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0646",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0647",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0648",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0649",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0650",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0651",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0652",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0653",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0654",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0655",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0656",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0657",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0658",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0659",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0660",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0661",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0662",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0663",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0664",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0665",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0666",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0667",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0668",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0669",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0670",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0671",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0672",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0673",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0674",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0675",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0676",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0677",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0678",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0679",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0680",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0681",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0682",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0683",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0684",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0685",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0686",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0687",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0688",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0689",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0690",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0691",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0692",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0693",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0694",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0695",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0696",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0697",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0698",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0699",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0700",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0701",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0702",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0703",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0704",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0705",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0706",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0707",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0708",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0709",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0710",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0711",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0712",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0713",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0714",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0715",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0716",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0717",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0718",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0719",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0720",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0721",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0722",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0723",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0724",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0725",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0726",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0727",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0728",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0729",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0730",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0731",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0732",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0733",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0734",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0735",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0736",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0737",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0738",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0739",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0740",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0741",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0742",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0743",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0744",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0745",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0746",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0747",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0748",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0749",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0750",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0751",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0752",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0753",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0754",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0755",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0756",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0757",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0758",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0759",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0760",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0761",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0762",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0763",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0764",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0765",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0766",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0767",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0768",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0769",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0770",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0771",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0772",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0773",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0774",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0775",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0776",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0777",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0778",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0779",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0780",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0781",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0782",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0783",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0784",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0785",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0786",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0787",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0788",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0789",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0790",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0791",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0792",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0793",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0794",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0795",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0796",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0797",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0798",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0799",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0800",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0801",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0802",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0803",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0804",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0805",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0806",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0807",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0808",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0809",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0810",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0811",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0812",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0813",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0814",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0815",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0816",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0817",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0818",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0819",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0820",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0821",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0822",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0823",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0824",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0825",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0826",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0827",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0828",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0829",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0830",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0831",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0832",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0833",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0834",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0835",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0836",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0837",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0838",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0839",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0840",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0841",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0842",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0843",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0844",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0845",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0846",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0847",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0848",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0849",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0850",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0851",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0852",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0853",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0854",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0855",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0856",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0857",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0858",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0859",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0860",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0861",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0862",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0863",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0864",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0865",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0866",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0867",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0868",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0869",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0870",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0871",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0872",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0873",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0874",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0875",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0876",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0877",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0878",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0879",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0880",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0881",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0882",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0883",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0884",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0885",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0886",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0887",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0888",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0889",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0890",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0891",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0892",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0893",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0894",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0895",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0896",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0897",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0898",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0899",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0900",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0901",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0902",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0903",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0904",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0905",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0906",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0907",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0908",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0909",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0910",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0911",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0912",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0913",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0914",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0915",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0916",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0917",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0918",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0919",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0920",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0921",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0922",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0923",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0924",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0925",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0926",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0927",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0928",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0929",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0930",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0931",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0932",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0933",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0934",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0935",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0936",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0937",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0938",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0939",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0940",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0941",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0942",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0943",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0944",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0945",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0946",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0947",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0948",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0949",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0950",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0951",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0952",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0953",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0954",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0955",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0956",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0957",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0958",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0959",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0960",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0961",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0962",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0963",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0964",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0965",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0966",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0967",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0968",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0969",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0970",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0971",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0972",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0973",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0974",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0975",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0976",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0977",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0978",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0979",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0980",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0981",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0982",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0983",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0984",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0985",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0986",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0987",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0988",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0989",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_0990",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_0991",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_0992",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_0993",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_0994",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_0995",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_0996",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_0997",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_0998",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_0999",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1000",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1001",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1002",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1003",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1004",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1005",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1006",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1007",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1008",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1009",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1010",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1011",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1012",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1013",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1014",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1015",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1016",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1017",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1018",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1019",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1020",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1021",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1022",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1023",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1024",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1025",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1026",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1027",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1028",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1029",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1030",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1031",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1032",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1033",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1034",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1035",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1036",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1037",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1038",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1039",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1040",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1041",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1042",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1043",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1044",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1045",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1046",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1047",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1048",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1049",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1050",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1051",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1052",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1053",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1054",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1055",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1056",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1057",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1058",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1059",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1060",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1061",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1062",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1063",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1064",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1065",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1066",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1067",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1068",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1069",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1070",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1071",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1072",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1073",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1074",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1075",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1076",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1077",
+      "tier_band": 21,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1078",
+      "tier_band": 22,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1079",
+      "tier_band": 23,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1080",
+      "tier_band": 24,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1081",
+      "tier_band": 1,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1082",
+      "tier_band": 2,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1083",
+      "tier_band": 3,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1084",
+      "tier_band": 4,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1085",
+      "tier_band": 5,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1086",
+      "tier_band": 6,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1087",
+      "tier_band": 7,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1088",
+      "tier_band": 8,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1089",
+      "tier_band": 9,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1090",
+      "tier_band": 10,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_sword_bundle_1091",
+      "tier_band": 11,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_axe_bundle_1092",
+      "tier_band": 12,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_spear_bundle_1093",
+      "tier_band": 13,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_bow_bundle_1094",
+      "tier_band": 14,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_claw_bundle_1095",
+      "tier_band": 15,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "bronze_wand_bundle_1096",
+      "tier_band": 16,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "steel_staff_bundle_1097",
+      "tier_band": 17,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "golden_overall_bundle_1098",
+      "tier_band": 18,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "scarlet_glove_bundle_1099",
+      "tier_band": 19,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    },
+    {
+      "id": "shadow_shoe_bundle_1100",
+      "tier_band": 20,
+      "cadence": "monthly",
+      "lifecycle": "replacement"
+    }
+  ]
+}

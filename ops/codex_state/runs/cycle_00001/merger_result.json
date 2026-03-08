@@ -1,0 +1,8 @@
+{
+  "agent": "merger",
+  "instructions": "Write a merge plan JSON based on critic-approved candidates.",
+  "result": {
+    "candidate_path": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00001/merger/merge_plan.json",
+    "merge_count": 0
+  }
+}

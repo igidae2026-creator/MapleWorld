@@ -39,76 +39,131 @@ function AdminTools:getRuntimeStatus(world)
     return status
 end
 
-function AdminTools:getReplayStatus(world)
-    local status, err = self:getRuntimeStatus(world)
+function AdminTools:getStatusSnapshot(world, prepared)
+    local status = prepared and prepared.runtimeStatus or nil
+    local err = nil
+    if not status then
+        status, err = self:getRuntimeStatus(world)
+    end
     if not status then return nil, err end
     return {
-        recovery = status.recovery,
-        health = status.health,
-        watermark = status.watermark,
-        savePlan = status.savePlan,
+        runtimeStatus = status,
+        replay = {
+            recovery = status.recovery,
+            health = status.health,
+            watermark = status.watermark,
+            savePlan = status.savePlan,
+        },
+        ownership = {
+            ownership = status.ownership,
+            topology = status.topology,
+        },
+        repairs = {
+            repairs = status.repairs,
+            escalation = status.escalation,
+            governance = status.governance,
+        },
+        policies = {
+            active = status.policy,
+            version = status.policyVersion,
+            history = status.policyHistory,
+        },
+        checkpointLineage = {
+            checkpointLineage = status.health and status.health.checkpointLineage or {},
+            replay = status.recovery,
+            savePlan = status.savePlan,
+        },
+        pressure = {
+            pressure = status.pressure,
+            governance = status.governance,
+            containment = status.containment,
+        },
+        health = {
+            runtimeIdentity = status.runtimeIdentity,
+            health = status.health,
+            governance = status.governance,
+            escalation = status.escalation,
+            pendingSave = status.pendingSave,
+        },
     }
+end
+
+function AdminTools:getOperatorSnapshot(world, prepared)
+    local status, err = self:getRuntimeStatus(world)
+    if not status then return nil, err end
+    local stability = prepared and prepared.stability or (world and world.getStabilityReport and world:getStabilityReport() or nil)
+    local anomalyScore = prepared and prepared.anomalyScore or 0
+    if world and world.anomalyScoring and world.pressure and world.exploitMonitor and anomalyScore == 0 then
+        anomalyScore = world.anomalyScoring:score({
+            duplicateRisk = world.pressure.duplicateRiskPressure or 0,
+            replay = world.pressure.replayPressure or 0,
+            exploit = #(world.exploitMonitor.incidents or {}),
+        })
+    end
+    local routing = world and world.channelRouter and world.channelRouter.latestDecision and world.channelRouter:latestDecision() or nil
+    local policy = prepared and prepared.policy
+    if policy == nil and world and world.policyEngine and world.economySystem then
+        policy = world.policyEngine:evaluate({
+            anomalyScore = anomalyScore,
+            channelLoad = world.getActivePlayerCount and world:getActivePlayerCount() or 0,
+            pressure = world.pressure,
+            containment = world.containment,
+            savePlan = world.savePlan,
+            economy = world.economySystem:controlReport().observability,
+            routing = routing,
+        })
+    end
+    local snapshot = self:getStatusSnapshot(world, { runtimeStatus = status })
+    if not snapshot then return nil, 'world_status_unavailable' end
+    return {
+        runtimeStatus = status,
+        stability = stability,
+        anomalyScore = anomalyScore,
+        policy = policy,
+        snapshot = snapshot,
+    }
+end
+
+function AdminTools:getReplayStatus(world)
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.replay
 end
 
 function AdminTools:getOwnershipTopology(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        ownership = status.ownership,
-        topology = status.topology,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.ownership
 end
 
 function AdminTools:getRepairHistory(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        repairs = status.repairs,
-        escalation = status.escalation,
-        governance = status.governance,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.repairs
 end
 
 function AdminTools:getPolicyVersions(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        active = status.policy,
-        version = status.policyVersion,
-        history = status.policyHistory,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.policies
 end
 
 function AdminTools:getCheckpointLineage(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        checkpointLineage = status.health and status.health.checkpointLineage or {},
-        replay = status.recovery,
-        savePlan = status.savePlan,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.checkpointLineage
 end
 
 function AdminTools:getPressureMatrix(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        pressure = status.pressure,
-        governance = status.governance,
-        containment = status.containment,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.pressure
 end
 
 function AdminTools:getRuntimeHealthSummary(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
-    return {
-        runtimeIdentity = status.runtimeIdentity,
-        health = status.health,
-        governance = status.governance,
-        escalation = status.escalation,
-        pendingSave = status.pendingSave,
-    }
+    local snapshot, err = self:getStatusSnapshot(world)
+    if not snapshot then return nil, err end
+    return snapshot.health
 end
 
 function AdminTools:getEventTruth(world, filter)
@@ -153,20 +208,42 @@ function AdminTools:getArtifactLineage(world, kind)
     }
 end
 
-function AdminTools:getControlPlaneReport(world)
-    local status, err = self:getRuntimeStatus(world)
-    if not status then return nil, err end
+function AdminTools:getControlPlaneReport(world, prepared)
+    local operator = prepared and prepared.operator or nil
+    local err = nil
+    if not operator then
+        operator, err = self:getOperatorSnapshot(world)
+    end
+    if not operator then return nil, err end
+    local snapshot = operator.snapshot
+    local operatorSurface = world and world.metricsAggregator and world.metricsAggregator.controlSurface and world.metricsAggregator:controlSurface(world) or nil
     return {
-        replay = self:getReplayStatus(world),
-        checkpointLineage = self:getCheckpointLineage(world),
-        ownership = self:getOwnershipTopology(world),
-        pressure = self:getPressureMatrix(world),
-        policies = self:getPolicyVersions(world),
-        repairs = self:getRepairHistory(world),
+        cluster = world and world.cluster or nil,
+        shards = world and world.shardRegistry and world.shardRegistry.shards or nil,
+        sessions = world and world.sessionOrchestrator and world.sessionOrchestrator.snapshot and world.sessionOrchestrator:snapshot() or nil,
+        failover = world and world.failover and world.failover.history or nil,
+        audit = world and world.auditLog and world.auditLog.entries or nil,
+        telemetry = world and world.telemetryPipeline and world.telemetryPipeline.events or nil,
+        metrics = world and world.metricsAggregator and world.metricsAggregator.snapshot and world.metricsAggregator:snapshot() or nil,
+        performance = world and world.performanceCounters and world.performanceCounters.snapshot and world.performanceCounters:snapshot() or nil,
+        batches = world and world.eventBatcher and { queued = #world.eventBatcher.queue, flushed = #world.eventBatcher.flushed } or nil,
+        liveEvents = world and world.liveEventController and world.liveEventController.status and world.liveEventController:status() or nil,
+        routing = {
+            latestDecision = world and world.channelRouter and world.channelRouter.latestDecision and world.channelRouter:latestDecision() or nil,
+        },
+        operatorSurface = operatorSurface,
+        snapshots = world and world.snapshotManager and world.snapshotManager.summary and world.snapshotManager:summary() or nil,
+        stability = operator.stability,
+        replay = snapshot.replay,
+        checkpointLineage = snapshot.checkpointLineage,
+        ownership = snapshot.ownership,
+        pressure = snapshot.pressure,
+        policies = snapshot.policies,
+        repairs = snapshot.repairs,
         artifacts = self:getArtifactLineage(world),
         eventHistory = self:getEventTruth(world, {}),
-        health = self:getRuntimeHealthSummary(world),
-        runtimeStatus = status,
+        health = snapshot.health,
+        runtimeStatus = snapshot.runtimeStatus,
     }
 end
 

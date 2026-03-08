@@ -1,0 +1,23 @@
+{
+  "variant_id": "rb3",
+  "violations": [
+    "interaction_visibility_low"
+  ],
+  "stability_score": 0.9,
+  "simulation_reference": {
+    "exp_hour_pressure": 0.824,
+    "meso_hour_pressure": 0.8436,
+    "potion_burn": 0.9375,
+    "map_density_distribution": 0.8998,
+    "party_formation": 0.908,
+    "congestion_profile": 0.8445,
+    "item_replacement_pacing": 0.9046,
+    "boss_reward_distortion": 0.9392,
+    "market_turnover_pressure": 0.904,
+    "level_band_transition_pressure": 0.91,
+    "field_competition_pressure": 0.9833,
+    "anti_bot_signal_quality": 0.875,
+    "liveops_visibility": 0.5694,
+    "interaction_traceability": 0.725
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "variant_id": "variant_beta_m00",
+  "variables": {
+    "exp_hour": 0.96,
+    "meso_hour": 0.49,
+    "potion_burn": 0.23,
+    "item_supply": 0.713,
+    "spawn_density": 1.01,
+    "progression_speed": 1.0105,
+    "replacement_pressure": 1.02
+  },
+  "violations": [],
+  "stability_score": 1.0,
+  "simulation_reference": {
+    "economy_stability": 1.0,
+    "field_congestion": 1.0,
+    "party_vs_solo_pressure": 0.965,
+    "boss_reward_inflation": 1.0,
+    "item_lifecycle_pressure": 0.8333,
+    "social_density": 1.0,
+    "progression_pacing": 0.875,
+    "market_pressure": 0.98
+  }
+}

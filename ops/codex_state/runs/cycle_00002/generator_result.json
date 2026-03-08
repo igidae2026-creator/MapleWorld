@@ -1,0 +1,8 @@
+{
+  "agent": "generator",
+  "instructions": "Write candidate JSON batches for graph expansion only.",
+  "result": {
+    "candidate_path": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/generator/design_node_batch.json",
+    "generated_count": 0
+  }
+}

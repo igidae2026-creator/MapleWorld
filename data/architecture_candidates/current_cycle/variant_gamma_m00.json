@@ -1,0 +1,210 @@
+{
+  "variant_id": "variant_gamma_m00",
+  "base_id": "variant_gamma",
+  "mutation_step": 0,
+  "runtime_constraints": {
+    "platform": "maplestory_worlds",
+    "external_backend": false,
+    "server_authoritative": true,
+    "world_topology": {
+      "worlds": 1,
+      "rooms_per_channel": 1,
+      "channels_per_field_band": 5,
+      "instance_types": [
+        "public_field",
+        "boss_room",
+        "party_quest",
+        "market_lane"
+      ]
+    }
+  },
+  "topology": {
+    "level_band_bottlenecks": {
+      "bottleneck_bands": [
+        25,
+        45,
+        70,
+        95,
+        120,
+        160
+      ],
+      "exp_gate_multiplier": 1.196
+    },
+    "field_ladder_progression": {
+      "bands": 22,
+      "map_step_levels": [
+        10,
+        18,
+        28,
+        40,
+        55,
+        72,
+        90,
+        110,
+        135,
+        160
+      ],
+      "routing_mode": "contested_public_fields"
+    },
+    "solo_vs_party_progression_split": {
+      "solo_efficiency_floor": 0.79,
+      "party_bonus_curve": 1.46,
+      "guild_party_bridge_band": 75
+    },
+    "field_competition_topology": {
+      "competition_target": 1.28,
+      "hot_map_rotation_slots": 7,
+      "spawn_monopoly_guard": "channel_diversion"
+    },
+    "social_density_anchors": {
+      "anchor_density": 0.95,
+      "anchor_types": [
+        "town_hub",
+        "party_quest",
+        "guild_board",
+        "market_lane",
+        "boss_queue"
+      ]
+    },
+    "channel_congestion_routing": {
+      "channels_per_field_band": 5,
+      "reroute_threshold": 0.74,
+      "room_capacity": 30
+    },
+    "economy_source_sink_topology": {
+      "meso_sink_ratio": 0.61,
+      "market_tax": 0.098,
+      "faucet_sources": [
+        "field_hunt",
+        "quest_turnin",
+        "boss_clear"
+      ],
+      "sink_sources": [
+        "repair",
+        "consumables",
+        "travel",
+        "listing_fee",
+        "enhancement"
+      ]
+    },
+    "meso_velocity_control": {
+      "velocity_target": 0.47,
+      "broker_tax_brackets": [
+        0.06,
+        0.08,
+        0.098
+      ]
+    },
+    "consumable_burn_pressure": {
+      "burn_ratio": 0.25,
+      "potion_vendor_span": [
+        20,
+        45,
+        85,
+        120
+      ]
+    },
+    "rare_supply_throttling": {
+      "rare_supply_throttle": 0.85,
+      "boss_loot_lockout_days": 6
+    },
+    "boss_cadence_lockout_topology": {
+      "weekly_lockout_days": 6,
+      "entry_queue_weight": 0.71,
+      "boss_rush_guard": "weekly_ticket_plus_channel_queue"
+    },
+    "save_transaction_rollback_boundaries": {
+      "rollback_window_minutes": 10,
+      "transaction_batch_seconds": 4,
+      "boundaries": [
+        "inventory",
+        "currency",
+        "auction",
+        "boss_rewards",
+        "guild_bank"
+      ]
+    },
+    "server_authority_event_ordering": {
+      "authoritative_tick": "single_world_tick",
+      "event_ordering_buffer_ms": 100,
+      "room_world_instance_chain": [
+        "room",
+        "field_instance",
+        "world_runtime"
+      ]
+    },
+    "anti_bot_anti_macro_runtime_layers": {
+      "layers": 5,
+      "runtime_hooks": [
+        "movement_entropy",
+        "loot_entropy",
+        "market_velocity",
+        "spawn_repeat_pattern",
+        "channel_hop_pattern"
+      ]
+    },
+    "liveops_intervention_topology": {
+      "override_points": 21,
+      "intervention_planes": [
+        "spawn",
+        "drop",
+        "market",
+        "boss_access",
+        "queue",
+        "compensation"
+      ]
+    },
+    "power_curve_replacement_pressure": {
+      "replacement_pressure": 1.05,
+      "replacement_band_targets": [
+        25,
+        45,
+        70,
+        100,
+        135,
+        170
+      ]
+    },
+    "telemetry_feedback_topology": {
+      "granularity": 0.97,
+      "feedback_loops": [
+        "economy",
+        "congestion",
+        "party_split",
+        "social_density",
+        "boss_lockout",
+        "anti_bot"
+      ]
+    }
+  },
+  "control_parameters": {
+    "id": "variant_gamma",
+    "world_shards": 1,
+    "channels_per_field_band": 5,
+    "channel_reroute_threshold": 0.74,
+    "room_capacity": 30,
+    "field_competition_target": 1.28,
+    "social_anchor_density": 0.95,
+    "party_bonus_curve": 1.46,
+    "solo_efficiency_floor": 0.79,
+    "boss_lockout_days": 6,
+    "boss_entry_queue_weight": 0.71,
+    "meso_sink_ratio": 0.61,
+    "consumable_burn_ratio": 0.25,
+    "rare_supply_throttle": 0.85,
+    "rollback_window_minutes": 10,
+    "transaction_batch_seconds": 4,
+    "event_ordering_buffer_ms": 100,
+    "anti_bot_layers": 5,
+    "liveops_override_points": 21,
+    "telemetry_granularity": 0.97,
+    "spawn_density": 0.98,
+    "exp_hour_target": 0.94,
+    "meso_hour_target": 0.47,
+    "replacement_pressure": 1.05,
+    "market_tax": 0.098,
+    "guild_anchor_weight": 0.88,
+    "field_ladder_depth": 22,
+    "dead_zone_risk": 0.08
+  }
+}

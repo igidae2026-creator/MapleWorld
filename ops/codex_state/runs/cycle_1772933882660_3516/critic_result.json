@@ -1,0 +1,9 @@
+{
+  "agent": "critic",
+  "instructions": "# Critic\nReview candidate JSON for duplicates, invalid parents, and shallow MMO design output.\n",
+  "result": {
+    "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "candidate_count": 0,
+    "frontier_count": 0
+  }
+}

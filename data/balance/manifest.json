@@ -1,0 +1,17 @@
+{
+  "balance_row_count": 62904,
+  "target_balance_rows": 20000,
+  "files": [
+    "data/balance/progression/level_curve.csv",
+    "data/balance/progression/party_windows.csv",
+    "data/balance/monsters/monster_stats.csv",
+    "data/balance/drops/drop_table.csv",
+    "data/balance/economy/sinks.csv",
+    "data/balance/fields/population_balance.csv",
+    "data/balance/fields/zone_ladder.csv",
+    "data/balance/items/item_stats.csv",
+    "data/balance/equipment/upgrade_curves.csv",
+    "data/balance/bosses/boss_rewards.csv",
+    "data/balance/dungeons/dungeon_cadence.csv"
+  ]
+}

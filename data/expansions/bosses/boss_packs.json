@@ -1,0 +1,5404 @@
+{
+  "items": [
+    {
+      "id": "boss_arc_0001",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0002",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0003",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0004",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0005",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0006",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0007",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0008",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0009",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0010",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0011",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0012",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0013",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0014",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0015",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0016",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0017",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0018",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0019",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0020",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0021",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0022",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0023",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0024",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0025",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0026",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0027",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0028",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0029",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0030",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0031",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0032",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0033",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0034",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0035",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0036",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0037",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0038",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0039",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0040",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0041",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0042",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0043",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0044",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0045",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0046",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0047",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0048",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0049",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0050",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0051",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0052",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0053",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0054",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0055",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0056",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0057",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0058",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0059",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0060",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0061",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0062",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0063",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0064",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0065",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0066",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0067",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0068",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0069",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0070",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0071",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0072",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0073",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0074",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0075",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0076",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0077",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0078",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0079",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0080",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0081",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0082",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0083",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0084",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0085",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0086",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0087",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0088",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0089",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0090",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0091",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0092",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0093",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0094",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0095",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0096",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0097",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0098",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0099",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0100",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0101",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0102",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0103",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0104",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0105",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0106",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0107",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0108",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0109",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0110",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0111",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0112",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0113",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0114",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0115",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0116",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0117",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0118",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0119",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0120",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0121",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0122",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0123",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0124",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0125",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0126",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0127",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0128",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0129",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0130",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0131",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0132",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0133",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0134",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0135",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0136",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0137",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0138",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0139",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0140",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0141",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0142",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0143",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0144",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0145",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0146",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0147",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0148",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0149",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0150",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0151",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0152",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0153",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0154",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0155",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0156",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0157",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0158",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0159",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0160",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0161",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0162",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0163",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0164",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0165",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0166",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0167",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0168",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0169",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0170",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0171",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0172",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0173",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0174",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0175",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0176",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0177",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0178",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0179",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0180",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0181",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0182",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0183",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0184",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0185",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0186",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0187",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0188",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0189",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0190",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0191",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0192",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0193",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0194",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0195",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0196",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0197",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0198",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0199",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0200",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0201",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0202",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0203",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0204",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0205",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0206",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0207",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0208",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0209",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0210",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0211",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0212",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0213",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0214",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0215",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0216",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0217",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0218",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0219",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0220",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0221",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0222",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0223",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0224",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0225",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0226",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0227",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0228",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0229",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0230",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0231",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0232",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0233",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0234",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0235",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0236",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0237",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0238",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0239",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0240",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0241",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0242",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0243",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0244",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0245",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0246",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0247",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0248",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0249",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0250",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0251",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0252",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0253",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0254",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0255",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0256",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0257",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0258",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0259",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0260",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0261",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0262",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0263",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0264",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0265",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0266",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0267",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0268",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0269",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0270",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0271",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0272",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0273",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0274",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0275",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0276",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0277",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0278",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0279",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0280",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0281",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0282",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0283",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0284",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0285",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0286",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0287",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0288",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0289",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0290",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0291",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0292",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0293",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0294",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0295",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0296",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0297",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0298",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0299",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0300",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0301",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0302",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0303",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0304",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0305",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0306",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0307",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0308",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0309",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0310",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0311",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0312",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0313",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0314",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0315",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0316",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0317",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0318",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0319",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0320",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0321",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0322",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0323",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0324",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0325",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0326",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0327",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0328",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0329",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0330",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0331",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0332",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0333",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0334",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0335",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0336",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0337",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0338",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0339",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0340",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0341",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0342",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0343",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0344",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0345",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0346",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0347",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0348",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0349",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0350",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0351",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0352",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0353",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0354",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0355",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0356",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0357",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0358",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0359",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0360",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0361",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0362",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0363",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0364",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0365",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0366",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0367",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0368",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0369",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0370",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0371",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0372",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0373",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0374",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0375",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0376",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0377",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0378",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0379",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0380",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0381",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0382",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0383",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0384",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0385",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0386",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0387",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0388",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0389",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0390",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0391",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0392",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0393",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0394",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0395",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0396",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0397",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0398",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0399",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0400",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0401",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0402",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0403",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0404",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0405",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0406",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0407",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0408",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0409",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0410",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0411",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0412",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0413",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0414",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0415",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0416",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0417",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0418",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0419",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0420",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0421",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0422",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0423",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0424",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0425",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0426",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0427",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0428",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0429",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0430",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0431",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0432",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0433",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0434",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0435",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0436",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0437",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0438",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0439",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0440",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0441",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0442",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0443",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0444",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0445",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0446",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0447",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0448",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0449",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0450",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0451",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0452",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0453",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0454",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0455",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0456",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0457",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0458",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0459",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0460",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0461",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0462",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0463",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0464",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0465",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0466",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0467",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0468",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0469",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0470",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0471",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0472",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0473",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0474",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0475",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0476",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0477",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0478",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0479",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0480",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0481",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0482",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0483",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0484",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0485",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0486",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0487",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0488",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0489",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0490",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0491",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0492",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0493",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0494",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0495",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0496",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0497",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0498",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0499",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0500",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0501",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0502",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0503",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0504",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0505",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0506",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0507",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0508",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0509",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0510",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0511",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0512",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0513",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0514",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0515",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0516",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0517",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0518",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0519",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0520",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0521",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0522",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0523",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0524",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0525",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0526",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0527",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0528",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0529",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0530",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0531",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0532",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0533",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0534",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0535",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0536",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0537",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0538",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0539",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0540",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0541",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0542",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0543",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0544",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0545",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0546",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0547",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0548",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0549",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0550",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0551",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0552",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0553",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0554",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0555",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0556",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0557",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0558",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0559",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0560",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0561",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0562",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0563",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0564",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0565",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0566",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0567",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0568",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0569",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0570",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0571",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0572",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0573",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0574",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0575",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0576",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0577",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0578",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0579",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0580",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0581",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0582",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0583",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0584",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0585",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0586",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0587",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0588",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0589",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0590",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0591",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0592",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0593",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0594",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0595",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0596",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0597",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0598",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0599",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0600",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0601",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0602",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0603",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0604",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0605",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0606",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0607",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0608",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0609",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0610",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0611",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0612",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0613",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0614",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0615",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0616",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0617",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0618",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0619",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0620",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0621",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0622",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0623",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0624",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0625",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0626",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0627",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0628",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0629",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0630",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0631",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0632",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0633",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0634",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0635",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0636",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0637",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0638",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0639",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0640",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0641",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0642",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0643",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0644",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0645",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0646",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0647",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0648",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0649",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0650",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0651",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0652",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0653",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0654",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0655",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0656",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0657",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0658",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0659",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0660",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0661",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0662",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0663",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0664",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0665",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0666",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0667",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0668",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0669",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0670",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0671",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0672",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0673",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0674",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0675",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0676",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0677",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0678",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0679",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0680",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0681",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0682",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0683",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0684",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0685",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0686",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0687",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0688",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0689",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0690",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0691",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0692",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0693",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0694",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0695",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0696",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0697",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0698",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0699",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0700",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0701",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0702",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0703",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0704",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0705",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0706",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0707",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0708",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0709",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0710",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0711",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0712",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0713",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0714",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0715",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0716",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0717",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0718",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0719",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0720",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0721",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0722",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0723",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0724",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0725",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0726",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0727",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0728",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0729",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0730",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0731",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0732",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0733",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0734",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0735",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0736",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0737",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0738",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0739",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0740",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0741",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0742",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0743",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0744",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0745",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0746",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0747",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0748",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0749",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0750",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0751",
+      "entry_band": 30,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0752",
+      "entry_band": 31,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0753",
+      "entry_band": 32,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0754",
+      "entry_band": 33,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0755",
+      "entry_band": 34,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0756",
+      "entry_band": 35,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0757",
+      "entry_band": 36,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0758",
+      "entry_band": 37,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0759",
+      "entry_band": 38,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0760",
+      "entry_band": 39,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0761",
+      "entry_band": 40,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0762",
+      "entry_band": 41,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0763",
+      "entry_band": 42,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0764",
+      "entry_band": 43,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0765",
+      "entry_band": 44,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0766",
+      "entry_band": 45,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0767",
+      "entry_band": 46,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0768",
+      "entry_band": 47,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0769",
+      "entry_band": 48,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0770",
+      "entry_band": 49,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0771",
+      "entry_band": 50,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0772",
+      "entry_band": 51,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0773",
+      "entry_band": 52,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0774",
+      "entry_band": 53,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0775",
+      "entry_band": 54,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0776",
+      "entry_band": 55,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0777",
+      "entry_band": 56,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0778",
+      "entry_band": 57,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0779",
+      "entry_band": 58,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0780",
+      "entry_band": 59,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0781",
+      "entry_band": 60,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0782",
+      "entry_band": 61,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0783",
+      "entry_band": 62,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0784",
+      "entry_band": 63,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0785",
+      "entry_band": 64,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0786",
+      "entry_band": 65,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0787",
+      "entry_band": 66,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0788",
+      "entry_band": 67,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0789",
+      "entry_band": 68,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0790",
+      "entry_band": 69,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0791",
+      "entry_band": 70,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0792",
+      "entry_band": 71,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0793",
+      "entry_band": 72,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0794",
+      "entry_band": 73,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0795",
+      "entry_band": 74,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0796",
+      "entry_band": 75,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0797",
+      "entry_band": 76,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0798",
+      "entry_band": 77,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0799",
+      "entry_band": 78,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0800",
+      "entry_band": 79,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0801",
+      "entry_band": 80,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0802",
+      "entry_band": 81,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0803",
+      "entry_band": 82,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0804",
+      "entry_band": 83,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0805",
+      "entry_band": 84,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0806",
+      "entry_band": 85,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0807",
+      "entry_band": 86,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0808",
+      "entry_band": 87,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0809",
+      "entry_band": 88,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0810",
+      "entry_band": 89,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0811",
+      "entry_band": 90,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0812",
+      "entry_band": 91,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0813",
+      "entry_band": 92,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0814",
+      "entry_band": 93,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0815",
+      "entry_band": 94,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0816",
+      "entry_band": 95,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0817",
+      "entry_band": 96,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0818",
+      "entry_band": 97,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0819",
+      "entry_band": 98,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0820",
+      "entry_band": 99,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0821",
+      "entry_band": 100,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0822",
+      "entry_band": 101,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0823",
+      "entry_band": 102,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0824",
+      "entry_band": 103,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0825",
+      "entry_band": 104,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0826",
+      "entry_band": 105,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0827",
+      "entry_band": 106,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0828",
+      "entry_band": 107,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0829",
+      "entry_band": 108,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0830",
+      "entry_band": 109,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0831",
+      "entry_band": 110,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0832",
+      "entry_band": 111,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0833",
+      "entry_band": 112,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0834",
+      "entry_band": 113,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0835",
+      "entry_band": 114,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0836",
+      "entry_band": 115,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0837",
+      "entry_band": 116,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0838",
+      "entry_band": 117,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0839",
+      "entry_band": 118,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0840",
+      "entry_band": 119,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0841",
+      "entry_band": 120,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0842",
+      "entry_band": 121,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0843",
+      "entry_band": 122,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0844",
+      "entry_band": 123,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0845",
+      "entry_band": 124,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0846",
+      "entry_band": 125,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0847",
+      "entry_band": 126,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0848",
+      "entry_band": 127,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0849",
+      "entry_band": 128,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0850",
+      "entry_band": 129,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0851",
+      "entry_band": 130,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0852",
+      "entry_band": 131,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0853",
+      "entry_band": 132,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0854",
+      "entry_band": 133,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0855",
+      "entry_band": 134,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0856",
+      "entry_band": 135,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0857",
+      "entry_band": 136,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0858",
+      "entry_band": 137,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0859",
+      "entry_band": 138,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0860",
+      "entry_band": 139,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0861",
+      "entry_band": 140,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0862",
+      "entry_band": 141,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0863",
+      "entry_band": 142,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0864",
+      "entry_band": 143,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0865",
+      "entry_band": 144,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0866",
+      "entry_band": 145,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0867",
+      "entry_band": 146,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0868",
+      "entry_band": 147,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0869",
+      "entry_band": 148,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0870",
+      "entry_band": 149,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0871",
+      "entry_band": 150,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0872",
+      "entry_band": 151,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0873",
+      "entry_band": 152,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0874",
+      "entry_band": 153,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0875",
+      "entry_band": 154,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0876",
+      "entry_band": 155,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0877",
+      "entry_band": 156,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0878",
+      "entry_band": 157,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0879",
+      "entry_band": 158,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0880",
+      "entry_band": 159,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0881",
+      "entry_band": 160,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0882",
+      "entry_band": 161,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0883",
+      "entry_band": 162,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0884",
+      "entry_band": 163,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0885",
+      "entry_band": 164,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0886",
+      "entry_band": 165,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0887",
+      "entry_band": 166,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0888",
+      "entry_band": 167,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0889",
+      "entry_band": 168,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0890",
+      "entry_band": 169,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0891",
+      "entry_band": 170,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0892",
+      "entry_band": 171,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0893",
+      "entry_band": 172,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0894",
+      "entry_band": 173,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0895",
+      "entry_band": 174,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0896",
+      "entry_band": 175,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0897",
+      "entry_band": 176,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0898",
+      "entry_band": 177,
+      "cadence": "seasonal",
+      "unlock_type": "guild_party"
+    },
+    {
+      "id": "boss_arc_0899",
+      "entry_band": 178,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    },
+    {
+      "id": "boss_arc_0900",
+      "entry_band": 179,
+      "cadence": "seasonal",
+      "unlock_type": "public_party"
+    }
+  ]
+}

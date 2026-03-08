@@ -1,0 +1,14 @@
+{
+  "variant_id": "persistence_boundaries_score_repair_1",
+  "violations": [],
+  "stability_score": 1.0,
+  "simulation_reference": {
+    "exp_hour_stability": 0.8889,
+    "meso_hour_pressure": 0.9875,
+    "potion_burn_pressure": 1.0,
+    "map_population_spread": 0.9583,
+    "party_formation_tendency": 0.8857,
+    "market_activity": 0.8944,
+    "reward_cadence_pressure": 1.0
+  }
+}

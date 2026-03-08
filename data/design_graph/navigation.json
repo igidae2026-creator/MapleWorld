@@ -1,0 +1,10 @@
+{
+  "domain": "navigation",
+  "nodes": [
+    {
+      "id": "navigation",
+      "layer": 1,
+      "domain": "navigation"
+    }
+  ]
+}

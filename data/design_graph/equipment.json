@@ -1,0 +1,10 @@
+{
+  "domain": "equipment",
+  "nodes": [
+    {
+      "id": "equipment",
+      "layer": 1,
+      "domain": "equipment"
+    }
+  ]
+}

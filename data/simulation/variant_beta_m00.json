@@ -1,0 +1,25 @@
+{
+  "variant_id": "variant_beta_m00",
+  "agent_count": 1000,
+  "player_mix": {
+    "solo_grinding": 340,
+    "party_formation": 190,
+    "guild_coordination": 120,
+    "field_migration": 110,
+    "boss_rushing": 80,
+    "market_trading": 70,
+    "resource_farming": 50,
+    "consumable_purchasing": 20,
+    "progression_band_transitions": 20
+  },
+  "metrics": {
+    "economy_stability": 1.0,
+    "field_congestion": 1.0,
+    "party_vs_solo_pressure": 0.965,
+    "boss_reward_inflation": 1.0,
+    "item_lifecycle_pressure": 0.8333,
+    "social_density": 1.0,
+    "progression_pacing": 0.875,
+    "market_pressure": 0.98
+  }
+}

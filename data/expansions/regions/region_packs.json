@@ -1,0 +1,7704 @@
+{
+  "items": [
+    {
+      "id": "southperry_frontier_pack_0001",
+      "region": "southperry",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0002",
+      "region": "amherst",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0003",
+      "region": "ellinia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0004",
+      "region": "perion",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0005",
+      "region": "henesys",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0006",
+      "region": "kerning",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0007",
+      "region": "sleepywood",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0008",
+      "region": "ludibrium",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0009",
+      "region": "orbis",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0010",
+      "region": "elnath",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0011",
+      "region": "aqua",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0012",
+      "region": "leafre",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0013",
+      "region": "magatia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0014",
+      "region": "mu_lung",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0015",
+      "region": "zipangu",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0016",
+      "region": "southperry",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0017",
+      "region": "amherst",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0018",
+      "region": "ellinia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0019",
+      "region": "perion",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0020",
+      "region": "henesys",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0021",
+      "region": "kerning",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0022",
+      "region": "sleepywood",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0023",
+      "region": "ludibrium",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0024",
+      "region": "orbis",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0025",
+      "region": "elnath",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0026",
+      "region": "aqua",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0027",
+      "region": "leafre",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0028",
+      "region": "magatia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0029",
+      "region": "mu_lung",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0030",
+      "region": "zipangu",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0031",
+      "region": "southperry",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0032",
+      "region": "amherst",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0033",
+      "region": "ellinia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0034",
+      "region": "perion",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0035",
+      "region": "henesys",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0036",
+      "region": "kerning",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0037",
+      "region": "sleepywood",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0038",
+      "region": "ludibrium",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0039",
+      "region": "orbis",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0040",
+      "region": "elnath",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0041",
+      "region": "aqua",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0042",
+      "region": "leafre",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0043",
+      "region": "magatia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0044",
+      "region": "mu_lung",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0045",
+      "region": "zipangu",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0046",
+      "region": "southperry",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0047",
+      "region": "amherst",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0048",
+      "region": "ellinia",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0049",
+      "region": "perion",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0050",
+      "region": "henesys",
+      "release_wave": 1,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0051",
+      "region": "kerning",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0052",
+      "region": "sleepywood",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0053",
+      "region": "ludibrium",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0054",
+      "region": "orbis",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0055",
+      "region": "elnath",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0056",
+      "region": "aqua",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0057",
+      "region": "leafre",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0058",
+      "region": "magatia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0059",
+      "region": "mu_lung",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0060",
+      "region": "zipangu",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0061",
+      "region": "southperry",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0062",
+      "region": "amherst",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0063",
+      "region": "ellinia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0064",
+      "region": "perion",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0065",
+      "region": "henesys",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0066",
+      "region": "kerning",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0067",
+      "region": "sleepywood",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0068",
+      "region": "ludibrium",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0069",
+      "region": "orbis",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0070",
+      "region": "elnath",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0071",
+      "region": "aqua",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0072",
+      "region": "leafre",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0073",
+      "region": "magatia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0074",
+      "region": "mu_lung",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0075",
+      "region": "zipangu",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0076",
+      "region": "southperry",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0077",
+      "region": "amherst",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0078",
+      "region": "ellinia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0079",
+      "region": "perion",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0080",
+      "region": "henesys",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0081",
+      "region": "kerning",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0082",
+      "region": "sleepywood",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0083",
+      "region": "ludibrium",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0084",
+      "region": "orbis",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0085",
+      "region": "elnath",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0086",
+      "region": "aqua",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0087",
+      "region": "leafre",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0088",
+      "region": "magatia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0089",
+      "region": "mu_lung",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0090",
+      "region": "zipangu",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0091",
+      "region": "southperry",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0092",
+      "region": "amherst",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0093",
+      "region": "ellinia",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0094",
+      "region": "perion",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0095",
+      "region": "henesys",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0096",
+      "region": "kerning",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0097",
+      "region": "sleepywood",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0098",
+      "region": "ludibrium",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0099",
+      "region": "orbis",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0100",
+      "region": "elnath",
+      "release_wave": 2,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0101",
+      "region": "aqua",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0102",
+      "region": "leafre",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0103",
+      "region": "magatia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0104",
+      "region": "mu_lung",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0105",
+      "region": "zipangu",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0106",
+      "region": "southperry",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0107",
+      "region": "amherst",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0108",
+      "region": "ellinia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0109",
+      "region": "perion",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0110",
+      "region": "henesys",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0111",
+      "region": "kerning",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0112",
+      "region": "sleepywood",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0113",
+      "region": "ludibrium",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0114",
+      "region": "orbis",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0115",
+      "region": "elnath",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0116",
+      "region": "aqua",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0117",
+      "region": "leafre",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0118",
+      "region": "magatia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0119",
+      "region": "mu_lung",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0120",
+      "region": "zipangu",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0121",
+      "region": "southperry",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0122",
+      "region": "amherst",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0123",
+      "region": "ellinia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0124",
+      "region": "perion",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0125",
+      "region": "henesys",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0126",
+      "region": "kerning",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0127",
+      "region": "sleepywood",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0128",
+      "region": "ludibrium",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0129",
+      "region": "orbis",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0130",
+      "region": "elnath",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0131",
+      "region": "aqua",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0132",
+      "region": "leafre",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0133",
+      "region": "magatia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0134",
+      "region": "mu_lung",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0135",
+      "region": "zipangu",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0136",
+      "region": "southperry",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0137",
+      "region": "amherst",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0138",
+      "region": "ellinia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0139",
+      "region": "perion",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0140",
+      "region": "henesys",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0141",
+      "region": "kerning",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0142",
+      "region": "sleepywood",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0143",
+      "region": "ludibrium",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0144",
+      "region": "orbis",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0145",
+      "region": "elnath",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0146",
+      "region": "aqua",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0147",
+      "region": "leafre",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0148",
+      "region": "magatia",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0149",
+      "region": "mu_lung",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0150",
+      "region": "zipangu",
+      "release_wave": 3,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0151",
+      "region": "southperry",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0152",
+      "region": "amherst",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0153",
+      "region": "ellinia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0154",
+      "region": "perion",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0155",
+      "region": "henesys",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0156",
+      "region": "kerning",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0157",
+      "region": "sleepywood",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0158",
+      "region": "ludibrium",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0159",
+      "region": "orbis",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0160",
+      "region": "elnath",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0161",
+      "region": "aqua",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0162",
+      "region": "leafre",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0163",
+      "region": "magatia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0164",
+      "region": "mu_lung",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0165",
+      "region": "zipangu",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0166",
+      "region": "southperry",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0167",
+      "region": "amherst",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0168",
+      "region": "ellinia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0169",
+      "region": "perion",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0170",
+      "region": "henesys",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0171",
+      "region": "kerning",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0172",
+      "region": "sleepywood",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0173",
+      "region": "ludibrium",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0174",
+      "region": "orbis",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0175",
+      "region": "elnath",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0176",
+      "region": "aqua",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0177",
+      "region": "leafre",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0178",
+      "region": "magatia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0179",
+      "region": "mu_lung",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0180",
+      "region": "zipangu",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0181",
+      "region": "southperry",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0182",
+      "region": "amherst",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0183",
+      "region": "ellinia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0184",
+      "region": "perion",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0185",
+      "region": "henesys",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0186",
+      "region": "kerning",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0187",
+      "region": "sleepywood",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0188",
+      "region": "ludibrium",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0189",
+      "region": "orbis",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0190",
+      "region": "elnath",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0191",
+      "region": "aqua",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0192",
+      "region": "leafre",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0193",
+      "region": "magatia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0194",
+      "region": "mu_lung",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0195",
+      "region": "zipangu",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0196",
+      "region": "southperry",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0197",
+      "region": "amherst",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0198",
+      "region": "ellinia",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0199",
+      "region": "perion",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0200",
+      "region": "henesys",
+      "release_wave": 4,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0201",
+      "region": "kerning",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0202",
+      "region": "sleepywood",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0203",
+      "region": "ludibrium",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0204",
+      "region": "orbis",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0205",
+      "region": "elnath",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0206",
+      "region": "aqua",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0207",
+      "region": "leafre",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0208",
+      "region": "magatia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0209",
+      "region": "mu_lung",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0210",
+      "region": "zipangu",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0211",
+      "region": "southperry",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0212",
+      "region": "amherst",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0213",
+      "region": "ellinia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0214",
+      "region": "perion",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0215",
+      "region": "henesys",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0216",
+      "region": "kerning",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0217",
+      "region": "sleepywood",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0218",
+      "region": "ludibrium",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0219",
+      "region": "orbis",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0220",
+      "region": "elnath",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0221",
+      "region": "aqua",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0222",
+      "region": "leafre",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0223",
+      "region": "magatia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0224",
+      "region": "mu_lung",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0225",
+      "region": "zipangu",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0226",
+      "region": "southperry",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0227",
+      "region": "amherst",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0228",
+      "region": "ellinia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0229",
+      "region": "perion",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0230",
+      "region": "henesys",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0231",
+      "region": "kerning",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0232",
+      "region": "sleepywood",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0233",
+      "region": "ludibrium",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0234",
+      "region": "orbis",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0235",
+      "region": "elnath",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0236",
+      "region": "aqua",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0237",
+      "region": "leafre",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0238",
+      "region": "magatia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0239",
+      "region": "mu_lung",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0240",
+      "region": "zipangu",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0241",
+      "region": "southperry",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0242",
+      "region": "amherst",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0243",
+      "region": "ellinia",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0244",
+      "region": "perion",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0245",
+      "region": "henesys",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0246",
+      "region": "kerning",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0247",
+      "region": "sleepywood",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0248",
+      "region": "ludibrium",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0249",
+      "region": "orbis",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0250",
+      "region": "elnath",
+      "release_wave": 5,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0251",
+      "region": "aqua",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0252",
+      "region": "leafre",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0253",
+      "region": "magatia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0254",
+      "region": "mu_lung",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0255",
+      "region": "zipangu",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0256",
+      "region": "southperry",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0257",
+      "region": "amherst",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0258",
+      "region": "ellinia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0259",
+      "region": "perion",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0260",
+      "region": "henesys",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0261",
+      "region": "kerning",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0262",
+      "region": "sleepywood",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0263",
+      "region": "ludibrium",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0264",
+      "region": "orbis",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0265",
+      "region": "elnath",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0266",
+      "region": "aqua",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0267",
+      "region": "leafre",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0268",
+      "region": "magatia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0269",
+      "region": "mu_lung",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0270",
+      "region": "zipangu",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0271",
+      "region": "southperry",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0272",
+      "region": "amherst",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0273",
+      "region": "ellinia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0274",
+      "region": "perion",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0275",
+      "region": "henesys",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0276",
+      "region": "kerning",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0277",
+      "region": "sleepywood",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0278",
+      "region": "ludibrium",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0279",
+      "region": "orbis",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0280",
+      "region": "elnath",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0281",
+      "region": "aqua",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0282",
+      "region": "leafre",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0283",
+      "region": "magatia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0284",
+      "region": "mu_lung",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0285",
+      "region": "zipangu",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0286",
+      "region": "southperry",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0287",
+      "region": "amherst",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0288",
+      "region": "ellinia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0289",
+      "region": "perion",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0290",
+      "region": "henesys",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0291",
+      "region": "kerning",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0292",
+      "region": "sleepywood",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0293",
+      "region": "ludibrium",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0294",
+      "region": "orbis",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0295",
+      "region": "elnath",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0296",
+      "region": "aqua",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0297",
+      "region": "leafre",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0298",
+      "region": "magatia",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0299",
+      "region": "mu_lung",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0300",
+      "region": "zipangu",
+      "release_wave": 6,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0301",
+      "region": "southperry",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0302",
+      "region": "amherst",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0303",
+      "region": "ellinia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0304",
+      "region": "perion",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0305",
+      "region": "henesys",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0306",
+      "region": "kerning",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0307",
+      "region": "sleepywood",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0308",
+      "region": "ludibrium",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0309",
+      "region": "orbis",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0310",
+      "region": "elnath",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0311",
+      "region": "aqua",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0312",
+      "region": "leafre",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0313",
+      "region": "magatia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0314",
+      "region": "mu_lung",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0315",
+      "region": "zipangu",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0316",
+      "region": "southperry",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0317",
+      "region": "amherst",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0318",
+      "region": "ellinia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0319",
+      "region": "perion",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0320",
+      "region": "henesys",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0321",
+      "region": "kerning",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0322",
+      "region": "sleepywood",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0323",
+      "region": "ludibrium",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0324",
+      "region": "orbis",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0325",
+      "region": "elnath",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0326",
+      "region": "aqua",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0327",
+      "region": "leafre",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0328",
+      "region": "magatia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0329",
+      "region": "mu_lung",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0330",
+      "region": "zipangu",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0331",
+      "region": "southperry",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0332",
+      "region": "amherst",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0333",
+      "region": "ellinia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0334",
+      "region": "perion",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0335",
+      "region": "henesys",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0336",
+      "region": "kerning",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0337",
+      "region": "sleepywood",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0338",
+      "region": "ludibrium",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0339",
+      "region": "orbis",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0340",
+      "region": "elnath",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0341",
+      "region": "aqua",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0342",
+      "region": "leafre",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0343",
+      "region": "magatia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0344",
+      "region": "mu_lung",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0345",
+      "region": "zipangu",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0346",
+      "region": "southperry",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0347",
+      "region": "amherst",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0348",
+      "region": "ellinia",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0349",
+      "region": "perion",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0350",
+      "region": "henesys",
+      "release_wave": 7,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0351",
+      "region": "kerning",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0352",
+      "region": "sleepywood",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0353",
+      "region": "ludibrium",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0354",
+      "region": "orbis",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0355",
+      "region": "elnath",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0356",
+      "region": "aqua",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0357",
+      "region": "leafre",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0358",
+      "region": "magatia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0359",
+      "region": "mu_lung",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0360",
+      "region": "zipangu",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0361",
+      "region": "southperry",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0362",
+      "region": "amherst",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0363",
+      "region": "ellinia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0364",
+      "region": "perion",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0365",
+      "region": "henesys",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0366",
+      "region": "kerning",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0367",
+      "region": "sleepywood",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0368",
+      "region": "ludibrium",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0369",
+      "region": "orbis",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0370",
+      "region": "elnath",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0371",
+      "region": "aqua",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0372",
+      "region": "leafre",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0373",
+      "region": "magatia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0374",
+      "region": "mu_lung",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0375",
+      "region": "zipangu",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0376",
+      "region": "southperry",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0377",
+      "region": "amherst",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0378",
+      "region": "ellinia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0379",
+      "region": "perion",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0380",
+      "region": "henesys",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0381",
+      "region": "kerning",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0382",
+      "region": "sleepywood",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0383",
+      "region": "ludibrium",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0384",
+      "region": "orbis",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0385",
+      "region": "elnath",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0386",
+      "region": "aqua",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0387",
+      "region": "leafre",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0388",
+      "region": "magatia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0389",
+      "region": "mu_lung",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0390",
+      "region": "zipangu",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0391",
+      "region": "southperry",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0392",
+      "region": "amherst",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0393",
+      "region": "ellinia",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0394",
+      "region": "perion",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0395",
+      "region": "henesys",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0396",
+      "region": "kerning",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0397",
+      "region": "sleepywood",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0398",
+      "region": "ludibrium",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0399",
+      "region": "orbis",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0400",
+      "region": "elnath",
+      "release_wave": 8,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0401",
+      "region": "aqua",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0402",
+      "region": "leafre",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0403",
+      "region": "magatia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0404",
+      "region": "mu_lung",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0405",
+      "region": "zipangu",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0406",
+      "region": "southperry",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0407",
+      "region": "amherst",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0408",
+      "region": "ellinia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0409",
+      "region": "perion",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0410",
+      "region": "henesys",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0411",
+      "region": "kerning",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0412",
+      "region": "sleepywood",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0413",
+      "region": "ludibrium",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0414",
+      "region": "orbis",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0415",
+      "region": "elnath",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0416",
+      "region": "aqua",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0417",
+      "region": "leafre",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0418",
+      "region": "magatia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0419",
+      "region": "mu_lung",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0420",
+      "region": "zipangu",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0421",
+      "region": "southperry",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0422",
+      "region": "amherst",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0423",
+      "region": "ellinia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0424",
+      "region": "perion",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0425",
+      "region": "henesys",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0426",
+      "region": "kerning",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0427",
+      "region": "sleepywood",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0428",
+      "region": "ludibrium",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0429",
+      "region": "orbis",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0430",
+      "region": "elnath",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0431",
+      "region": "aqua",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0432",
+      "region": "leafre",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0433",
+      "region": "magatia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0434",
+      "region": "mu_lung",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0435",
+      "region": "zipangu",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0436",
+      "region": "southperry",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0437",
+      "region": "amherst",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0438",
+      "region": "ellinia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0439",
+      "region": "perion",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0440",
+      "region": "henesys",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0441",
+      "region": "kerning",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0442",
+      "region": "sleepywood",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0443",
+      "region": "ludibrium",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0444",
+      "region": "orbis",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0445",
+      "region": "elnath",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0446",
+      "region": "aqua",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0447",
+      "region": "leafre",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0448",
+      "region": "magatia",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0449",
+      "region": "mu_lung",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0450",
+      "region": "zipangu",
+      "release_wave": 9,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0451",
+      "region": "southperry",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0452",
+      "region": "amherst",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0453",
+      "region": "ellinia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0454",
+      "region": "perion",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0455",
+      "region": "henesys",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0456",
+      "region": "kerning",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0457",
+      "region": "sleepywood",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0458",
+      "region": "ludibrium",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0459",
+      "region": "orbis",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0460",
+      "region": "elnath",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0461",
+      "region": "aqua",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0462",
+      "region": "leafre",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0463",
+      "region": "magatia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0464",
+      "region": "mu_lung",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0465",
+      "region": "zipangu",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0466",
+      "region": "southperry",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0467",
+      "region": "amherst",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0468",
+      "region": "ellinia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0469",
+      "region": "perion",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0470",
+      "region": "henesys",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0471",
+      "region": "kerning",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0472",
+      "region": "sleepywood",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0473",
+      "region": "ludibrium",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0474",
+      "region": "orbis",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0475",
+      "region": "elnath",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0476",
+      "region": "aqua",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0477",
+      "region": "leafre",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0478",
+      "region": "magatia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0479",
+      "region": "mu_lung",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0480",
+      "region": "zipangu",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0481",
+      "region": "southperry",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0482",
+      "region": "amherst",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0483",
+      "region": "ellinia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0484",
+      "region": "perion",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0485",
+      "region": "henesys",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0486",
+      "region": "kerning",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0487",
+      "region": "sleepywood",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0488",
+      "region": "ludibrium",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0489",
+      "region": "orbis",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0490",
+      "region": "elnath",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0491",
+      "region": "aqua",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0492",
+      "region": "leafre",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0493",
+      "region": "magatia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0494",
+      "region": "mu_lung",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0495",
+      "region": "zipangu",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0496",
+      "region": "southperry",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0497",
+      "region": "amherst",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0498",
+      "region": "ellinia",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0499",
+      "region": "perion",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0500",
+      "region": "henesys",
+      "release_wave": 10,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0501",
+      "region": "kerning",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0502",
+      "region": "sleepywood",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0503",
+      "region": "ludibrium",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0504",
+      "region": "orbis",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0505",
+      "region": "elnath",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0506",
+      "region": "aqua",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0507",
+      "region": "leafre",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0508",
+      "region": "magatia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0509",
+      "region": "mu_lung",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0510",
+      "region": "zipangu",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0511",
+      "region": "southperry",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0512",
+      "region": "amherst",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0513",
+      "region": "ellinia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0514",
+      "region": "perion",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0515",
+      "region": "henesys",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0516",
+      "region": "kerning",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0517",
+      "region": "sleepywood",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0518",
+      "region": "ludibrium",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0519",
+      "region": "orbis",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0520",
+      "region": "elnath",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0521",
+      "region": "aqua",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0522",
+      "region": "leafre",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0523",
+      "region": "magatia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0524",
+      "region": "mu_lung",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0525",
+      "region": "zipangu",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0526",
+      "region": "southperry",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0527",
+      "region": "amherst",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0528",
+      "region": "ellinia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0529",
+      "region": "perion",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0530",
+      "region": "henesys",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0531",
+      "region": "kerning",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0532",
+      "region": "sleepywood",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0533",
+      "region": "ludibrium",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0534",
+      "region": "orbis",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0535",
+      "region": "elnath",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0536",
+      "region": "aqua",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0537",
+      "region": "leafre",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0538",
+      "region": "magatia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0539",
+      "region": "mu_lung",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0540",
+      "region": "zipangu",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0541",
+      "region": "southperry",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0542",
+      "region": "amherst",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0543",
+      "region": "ellinia",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0544",
+      "region": "perion",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0545",
+      "region": "henesys",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0546",
+      "region": "kerning",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0547",
+      "region": "sleepywood",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0548",
+      "region": "ludibrium",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0549",
+      "region": "orbis",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0550",
+      "region": "elnath",
+      "release_wave": 11,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0551",
+      "region": "aqua",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0552",
+      "region": "leafre",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0553",
+      "region": "magatia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0554",
+      "region": "mu_lung",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0555",
+      "region": "zipangu",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0556",
+      "region": "southperry",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0557",
+      "region": "amherst",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0558",
+      "region": "ellinia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0559",
+      "region": "perion",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0560",
+      "region": "henesys",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0561",
+      "region": "kerning",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0562",
+      "region": "sleepywood",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0563",
+      "region": "ludibrium",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0564",
+      "region": "orbis",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0565",
+      "region": "elnath",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0566",
+      "region": "aqua",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0567",
+      "region": "leafre",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0568",
+      "region": "magatia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0569",
+      "region": "mu_lung",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0570",
+      "region": "zipangu",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0571",
+      "region": "southperry",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0572",
+      "region": "amherst",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0573",
+      "region": "ellinia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0574",
+      "region": "perion",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0575",
+      "region": "henesys",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0576",
+      "region": "kerning",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0577",
+      "region": "sleepywood",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0578",
+      "region": "ludibrium",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0579",
+      "region": "orbis",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0580",
+      "region": "elnath",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0581",
+      "region": "aqua",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0582",
+      "region": "leafre",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0583",
+      "region": "magatia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0584",
+      "region": "mu_lung",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0585",
+      "region": "zipangu",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0586",
+      "region": "southperry",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0587",
+      "region": "amherst",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0588",
+      "region": "ellinia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0589",
+      "region": "perion",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0590",
+      "region": "henesys",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0591",
+      "region": "kerning",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0592",
+      "region": "sleepywood",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0593",
+      "region": "ludibrium",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0594",
+      "region": "orbis",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0595",
+      "region": "elnath",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0596",
+      "region": "aqua",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0597",
+      "region": "leafre",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0598",
+      "region": "magatia",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0599",
+      "region": "mu_lung",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0600",
+      "region": "zipangu",
+      "release_wave": 12,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0601",
+      "region": "southperry",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0602",
+      "region": "amherst",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0603",
+      "region": "ellinia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0604",
+      "region": "perion",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0605",
+      "region": "henesys",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0606",
+      "region": "kerning",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0607",
+      "region": "sleepywood",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0608",
+      "region": "ludibrium",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0609",
+      "region": "orbis",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0610",
+      "region": "elnath",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0611",
+      "region": "aqua",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0612",
+      "region": "leafre",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0613",
+      "region": "magatia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0614",
+      "region": "mu_lung",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0615",
+      "region": "zipangu",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0616",
+      "region": "southperry",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0617",
+      "region": "amherst",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0618",
+      "region": "ellinia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0619",
+      "region": "perion",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0620",
+      "region": "henesys",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0621",
+      "region": "kerning",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0622",
+      "region": "sleepywood",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0623",
+      "region": "ludibrium",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0624",
+      "region": "orbis",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0625",
+      "region": "elnath",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0626",
+      "region": "aqua",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0627",
+      "region": "leafre",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0628",
+      "region": "magatia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0629",
+      "region": "mu_lung",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0630",
+      "region": "zipangu",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0631",
+      "region": "southperry",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0632",
+      "region": "amherst",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0633",
+      "region": "ellinia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0634",
+      "region": "perion",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0635",
+      "region": "henesys",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0636",
+      "region": "kerning",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0637",
+      "region": "sleepywood",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0638",
+      "region": "ludibrium",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0639",
+      "region": "orbis",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0640",
+      "region": "elnath",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0641",
+      "region": "aqua",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0642",
+      "region": "leafre",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0643",
+      "region": "magatia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0644",
+      "region": "mu_lung",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0645",
+      "region": "zipangu",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0646",
+      "region": "southperry",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0647",
+      "region": "amherst",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0648",
+      "region": "ellinia",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0649",
+      "region": "perion",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0650",
+      "region": "henesys",
+      "release_wave": 13,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0651",
+      "region": "kerning",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0652",
+      "region": "sleepywood",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0653",
+      "region": "ludibrium",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0654",
+      "region": "orbis",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0655",
+      "region": "elnath",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0656",
+      "region": "aqua",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0657",
+      "region": "leafre",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0658",
+      "region": "magatia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0659",
+      "region": "mu_lung",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0660",
+      "region": "zipangu",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0661",
+      "region": "southperry",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0662",
+      "region": "amherst",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0663",
+      "region": "ellinia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0664",
+      "region": "perion",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0665",
+      "region": "henesys",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0666",
+      "region": "kerning",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0667",
+      "region": "sleepywood",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0668",
+      "region": "ludibrium",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0669",
+      "region": "orbis",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0670",
+      "region": "elnath",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0671",
+      "region": "aqua",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0672",
+      "region": "leafre",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0673",
+      "region": "magatia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0674",
+      "region": "mu_lung",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0675",
+      "region": "zipangu",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0676",
+      "region": "southperry",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0677",
+      "region": "amherst",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0678",
+      "region": "ellinia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0679",
+      "region": "perion",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0680",
+      "region": "henesys",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0681",
+      "region": "kerning",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0682",
+      "region": "sleepywood",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0683",
+      "region": "ludibrium",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0684",
+      "region": "orbis",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0685",
+      "region": "elnath",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0686",
+      "region": "aqua",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0687",
+      "region": "leafre",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0688",
+      "region": "magatia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0689",
+      "region": "mu_lung",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0690",
+      "region": "zipangu",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0691",
+      "region": "southperry",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0692",
+      "region": "amherst",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0693",
+      "region": "ellinia",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0694",
+      "region": "perion",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0695",
+      "region": "henesys",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0696",
+      "region": "kerning",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0697",
+      "region": "sleepywood",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0698",
+      "region": "ludibrium",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0699",
+      "region": "orbis",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0700",
+      "region": "elnath",
+      "release_wave": 14,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0701",
+      "region": "aqua",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0702",
+      "region": "leafre",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0703",
+      "region": "magatia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0704",
+      "region": "mu_lung",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0705",
+      "region": "zipangu",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0706",
+      "region": "southperry",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0707",
+      "region": "amherst",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0708",
+      "region": "ellinia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0709",
+      "region": "perion",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0710",
+      "region": "henesys",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0711",
+      "region": "kerning",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0712",
+      "region": "sleepywood",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0713",
+      "region": "ludibrium",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0714",
+      "region": "orbis",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0715",
+      "region": "elnath",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0716",
+      "region": "aqua",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0717",
+      "region": "leafre",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0718",
+      "region": "magatia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0719",
+      "region": "mu_lung",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0720",
+      "region": "zipangu",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0721",
+      "region": "southperry",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0722",
+      "region": "amherst",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0723",
+      "region": "ellinia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0724",
+      "region": "perion",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0725",
+      "region": "henesys",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0726",
+      "region": "kerning",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0727",
+      "region": "sleepywood",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0728",
+      "region": "ludibrium",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0729",
+      "region": "orbis",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0730",
+      "region": "elnath",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0731",
+      "region": "aqua",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0732",
+      "region": "leafre",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0733",
+      "region": "magatia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0734",
+      "region": "mu_lung",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0735",
+      "region": "zipangu",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0736",
+      "region": "southperry",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0737",
+      "region": "amherst",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0738",
+      "region": "ellinia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0739",
+      "region": "perion",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0740",
+      "region": "henesys",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0741",
+      "region": "kerning",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0742",
+      "region": "sleepywood",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0743",
+      "region": "ludibrium",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0744",
+      "region": "orbis",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0745",
+      "region": "elnath",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0746",
+      "region": "aqua",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0747",
+      "region": "leafre",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0748",
+      "region": "magatia",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0749",
+      "region": "mu_lung",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0750",
+      "region": "zipangu",
+      "release_wave": 15,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0751",
+      "region": "southperry",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0752",
+      "region": "amherst",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0753",
+      "region": "ellinia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0754",
+      "region": "perion",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0755",
+      "region": "henesys",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0756",
+      "region": "kerning",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0757",
+      "region": "sleepywood",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0758",
+      "region": "ludibrium",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0759",
+      "region": "orbis",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0760",
+      "region": "elnath",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0761",
+      "region": "aqua",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0762",
+      "region": "leafre",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0763",
+      "region": "magatia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0764",
+      "region": "mu_lung",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0765",
+      "region": "zipangu",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0766",
+      "region": "southperry",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0767",
+      "region": "amherst",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0768",
+      "region": "ellinia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0769",
+      "region": "perion",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0770",
+      "region": "henesys",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0771",
+      "region": "kerning",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0772",
+      "region": "sleepywood",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0773",
+      "region": "ludibrium",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0774",
+      "region": "orbis",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0775",
+      "region": "elnath",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0776",
+      "region": "aqua",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0777",
+      "region": "leafre",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0778",
+      "region": "magatia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0779",
+      "region": "mu_lung",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0780",
+      "region": "zipangu",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0781",
+      "region": "southperry",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0782",
+      "region": "amherst",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0783",
+      "region": "ellinia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0784",
+      "region": "perion",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0785",
+      "region": "henesys",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0786",
+      "region": "kerning",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0787",
+      "region": "sleepywood",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0788",
+      "region": "ludibrium",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0789",
+      "region": "orbis",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0790",
+      "region": "elnath",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0791",
+      "region": "aqua",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0792",
+      "region": "leafre",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0793",
+      "region": "magatia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0794",
+      "region": "mu_lung",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0795",
+      "region": "zipangu",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0796",
+      "region": "southperry",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0797",
+      "region": "amherst",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0798",
+      "region": "ellinia",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0799",
+      "region": "perion",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0800",
+      "region": "henesys",
+      "release_wave": 16,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0801",
+      "region": "kerning",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0802",
+      "region": "sleepywood",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0803",
+      "region": "ludibrium",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0804",
+      "region": "orbis",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0805",
+      "region": "elnath",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0806",
+      "region": "aqua",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0807",
+      "region": "leafre",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0808",
+      "region": "magatia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0809",
+      "region": "mu_lung",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0810",
+      "region": "zipangu",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0811",
+      "region": "southperry",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0812",
+      "region": "amherst",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0813",
+      "region": "ellinia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0814",
+      "region": "perion",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0815",
+      "region": "henesys",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0816",
+      "region": "kerning",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0817",
+      "region": "sleepywood",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0818",
+      "region": "ludibrium",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0819",
+      "region": "orbis",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0820",
+      "region": "elnath",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0821",
+      "region": "aqua",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0822",
+      "region": "leafre",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0823",
+      "region": "magatia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0824",
+      "region": "mu_lung",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0825",
+      "region": "zipangu",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0826",
+      "region": "southperry",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0827",
+      "region": "amherst",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0828",
+      "region": "ellinia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0829",
+      "region": "perion",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0830",
+      "region": "henesys",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0831",
+      "region": "kerning",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0832",
+      "region": "sleepywood",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0833",
+      "region": "ludibrium",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0834",
+      "region": "orbis",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0835",
+      "region": "elnath",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0836",
+      "region": "aqua",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0837",
+      "region": "leafre",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0838",
+      "region": "magatia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0839",
+      "region": "mu_lung",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0840",
+      "region": "zipangu",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0841",
+      "region": "southperry",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0842",
+      "region": "amherst",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0843",
+      "region": "ellinia",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0844",
+      "region": "perion",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0845",
+      "region": "henesys",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0846",
+      "region": "kerning",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0847",
+      "region": "sleepywood",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0848",
+      "region": "ludibrium",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0849",
+      "region": "orbis",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0850",
+      "region": "elnath",
+      "release_wave": 17,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0851",
+      "region": "aqua",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0852",
+      "region": "leafre",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0853",
+      "region": "magatia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0854",
+      "region": "mu_lung",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0855",
+      "region": "zipangu",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0856",
+      "region": "southperry",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0857",
+      "region": "amherst",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0858",
+      "region": "ellinia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0859",
+      "region": "perion",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0860",
+      "region": "henesys",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0861",
+      "region": "kerning",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0862",
+      "region": "sleepywood",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0863",
+      "region": "ludibrium",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0864",
+      "region": "orbis",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0865",
+      "region": "elnath",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0866",
+      "region": "aqua",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0867",
+      "region": "leafre",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0868",
+      "region": "magatia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0869",
+      "region": "mu_lung",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0870",
+      "region": "zipangu",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0871",
+      "region": "southperry",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0872",
+      "region": "amherst",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0873",
+      "region": "ellinia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0874",
+      "region": "perion",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0875",
+      "region": "henesys",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0876",
+      "region": "kerning",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0877",
+      "region": "sleepywood",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0878",
+      "region": "ludibrium",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0879",
+      "region": "orbis",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0880",
+      "region": "elnath",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0881",
+      "region": "aqua",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0882",
+      "region": "leafre",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0883",
+      "region": "magatia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0884",
+      "region": "mu_lung",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0885",
+      "region": "zipangu",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0886",
+      "region": "southperry",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0887",
+      "region": "amherst",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0888",
+      "region": "ellinia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0889",
+      "region": "perion",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0890",
+      "region": "henesys",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0891",
+      "region": "kerning",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0892",
+      "region": "sleepywood",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0893",
+      "region": "ludibrium",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0894",
+      "region": "orbis",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0895",
+      "region": "elnath",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0896",
+      "region": "aqua",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0897",
+      "region": "leafre",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0898",
+      "region": "magatia",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0899",
+      "region": "mu_lung",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0900",
+      "region": "zipangu",
+      "release_wave": 18,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0901",
+      "region": "southperry",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0902",
+      "region": "amherst",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0903",
+      "region": "ellinia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0904",
+      "region": "perion",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0905",
+      "region": "henesys",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0906",
+      "region": "kerning",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0907",
+      "region": "sleepywood",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0908",
+      "region": "ludibrium",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0909",
+      "region": "orbis",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0910",
+      "region": "elnath",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0911",
+      "region": "aqua",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0912",
+      "region": "leafre",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0913",
+      "region": "magatia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0914",
+      "region": "mu_lung",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0915",
+      "region": "zipangu",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0916",
+      "region": "southperry",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0917",
+      "region": "amherst",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0918",
+      "region": "ellinia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0919",
+      "region": "perion",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0920",
+      "region": "henesys",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0921",
+      "region": "kerning",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0922",
+      "region": "sleepywood",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0923",
+      "region": "ludibrium",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0924",
+      "region": "orbis",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0925",
+      "region": "elnath",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0926",
+      "region": "aqua",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0927",
+      "region": "leafre",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0928",
+      "region": "magatia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0929",
+      "region": "mu_lung",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0930",
+      "region": "zipangu",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0931",
+      "region": "southperry",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0932",
+      "region": "amherst",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0933",
+      "region": "ellinia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0934",
+      "region": "perion",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0935",
+      "region": "henesys",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0936",
+      "region": "kerning",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0937",
+      "region": "sleepywood",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0938",
+      "region": "ludibrium",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0939",
+      "region": "orbis",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0940",
+      "region": "elnath",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0941",
+      "region": "aqua",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0942",
+      "region": "leafre",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0943",
+      "region": "magatia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0944",
+      "region": "mu_lung",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0945",
+      "region": "zipangu",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0946",
+      "region": "southperry",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0947",
+      "region": "amherst",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0948",
+      "region": "ellinia",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0949",
+      "region": "perion",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0950",
+      "region": "henesys",
+      "release_wave": 19,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0951",
+      "region": "kerning",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0952",
+      "region": "sleepywood",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0953",
+      "region": "ludibrium",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0954",
+      "region": "orbis",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0955",
+      "region": "elnath",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0956",
+      "region": "aqua",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0957",
+      "region": "leafre",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0958",
+      "region": "magatia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0959",
+      "region": "mu_lung",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0960",
+      "region": "zipangu",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0961",
+      "region": "southperry",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0962",
+      "region": "amherst",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0963",
+      "region": "ellinia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0964",
+      "region": "perion",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0965",
+      "region": "henesys",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0966",
+      "region": "kerning",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0967",
+      "region": "sleepywood",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0968",
+      "region": "ludibrium",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0969",
+      "region": "orbis",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0970",
+      "region": "elnath",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0971",
+      "region": "aqua",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0972",
+      "region": "leafre",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0973",
+      "region": "magatia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0974",
+      "region": "mu_lung",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0975",
+      "region": "zipangu",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0976",
+      "region": "southperry",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0977",
+      "region": "amherst",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0978",
+      "region": "ellinia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0979",
+      "region": "perion",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0980",
+      "region": "henesys",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0981",
+      "region": "kerning",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0982",
+      "region": "sleepywood",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0983",
+      "region": "ludibrium",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0984",
+      "region": "orbis",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_0985",
+      "region": "elnath",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_0986",
+      "region": "aqua",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_0987",
+      "region": "leafre",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_0988",
+      "region": "magatia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_0989",
+      "region": "mu_lung",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_0990",
+      "region": "zipangu",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_0991",
+      "region": "southperry",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_0992",
+      "region": "amherst",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_0993",
+      "region": "ellinia",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_0994",
+      "region": "perion",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_0995",
+      "region": "henesys",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_0996",
+      "region": "kerning",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_0997",
+      "region": "sleepywood",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_0998",
+      "region": "ludibrium",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_0999",
+      "region": "orbis",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1000",
+      "region": "elnath",
+      "release_wave": 20,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1001",
+      "region": "aqua",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1002",
+      "region": "leafre",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1003",
+      "region": "magatia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1004",
+      "region": "mu_lung",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1005",
+      "region": "zipangu",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1006",
+      "region": "southperry",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1007",
+      "region": "amherst",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1008",
+      "region": "ellinia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1009",
+      "region": "perion",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1010",
+      "region": "henesys",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1011",
+      "region": "kerning",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1012",
+      "region": "sleepywood",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1013",
+      "region": "ludibrium",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1014",
+      "region": "orbis",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1015",
+      "region": "elnath",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1016",
+      "region": "aqua",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1017",
+      "region": "leafre",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1018",
+      "region": "magatia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1019",
+      "region": "mu_lung",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1020",
+      "region": "zipangu",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1021",
+      "region": "southperry",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1022",
+      "region": "amherst",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1023",
+      "region": "ellinia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1024",
+      "region": "perion",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1025",
+      "region": "henesys",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1026",
+      "region": "kerning",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1027",
+      "region": "sleepywood",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1028",
+      "region": "ludibrium",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1029",
+      "region": "orbis",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1030",
+      "region": "elnath",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1031",
+      "region": "aqua",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1032",
+      "region": "leafre",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1033",
+      "region": "magatia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1034",
+      "region": "mu_lung",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1035",
+      "region": "zipangu",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1036",
+      "region": "southperry",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1037",
+      "region": "amherst",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1038",
+      "region": "ellinia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1039",
+      "region": "perion",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1040",
+      "region": "henesys",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1041",
+      "region": "kerning",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1042",
+      "region": "sleepywood",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1043",
+      "region": "ludibrium",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1044",
+      "region": "orbis",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1045",
+      "region": "elnath",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1046",
+      "region": "aqua",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1047",
+      "region": "leafre",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1048",
+      "region": "magatia",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1049",
+      "region": "mu_lung",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1050",
+      "region": "zipangu",
+      "release_wave": 21,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1051",
+      "region": "southperry",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1052",
+      "region": "amherst",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1053",
+      "region": "ellinia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1054",
+      "region": "perion",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1055",
+      "region": "henesys",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1056",
+      "region": "kerning",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1057",
+      "region": "sleepywood",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1058",
+      "region": "ludibrium",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1059",
+      "region": "orbis",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1060",
+      "region": "elnath",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1061",
+      "region": "aqua",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1062",
+      "region": "leafre",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1063",
+      "region": "magatia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1064",
+      "region": "mu_lung",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1065",
+      "region": "zipangu",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1066",
+      "region": "southperry",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1067",
+      "region": "amherst",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1068",
+      "region": "ellinia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1069",
+      "region": "perion",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1070",
+      "region": "henesys",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1071",
+      "region": "kerning",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1072",
+      "region": "sleepywood",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1073",
+      "region": "ludibrium",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1074",
+      "region": "orbis",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1075",
+      "region": "elnath",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1076",
+      "region": "aqua",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1077",
+      "region": "leafre",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1078",
+      "region": "magatia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1079",
+      "region": "mu_lung",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1080",
+      "region": "zipangu",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1081",
+      "region": "southperry",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1082",
+      "region": "amherst",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1083",
+      "region": "ellinia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1084",
+      "region": "perion",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1085",
+      "region": "henesys",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "kerning_frontier_pack_1086",
+      "region": "kerning",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "sleepywood_frontier_pack_1087",
+      "region": "sleepywood",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ludibrium_frontier_pack_1088",
+      "region": "ludibrium",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "orbis_frontier_pack_1089",
+      "region": "orbis",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "elnath_frontier_pack_1090",
+      "region": "elnath",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "aqua_frontier_pack_1091",
+      "region": "aqua",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "leafre_frontier_pack_1092",
+      "region": "leafre",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "magatia_frontier_pack_1093",
+      "region": "magatia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "mu_lung_frontier_pack_1094",
+      "region": "mu_lung",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "zipangu_frontier_pack_1095",
+      "region": "zipangu",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "southperry_frontier_pack_1096",
+      "region": "southperry",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "amherst_frontier_pack_1097",
+      "region": "amherst",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "ellinia_frontier_pack_1098",
+      "region": "ellinia",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "perion_frontier_pack_1099",
+      "region": "perion",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    },
+    {
+      "id": "henesys_frontier_pack_1100",
+      "region": "henesys",
+      "release_wave": 22,
+      "cadence": "quarterly",
+      "focus": "route_density"
+    }
+  ]
+}

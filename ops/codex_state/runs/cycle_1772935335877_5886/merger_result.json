@@ -1,0 +1,11 @@
+{
+  "agent": "merger",
+  "instructions": "# Merger\nPrepare merge plans only.\nPython scripts own deterministic merge order, dedupe, validation, shard routing, score updates, and repeated-run safety.\n",
+  "result": {
+    "graph_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "schema_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_schema.json",
+    "balance_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_balance.json",
+    "liveops_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_liveops.json",
+    "expansions_temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_expansions.json"
+  }
+}

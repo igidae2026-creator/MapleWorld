@@ -1,0 +1,121 @@
+{
+  "schema_item_count": 74543,
+  "target_schema_items": 10000,
+  "shards": [
+    {
+      "domain": "progression",
+      "path": "data/design_schema/progression.json",
+      "count": 12421
+    },
+    {
+      "domain": "combat",
+      "path": "data/design_schema/combat.json",
+      "count": 12421
+    },
+    {
+      "domain": "monsters",
+      "path": "data/design_schema/monsters.json",
+      "count": 12421
+    },
+    {
+      "domain": "fields",
+      "path": "data/design_schema/fields.json",
+      "count": 12421
+    },
+    {
+      "domain": "spawning",
+      "path": "data/design_schema/spawning.json",
+      "count": 1
+    },
+    {
+      "domain": "drops",
+      "path": "data/design_schema/drops.json",
+      "count": 12421
+    },
+    {
+      "domain": "items",
+      "path": "data/design_schema/items.json",
+      "count": 1
+    },
+    {
+      "domain": "equipment",
+      "path": "data/design_schema/equipment.json",
+      "count": 1
+    },
+    {
+      "domain": "economy",
+      "path": "data/design_schema/economy.json",
+      "count": 12421
+    },
+    {
+      "domain": "currency",
+      "path": "data/design_schema/currency.json",
+      "count": 1
+    },
+    {
+      "domain": "trading",
+      "path": "data/design_schema/trading.json",
+      "count": 1
+    },
+    {
+      "domain": "party",
+      "path": "data/design_schema/party.json",
+      "count": 1
+    },
+    {
+      "domain": "guild",
+      "path": "data/design_schema/guild.json",
+      "count": 1
+    },
+    {
+      "domain": "boss",
+      "path": "data/design_schema/boss.json",
+      "count": 1
+    },
+    {
+      "domain": "dungeons",
+      "path": "data/design_schema/dungeons.json",
+      "count": 1
+    },
+    {
+      "domain": "quests",
+      "path": "data/design_schema/quests.json",
+      "count": 1
+    },
+    {
+      "domain": "events",
+      "path": "data/design_schema/events.json",
+      "count": 1
+    },
+    {
+      "domain": "liveops",
+      "path": "data/design_schema/liveops.json",
+      "count": 1
+    },
+    {
+      "domain": "security",
+      "path": "data/design_schema/security.json",
+      "count": 1
+    },
+    {
+      "domain": "performance",
+      "path": "data/design_schema/performance.json",
+      "count": 1
+    },
+    {
+      "domain": "persistence",
+      "path": "data/design_schema/persistence.json",
+      "count": 1
+    },
+    {
+      "domain": "ai",
+      "path": "data/design_schema/ai.json",
+      "count": 1
+    },
+    {
+      "domain": "navigation",
+      "path": "data/design_schema/navigation.json",
+      "count": 1
+    }
+  ]
+}

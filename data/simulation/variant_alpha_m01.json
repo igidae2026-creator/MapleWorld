@@ -1,0 +1,25 @@
+{
+  "variant_id": "variant_alpha_m01",
+  "agent_count": 1000,
+  "player_mix": {
+    "solo_grinding": 340,
+    "party_formation": 190,
+    "guild_coordination": 120,
+    "field_migration": 110,
+    "boss_rushing": 80,
+    "market_trading": 70,
+    "resource_farming": 50,
+    "consumable_purchasing": 20,
+    "progression_band_transitions": 20
+  },
+  "metrics": {
+    "economy_stability": 0.6429,
+    "field_congestion": 0.5,
+    "party_vs_solo_pressure": 0.629,
+    "boss_reward_inflation": 0.6,
+    "item_lifecycle_pressure": 0.8333,
+    "social_density": 0.9687,
+    "progression_pacing": 0.375,
+    "market_pressure": 0.45
+  }
+}

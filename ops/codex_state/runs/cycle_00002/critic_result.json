@@ -1,0 +1,8 @@
+{
+  "agent": "critic",
+  "instructions": "Review candidate JSON and accept only valid, non-duplicate nodes.",
+  "result": {
+    "candidate_path": "/home/meta_os/MapleWorld/ops/codex_state/candidates/cycle_00002/critic/candidate_review.json",
+    "accepted_count": 0
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "agent": "generator",
+  "instructions": "# Generator\nWrite candidate JSON only.\nProduce MapleLand-class operational assets with concrete monsters, maps, items, sinks, party bands, boss access gates, and live-ops controls.\nNever emit schema-path names as content identities.\nFavor bottlenecks, contested maps, sink pressure, and weekly retention loops over smooth placeholder curves.\n",
+  "result": {
+    "temp_path": "/home/meta_os/MapleWorld/data/tmp/generated_candidates.json",
+    "candidate_count": 0
+  }
+}

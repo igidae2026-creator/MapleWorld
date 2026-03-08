@@ -1,0 +1,16 @@
+{
+  "agent": "simulator",
+  "instructions": "# Simulator\nScore candidate outputs for pacing, economy pressure, drop pressure, map saturation, and reward cadence.\n",
+  "result": {
+    "signals": {
+      "progression_pacing": 1.0,
+      "economy_balance": 1.0,
+      "drop_pressure": 1.0,
+      "map_saturation": 1.0,
+      "party_vs_solo_pressure": 0.89,
+      "boss_reward_cadence": 0.83,
+      "item_lifecycle_pressure": 0.78
+    },
+    "status": "stable"
+  }
+}

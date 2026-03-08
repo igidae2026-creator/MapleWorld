@@ -159,4 +159,18 @@ local invalidBootOk, invalidBootErr = pcall(function()
 end)
 assert(invalidBootOk == false and tostring(invalidBootErr):find('negative_mesos_after_replay', 1, true), 'invalid replay state did not fail closed')
 
+-- snapshot captures are immutable once staged
+local snapshotWorld = ServerBootstrap.boot('.', {
+    worldRepository = {
+        load = function() return nil end,
+        save = function() return true end,
+    },
+    playerRepository = PlayerRepository.newMemory({}),
+})
+local snapshotId, snapshotEntry = snapshotWorld.snapshotManager:capture({ players = { count = 1 } }, { reason = 'test' })
+snapshotEntry.state.players.count = 99
+local storedSnapshot = snapshotWorld.snapshotManager:get(snapshotId)
+assert(storedSnapshot.state.players.count == 1, 'snapshot capture should isolate stored state from later mutation')
+assert(storedSnapshot.metadata.reason == 'test', 'snapshot metadata missing')
+
 print('persistence_integrity_test: ok')

@@ -1,0 +1,44 @@
+{
+  "agent": "supervisor",
+  "instructions": "# Supervisor\nDrive repeated generation cycles until all target counts are reached without dead loops.\n",
+  "result": {
+    "status": "complete",
+    "progress": {
+      "node_count": 74543,
+      "target_nodes": 10000,
+      "target_design_nodes": 10000,
+      "target_schema_items": 10000,
+      "target_balance_rows": 20000,
+      "target_liveops_rows": 2000,
+      "target_expansion_assets": 5000,
+      "design_node_count": 74543,
+      "schema_item_count": 74543,
+      "balance_row_count": 28000,
+      "liveops_row_count": 2300,
+      "expansion_asset_count": 5100,
+      "all_targets_met": true,
+      "design_nodes": 74543,
+      "schema_items": 74543,
+      "balance_rows": 28000,
+      "liveops_rows": 2300,
+      "expansion_assets": 5100,
+      "last_run_added": 0,
+      "last_status": "complete",
+      "project_complete": true,
+      "targets": {
+        "design_nodes": 10000,
+        "schema_items": 10000,
+        "balance_rows": 20000,
+        "liveops_rows": 2000,
+        "expansion_assets": 5000
+      }
+    },
+    "emphasis_domains": [
+      "ai",
+      "boss",
+      "currency",
+      "dungeons",
+      "equipment"
+    ]
+  }
+}
