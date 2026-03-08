@@ -1,7 +1,7 @@
 local BossMechanicsSystem = require('shared_rules.boss_mechanics_system')
 
 local BossSim = {}
-local CLEAR_TIME_TARGET = 270
+local CLEAR_TIME_TARGET = 276
 
 local function sorted_bosses(content)
     local bosses = {}
