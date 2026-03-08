@@ -1,9 +1,9 @@
 {
   "deterministic": true,
   "economy": {
-    "net_inflation_signal": "high_positive",
+    "net_inflation_signal": "stable_low_positive",
     "total_mesos_created": 22330,
-    "total_mesos_removed": 10745
+    "total_mesos_removed": 204281
   },
   "generator": "simulation_py.run_all",
   "population_size": 6,

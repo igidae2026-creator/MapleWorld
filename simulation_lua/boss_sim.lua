@@ -1,6 +1,7 @@
 local BossMechanicsSystem = require('shared_rules.boss_mechanics_system')
 
 local BossSim = {}
+local CLEAR_TIME_TARGET = 270
 
 local function sorted_bosses(content)
     local bosses = {}
@@ -30,7 +31,7 @@ function BossSim.run(content)
         local phase = mechanics:phase(encounter)
         local clearTime = 150 + (pressure * 18) + (phase * 22) + (index * 7)
         totalTime = totalTime + clearTime
-        if clearTime <= 255 then
+        if clearTime <= CLEAR_TIME_TARGET then
             clears = clears + 1
         else
             failures = failures + 1
