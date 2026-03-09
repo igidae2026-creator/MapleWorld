@@ -32,7 +32,7 @@ function CombatSim.run(content)
 
     for profileIndex, profile in ipairs(profiles) do
         for iteration = 1, 24 do
-            local critical = ((iteration + profileIndex) % 5) == 0
+            local critical = ((iteration + profileIndex) % 2) == 0
             local hitRoll = (((iteration * 13) + (profileIndex * 7)) % 100) / 100
             local result = DamageFormula.resolve({
                 derived = profile.derived,

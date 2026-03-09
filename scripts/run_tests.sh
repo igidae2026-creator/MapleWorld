@@ -21,5 +21,7 @@ lua tests/economy_runtime_invariant_test.lua
 lua tests/simulation_lua_smoke_test.lua
 python3 tests/test_simulation_py_smoke.py
 python3 tests/test_quality_metrics_smoke.py
+python3 tests/test_fun_variance_guard.py
+python3 tests/test_canon_lock_guard.py
 python3 tests/test_agent5_economy_prompt_smoke.py
 python3 tests/test_agent6_content_prompt_smoke.py

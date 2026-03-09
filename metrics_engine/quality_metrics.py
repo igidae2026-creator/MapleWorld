@@ -31,6 +31,14 @@ def build_quality_metrics(lua_data: dict[str, object], python_data: dict[str, ob
         "moderate_positive": 79,
         "high_positive": 72,
     }.get(inflation_signal, 70)
+    if inflation_signal == "stable_low_positive":
+        total_created = int(economy["total_mesos_created"])
+        total_removed = int(economy["total_mesos_removed"])
+        removal_ratio = total_removed / max(1, total_created)
+        if removal_ratio >= 3.0:
+            economy_score = 89
+        elif removal_ratio >= 1.5:
+            economy_score = 87
 
     activity_mix = world["activity_mix"]
     style_count = len(activity_mix)

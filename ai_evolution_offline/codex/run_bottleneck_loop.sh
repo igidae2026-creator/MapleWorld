@@ -213,6 +213,34 @@ run_coordinator() {
   build_coordinator_input "$rejection_reason" | codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/decision.txt" -
 }
 
+build_fun_guard_input() {
+  cat "$PROMPTS_DIR/agent9_fun_guard.txt"
+  printf "\n\nCoordinator decision:\n\n"
+  cat "$LOOP_DIR/decision.txt"
+  printf "\n"
+}
+
+run_fun_guard_agent() {
+  build_fun_guard_input | codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent9.txt" -
+}
+
+extract_patch_veto() {
+  awk '
+    /^PATCH_VETO[[:space:]]*=/ {
+      value=$0
+      sub(/^PATCH_VETO[[:space:]]*=[[:space:]]*/, "", value)
+      print value
+      exit
+    }
+    /^PATCH_VETO:$/ { capture=1; next }
+    capture == 1 {
+      if ($0 == "") exit
+      print
+      exit
+    }
+  ' "$LOOP_DIR/agent9.txt"
+}
+
 validate_decision() {
   local chosen_bottleneck="$1"
   local efficiency_estimate="$2"
@@ -363,6 +391,19 @@ do
           echo "Fake progress threshold reached. Stopping loop."
           exit 1
         fi
+        continue 2
+      fi
+      DECISION_RETRY_COUNT=$((DECISION_RETRY_COUNT + 1))
+      run_coordinator "$DECISION_REJECTION_REASON"
+      continue
+    fi
+    echo "=== AGENT 9 ==="
+    run_fun_guard_agent
+    PATCH_VETO="$(extract_patch_veto)"
+    if [ "$PATCH_VETO" = "reject" ]; then
+      DECISION_REJECTION_REASON="fun guard veto: proposed stability gain harms variance, memorable rewards, canon texture, or map-role separation"
+      if [ "$DECISION_RETRY_COUNT" -ge "$COORDINATOR_RETRY_LIMIT" ]; then
+        record_failure "$CYCLE_ID" "invalid_decision:${DECISION_REJECTION_REASON}" "$LOOP_DIR/agent9.txt"
         continue 2
       fi
       DECISION_RETRY_COUNT=$((DECISION_RETRY_COUNT + 1))

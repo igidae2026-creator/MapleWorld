@@ -1,9 +1,26 @@
 local QuestSystem = {}
+local STARTER_SUPPLY_LEVEL_CAP = 15
+local STARTER_SUPPLY_MESO_FLOOR = 120
 
 local function markDirty(player)
     if not player then return end
     player.version = (tonumber(player.version) or 0) + 1
     player.dirty = true
+end
+
+local function starterSupplyEligible(player)
+    if not player then return false end
+    if (tonumber(player.level) or 1) > STARTER_SUPPLY_LEVEL_CAP then return false end
+    local progression = player.progression or {}
+    local milestones = progression.milestones or {}
+    return milestones.starter_supply_stipend ~= true
+end
+
+local function markStarterSupplyGranted(player)
+    if not player then return end
+    player.progression = player.progression or {}
+    player.progression.milestones = player.progression.milestones or {}
+    player.progression.milestones.starter_supply_stipend = true
 end
 
 function QuestSystem.new(config)
@@ -173,6 +190,18 @@ function QuestSystem:turnIn(player, questId)
         else
             player.pendingQuestExp = (player.pendingQuestExp or 0) + quest.rewardExp
         end
+    end
+    if starterSupplyEligible(player) then
+        local questMesos = math.max(0, math.floor(tonumber(quest.rewardMesos) or 0))
+        local stipend = math.max(0, STARTER_SUPPLY_MESO_FLOOR - questMesos)
+        if stipend > 0 then
+            if self.economySystem then
+                self.economySystem:grantMesos(player, stipend, 'starter_supply_stipend', { questId = questId, correlationId = correlationId })
+            else
+                player.mesos = (player.mesos or 0) + stipend
+            end
+        end
+        markStarterSupplyGranted(player)
     end
 
     markDirty(player)

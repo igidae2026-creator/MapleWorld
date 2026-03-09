@@ -1,0 +1,16 @@
+band_id,min_level,max_level,map_id,role,efficiency_profile,throughput_bias
+early_01,1,15,starter_fields_town_approach,safe,stable_grind,1.0
+early_01,1,15,henesys_hunting_ground,alternative,route_flex,1.08
+early_01,1,15,starter_fields_boss_lane,high_risk_high_reward,burst_reward,1.18
+early_02,16,30,lith_harbor_coast_road,safe,stable_grind,1.0
+early_02,16,30,ellinia_lower_canopy,alternative,route_flex,1.09
+early_02,16,30,perion_rockfall_edge,high_risk_high_reward,burst_reward,1.2
+mid_01,31,50,kerning_backstreet,safe,stable_grind,1.0
+mid_01,31,50,coastal_harbors_docks,alternative,route_flex,1.1
+mid_01,31,50,sleepywood_sinkhole,high_risk_high_reward,burst_reward,1.22
+mid_02,51,70,ludibrium_outer_walk,safe,stable_grind,1.0
+mid_02,51,70,orbis_cloud_bridge,alternative,route_flex,1.1
+mid_02,51,70,dungeon_black_gate,high_risk_high_reward,burst_reward,1.21
+late_01,71,95,elnath_snowfield_patrol,safe,stable_grind,1.0
+late_01,71,95,minar_lower_trail,alternative,route_flex,1.11
+late_01,71,95,ancient_hidden_domains_rift,high_risk_high_reward,burst_reward,1.24

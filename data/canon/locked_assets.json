@@ -1,0 +1,29 @@
+{
+  "regions": [
+    "henesys",
+    "lith_harbor",
+    "ellinia",
+    "perion",
+    "kerning",
+    "sleepywood"
+  ],
+  "bosses": [
+    "mano",
+    "stumpy",
+    "dbexp_starter_fields_boss_001",
+    "dbexp_henesys_plains_boss_001"
+  ],
+  "rewards": [
+    "route_cache",
+    "dungeon_pass",
+    "boss_writ"
+  ],
+  "early_loop_segments": [
+    "introductory hunting",
+    "potion sustain",
+    "first-job setup",
+    "trade-heavy progression",
+    "route onboarding",
+    "mobility practice"
+  ]
+}

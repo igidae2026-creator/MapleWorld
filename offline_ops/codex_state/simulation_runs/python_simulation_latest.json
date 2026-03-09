@@ -9,9 +9,133 @@
   "population_size": 6,
   "world": {
     "activity_mix": {
+      "boss_access": 1,
+      "onboarding_fields": 2,
       "party_grinder": 2,
       "quest_player": 2,
       "solo_grinder": 2
+    },
+    "map_role_distribution": {
+      "early_01": {
+        "population": 1,
+        "recommended_levels": {
+          "max": 15,
+          "min": 1
+        },
+        "roles": {
+          "alternative": {
+            "efficiency_profile": "route_flex",
+            "map_id": "henesys_hunting_ground",
+            "throughput_proxy": 1.08
+          },
+          "high_risk_high_reward": {
+            "efficiency_profile": "burst_reward",
+            "map_id": "starter_fields_boss_lane",
+            "throughput_proxy": 1.18
+          },
+          "safe": {
+            "efficiency_profile": "stable_grind",
+            "map_id": "starter_fields_town_approach",
+            "throughput_proxy": 1.0
+          }
+        }
+      },
+      "early_02": {
+        "population": 1,
+        "recommended_levels": {
+          "max": 30,
+          "min": 16
+        },
+        "roles": {
+          "alternative": {
+            "efficiency_profile": "route_flex",
+            "map_id": "ellinia_lower_canopy",
+            "throughput_proxy": 1.09
+          },
+          "high_risk_high_reward": {
+            "efficiency_profile": "burst_reward",
+            "map_id": "perion_rockfall_edge",
+            "throughput_proxy": 1.2
+          },
+          "safe": {
+            "efficiency_profile": "stable_grind",
+            "map_id": "lith_harbor_coast_road",
+            "throughput_proxy": 1.0
+          }
+        }
+      },
+      "late_01": {
+        "population": 1,
+        "recommended_levels": {
+          "max": 95,
+          "min": 71
+        },
+        "roles": {
+          "alternative": {
+            "efficiency_profile": "route_flex",
+            "map_id": "minar_lower_trail",
+            "throughput_proxy": 1.11
+          },
+          "high_risk_high_reward": {
+            "efficiency_profile": "burst_reward",
+            "map_id": "ancient_hidden_domains_rift",
+            "throughput_proxy": 1.24
+          },
+          "safe": {
+            "efficiency_profile": "stable_grind",
+            "map_id": "elnath_snowfield_patrol",
+            "throughput_proxy": 1.0
+          }
+        }
+      },
+      "mid_01": {
+        "population": 2,
+        "recommended_levels": {
+          "max": 50,
+          "min": 31
+        },
+        "roles": {
+          "alternative": {
+            "efficiency_profile": "route_flex",
+            "map_id": "coastal_harbors_docks",
+            "throughput_proxy": 1.1
+          },
+          "high_risk_high_reward": {
+            "efficiency_profile": "burst_reward",
+            "map_id": "sleepywood_sinkhole",
+            "throughput_proxy": 1.22
+          },
+          "safe": {
+            "efficiency_profile": "stable_grind",
+            "map_id": "kerning_backstreet",
+            "throughput_proxy": 1.0
+          }
+        }
+      },
+      "mid_02": {
+        "population": 1,
+        "recommended_levels": {
+          "max": 70,
+          "min": 51
+        },
+        "roles": {
+          "alternative": {
+            "efficiency_profile": "route_flex",
+            "map_id": "orbis_cloud_bridge",
+            "throughput_proxy": 1.1
+          },
+          "high_risk_high_reward": {
+            "efficiency_profile": "burst_reward",
+            "map_id": "dungeon_black_gate",
+            "throughput_proxy": 1.21
+          },
+          "safe": {
+            "efficiency_profile": "stable_grind",
+            "map_id": "ludibrium_outer_walk",
+            "throughput_proxy": 1.0
+          }
+        }
+      }
     },
     "mesos_distribution": {
       "high": 7200,

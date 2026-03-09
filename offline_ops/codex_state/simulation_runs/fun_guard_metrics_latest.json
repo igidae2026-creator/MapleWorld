@@ -1,0 +1,164 @@
+{
+  "canon_lock_missing": {
+    "bosses": [],
+    "early_loop_segments": [],
+    "regions": [],
+    "rewards": []
+  },
+  "canon_lock_reasons": [],
+  "canon_lock_status": "ok",
+  "centers": {
+    "distinctiveness": 94,
+    "early_loop_texture": 95,
+    "map_role_separation": 91,
+    "memorable_rewards": 95,
+    "variance_health": 94
+  },
+  "distinctiveness": "93~95",
+  "early_loop_texture": "94~95",
+  "floor_centers": {
+    "distinctiveness": 82,
+    "early_loop_texture": 80,
+    "map_role_separation": 82,
+    "memorable_rewards": 82,
+    "variance_health": 80
+  },
+  "map_role_distribution": {
+    "early_01": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 15,
+        "min": 1
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "henesys_hunting_ground",
+          "throughput_proxy": 1.08
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "starter_fields_boss_lane",
+          "throughput_proxy": 1.18
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "starter_fields_town_approach",
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "early_02": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 30,
+        "min": 16
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "ellinia_lower_canopy",
+          "throughput_proxy": 1.09
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "perion_rockfall_edge",
+          "throughput_proxy": 1.2
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "lith_harbor_coast_road",
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "late_01": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 95,
+        "min": 71
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "minar_lower_trail",
+          "throughput_proxy": 1.11
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "ancient_hidden_domains_rift",
+          "throughput_proxy": 1.24
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "elnath_snowfield_patrol",
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "mid_01": {
+      "population": 2,
+      "recommended_levels": {
+        "max": 50,
+        "min": 31
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "coastal_harbors_docks",
+          "throughput_proxy": 1.1
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "sleepywood_sinkhole",
+          "throughput_proxy": 1.22
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "kerning_backstreet",
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "mid_02": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 70,
+        "min": 51
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "orbis_cloud_bridge",
+          "throughput_proxy": 1.1
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "dungeon_black_gate",
+          "throughput_proxy": 1.21
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "ludibrium_outer_walk",
+          "throughput_proxy": 1.0
+        }
+      }
+    }
+  },
+  "map_role_separation": "90~93",
+  "memorable_rewards": "94~95",
+  "patch_veto": "allow",
+  "reasons": [],
+  "variance_health": "93~95",
+  "veto_rules": [
+    "reject if variance_health center falls below 80",
+    "reject if map_role_separation center falls below 82",
+    "reject if memorable_rewards center falls below 82",
+    "reject if early_loop_texture center falls below 80",
+    "reject if distinctiveness center falls below 82",
+    "reject if any populated level band loses safe, alternative, or high_risk_high_reward map roles",
+    "reject if multiple bands collapse into the same safe/alternative/high_risk_high_reward map pattern",
+    "reject if any populated level band has throughput spread below 0.12 across safe, alternative, and high_risk_high_reward routes",
+    "reject if any locked region, boss, reward, or early loop segment disappears or is normalized away"
+  ]
+}
