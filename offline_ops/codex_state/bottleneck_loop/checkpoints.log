@@ -1,3 +1,0 @@
-[2026-03-09T05:00:50+0900] cycle=9 bottleneck=Retryable economy intents outside `tradeMesos` are missing idempotency regression coverage, leaving duplicate-spend risk on repeated submissions. patch=patch_20260309_044901_9.txt verify=passed cycle_id=20260309_044901_9
-[2026-03-09T05:09:19+0900] cycle=10 bottleneck=The next cycle should tighten the under-sunk normal-play economy loop by slightly increasing `potion_sink_pressure`. patch=patch_20260309_050050_10.txt verify=passed cycle_id=20260309_050050_10
-[2026-03-09T06:11:29+0900] cycle=1 bottleneck=Economy stability is the next-cycle bottleneck, specifically underpowered boss-loop sink pressure versus recurring boss currency payouts. patch=patch_20260309_055528_1.txt verify=passed cycle_id=20260309_055528_1

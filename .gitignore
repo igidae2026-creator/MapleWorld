@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+
+offline_ops/codex_state/snapshots/
+offline_ops/codex_state/bottleneck_loop/snapshots/
+offline_ops/codex_state/autonomy_daemon/logs/
+
+offline_ops/codex_state/bottleneck_loop/agent*.txt
+offline_ops/codex_state/bottleneck_loop/decision.txt
+offline_ops/codex_state/bottleneck_loop/*.log
+offline_ops/codex_state/bottleneck_loop/checkpoints.log
+offline_ops/codex_state/bottleneck_loop/failures.log
