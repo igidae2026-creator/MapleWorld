@@ -50,6 +50,20 @@ for _, template in ipairs(mapTemplates) do
     mapTemplatesBySuffix[template.suffix] = template
 end
 
+local regionEconomyOrder = {}
+do
+    local sortedRegions = clone(regionProfiles)
+    table.sort(sortedRegions, function(a, b)
+        if a.level == b.level then
+            return a.id < b.id
+        end
+        return a.level < b.level
+    end)
+    for order, region in ipairs(sortedRegions) do
+        regionEconomyOrder[region.id] = order
+    end
+end
+
 local function regionMapSuffix(regionId, mapId)
     local prefix = regionId .. '_'
     if mapId:sub(1, #prefix) ~= prefix then
@@ -250,6 +264,7 @@ for regionIndex, region in ipairs(regionProfiles) do
     local regionName = title(region.id)
     local progression = assert(RegionalProgression[region.id], 'missing regional progression source:' .. tostring(region.id))
     local regionLevel = assert(progression.recommendedRange and progression.recommendedRange.min, 'missing progression range:' .. tostring(region.id))
+    local rewardBandIndex = assert(regionEconomyOrder[region.id], 'missing region economy order:' .. tostring(region.id))
     local mapIds = {}
     local orderedMapSuffixes = {}
 
@@ -447,6 +462,7 @@ for regionIndex, region in ipairs(regionProfiles) do
 
     for mobIndex, archetype in ipairs(mobArchetypes) do
         local mobId = string.format('%s_mob_%02d', region.id, mobIndex)
+        local earlyEconomyPressure = mobIndex <= 8
         local mapChoice = ({
             'outskirts', 'fields', 'fields', 'upper_route', 'lower_route',
             'grove', 'ruins', 'tunnel', 'tunnel', 'clash_zone',
@@ -471,8 +487,12 @@ for regionIndex, region in ipairs(regionProfiles) do
             eliteBehavior = archetype.pattern,
             staggerProfile = archetype.role == 'captain' and 'bosslike' or archetype.role == 'elite' and 'heavy' or 'light',
         }
+        local materialChance = earlyEconomyPressure and 0.48 or 0.62
+        if region.id == 'perion' and mapChoice == 'fields' then
+            materialChance = earlyEconomyPressure and 0.42 or 0.56
+        end
         registry.drop_tables[mobId] = {
-            { item_id = region.id .. '_' .. materialBases[((mobIndex - 1) % #materialBases) + 1], chance = 0.62, min_qty = 1, max_qty = 3, rarity = mobIndex >= 15 and 'rare' or mobIndex >= 8 and 'uncommon' or 'common', bind_on_pickup = false, anticipation = mobIndex >= 15 and 'route_chase' or 'steady' },
+            { item_id = region.id .. '_' .. materialBases[((mobIndex - 1) % #materialBases) + 1], chance = materialChance, min_qty = 1, max_qty = earlyEconomyPressure and 2 or 3, rarity = mobIndex >= 15 and 'rare' or mobIndex >= 8 and 'uncommon' or 'common', bind_on_pickup = false, anticipation = mobIndex >= 15 and 'route_chase' or 'steady' },
             { item_id = region.id .. '_' .. consumableBases[((mobIndex - 1) % #consumableBases) + 1].id, chance = 0.24, min_qty = 1, max_qty = 2, rarity = 'common', bind_on_pickup = false, anticipation = 'support' },
             { item_id = (mobIndex % 3 == 0) and (region.id .. '_' .. scrollBases[((mobIndex - 1) % #scrollBases) + 1]) or (region.id .. '_' .. equipmentBases[((mobIndex - 1) % #equipmentBases) + 1].id), chance = mobIndex >= 17 and 0.08 or mobIndex >= 10 and 0.05 or 0.03, min_qty = 1, max_qty = 1, rarity = mobIndex >= 17 and 'epic' or 'rare', bind_on_pickup = false, anticipation = mobIndex >= 17 and 'mini_jackpot' or 'notable' },
         }
@@ -513,7 +533,7 @@ for regionIndex, region in ipairs(regionProfiles) do
         registry.drop_tables[boss.id] = {
             { item_id = region.id .. '_' .. equipmentBases[((bossIndex - 1) % #equipmentBases) + 1].id .. '_t3', chance = 0.6, min_qty = 1, max_qty = 1, rarity = boss.rarity, bind_on_pickup = false, anticipation = 'boss_signature' },
             { item_id = region.id .. '_' .. artifactBases[((bossIndex - 1) % #artifactBases) + 1], chance = bossIndex == 4 and 1.0 or 0.45, min_qty = 1, max_qty = 1, rarity = bossIndex == 4 and 'legendary' or 'epic', bind_on_pickup = false, anticipation = 'jackpot' },
-            { item_id = region.id .. '_' .. materialBases[20 - bossIndex], chance = 1.0, min_qty = 3, max_qty = 8, rarity = 'rare', bind_on_pickup = false, anticipation = 'crafting_cache' },
+            { item_id = region.id .. '_' .. materialBases[20 - bossIndex], chance = 1.0, min_qty = 3, max_qty = 5, rarity = 'rare', bind_on_pickup = false, anticipation = 'crafting_cache' },
         }
     end
 
@@ -609,7 +629,7 @@ for regionIndex, region in ipairs(regionProfiles) do
             required_level = regionLevel + questIndex - 1,
             objectives = objectives,
             reward_exp = 120 + (regionIndex * 60) + (questIndex * 28),
-            reward_mesos = 180 + (regionIndex * 90) + (questIndex * 46),
+            reward_mesos = 180 + (rewardBandIndex * 90) + (questIndex * 46),
             reward_items = {
                 { itemId = early and (region.id .. '_potion_03') or mid and (region.id .. '_' .. equipmentBases[((questIndex - 1) % #equipmentBases) + 1].id) or (region.id .. '_' .. artifactBases[((questIndex - 21) % #artifactBases) + 1]), quantity = 1 },
             },

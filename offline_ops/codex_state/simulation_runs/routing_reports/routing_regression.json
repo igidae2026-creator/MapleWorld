@@ -1,0 +1,8 @@
+{
+  "expansion_veto": "allow",
+  "fun_guard_veto": "allow",
+  "graph_status": "allow",
+  "routing_soak_stable": true,
+  "routing_status": "allow",
+  "status": "pass"
+}

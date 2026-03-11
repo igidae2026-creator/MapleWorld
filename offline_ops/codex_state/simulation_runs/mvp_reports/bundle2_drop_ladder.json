@@ -1,0 +1,23 @@
+{
+  "ladder_schema": {
+    "tier0": "junk",
+    "tier1": "useful",
+    "tier2": "progression",
+    "tier3": "rare",
+    "tier4": "chase",
+    "tier5": "mythic"
+  },
+  "metric_output_example": {
+    "boss_average_tier": 4.3121,
+    "drop_excitement_score": "90~93",
+    "field_average_tier": 0.9927
+  },
+  "sample_tier_distribution": {
+    "tier0": 0.4084235381718151,
+    "tier1": 0.2678251905413687,
+    "tier2": 0.24640164097254927,
+    "tier3": 0.06861327501008267,
+    "tier4": 0.007832805701051184,
+    "tier5": 0.0009035496031330242
+  }
+}

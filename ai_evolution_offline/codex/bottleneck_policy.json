@@ -1,0 +1,82 @@
+{
+  "first_10_minutes": {
+    "allowed_roots": ["data", "content_build", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/progression",
+      "data/balance/drops",
+      "data/runtime_tables.lua",
+      "content_build",
+      "shared_rules",
+      "scripts/tutorial_system.lua",
+      "scripts/quest_system.lua",
+      "scripts/drop_system.lua"
+    ]
+  },
+  "first_hour_retention": {
+    "allowed_roots": ["data", "content_build", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/progression",
+      "data/balance/fields",
+      "data/balance/items",
+      "shared_rules",
+      "scripts/progression_system.lua",
+      "scripts/party_system.lua",
+      "scripts/quest_system.lua"
+    ]
+  },
+  "day1_return_intent": {
+    "allowed_roots": ["data", "content_build", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/bosses",
+      "data/balance/drops",
+      "data/canon",
+      "shared_rules",
+      "scripts/boss_system.lua",
+      "scripts/raid_system.lua",
+      "scripts/guild_system.lua"
+    ]
+  },
+  "economy_coherence": {
+    "allowed_roots": ["data", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/economy",
+      "data/balance/drops",
+      "data/balance/items",
+      "data/balance/maps",
+      "shared_rules",
+      "scripts/economy_system.lua",
+      "scripts/trading_system.lua",
+      "scripts/auction_house.lua"
+    ]
+  },
+  "route_variance": {
+    "allowed_roots": ["data", "content_build", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/fields",
+      "data/canon",
+      "data/regional_progression_tables.lua",
+      "shared_rules",
+      "scripts/spawn_system.lua"
+    ]
+  },
+  "social_density": {
+    "allowed_roots": ["data", "content_build", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "data/balance/progression",
+      "data/balance/fields",
+      "shared_rules",
+      "scripts/party_system.lua",
+      "scripts/guild_system.lua",
+      "scripts/social_system.lua"
+    ]
+  },
+  "authority_safety": {
+    "allowed_roots": ["msw_runtime", "shared_rules", "scripts", "metrics_engine", "tests"],
+    "preferred_paths": [
+      "msw_runtime",
+      "shared_rules",
+      "scripts/anti_abuse_gameplay_hooks.lua",
+      "scripts/trading_system.lua"
+    ]
+  }
+}

@@ -14,7 +14,7 @@ while true; do
   echo "Design generation loop iteration: $iteration"
   bash ai_evolution_offline/codex/run_design_generation.sh
 
-  if python3 -c 'import json; print("true" if json.load(open("offline_ops/codex_state/progress.json")).get("all_targets_met") else "false")' | grep -q '^true$'; then
+  if python3 -c 'import json; data=json.load(open("offline_ops/codex_state/progress.json")); print("true" if data.get("project_complete") or data.get("all_targets_met") else "false")' | grep -q '^true$'; then
     echo "All design generation targets reached."
     break
   fi

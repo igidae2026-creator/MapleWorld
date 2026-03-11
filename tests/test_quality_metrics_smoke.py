@@ -9,6 +9,7 @@ import unittest
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "simulation_runs" / "quality_metrics_latest.json"
+PLAYER_OUTPUT_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "simulation_runs" / "player_experience_metrics_latest.json"
 
 
 class QualityMetricsSmokeTest(unittest.TestCase):
@@ -23,10 +24,22 @@ class QualityMetricsSmokeTest(unittest.TestCase):
             "economy_stability",
             "content_pressure_proxy",
             "boss_quality_proxy",
+            "drop_excitement_score",
+            "early_progression_metric",
+            "world_graph_balance",
+            "channel_routing_balance",
+            "economy_pressure_balance",
+            "first_10_minutes",
+            "first_hour_retention",
+            "day1_return_intent",
             "overall_quality_estimate",
         ):
             self.assertIn(key, payload)
             self.assertRegex(payload[key], r"^\d+~\d+$")
+        player_payload = json.loads(PLAYER_OUTPUT_PATH.read_text(encoding="utf-8"))
+        self.assertIn("active_player_bottleneck", player_payload)
+        self.assertIn(player_payload["active_player_bottleneck"], player_payload["triage_order"])
+        self.assertRegex(player_payload["overall_player_experience_floor"], r"^\d+~\d+$")
 
 
 if __name__ == "__main__":

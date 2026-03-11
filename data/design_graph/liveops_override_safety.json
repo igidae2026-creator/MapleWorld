@@ -1,0 +1,34 @@
+{
+  "domain": "liveops_override_safety",
+  "nodes": [
+    {
+      "id": "liveops_override_safety",
+      "layer": 1,
+      "domain": "liveops_override_safety"
+    },
+    {
+      "id": "liveops_override_safety.rollback_readiness",
+      "layer": 2,
+      "parent": "liveops_override_safety",
+      "domain": "liveops_override_safety"
+    },
+    {
+      "id": "liveops_override_safety.policy_plane_coverage",
+      "layer": 2,
+      "parent": "liveops_override_safety",
+      "domain": "liveops_override_safety"
+    },
+    {
+      "id": "liveops_override_safety.override_action_plane",
+      "layer": 2,
+      "parent": "liveops_override_safety",
+      "domain": "liveops_override_safety"
+    },
+    {
+      "id": "liveops_override_safety.rollback_safe_interventions",
+      "layer": 2,
+      "parent": "liveops_override_safety",
+      "domain": "liveops_override_safety"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "iterations": 24,
+  "consumers": [
+    "research_note",
+    "analytics_dash",
+    "code_patch",
+    "web_novel",
+    "ops_runbook",
+    "incident_postmortem",
+    "release_notes"
+  ],
+  "horizon_health": {
+    "iterations_observed": 24,
+    "initial_match_rate": 0.5714285714285714,
+    "final_match_rate": 0.5714285714285714,
+    "best_match_rate": 0.5714285714285714,
+    "worst_match_rate": 0.5714285714285714,
+    "late_health_regressions": 0,
+    "false_hold_total": 0,
+    "false_reject_total": 0,
+    "false_escalate_total": 0,
+    "false_promote_total": 0
+  },
+  "final_verdict_distribution": {
+    "hold": 72,
+    "promote": 168,
+    "escalate": 24,
+    "reject": 72
+  },
+  "long_soak_ok": true
+}

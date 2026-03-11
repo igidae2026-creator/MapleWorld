@@ -49,6 +49,10 @@ Rules:
 - identify only one primary blind spot
 - prefer the blind spot that most risks fake progress
 - improve verification before broad refactor if confidence is weak
+- if the active player bottleneck is `economy_coherence` and current validations already execute successfully, do not switch the cycle to validation-framework expansion by default
+- only propose a validation patch for `economy_coherence` when an existing unchecked path directly allows the current hotspot patch to fake improvement
+- when the hotspot is map-scoped, prefer validating or supporting the bounded map-balance patch rather than introducing new global guards
+- `FILES` must contain only next patch targets, not read-only metrics, reports, or evidence artifacts
 
 Output format:
 

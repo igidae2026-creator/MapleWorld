@@ -1,147 +1,165 @@
 {
-  "node_count": 74566,
-  "frontier_count": 72017,
-  "max_layer": 4,
   "domains": [
-    "progression",
-    "combat",
-    "monsters",
-    "fields",
-    "spawning",
-    "drops",
-    "items",
-    "equipment",
-    "economy",
-    "currency",
-    "trading",
-    "party",
-    "guild",
+    "ai",
     "boss",
+    "checkpoint_autonomy",
+    "combat",
+    "currency",
+    "drops",
     "dungeons",
-    "quests",
+    "economy",
+    "equipment",
     "events",
+    "external_material_autonomy",
+    "fields",
+    "guild",
+    "items",
     "liveops",
-    "security",
+    "liveops_override_safety",
+    "monsters",
+    "navigation",
+    "party",
     "performance",
     "persistence",
-    "ai",
-    "navigation"
+    "progression",
+    "quests",
+    "security",
+    "spawning",
+    "trading"
   ],
+  "frontier_count": 72017,
+  "max_layer": 4,
+  "node_count": 74566,
   "shards": [
     {
-      "domain": "progression",
-      "path": "data/design_graph/progression.json",
-      "count": 12421
-    },
-    {
-      "domain": "combat",
-      "path": "data/design_graph/combat.json",
-      "count": 12421
-    },
-    {
-      "domain": "monsters",
-      "path": "data/design_graph/monsters.json",
-      "count": 12421
-    },
-    {
-      "domain": "fields",
-      "path": "data/design_graph/fields.json",
-      "count": 12421
-    },
-    {
-      "domain": "spawning",
-      "path": "data/design_graph/spawning.json",
-      "count": 1
-    },
-    {
-      "domain": "drops",
-      "path": "data/design_graph/drops.json",
-      "count": 12421
-    },
-    {
-      "domain": "items",
-      "path": "data/design_graph/items.json",
-      "count": 1
-    },
-    {
-      "domain": "equipment",
-      "path": "data/design_graph/equipment.json",
-      "count": 7
-    },
-    {
-      "domain": "economy",
-      "path": "data/design_graph/economy.json",
-      "count": 12421
-    },
-    {
-      "domain": "currency",
-      "path": "data/design_graph/currency.json",
-      "count": 1
-    },
-    {
-      "domain": "trading",
-      "path": "data/design_graph/trading.json",
-      "count": 1
-    },
-    {
-      "domain": "party",
-      "path": "data/design_graph/party.json",
-      "count": 1
-    },
-    {
-      "domain": "guild",
-      "path": "data/design_graph/guild.json",
-      "count": 1
-    },
-    {
-      "domain": "boss",
-      "path": "data/design_graph/boss.json",
-      "count": 11
-    },
-    {
-      "domain": "dungeons",
-      "path": "data/design_graph/dungeons.json",
-      "count": 1
-    },
-    {
-      "domain": "quests",
-      "path": "data/design_graph/quests.json",
-      "count": 8
-    },
-    {
-      "domain": "events",
-      "path": "data/design_graph/events.json",
-      "count": 1
-    },
-    {
-      "domain": "liveops",
-      "path": "data/design_graph/liveops.json",
-      "count": 1
-    },
-    {
-      "domain": "security",
-      "path": "data/design_graph/security.json",
-      "count": 1
-    },
-    {
-      "domain": "performance",
-      "path": "data/design_graph/performance.json",
-      "count": 1
-    },
-    {
-      "domain": "persistence",
-      "path": "data/design_graph/persistence.json",
-      "count": 1
-    },
-    {
+      "count": 1,
       "domain": "ai",
-      "path": "data/design_graph/ai.json",
-      "count": 1
+      "path": "data/design_graph/ai.json"
     },
     {
+      "count": 11,
+      "domain": "boss",
+      "path": "data/design_graph/boss.json"
+    },
+    {
+      "count": 9,
+      "domain": "checkpoint_autonomy",
+      "path": "data/design_graph/checkpoint_autonomy.json"
+    },
+    {
+      "count": 12421,
+      "domain": "combat",
+      "path": "data/design_graph/combat.json"
+    },
+    {
+      "count": 1,
+      "domain": "currency",
+      "path": "data/design_graph/currency.json"
+    },
+    {
+      "count": 12421,
+      "domain": "drops",
+      "path": "data/design_graph/drops.json"
+    },
+    {
+      "count": 1,
+      "domain": "dungeons",
+      "path": "data/design_graph/dungeons.json"
+    },
+    {
+      "count": 12421,
+      "domain": "economy",
+      "path": "data/design_graph/economy.json"
+    },
+    {
+      "count": 7,
+      "domain": "equipment",
+      "path": "data/design_graph/equipment.json"
+    },
+    {
+      "count": 1,
+      "domain": "events",
+      "path": "data/design_graph/events.json"
+    },
+    {
+      "count": 2,
+      "domain": "external_material_autonomy",
+      "path": "data/design_graph/external_material_autonomy.json"
+    },
+    {
+      "count": 12421,
+      "domain": "fields",
+      "path": "data/design_graph/fields.json"
+    },
+    {
+      "count": 1,
+      "domain": "guild",
+      "path": "data/design_graph/guild.json"
+    },
+    {
+      "count": 1,
+      "domain": "items",
+      "path": "data/design_graph/items.json"
+    },
+    {
+      "count": 1,
+      "domain": "liveops",
+      "path": "data/design_graph/liveops.json"
+    },
+    {
+      "count": 5,
+      "domain": "liveops_override_safety",
+      "path": "data/design_graph/liveops_override_safety.json"
+    },
+    {
+      "count": 12421,
+      "domain": "monsters",
+      "path": "data/design_graph/monsters.json"
+    },
+    {
+      "count": 1,
       "domain": "navigation",
-      "path": "data/design_graph/navigation.json",
-      "count": 1
+      "path": "data/design_graph/navigation.json"
+    },
+    {
+      "count": 1,
+      "domain": "party",
+      "path": "data/design_graph/party.json"
+    },
+    {
+      "count": 1,
+      "domain": "performance",
+      "path": "data/design_graph/performance.json"
+    },
+    {
+      "count": 1,
+      "domain": "persistence",
+      "path": "data/design_graph/persistence.json"
+    },
+    {
+      "count": 12421,
+      "domain": "progression",
+      "path": "data/design_graph/progression.json"
+    },
+    {
+      "count": 8,
+      "domain": "quests",
+      "path": "data/design_graph/quests.json"
+    },
+    {
+      "count": 1,
+      "domain": "security",
+      "path": "data/design_graph/security.json"
+    },
+    {
+      "count": 1,
+      "domain": "spawning",
+      "path": "data/design_graph/spawning.json"
+    },
+    {
+      "count": 1,
+      "domain": "trading",
+      "path": "data/design_graph/trading.json"
     }
   ]
 }

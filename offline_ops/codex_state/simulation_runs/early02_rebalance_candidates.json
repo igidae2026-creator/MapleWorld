@@ -1,0 +1,526 @@
+{
+  "baseline": {
+    "current_role_biases": {
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.07,
+        "throughput_bias": 1.06
+      },
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "perion_rockfall_edge": {
+        "reward_bias": 1.12,
+        "throughput_bias": 1.07
+      }
+    },
+    "early_02_spreads": {
+      "reward_spread": 0.14,
+      "throughput_spread": 0.12
+    },
+    "economy_coherence": "82~85",
+    "economy_coherence_center": 83,
+    "ellinia_pressure": 1.2715,
+    "lith_pressure": 1.2121,
+    "perion_pressure": 1.2765,
+    "top_pressure_nodes": [
+      {
+        "node": "map:perion_rockfall_edge",
+        "pressure": 1.2765
+      },
+      {
+        "node": "map:ellinia_lower_canopy",
+        "pressure": 1.2715
+      },
+      {
+        "node": "map:lith_harbor_coast_road",
+        "pressure": 1.2121
+      }
+    ]
+  },
+  "best_candidate": {
+    "distance_from_baseline": 0.0,
+    "early_02_spreads": {
+      "reward_spread": 0.14,
+      "throughput_spread": 0.12
+    },
+    "economy_coherence": "82~85",
+    "economy_coherence_center": 83,
+    "ellinia_lower_canopy": {
+      "reward_bias": 1.07,
+      "throughput_bias": 1.06
+    },
+    "ellinia_pressure": 1.2715,
+    "ellinia_to_lith_gap": 0.0594,
+    "lith_harbor_coast_road": {
+      "reward_bias": 0.98,
+      "throughput_bias": 0.95
+    },
+    "lith_pressure": 1.2121,
+    "perion_pressure": 1.2765,
+    "perion_to_ellinia_gap": 0.005,
+    "perion_to_lith_gap": 0.0644,
+    "top_pressure_nodes": [
+      {
+        "node": "map:perion_rockfall_edge",
+        "pressure": 1.2765
+      },
+      {
+        "node": "map:ellinia_lower_canopy",
+        "pressure": 1.2715
+      },
+      {
+        "node": "map:lith_harbor_coast_road",
+        "pressure": 1.2121
+      }
+    ]
+  },
+  "candidate_count": 20,
+  "candidates": [
+    {
+      "distance_from_baseline": 0.0,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.07,
+        "throughput_bias": 1.06
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.01,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.06,
+        "throughput_bias": 1.06
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.01,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.08,
+        "throughput_bias": 1.06
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.02,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.05,
+        "throughput_bias": 1.06
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.03,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.04,
+        "throughput_bias": 1.06
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.05,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.05,
+        "throughput_bias": 1.03
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.06,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.04,
+        "throughput_bias": 1.03
+      },
+      "ellinia_pressure": 1.2715,
+      "ellinia_to_lith_gap": 0.0594,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.005,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2715
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.01,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.07,
+        "throughput_bias": 1.05
+      },
+      "ellinia_pressure": 1.2664,
+      "ellinia_to_lith_gap": 0.0543,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.0101,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2664
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.02,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.06,
+        "throughput_bias": 1.05
+      },
+      "ellinia_pressure": 1.2664,
+      "ellinia_to_lith_gap": 0.0543,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.0101,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2664
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.02,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.08,
+        "throughput_bias": 1.05
+      },
+      "ellinia_pressure": 1.2664,
+      "ellinia_to_lith_gap": 0.0543,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.0101,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2664
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.03,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.05,
+        "throughput_bias": 1.05
+      },
+      "ellinia_pressure": 1.2664,
+      "ellinia_to_lith_gap": 0.0543,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.0101,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2664
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    },
+    {
+      "distance_from_baseline": 0.04,
+      "early_02_spreads": {
+        "reward_spread": 0.14,
+        "throughput_spread": 0.12
+      },
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "ellinia_lower_canopy": {
+        "reward_bias": 1.04,
+        "throughput_bias": 1.05
+      },
+      "ellinia_pressure": 1.2664,
+      "ellinia_to_lith_gap": 0.0543,
+      "lith_harbor_coast_road": {
+        "reward_bias": 0.98,
+        "throughput_bias": 0.95
+      },
+      "lith_pressure": 1.2121,
+      "perion_pressure": 1.2765,
+      "perion_to_ellinia_gap": 0.0101,
+      "perion_to_lith_gap": 0.0644,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.2765
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.2664
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.2121
+        }
+      ]
+    }
+  ],
+  "recommendation": "same-band early_02 rebalance exhausted"
+}

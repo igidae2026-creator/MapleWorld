@@ -1,8 +1,18 @@
 {
+  "active_player_bottleneck": "economy_coherence",
   "boss_quality_proxy": "89~92",
+  "channel_routing_balance": "80~83",
   "combat_quality": "91~94",
   "content_pressure_proxy": "92~95",
+  "day1_return_intent": "89~92",
+  "drop_excitement_score": "90~93",
+  "early_progression_metric": "85~88",
+  "economy_pressure_balance": "84~87",
   "economy_stability": "88~91",
+  "first_10_minutes": "88~91",
+  "first_hour_retention": "87~90",
+  "overall_player_experience_floor": "88~91",
   "overall_quality_estimate": "89~92",
-  "progression_pacing": "87~90"
+  "progression_pacing": "87~90",
+  "world_graph_balance": "94~95"
 }

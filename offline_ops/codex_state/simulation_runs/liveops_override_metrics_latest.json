@@ -1,0 +1,43 @@
+{
+  "adaptive_override_actions": {
+    "dynamic_channel_balancing": 7,
+    "soft_rerouting": 0,
+    "spawn_redistribution": 12,
+    "total": 19
+  },
+  "intervention_profiles": {
+    "active": 1,
+    "active_profile_ids": [
+      "profile_guarded_stability"
+    ],
+    "active_rollback_safe": 1,
+    "total": 3
+  },
+  "override_plane_score": 0.85,
+  "policy_plane_coverage": 1.0,
+  "policy_planes_present": [
+    "lineage =",
+    "rollback =",
+    "evaluation =",
+    "selection =",
+    "pressureThresholds =",
+    "containment =",
+    "routing =",
+    "savePolicy =",
+    "exploitResponse ="
+  ],
+  "policy_planes_required": [
+    "lineage =",
+    "rollback =",
+    "evaluation =",
+    "selection =",
+    "pressureThresholds =",
+    "containment =",
+    "routing =",
+    "savePolicy =",
+    "exploitResponse ="
+  ],
+  "reasons": [],
+  "rollback_readiness": true,
+  "status": "allow"
+}

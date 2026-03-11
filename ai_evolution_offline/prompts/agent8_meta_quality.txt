@@ -12,6 +12,13 @@ Rules:
 - keep proposals inside gameplay/content/balance scope only
 - do not trigger runtime architecture refactors
 - reject any patch that crosses the MSW runtime boundary
+- `FILES` must contain only files that should be edited in the next patch
+- do not include simulation outputs, reports, or read-only evidence files under `FILES`
+- keep evidence in `WHY_THIS_IS_THE_BOTTLENECK` or `VERIFICATION`
+- if the active player bottleneck is `economy_coherence` and the top pressure node is map-scoped, prefer `data/balance/maps/role_bands.csv` before wider `data/balance/drops/*` edits
+- do not propose global drop-table rewrites or boss reward trims unless the active metrics identify those surfaces as the top pressure source rather than a specific map hotspot
+- if proposing `data/balance/maps/role_bands.csv`, preserve the populated-band reward pressure spread floor (`>= 0.14`) and throughput spread floor (`>= 0.12`)
+- for `early_02`, do not recommend lowering `perion_rockfall_edge` below the point where it ceases to be clearly above `ellinia_lower_canopy` and `lith_harbor_coast_road`
 
 Input to inspect:
 - offline_ops/codex_state/simulation_runs/quality_metrics_latest.json
@@ -34,7 +41,7 @@ NEXT_SAFE_IMPROVEMENT:
 [short]
 
 FILES:
-[list]
+[list of patch-target files only]
 
 VERIFICATION:
 [list]

@@ -1,0 +1,20 @@
+{
+  "after": {
+    "channel_pressure": 0.5645,
+    "channel_routing_balance": "79~82",
+    "exploration_stagnation_index": 0.5455,
+    "farming_hotspots": 2,
+    "hotspot_score": 0.9971,
+    "node_concurrency": 0.5645,
+    "overcrowded_maps": 3,
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "spawn_pressure": 0.7334
+  },
+  "before": {
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "reward_entropy": 2.3241,
+    "strategy_mob_dominant_share": 0.3433
+  }
+}

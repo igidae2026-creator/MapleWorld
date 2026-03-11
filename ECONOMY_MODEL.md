@@ -2,10 +2,11 @@
 
 The economy is designed for a single-world market.
 
-- direct faucets and sinks live in `scripts/economy_system.lua`
-- trading and safeguards live in `scripts/trading_system.lua`
-- auction listing and price history live in `scripts/auction_house.lua`
-- market visibility is exposed through `world:getEconomyReport()`
+- live economy mutation is executed by the gameplay runtime under `msw_runtime/`
+- portable pricing, sink, and abuse rules should converge into `shared_rules/`
+- current `scripts/economy_system.lua`, `scripts/trading_system.lua`, and `scripts/auction_house.lua` are transitional runtime residue, not long-term ownership targets
+- offline tuning, simulation, and intervention selection stay in `offline_ops/`, `metrics_engine/`, and `simulation_py/`
+- market visibility is exposed through `world:getEconomyReport()` as a gameplay report surface, not a runtime control plane
 
 Stability controls:
 

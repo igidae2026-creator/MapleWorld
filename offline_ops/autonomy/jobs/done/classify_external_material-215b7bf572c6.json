@@ -1,0 +1,22 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-10T21:32:03.035895+00:00",
+  "job_id": "classify_external_material-215b7bf572c6",
+  "job_type": "classify_external_material",
+  "payload": {
+    "authority_fit": "unknown",
+    "path": "/mnt/c/Users/LG/Downloads/\uc0c8 \ud3f4\ub354/\ubc29\ubc95.txt",
+    "reason": "textual or structured material requires scoped review",
+    "scope_fit": "candidate",
+    "upgrade_value": "unknown"
+  },
+  "priority": 70,
+  "result": {
+    "handled_job_type": "classify_external_material",
+    "job_id": "classify_external_material-215b7bf572c6",
+    "next_action": "await_policy_promotion"
+  },
+  "status": "done",
+  "updated_at": "2026-03-10T21:32:03.039471+00:00",
+  "worker_id": "scaffold-check"
+}

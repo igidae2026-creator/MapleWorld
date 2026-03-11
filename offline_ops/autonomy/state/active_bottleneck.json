@@ -1,0 +1,9 @@
+{
+  "payload": {
+    "bottleneck_key": "economy_coherence",
+    "confidence": "unknown",
+    "source": "bootstrap_default"
+  },
+  "snapshot_type": "active_bottleneck",
+  "updated_at": "2026-03-10T21:32:03.039558+00:00"
+}

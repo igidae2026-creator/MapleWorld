@@ -1,0 +1,34 @@
+{
+  "level_bands": [
+    {
+      "min_level": 1,
+      "max_level": 10,
+      "reward_cadence_per_hour": 5.2,
+      "combat_pacing": "fast_intro",
+      "drop_tier_limit": "tier1",
+      "levels_per_hour": 4.1
+    },
+    {
+      "min_level": 11,
+      "max_level": 20,
+      "reward_cadence_per_hour": 4.3,
+      "combat_pacing": "steady_rotation",
+      "drop_tier_limit": "tier2",
+      "levels_per_hour": 3.0
+    },
+    {
+      "min_level": 21,
+      "max_level": 30,
+      "reward_cadence_per_hour": 3.6,
+      "combat_pacing": "party_ready",
+      "drop_tier_limit": "tier2",
+      "levels_per_hour": 2.3
+    }
+  ],
+  "starter_anchors": [
+    "starter_town",
+    "first_hunting_map",
+    "first_dungeon",
+    "first_boss"
+  ]
+}

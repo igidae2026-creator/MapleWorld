@@ -1,0 +1,73 @@
+{
+  "artifacts": {
+    "autonomy_events": "offline_ops/autonomy/events.jsonl",
+    "checkpoint_history": "offline_ops/codex_state/simulation_runs/checkpoint_reports/checkpoint_history.jsonl",
+    "checkpoint_status": "offline_ops/codex_state/simulation_runs/checkpoint_reports/checkpoint_status_latest.json",
+    "daemon_status": "offline_ops/codex_state/autonomy_daemon/last_status.json",
+    "economy_soak": "offline_ops/codex_state/simulation_runs/economy_reports/economy_soak_report.json",
+    "expansion_soak": "offline_ops/codex_state/simulation_runs/expansion_reports/expansion_soak_report.json",
+    "governance_status": "offline_ops/codex_state/governance/coverage_conflict_status.json",
+    "graph_soak": "offline_ops/codex_state/simulation_runs/graph_reports/graph_soak_report.json",
+    "metaos_aux_latest_status": "offline_ops/codex_state/thresholds/metaos_aux/latest/latest_status.json",
+    "metaos_aux_long_soak": "offline_ops/codex_state/thresholds/metaos_aux/latest/long_soak_report.json",
+    "metaos_aux_regression_watch": "offline_ops/codex_state/thresholds/metaos_aux/latest/regression_watch.json",
+    "routing_soak": "offline_ops/codex_state/simulation_runs/routing_reports/routing_soak_report.json"
+  },
+  "components": {
+    "autonomy": {
+      "checkpoint_ratio": 1.0,
+      "execution_closed": 1.0,
+      "external_promotion_path": 1.0,
+      "governance_status": 1.0,
+      "policy_rejection_path": 1.0,
+      "recent_verified_cycles": 1.0
+    },
+    "execution": {
+      "checkpoint_log_present": 1.0,
+      "daemon_alive": 1.0,
+      "event_log_present": 1.0,
+      "failure_log_present": 1.0,
+      "queue_events_present": 1.0
+    },
+    "final": {
+      "append_only_truth": 1.0,
+      "autonomy_base": 1.0,
+      "governance_closure": 1.0,
+      "human_lift_proximity": 1.0,
+      "lineage_replayability": 1.0,
+      "multi_soak_coverage": 1.0,
+      "operational_base": 0.958
+    },
+    "operational": {
+      "checkpoint_stability_ratio": 1.0,
+      "economy_soak_stable": true,
+      "expansion_soak_stable": true,
+      "graph_soak_stable": true,
+      "local_soak_health": 1.0,
+      "metaos_false_control_total": 0,
+      "metaos_long_soak_ok": true,
+      "metaos_operational_health": 1.0,
+      "metaos_regression_free": true,
+      "recent_failure_count": 10,
+      "recent_loop_health": 0.875,
+      "recent_outcome_window": 12,
+      "recent_window_failures": 6,
+      "recent_window_success_ratio": 0.5,
+      "recent_window_successes": 6,
+      "routing_soak_stable": true
+    }
+  },
+  "generated_at_utc": "2026-03-11T04:59:12.897143+00:00",
+  "status": {
+    "autonomy_threshold_met": true,
+    "execution_threshold_met": true,
+    "final_threshold_met": true,
+    "operational_threshold_met": false
+  },
+  "thresholds": {
+    "autonomy": 100.0,
+    "execution": 100.0,
+    "final": 99.4,
+    "operational": 95.8
+  }
+}

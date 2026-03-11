@@ -1,0 +1,11 @@
+{
+  "bundle_status": {
+    "A": "allow",
+    "B": "allow",
+    "C": "allow",
+    "D": "allow"
+  },
+  "expansion_veto": "allow",
+  "fun_guard_patch_veto": "allow",
+  "status": "pass"
+}

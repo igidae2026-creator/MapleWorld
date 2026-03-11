@@ -1,0 +1,27 @@
+1. Changed files
+
+- [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv)
+
+2. Exact summary of changes
+
+- Updated `early_02` / `ellinia_lower_canopy` `throughput_bias` from `1.05` to `1.06`.
+- Kept `ellinia_lower_canopy reward_bias` at `1.07`.
+- Kept `perion_rockfall_edge reward_bias` at `1.12`.
+- Left all other `early_02` rows unchanged.
+- No runtime logic, governance, or multi-file changes were introduced.
+
+3. Verification performed
+
+- Confirmed the edited `early_02` rows directly from [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv).
+- Calculated `early_02` throughput spread: `1.07 - 0.95 = 0.12`.
+- Calculated `early_02` reward spread: `1.12 - 0.98 = 0.14`.
+- Verified `perion_rockfall_edge` remains above both `ellinia_lower_canopy` and `lith_harbor_coast_road` on reward and throughput.
+- Verified `perion_rockfall_edge reward_bias` remains `1.12` (`>= 1.12`).
+
+4. Unresolved risks
+
+- I did not run any higher-level scorer that recomputes `economy_coherence`, so the claim that it stays above `80` is only supported indirectly by matching the exact coordinator-approved candidate and preserving the required spread floors.
+
+5. Recommended next bottleneck
+
+- `economy_coherence` again, unless the next coordinator cycle shows `early_02` is exhausted and pivots to the next exact map-scoped node from the candidate reports.

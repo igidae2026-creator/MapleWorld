@@ -1,0 +1,40 @@
+{
+  "bands": [
+    {
+      "band": "1-10",
+      "combat_pacing": "fast_intro",
+      "drop_tier_limit": "tier1",
+      "exp_delta_average": 58.22,
+      "exp_delta_span": 138,
+      "flags": [],
+      "levels_per_hour": 4.1,
+      "minutes_to_clear_band": 146.3,
+      "reward_cadence_per_hour": 5.2
+    },
+    {
+      "band": "11-20",
+      "combat_pacing": "steady_rotation",
+      "drop_tier_limit": "tier2",
+      "exp_delta_average": 274.56,
+      "exp_delta_span": 423,
+      "flags": [],
+      "levels_per_hour": 3.0,
+      "minutes_to_clear_band": 200.0,
+      "reward_cadence_per_hour": 4.3
+    },
+    {
+      "band": "21-30",
+      "combat_pacing": "party_ready",
+      "drop_tier_limit": "tier2",
+      "exp_delta_average": 597.78,
+      "exp_delta_span": 575,
+      "flags": [],
+      "levels_per_hour": 2.3,
+      "minutes_to_clear_band": 260.9,
+      "reward_cadence_per_hour": 3.6
+    }
+  ],
+  "level_pacing_graph": "1-10:#### | 11-20:### | 21-30:##",
+  "progression_estimate_minutes": 607.2,
+  "reward_density": 4.37
+}

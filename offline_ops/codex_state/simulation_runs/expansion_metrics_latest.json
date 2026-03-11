@@ -1,0 +1,49 @@
+{
+  "bundle_a_starter_world_identity": {
+    "combat_rhythm_diversity": 5,
+    "identity_strength": "88~91",
+    "reasons": [],
+    "region_count": 5,
+    "reward_identity_diversity": 15,
+    "status": "allow",
+    "traversal_tone_diversity": 5
+  },
+  "bundle_b_quest_progression_scaffolding": {
+    "kill_fetch_combined_share": 0.4822,
+    "progression_smoothness": 0.89,
+    "quest_reward_density": 1.1044,
+    "questline_drought_detected": false,
+    "questline_health": "94~97",
+    "reasons": [],
+    "single_pattern_concentration": 0.1111,
+    "status": "allow"
+  },
+  "bundle_c_boss_chase_identity": {
+    "boss_chase_health": "85~88",
+    "boss_desirability_separation": 0.28,
+    "chase_item_overconcentration_risk": 0.1816,
+    "field_vs_boss_reward_clarity": 0.3467,
+    "reasons": [],
+    "status": "allow"
+  },
+  "bundle_d_strategy_expression": {
+    "class_archetype_expression": 1.0,
+    "early_route_diversity": 2.0,
+    "low_level_strategy_concentration": 0.25,
+    "reasons": [],
+    "status": "allow",
+    "strategy_expression_health": "87~90"
+  },
+  "economy_stability_guard": {
+    "inflation_ratio": 0.1007,
+    "item_generation": 816.2268,
+    "mesos_generation": 23901,
+    "rare_generation_share": 0.0423,
+    "reasons": [],
+    "score": "63~66",
+    "sink_ratio": 9.9279,
+    "status": "allow"
+  },
+  "expansion_veto": "allow",
+  "reasons": []
+}

@@ -49,6 +49,9 @@ Rules:
 - do not invent exact numerical certainty
 - identify only one bottleneck
 - prefer bottlenecks that can be improved offline without runtime drift
+- if the active player bottleneck is `economy_coherence` and the hotspot is map-scoped, prefer emitted balance tables under `data/balance/*` over `content_build/*` or source-drop rewrites
+- for `economy_coherence`, do not propose `data/drops.csv`, `content_build/*`, or boss reward rewrites unless the active metrics explicitly identify those surfaces as the top pressure source
+- `FILES` must contain only next patch targets, not evidence, reports, or read-only metrics artifacts
 
 Output format:
 

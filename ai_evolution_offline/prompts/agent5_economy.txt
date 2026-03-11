@@ -12,6 +12,11 @@ Rules:
 - prefer balance/content/rules scope only
 - do not propose runtime architecture refactors
 - do not cross the MSW runtime boundary
+- `FILES` must contain only files that should be edited in the next patch
+- do not include simulation outputs, reports, or read-only evidence files under `FILES`
+- keep evidence in `WHY_THIS_IS_THE_BOTTLENECK` or `VERIFICATION`
+- if the active player bottleneck is `economy_coherence` and the top pressure node is a specific map, prefer `data/balance/maps/role_bands.csv` before wider `data/balance/drops/*` or boss reward edits
+- do not propose global early-drop-table rewrites or boss reward trims unless the active metrics identify those surfaces as the top pressure source rather than a map-scoped hotspot
 
 Inputs to inspect:
 - offline_ops/codex_state/simulation_runs/python_simulation_latest.json
@@ -39,7 +44,7 @@ NEXT_SAFE_IMPROVEMENT:
 [short]
 
 FILES:
-[list]
+[list of patch-target files only]
 
 VERIFICATION:
 [list]

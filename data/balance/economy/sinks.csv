@@ -1,6 +1,6 @@
 sink_id,sink_type,level_band,meso_cost,sink_weight,trigger_window
-taxi_fare_band_01,taxi_fare,1,168,0.922,lv001_lv010
-repair_bill_band_02,repair_bill,2,255,1.344,lv011_lv020
+taxi_fare_band_01,taxi_fare,1,136,0.922,lv001_lv010
+repair_bill_band_02,repair_bill,2,214,1.344,lv011_lv020
 scroll_cleansing_band_03,scroll_cleansing,3,378,1.156,lv021_lv030
 storage_rent_band_04,storage_rent,4,537,1.168,lv031_lv040
 market_listing_fee_band_05,market_listing_fee,5,732,1.24,lv041_lv050

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 from dataclasses import replace
 from pathlib import Path
@@ -65,6 +66,21 @@ class CanonLockGuardTest(unittest.TestCase):
             )
             self.assertEqual(payload["status"], "reject")
             self.assertIn("mano", payload["missing"]["bosses"])
+
+    def test_missing_locked_anchor_is_rejected(self) -> None:
+        anchor_payload = json.loads((ROOT_DIR / "data" / "canon" / "canonical_anchors.json").read_text(encoding="utf-8"))
+        anchor_payload["zones"].pop("starter_town", None)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            anchor_path = Path(tmp_dir) / "canonical_anchors.json"
+            anchor_path.write_text(json.dumps(anchor_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            payload = validate_canon_locks(
+                replace(
+                    FunGuardSources.default(),
+                    canonical_anchors_path=anchor_path,
+                )
+            )
+            self.assertEqual(payload["status"], "reject")
+            self.assertIn("starter_town", payload["missing"]["anchors"])
 
 
 if __name__ == "__main__":

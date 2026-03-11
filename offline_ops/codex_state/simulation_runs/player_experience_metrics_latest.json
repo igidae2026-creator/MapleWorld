@@ -1,0 +1,90 @@
+{
+  "active_player_bottleneck": "economy_coherence",
+  "all_primary_gates_green": true,
+  "all_protection_gates_green": true,
+  "centers": {
+    "authority_safety": 95,
+    "day1_return_intent": 90,
+    "economy_coherence": 83,
+    "first_10_minutes": 89,
+    "first_hour_retention": 88,
+    "route_variance": 93,
+    "social_density": 84
+  },
+  "floors": {
+    "authority_safety": 84,
+    "day1_return_intent": 82,
+    "economy_coherence": 80,
+    "first_10_minutes": 78,
+    "first_hour_retention": 80,
+    "route_variance": 82,
+    "social_density": 76
+  },
+  "overall_player_experience_floor": "88~91",
+  "ranges": {
+    "authority_safety": "94~95",
+    "day1_return_intent": "89~92",
+    "economy_coherence": "82~85",
+    "first_10_minutes": "88~91",
+    "first_hour_retention": "87~90",
+    "route_variance": "92~95",
+    "social_density": "83~86"
+  },
+  "reasons": {
+    "authority_safety": [],
+    "day1_return_intent": [],
+    "economy_coherence": [],
+    "first_10_minutes": [],
+    "first_hour_retention": [],
+    "route_variance": [],
+    "social_density": []
+  },
+  "sources": {
+    "activity_mix": {
+      "boss_access": 1,
+      "onboarding_fields": 4,
+      "party_grinder": 2,
+      "quest_player": 2,
+      "solo_grinder": 3
+    },
+    "anchor_zone_count": 6,
+    "fun_guard_centers": {
+      "distinctiveness": 94,
+      "early_loop_texture": 95,
+      "map_role_separation": 90,
+      "memorable_rewards": 95,
+      "variance_health": 94
+    },
+    "quality_centers": {
+      "boss_quality_proxy": 90,
+      "channel_routing_balance": 82,
+      "combat_quality": 92,
+      "content_pressure_proxy": 94,
+      "drop_excitement_score": 92,
+      "early_progression_metric": 86,
+      "economy_pressure_balance": 86,
+      "economy_stability": 90,
+      "overall_quality_estimate": 90,
+      "progression_pacing": 88,
+      "world_graph_balance": 94
+    }
+  },
+  "statuses": {
+    "authority_safety": "allow",
+    "day1_return_intent": "allow",
+    "economy_coherence": "allow",
+    "first_10_minutes": "allow",
+    "first_hour_retention": "allow",
+    "route_variance": "allow",
+    "social_density": "allow"
+  },
+  "triage_order": [
+    "first_10_minutes",
+    "first_hour_retention",
+    "day1_return_intent",
+    "economy_coherence",
+    "route_variance",
+    "social_density",
+    "authority_safety"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "channel_pressure": 0.5645,
+  "exploration_stagnation": {
+    "index": 0.5455,
+    "reasons": [],
+    "status": "allow",
+    "transition_total": 77
+  },
+  "farming_hotspots": [
+    {
+      "map_id": "map:ellinia_lower_canopy",
+      "pressure": 1.2865,
+      "reward_bias": 1.12,
+      "visit_share": 0.1884
+    },
+    {
+      "map_id": "map:perion_rockfall_edge",
+      "pressure": 1.3375,
+      "reward_bias": 1.26,
+      "visit_share": 0.2074
+    }
+  ],
+  "hotspot_score": 0.9971,
+  "node_concurrency": 0.5645,
+  "overcrowded_maps": [
+    {
+      "map_id": "map:ellinia_lower_canopy",
+      "pressure": 1.2865,
+      "visit_total": 10.8128
+    },
+    {
+      "map_id": "map:lith_harbor_coast_road",
+      "pressure": 1.24,
+      "visit_total": 9.92
+    },
+    {
+      "map_id": "map:perion_rockfall_edge",
+      "pressure": 1.3375,
+      "visit_total": 11.904
+    }
+  ],
+  "policy_actions": {
+    "dynamic_channel_balancing": 7,
+    "soft_rerouting": 0,
+    "spawn_redistribution": 12
+  },
+  "reasons": [],
+  "spawn_pressure": 0.7334,
+  "status": "allow"
+}

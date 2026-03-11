@@ -1,0 +1,58 @@
+{
+  "domain": "checkpoint_autonomy",
+  "nodes": [
+    {
+      "id": "checkpoint_autonomy",
+      "layer": 1,
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.world_stability",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.player_flow_stability",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.economy_stability",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.meta_stability",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.content_scale_out_stability",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.liveops_override_safety",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.continuous_soak_controller",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    },
+    {
+      "id": "checkpoint_autonomy.stability_streak_gate",
+      "layer": 2,
+      "parent": "checkpoint_autonomy",
+      "domain": "checkpoint_autonomy"
+    }
+  ]
+}

@@ -12,6 +12,11 @@ Rules:
 - prefer balance/content/rules scope only
 - do not propose runtime architecture refactors
 - do not cross the MSW runtime boundary
+- if the active player bottleneck is `economy_coherence`, prefer already-emitted balance tables under `data/balance/*` over regenerating source content tables
+- for `economy_coherence`, do not propose `content_build/*`, `data/drops.csv`, or boss reward rewrites unless the active metrics explicitly identify bosses as the top pressure node
+- `FILES` must contain only patch-target files, not read-only metrics or generated evidence
+- if proposing `data/balance/maps/role_bands.csv`, preserve the populated-band reward pressure spread floor (`>= 0.14`) and throughput spread floor (`>= 0.12`)
+- for `early_02`, do not propose lowering `perion_rockfall_edge` below the point where it ceases to be clearly above `ellinia_lower_canopy` and `lith_harbor_coast_road`
 
 Inputs to inspect:
 - content_build/
@@ -39,7 +44,7 @@ NEXT_SAFE_IMPROVEMENT:
 [short]
 
 FILES:
-[list]
+[list of patch-target files only]
 
 VERIFICATION:
 [list]

@@ -1,0 +1,32 @@
+1. changed files
+
+[drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv)
+
+2. exact summary of changes
+
+Clamped 7 starter-field `southperry_*` over-cap rows from `drop_tier=tier2` to `drop_tier=tier1`, with no changes to `item_id`, `drop_rate`, `rarity_band`, rare rows, elite rows, or boss rows:
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L2) `southperry_snail_t01_v00`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L287) `southperry_mushroom_t04_v09`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L515) `southperry_pig_t03_v09`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L743) `southperry_slime_t02_v09`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L762) `southperry_slime_t04_v04`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L971) `southperry_stump_t01_v09`
+- [drop_table.csv](/home/meta_os/MapleWorld/data/balance/drops/drop_table.csv#L990) `southperry_stump_t03_v04`
+
+3. verification performed
+
+Ran offline CSV checks against the live file:
+- Verified the bounded starter slice (`snail`, `mushroom`, `pig`, `slime`, `stump`, `t01`-`t04`) now has `0` rows above the starter cap.
+- Verified the same starter slice is now `179 x tier0` and `61 x tier1`, with no remaining `tier2+`.
+- Calculated a simple weighted starter drop-pressure metric before vs. after this patch:
+  - baseline: `12.4381`
+  - current: `11.6589`
+  - delta: `-0.7792`
+
+4. unresolved risks
+
+The patch only clamps ladder classification. Several starter rows still point at comparatively high `item_id` names, so if downstream economy pressure is driven by `item_id` semantics rather than `drop_tier`, some oversupply may remain. I did not change those rows because that would exceed the bounded fix.
+
+5. recommended next bottleneck
+
+Quest meso pressure in early coastal hubs. After drop-tier oversupply is clamped, that is the next narrow economy-side lever with direct player impact.

@@ -1,0 +1,52 @@
+{
+  "domain": "mvp_stabilization",
+  "nodes": [
+    {
+      "id": "mvp_stabilization",
+      "layer": 1,
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.reward_identity_diversity_guard",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.strategy_diversity_guard",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.economy_drift_guard",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.drop_excitement_ladder",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.early_progression_profile",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.canonical_anchors",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    },
+    {
+      "id": "mvp_stabilization.evolution_soak_test",
+      "layer": 2,
+      "parent": "mvp_stabilization",
+      "domain": "mvp_stabilization"
+    }
+  ]
+}

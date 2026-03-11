@@ -562,12 +562,16 @@ for region_entry in "${regions[@]}"; do
   ' "$data_dir/mobs.csv" | while IFS= read -r mob_id; do
     serial="${mob_id##*_}"
     numeric=$((10#$serial))
+    common1_chance="0.48"
+    if [ "$region_id" = "perion_rocklands" ]; then
+      common1_chance="0.40"
+    fi
     common1="dbexp_${region_id}_etc_$(((numeric - 1) % 25 + 1))"
     common2="dbexp_${region_id}_consumable_$(((numeric - 1) % 80 + 1))"
     material="dbexp_${region_id}_material_$(((numeric - 1) % 40 + 1))"
     rare1="dbexp_${region_id}_weapon_$(((numeric - 1) % 92 + 1))"
     rare2="dbexp_${region_id}_armor_$(((numeric - 1) % 125 + 1))"
-    printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$mob_id" "$common1" "0.48" "1" "3" "common" "false" "steady" >> "$data_dir/.drops_append.tmp"
+    printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$mob_id" "$common1" "$common1_chance" "1" "3" "common" "false" "steady" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$mob_id" "$common2" "0.26" "1" "2" "common" "false" "support" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$mob_id" "$material" "0.18" "1" "2" "uncommon" "false" "crafting_cache" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$mob_id" "$rare1" "0.04" "1" "1" "rare" "false" "notable" >> "$data_dir/.drops_append.tmp"
@@ -586,7 +590,7 @@ for region_entry in "${regions[@]}"; do
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$weapon" "0.70" "1" "1" "epic" "false" "boss_signature" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$armor" "0.62" "1" "1" "epic" "false" "boss_signature" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$accessory" "0.55" "1" "1" "rare" "false" "jackpot" >> "$data_dir/.drops_append.tmp"
-    printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$material" "1.00" "3" "8" "rare" "false" "crafting_cache" >> "$data_dir/.drops_append.tmp"
+    printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$material" "1.00" "3" "5" "rare" "false" "crafting_cache" >> "$data_dir/.drops_append.tmp"
     printf '%s,%s,%s,%s,%s,%s,%s,%s\n' "$boss_id" "$trophy" "1.00" "1" "1" "legendary" "true" "trophy" >> "$data_dir/.drops_append.tmp"
   done
 done

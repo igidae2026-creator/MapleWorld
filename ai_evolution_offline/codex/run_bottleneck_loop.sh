@@ -11,6 +11,21 @@ VERIFY_DONE_FILE="$LOOP_DIR/verify_done"
 CHECKPOINT_READY_FILE="$LOOP_DIR/checkpoint_ready"
 CHECKPOINT_LOG="$LOOP_DIR/checkpoints.log"
 SIMULATION_RUNS_DIR="$ROOT_DIR/offline_ops/codex_state/simulation_runs"
+PLAYER_EXPERIENCE_METRICS_FILE="$SIMULATION_RUNS_DIR/player_experience_metrics_latest.json"
+EARLY02_REBALANCE_REPORT="$SIMULATION_RUNS_DIR/early02_rebalance_candidates.json"
+NEXT_MAP_REBALANCE_REPORT="$SIMULATION_RUNS_DIR/next_map_rebalance_candidates.json"
+FINAL_THRESHOLD_EVAL_FILE="$ROOT_DIR/offline_ops/codex_state/final_threshold_eval.json"
+TOP_SKELETON_FILES=(
+  "$ROOT_DIR/GOAL.md"
+  "$ROOT_DIR/METAOS_CONSTITUTION.md"
+  "$ROOT_DIR/RULE_CARDS.jsonl"
+  "$ROOT_DIR/CHECKLIST_LAYER1_목표조건.md"
+  "$ROOT_DIR/CHECKLIST_LAYER2_모듈책임.md"
+  "$ROOT_DIR/CHECKLIST_LAYER3_REPO매핑.md"
+  "$ROOT_DIR/CHECKLIST_METHOD_패치.md"
+  "$ROOT_DIR/COVERAGE_AUDIT.csv"
+  "$ROOT_DIR/CONFLICT_LOG.csv"
+)
 
 MAX_REPEATED_BOTTLENECKS="${MAX_REPEATED_BOTTLENECKS:-3}"
 MAX_FAILING_PATCH_CYCLES="${MAX_FAILING_PATCH_CYCLES:-3}"
@@ -37,6 +52,7 @@ FAKE_PROGRESS_CYCLES="${FAKE_PROGRESS_CYCLES:-0}"
 LAST_SUCCESSFUL_BOTTLENECK="${LAST_SUCCESSFUL_BOTTLENECK:-}"
 LAST_SUCCESS_EFFICIENCY_ESTIMATE="${LAST_SUCCESS_EFFICIENCY_ESTIMATE:-}"
 LAST_SUCCESS_PATCH_FILES_COUNT="${LAST_SUCCESS_PATCH_FILES_COUNT:-0}"
+START_CYCLE_COUNTER="$CYCLE_COUNTER"
 
 persist_state() {
   cat > "$STATE_FILE" <<EOF
@@ -78,16 +94,28 @@ run_simulation_pipeline() {
   lua "$ROOT_DIR/simulation_lua/run_all.lua"
   python3 "$ROOT_DIR/simulation_py/run_all.py"
   python3 "$ROOT_DIR/metrics_engine/run_quality_eval.py"
+  python3 "$ROOT_DIR/scripts/search_early02_rebalance.py"
+  python3 "$ROOT_DIR/scripts/search_next_map_rebalance.py"
+  python3 "$ROOT_DIR/scripts/snapshot_metaos_aux_artifacts.py"
+  python3 "$ROOT_DIR/scripts/run_coverage_conflict_audit.py"
+  python3 "$ROOT_DIR/scripts/run_autonomy_thresholds.py"
+  python3 "$ROOT_DIR/scripts/run_final_threshold_eval.py"
 }
 
 ensure_simulation_outputs() {
   [ -f "$SIMULATION_RUNS_DIR/lua_simulation_latest.json" ] \
     && [ -f "$SIMULATION_RUNS_DIR/python_simulation_latest.json" ] \
-    && [ -f "$SIMULATION_RUNS_DIR/quality_metrics_latest.json" ]
+    && [ -f "$SIMULATION_RUNS_DIR/quality_metrics_latest.json" ] \
+    && [ -f "$EARLY02_REBALANCE_REPORT" ] \
+    && [ -f "$NEXT_MAP_REBALANCE_REPORT" ] \
+    && [ -f "$FINAL_THRESHOLD_EVAL_FILE" ]
 }
 
 clear_cycle_signals() {
   rm -f "$VERIFY_DONE_FILE" "$CHECKPOINT_READY_FILE"
+  rm -f "$LOOP_DIR/decision.txt"
+  rm -f "$LOOP_DIR/agent1.txt" "$LOOP_DIR/agent2.txt" "$LOOP_DIR/agent3.txt" "$LOOP_DIR/agent4.txt"
+  rm -f "$LOOP_DIR/agent5.txt" "$LOOP_DIR/agent6.txt" "$LOOP_DIR/agent7.txt" "$LOOP_DIR/agent8.txt" "$LOOP_DIR/agent9.txt"
 }
 
 record_checkpoint() {
@@ -145,9 +173,41 @@ restore_snapshot() {
   fi
 }
 
+restore_snapshot_preserving_loop_outputs() {
+  local cycle_id="$1"
+  local preserve_dir
+  preserve_dir="$(mktemp -d)"
+
+  for file in "$LOOP_DIR"/agent*.txt "$LOOP_DIR/decision.txt"; do
+    if [ -f "$file" ]; then
+      cp "$file" "$preserve_dir/"
+    fi
+  done
+
+  restore_snapshot "$cycle_id"
+
+  for file in "$preserve_dir"/*; do
+    if [ -f "$file" ]; then
+      cp "$file" "$LOOP_DIR/"
+    fi
+  done
+  rm -rf "$preserve_dir"
+}
+
 extract_bottleneck() {
   awk '
     /^CHOSEN_BOTTLENECK:$/ { capture=1; next }
+    capture == 1 {
+      if ($0 == "") exit
+      print
+      exit
+    }
+  ' "$LOOP_DIR/decision.txt"
+}
+
+extract_bottleneck_key() {
+  awk '
+    /^BOTTLENECK_KEY:$/ { capture=1; next }
     capture == 1 {
       if ($0 == "") exit
       print
@@ -180,9 +240,215 @@ extract_decision_files() {
   ' "$LOOP_DIR/decision.txt"
 }
 
+build_player_bottleneck_directive() {
+  if [ ! -f "$PLAYER_EXPERIENCE_METRICS_FILE" ]; then
+    return
+  fi
+  python3 - "$PLAYER_EXPERIENCE_METRICS_FILE" <<'PY'
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = json.loads(path.read_text(encoding="utf-8"))
+active = str(payload.get("active_player_bottleneck", "")).strip()
+ranges = payload.get("ranges", {})
+reasons = payload.get("reasons", {})
+floors = payload.get("floors", {})
+centers = payload.get("centers", {})
+
+print("Active player bottleneck directive:")
+print("- Treat player-experience metrics as binding loop input, not background context.")
+if active:
+    print(f"- Required bottleneck key for this cycle: {active}")
+    print(f"- Active bottleneck score: {ranges.get(active, centers.get(active, 'unknown'))}")
+    if active in floors:
+        print(f"- Active bottleneck floor: {floors[active]}")
+    active_reasons = reasons.get(active, [])
+    if active_reasons:
+        print("- Active bottleneck reasons:")
+        for reason in active_reasons[:4]:
+            print(f"  - {reason}")
+    else:
+        print("- Active bottleneck reasons: none emitted; use this key anyway because it is the weakest ranked gate.")
+print("- Prefer the smallest patch that directly improves this bottleneck.")
+print("- Do not propose a different bottleneck unless the metrics file is invalid or missing.")
+PY
+}
+
+current_active_bottleneck() {
+  if [ ! -f "$PLAYER_EXPERIENCE_METRICS_FILE" ]; then
+    return
+  fi
+  python3 - "$PLAYER_EXPERIENCE_METRICS_FILE" <<'PY'
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = json.loads(path.read_text(encoding="utf-8"))
+print(str(payload.get("active_player_bottleneck", "")).strip())
+PY
+}
+
+build_map_pressure_pivot_directive() {
+  if [ ! -f "$SIMULATION_RUNS_DIR/economy_pressure_metrics_latest.json" ] || [ ! -f "$EARLY02_REBALANCE_REPORT" ]; then
+    return
+  fi
+  python3 - "$SIMULATION_RUNS_DIR/economy_pressure_metrics_latest.json" "$EARLY02_REBALANCE_REPORT" "$NEXT_MAP_REBALANCE_REPORT" <<'PY'
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+pressure_path = Path(sys.argv[1])
+report_path = Path(sys.argv[2])
+next_map_report_path = Path(sys.argv[3])
+pressure = json.loads(pressure_path.read_text(encoding="utf-8"))
+report = json.loads(report_path.read_text(encoding="utf-8"))
+next_map_report = json.loads(next_map_report_path.read_text(encoding="utf-8")) if next_map_report_path.exists() else {}
+
+if str(report.get("recommendation", "")).strip() != "same-band early_02 rebalance exhausted":
+    raise SystemExit(0)
+
+blocked = {
+    "map:perion_rockfall_edge",
+    "map:ellinia_lower_canopy",
+    "map:lith_harbor_coast_road",
+}
+for item in pressure.get("top_pressure_nodes", []):
+    node = str(dict(item).get("node", "")).strip()
+    if node.startswith("map:") and node not in blocked:
+        print("Map pressure pivot directive:")
+        print("- `early_02` same-band rebalance is exhausted for this cycle.")
+        print(f"- Required next map-scoped pivot target: {node.split(':', 1)[1]}")
+        print("- Do not choose generic all-high-risk smoothing.")
+        print("- Name this exact map in `CHOSEN_BOTTLENECK` and `NEXT_PATCH_OBJECTIVE` if you keep `economy_coherence` on `role_bands.csv`.")
+        if str(next_map_report.get("recommendation", "")).strip() == "use_best_candidate":
+            candidate = dict(next_map_report.get("best_candidate", {}))
+            if candidate:
+                print(
+                    f"- Preferred exact candidate: throughput_bias={candidate.get('throughput_bias')} "
+                    f"reward_bias={candidate.get('reward_bias')}"
+                )
+        break
+PY
+}
+
+build_final_threshold_repair_directive() {
+  if [ ! -f "$FINAL_THRESHOLD_EVAL_FILE" ]; then
+    return
+  fi
+  python3 - "$FINAL_THRESHOLD_EVAL_FILE" <<'PY'
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+if payload.get("final_threshold_ready", False):
+    raise SystemExit(0)
+
+print("Final threshold repair directive:")
+for item in list(payload.get("next_required_repairs", []))[:4]:
+    criterion = str(item.get("criterion", "")).strip()
+    repair = str(item.get("repair_action", "")).strip()
+    if criterion and repair:
+        print(f"- Repair priority `{criterion}`: {repair}")
+print("- Do not widen scope beyond the failed final-threshold criteria.")
+PY
+}
+
+run_agent_with_bottleneck_context() {
+  local prompt_file="$1"
+  local output_file="$2"
+  {
+    cat "$prompt_file"
+    printf "\n\n"
+    build_player_bottleneck_directive
+    if [ -f "$PLAYER_EXPERIENCE_METRICS_FILE" ]; then
+      printf "\nCurrent player-experience metrics:\n\n"
+      cat "$PLAYER_EXPERIENCE_METRICS_FILE"
+      printf "\n"
+    fi
+  } | codex exec -C "$ROOT_DIR" --output-last-message "$output_file" -
+}
+
+write_agent1_bottleneck_support_output() {
+  local output_file="$1"
+  cat > "$output_file" <<'EOF'
+ARCH_SCORE:
+- platform fit: 85~88
+- runtime stability: 84~87
+- exploit resistance: 84~87
+
+PRIMARY_BOTTLENECK:
+Support `economy_coherence` with the smallest architecture-safe data or rules change rather than proposing a boundary refactor in this cycle.
+
+WHY_THIS_IS_THE_BOTTLENECK:
+The active player bottleneck is not `authority_safety`, so architecture review must defer to the player bottleneck and avoid widening scope.
+
+NEXT_SAFE_IMPROVEMENT:
+Prefer one balance, data, or shared-rules patch that directly lowers economy pressure without changing runtime ownership or governance files.
+
+FILES:
+- data/balance/
+- shared_rules/
+
+DO_NOT_TOUCH:
+- GOAL.md
+- METAOS_CONSTITUTION.md
+- CHECKLIST_LAYER1_목표조건.md
+- CHECKLIST_LAYER2_모듈책임.md
+- CHECKLIST_LAYER3_REPO매핑.md
+- CHECKLIST_METHOD_패치.md
+- msw_runtime/
+- offline_ops/
+
+VERIFICATION:
+- Keep the selected patch inside the active player bottleneck scope.
+- Do not widen this cycle into runtime-boundary or documentation work.
+EOF
+}
+
 build_coordinator_input() {
   local rejection_reason="$1"
   cat "$PROMPTS_DIR/coordinator.txt"
+  printf "\n\n"
+  build_player_bottleneck_directive
+  printf "\n"
+  build_map_pressure_pivot_directive
+  printf "\n"
+  build_final_threshold_repair_directive
+  printf "\n\nTop skeleton authority:\n"
+  for file in "${TOP_SKELETON_FILES[@]}"; do
+    if [ -f "$file" ]; then
+      printf "\n=== %s ===\n" "$(basename "$file")"
+      sed -n '1,160p' "$file"
+    fi
+  done
+  if [ -f "$PLAYER_EXPERIENCE_METRICS_FILE" ]; then
+    printf "\n=== player_experience_metrics_latest.json ===\n"
+    cat "$PLAYER_EXPERIENCE_METRICS_FILE"
+  fi
+  if [ -f "$EARLY02_REBALANCE_REPORT" ]; then
+    printf "\n=== early02_rebalance_candidates.json ===\n"
+    cat "$EARLY02_REBALANCE_REPORT"
+  fi
+  if [ -f "$NEXT_MAP_REBALANCE_REPORT" ]; then
+    printf "\n=== next_map_rebalance_candidates.json ===\n"
+    cat "$NEXT_MAP_REBALANCE_REPORT"
+  fi
+  if [ -f "$FINAL_THRESHOLD_EVAL_FILE" ]; then
+    printf "\n=== final_threshold_eval.json ===\n"
+    cat "$FINAL_THRESHOLD_EVAL_FILE"
+  fi
   if [ -n "$rejection_reason" ]; then
     printf "\n\nDecision validation feedback:\n"
     printf "The previous coordinator output was rejected for this reason: %s\n" "$rejection_reason"
@@ -215,6 +481,10 @@ run_coordinator() {
 
 build_fun_guard_input() {
   cat "$PROMPTS_DIR/agent9_fun_guard.txt"
+  if [ -f "$PLAYER_EXPERIENCE_METRICS_FILE" ]; then
+    printf "\n\nPlayer experience metrics:\n\n"
+    cat "$PLAYER_EXPERIENCE_METRICS_FILE"
+  fi
   printf "\n\nCoordinator decision:\n\n"
   cat "$LOOP_DIR/decision.txt"
   printf "\n"
@@ -242,13 +512,18 @@ extract_patch_veto() {
 }
 
 validate_decision() {
-  local chosen_bottleneck="$1"
-  local efficiency_estimate="$2"
+  local bottleneck_key="$1"
+  local chosen_bottleneck="$2"
+  local efficiency_estimate="$3"
   local decision_files=("$@")
-  local file_count top_level_roots path root
+  local file_count top_level_roots path root normalized_path
   local -A unique_roots=()
 
-  decision_files=("${decision_files[@]:2}")
+  decision_files=("${decision_files[@]:3}")
+  if [ -z "$bottleneck_key" ]; then
+    printf '%s' "missing bottleneck key"
+    return 0
+  fi
   file_count="${#decision_files[@]}"
 
   if [ -z "$chosen_bottleneck" ]; then
@@ -265,15 +540,19 @@ validate_decision() {
   fi
 
   for path in "${decision_files[@]}"; do
-    if [[ "$path" == *"*"* ]]; then
-      printf '%s' "patch scope contains wildcard path: $path"
+    normalized_path="$path"
+    if [[ "$normalized_path" = "$ROOT_DIR/"* ]]; then
+      normalized_path="${normalized_path#$ROOT_DIR/}"
+    fi
+    if [[ "$normalized_path" == *"*"* ]]; then
+      printf '%s' "patch scope contains wildcard path: $normalized_path"
       return 0
     fi
-    if [ -d "$ROOT_DIR/$path" ]; then
-      printf '%s' "patch scope contains directory instead of file: $path"
+    if [ -d "$ROOT_DIR/$normalized_path" ]; then
+      printf '%s' "patch scope contains directory instead of file: $normalized_path"
       return 0
     fi
-    root="${path%%/*}"
+    root="${normalized_path%%/*}"
     if [[ -n "$root" ]]; then
       unique_roots["$root"]=1
     fi
@@ -297,6 +576,11 @@ validate_decision() {
     return 0
   fi
 
+  if ! python3 "$ROOT_DIR/ai_evolution_offline/codex/validate_bottleneck_scope.py" "$LOOP_DIR/decision.txt" >/dev/null 2>&1; then
+    printf '%s' "decision violates active bottleneck policy or allowed patch scope"
+    return 0
+  fi
+
   return 1
 }
 
@@ -314,7 +598,7 @@ should_stop_for_repetition() {
 
 while true
 do
-  if [ -n "$MAX_CYCLES" ] && [ "$CYCLE_COUNTER" -ge "$MAX_CYCLES" ]; then
+  if [ -n "$MAX_CYCLES" ] && [ $((CYCLE_COUNTER - START_CYCLE_COUNTER)) -ge "$MAX_CYCLES" ]; then
     echo "Max cycle limit reached. Stopping loop."
     exit 0
   fi
@@ -323,6 +607,7 @@ do
   clear_cycle_signals
   persist_state
   CYCLE_ID="$(date +%Y%m%d_%H%M%S)_${CYCLE_COUNTER}"
+  AGENT_SNAPSHOT_ID="${CYCLE_ID}_agents"
   PRECHECK_LOG="$LOOP_DIR/precheck_${CYCLE_ID}.log"
   PATCH_LOG="$LOOP_DIR/patch_${CYCLE_ID}.txt"
   PATCH_STDOUT_LOG="$LOOP_DIR/patch_stdout_${CYCLE_ID}.log"
@@ -347,29 +632,36 @@ do
     exit 1
   fi
 
+  snapshot_repo "$AGENT_SNAPSHOT_ID"
+
   echo "=== AGENT 1 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent1.txt" - < "$PROMPTS_DIR/agent1_architecture.txt"
+  ACTIVE_BOTTLENECK="$(current_active_bottleneck)"
+  if [ "$ACTIVE_BOTTLENECK" = "economy_coherence" ]; then
+    write_agent1_bottleneck_support_output "$LOOP_DIR/agent1.txt"
+  else
+    run_agent_with_bottleneck_context "$PROMPTS_DIR/agent1_architecture.txt" "$LOOP_DIR/agent1.txt"
+  fi
 
   echo "=== AGENT 2 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent2.txt" - < "$PROMPTS_DIR/agent2_gameplay.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent2_gameplay.txt" "$LOOP_DIR/agent2.txt"
 
   echo "=== AGENT 3 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent3.txt" - < "$PROMPTS_DIR/agent3_rules_content.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent3_rules_content.txt" "$LOOP_DIR/agent3.txt"
 
   echo "=== AGENT 4 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent4.txt" - < "$PROMPTS_DIR/agent4_validation.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent4_validation.txt" "$LOOP_DIR/agent4.txt"
 
   echo "=== AGENT 5 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent5.txt" - < "$PROMPTS_DIR/agent5_economy.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent5_economy.txt" "$LOOP_DIR/agent5.txt"
 
   echo "=== AGENT 6 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent6.txt" - < "$PROMPTS_DIR/agent6_content.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent6_content.txt" "$LOOP_DIR/agent6.txt"
 
   echo "=== AGENT 7 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent7.txt" - < "$PROMPTS_DIR/agent7_simulation.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent7_simulation.txt" "$LOOP_DIR/agent7.txt"
 
   echo "=== AGENT 8 ==="
-  codex exec -C "$ROOT_DIR" --output-last-message "$LOOP_DIR/agent8.txt" - < "$PROMPTS_DIR/agent8_meta_quality.txt"
+  run_agent_with_bottleneck_context "$PROMPTS_DIR/agent8_meta_quality.txt" "$LOOP_DIR/agent8.txt"
 
   echo "=== COORDINATOR ==="
   run_coordinator ""
@@ -377,10 +669,11 @@ do
   DECISION_RETRY_COUNT=0
   while true
   do
+    BOTTLENECK_KEY="$(extract_bottleneck_key)"
     CHOSEN_BOTTLENECK="$(extract_bottleneck)"
     CURRENT_EFFICIENCY_ESTIMATE="$(extract_efficiency_estimate)"
     mapfile -t DECISION_FILES < <(extract_decision_files)
-    if DECISION_REJECTION_REASON="$(validate_decision "$CHOSEN_BOTTLENECK" "$CURRENT_EFFICIENCY_ESTIMATE" "${DECISION_FILES[@]}")"; then
+    if DECISION_REJECTION_REASON="$(validate_decision "$BOTTLENECK_KEY" "$CHOSEN_BOTTLENECK" "$CURRENT_EFFICIENCY_ESTIMATE" "${DECISION_FILES[@]}")"; then
       if [[ "$DECISION_REJECTION_REASON" == fake\ progress* ]]; then
         FAKE_PROGRESS_CYCLES=$((FAKE_PROGRESS_CYCLES + 1))
         persist_state
@@ -412,6 +705,8 @@ do
     fi
     break
   done
+
+  restore_snapshot_preserving_loop_outputs "$AGENT_SNAPSHOT_ID"
 
   if should_stop_for_repetition "$CHOSEN_BOTTLENECK"; then
     record_failure "$CYCLE_ID" "repeated_bottleneck" "$LOOP_DIR/decision.txt"

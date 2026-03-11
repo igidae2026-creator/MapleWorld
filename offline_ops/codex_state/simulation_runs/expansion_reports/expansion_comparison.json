@@ -1,0 +1,51 @@
+{
+  "after": {
+    "boss_chase_desirability": {
+      "boss_desirability_separation": 0.28,
+      "boss_quality_center": 90.5,
+      "field_vs_boss_reward_clarity": 0.3467
+    },
+    "economy_stability": {
+      "inflation_ratio": 0.1007,
+      "sink_ratio": 9.9279
+    },
+    "progression_smoothness": {
+      "quality_progression_center": 88.5,
+      "quest_progression_smoothness": 0.89
+    },
+    "reward_identity_clarity": {
+      "entropy": 2.3241
+    },
+    "strategy_diversity": {
+      "class_archetype_expression": 1.0,
+      "early_route_diversity": 2.0,
+      "low_level_strategy_concentration": 0.25,
+      "mob_dominant_share": 0.3357,
+      "mob_entropy": 1.8849
+    }
+  },
+  "before": {
+    "boss_chase_desirability": {
+      "boss_quality_center": 90.5,
+      "field_vs_boss_tier_gap": 3.3194
+    },
+    "economy_stability": {
+      "inflation_ratio": 0.1093,
+      "sink_ratio": 9.1483
+    },
+    "progression_smoothness": {
+      "quality_progression_center": 88.5
+    },
+    "reward_identity_clarity": {
+      "entropy": 2.3241
+    },
+    "strategy_diversity": {
+      "mob_dominant_share": 0.3433,
+      "mob_entropy": 1.8977
+    }
+  },
+  "expansion_guard": {
+    "expansion_veto": "allow",
+    "fun_guard_patch_veto": "allow"
+  }
+}

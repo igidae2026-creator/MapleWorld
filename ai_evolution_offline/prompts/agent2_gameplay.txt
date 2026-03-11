@@ -49,6 +49,9 @@ Rules:
 - choose one bottleneck only
 - prefer bottlenecks that drag overall efficiency point down most
 - keep suggestions implementable in one bounded patch
+- if the active player bottleneck is `economy_coherence` and the top pressure node is map-scoped, prefer `data/balance/maps/role_bands.csv` or nearby emitted balance tables over global reward-system rewrites
+- for `economy_coherence`, do not propose `content_build/*`, `data/drops.csv`, or broad boss-drop rewrites unless the active metrics explicitly identify bosses as the top pressure node
+- `FILES` must contain only the next patch targets, not read-only evidence or metrics artifacts
 
 Output format:
 

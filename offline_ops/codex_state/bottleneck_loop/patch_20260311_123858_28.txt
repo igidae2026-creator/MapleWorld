@@ -1,0 +1,31 @@
+1. changed files
+
+[data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv)
+
+2. exact summary of changes
+
+Changed only the `early_02` `ellinia_lower_canopy` row:
+- `reward_bias`: `1.09 -> 1.08`
+- `throughput_bias`: unchanged at `1.06`
+
+This keeps `perion_rockfall_edge` unchanged at `reward_bias 1.12`, widens the Perion-to-Ellinia reward gap from `0.03` to `0.04`, and does not alter runtime or any other band/map rows.
+
+3. verification performed
+
+Verified directly from the patched CSV:
+- `early_02` throughput spread = `1.07 - 0.95 = 0.12`
+- `early_02` reward spread = `1.12 - 0.98 = 0.14`
+- `perion_rockfall_edge reward_bias = 1.12`
+- `perion_rockfall_edge > ellinia_lower_canopy` on reward bias: `1.12 > 1.08`
+- `perion_rockfall_edge > lith_harbor_coast_road` on reward bias: `1.12 > 0.98`
+
+I did not run a wider simulation or metric recomputation, so `economy_coherence`, `first_10_minutes`, `first_hour_retention`, and `route_variance` were only protected by boundary-safe data math, not re-scored end-to-end.
+
+4. unresolved risks
+
+- The change is intentionally minimal, so the measurable `economy_coherence` gain may be small until full scoring is rerun.
+- Without rerunning the repo’s evaluation pipeline, there is no fresh proof yet that the active metric band moves above the prior `82~85` estimate.
+
+5. recommended next bottleneck
+
+`economy_coherence` validation remains the next bottleneck candidate: rerun the scoring/adversarial balance checks to confirm this one-row separation fix is sufficient before moving to a different system bottleneck.

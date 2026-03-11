@@ -1,0 +1,44 @@
+1. changed files
+
+None. I did not edit `data/balance/maps/role_bands.csv` because the requested one-row reduction is incompatible with the required success checks.
+
+2. exact summary of changes
+
+No repository changes were made.
+
+Reason:
+In [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv), `early_02` currently has only these three rows:
+
+- `lith_harbor_coast_road`: `throughput_bias=0.95`, `reward_bias=0.98`
+- `ellinia_lower_canopy`: `throughput_bias=1.03`, `reward_bias=1.06`
+- `perion_rockfall_edge`: `throughput_bias=1.07`, `reward_bias=1.12`
+
+That means the band is already exactly at the required floors:
+- throughput spread: `1.07 - 0.95 = 0.12`
+- reward spread: `1.12 - 0.98 = 0.14`
+
+With the patch boundary limited to one file and one map only, any reduction to `perion_rockfall_edge` `throughput_bias` or `reward_bias` would immediately violate the stated floor checks.
+
+3. verification performed
+
+I verified the current table contents with:
+- `rg -n` on `data/balance/maps/role_bands.csv`
+- full file read of [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv)
+- `python3` CSV check computing per-band spread values
+
+Verified results:
+- `early_02` has exactly 3 rows
+- `perion_rockfall_edge` is the current max on both throughput and reward
+- `early_02` throughput spread is `0.12`
+- `early_02` reward spread is `0.14`
+
+4. unresolved risks
+
+The coordinator objective and the success constraints conflict in the current data state. A compliant one-row reduction cannot be made unless at least one of these changes:
+- allow editing another `early_02` row in the same file
+- relax one or both spread-floor checks
+- change the patch objective away from direct bias reduction
+
+5. recommended next bottleneck
+
+Still `economy_coherence`, but with a corrected patch boundary: allow a two-row `early_02` rebalance inside [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv) so `perion_rockfall_edge` can be trimmed while preserving the required spread floors and lane distinctness.

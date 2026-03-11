@@ -1,0 +1,22 @@
+{
+  "after": {
+    "bottleneck_count": 0,
+    "content_density": 0.5273,
+    "dead_zone_count": 0,
+    "exploration_flow": 0.8385,
+    "node_utilization": 0.4946,
+    "overcrowded_count": 0,
+    "path_entropy": 0.925,
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "travel_friction": 0.2372,
+    "world_graph_balance": "93~95"
+  },
+  "before": {
+    "map_role_separation": "90~93",
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "reward_entropy": 2.3241,
+    "strategy_mob_dominant_share": 0.3433
+  }
+}

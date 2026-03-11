@@ -1,0 +1,11 @@
+{
+  "drop_pressure_max": 1.2765,
+  "drop_pressure_min": 1.2765,
+  "failures": [],
+  "inflation_pressure_max": 0.0007,
+  "inflation_pressure_min": 0.0007,
+  "iterations": 200,
+  "scarcity_index_max": 0.8435,
+  "scarcity_index_min": 0.8435,
+  "stable": true
+}

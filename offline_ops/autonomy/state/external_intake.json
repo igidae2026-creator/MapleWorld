@@ -1,0 +1,11 @@
+{
+  "payload": {
+    "last_promoted_material": "GOAL.md",
+    "last_rejected_material": null,
+    "pending_candidates": 0,
+    "promoted_count": 1,
+    "rejected_count": 0
+  },
+  "snapshot_type": "external_intake",
+  "updated_at": "2026-03-11T04:11:20.566893+00:00"
+}

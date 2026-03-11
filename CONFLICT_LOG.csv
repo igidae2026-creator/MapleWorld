@@ -1,0 +1,7 @@
+conflict_id,topic,conflict,preferred_resolution,status
+C0001,TopSkeletonVsLightweightCanon,Earlier lightweight canonical docs can conflict with the new top skeleton,Top skeleton wins and lower docs become subordinate or reference,resolved
+C0002,PlayerFeelVsStructureScores,Structural metrics can improve while player feel regresses,Player-experience gates veto structural-only wins and the constitution now explicitly anchors that rule,open
+C0003,BottleneckLoopVsActualSelection,The loop runner may not yet consume active player bottleneck strongly enough,Wire loop decision inputs to player-experience metrics outputs,open
+C0004,DocsCanonVsTopAuthority,DOCS_CANON may describe authority in a way weaker than the new root skeleton,Root skeleton files override document-canon descriptions when they differ,resolved
+C0005,PatchGovernanceVsExistingPractice,Historical repo changes may not have updated coverage/conflict records first,Apply top-first patch ordering going forward and backfill only when necessary,open
+C0006,ConstitutionVsLayerLinkage,The constitution previously lacked explicit linkage to Layer1 Layer2 Layer3 and patch governance,Keep the linkage explicit in the constitution and treat missing linkage as an authority defect,resolved

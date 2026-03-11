@@ -1,0 +1,98 @@
+{
+  "checkpoint_order": [
+    "world_stability",
+    "player_flow_stability",
+    "economy_stability",
+    "meta_stability",
+    "content_scale_out_stability",
+    "liveops_override_safety"
+  ],
+  "checkpoints": {
+    "content_scale_out_stability": {
+      "details": {
+        "bundle_status": {
+          "A": "allow",
+          "B": "allow",
+          "C": "allow",
+          "D": "allow"
+        },
+        "content_density": 0.6084,
+        "node_count": 55
+      },
+      "reasons": [],
+      "score": 0.9352,
+      "stable": true,
+      "status": "stable"
+    },
+    "economy_stability": {
+      "details": {
+        "economy_guard_status": "allow",
+        "inflation_pressure": 0.0007,
+        "inflation_ratio": 0.1007,
+        "sink_ratio": 9.9279
+      },
+      "reasons": [],
+      "score": 0.9493,
+      "stable": true,
+      "status": "stable"
+    },
+    "liveops_override_safety": {
+      "details": {
+        "active_rollback_safe_profiles": 1,
+        "override_actions_total": 19,
+        "policy_plane_coverage": 1.0,
+        "rollback_readiness": true
+      },
+      "reasons": [],
+      "score": 0.85,
+      "stable": true,
+      "status": "stable"
+    },
+    "meta_stability": {
+      "details": {
+        "expansion_veto": "allow",
+        "overall_quality_center": 90.5,
+        "patch_veto": "allow",
+        "reward_guard_status": "allow",
+        "strategy_guard_status": "allow"
+      },
+      "reasons": [],
+      "score": 1.0,
+      "stable": true,
+      "status": "stable"
+    },
+    "player_flow_stability": {
+      "details": {
+        "hotspot_score": 0.9789,
+        "overcrowded_maps": 2,
+        "progression_pacing_center": 88.5,
+        "stagnation_index": 0.5455
+      },
+      "reasons": [],
+      "score": 0.6408,
+      "stable": true,
+      "status": "stable"
+    },
+    "world_stability": {
+      "details": {
+        "bottlenecks": 0,
+        "dead_zones": 0,
+        "exploration_flow": 0.8385,
+        "overcrowded_nodes": 0,
+        "path_entropy": 0.9308,
+        "travel_friction": 0.2371
+      },
+      "reasons": [],
+      "score": 1.0,
+      "stable": true,
+      "status": "stable"
+    }
+  },
+  "stability_metrics": {
+    "checkpoint_pass_count": 6,
+    "checkpoint_stability_ratio": 1.0,
+    "checkpoint_total": 6,
+    "overall_stability_index": 0.8959
+  },
+  "status": "stable"
+}

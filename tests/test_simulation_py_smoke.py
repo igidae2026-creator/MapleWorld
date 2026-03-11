@@ -18,6 +18,9 @@ class SimulationPySmokeTest(unittest.TestCase):
         self.assertIn("economy", payload)
         self.assertIn("world", payload)
         self.assertIn("net_inflation_signal", payload["economy"])
+        self.assertIn("economy_pressure_model", payload)
+        self.assertIn("strategy_usage", payload["world"])
+        self.assertIn("anchor_topology", payload["world"])
 
 
 if __name__ == "__main__":

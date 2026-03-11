@@ -16,14 +16,16 @@ LIVEOPS_DIR = ROOT / "data" / "liveops"
 EXPANSIONS_DIR = ROOT / "data" / "expansions"
 TMP_DIR = ROOT / "data" / "tmp"
 OPS_STATE_DIR = ROOT / "ops" / "codex_state"
+DESIGN_STATE_DIR = ROOT / "offline_ops" / "codex_state"
 PROMPTS_DIR = ROOT / "ops" / "prompts"
 
-PROGRESS_PATH = OPS_STATE_DIR / "progress.json"
-EVAL_SCORES_PATH = OPS_STATE_DIR / "eval_scores.json"
-SCORE_HISTORY_PATH = OPS_STATE_DIR / "score_history.jsonl"
-CYCLE_LOG_PATH = OPS_STATE_DIR / "run_log.jsonl"
-CANDIDATES_DIR = OPS_STATE_DIR / "candidates"
-RUNS_DIR = OPS_STATE_DIR / "runs"
+PROGRESS_PATH = DESIGN_STATE_DIR / "progress.json"
+EVAL_SCORES_PATH = DESIGN_STATE_DIR / "eval_scores.json"
+SCORE_HISTORY_PATH = DESIGN_STATE_DIR / "score_history.jsonl"
+CYCLE_LOG_PATH = DESIGN_STATE_DIR / "run_log.jsonl"
+CANDIDATES_DIR = DESIGN_STATE_DIR / "candidates"
+RUNS_DIR = DESIGN_STATE_DIR / "runs"
+PLAYER_EXPERIENCE_METRICS_PATH = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "player_experience_metrics_latest.json"
 
 GENERATED_CANDIDATES_PATH = TMP_DIR / "generated_candidates.json"
 GENERATED_SCHEMA_PATH = TMP_DIR / "generated_schema.json"
@@ -347,6 +349,7 @@ def seed_tmp_files() -> None:
 
 def ensure_state_layout() -> None:
     ensure_dir(OPS_STATE_DIR)
+    ensure_dir(DESIGN_STATE_DIR)
     ensure_dir(CANDIDATES_DIR)
     ensure_dir(RUNS_DIR)
     seed_prompt_files()
@@ -473,6 +476,11 @@ def load_progress() -> dict[str, object]:
     progress.setdefault("last_status", "idle")
     progress.setdefault("project_complete", False)
     progress.setdefault("weakest_dimension", "structure_pipeline_score")
+    progress.setdefault("active_player_bottleneck", "first_10_minutes")
+    progress.setdefault("overall_player_experience_floor", "60~62")
+    progress.setdefault("first_10_minutes", "60~62")
+    progress.setdefault("first_hour_retention", "60~62")
+    progress.setdefault("day1_return_intent", "60~62")
     for key in SCORE_TARGETS:
         progress.setdefault(key, 0.0)
     return progress
@@ -1427,6 +1435,7 @@ def update_progress() -> dict[str, object]:
     progress = load_progress()
     counts = load_counts()
     scores = read_json(EVAL_SCORES_PATH, {})
+    player_experience = read_json(PLAYER_EXPERIENCE_METRICS_PATH, {})
     categories = scores.get("categories", {})
     previous_design_nodes = int(progress.get("design_nodes", 0))
     progress.update(
@@ -1442,10 +1451,16 @@ def update_progress() -> dict[str, object]:
             "mapleland_similarity_score": round(float(categories.get("mapleland_similarity_score", 0.0)), 2),
             "overall_efficiency_score": round(float(categories.get("overall_efficiency_score", 0.0)), 2),
             "weakest_dimension": scores.get("weakest_dimension", "structure_pipeline_score"),
+            "active_player_bottleneck": player_experience.get("active_player_bottleneck", progress.get("active_player_bottleneck", "first_10_minutes")),
+            "overall_player_experience_floor": player_experience.get("overall_player_experience_floor", progress.get("overall_player_experience_floor", "60~62")),
+            "first_10_minutes": player_experience.get("ranges", {}).get("first_10_minutes", progress.get("first_10_minutes", "60~62")),
+            "first_hour_retention": player_experience.get("ranges", {}).get("first_hour_retention", progress.get("first_hour_retention", "60~62")),
+            "day1_return_intent": player_experience.get("ranges", {}).get("day1_return_intent", progress.get("day1_return_intent", "60~62")),
             "last_run_added": max(0, counts["design_nodes_count"] - previous_design_nodes),
             "last_status": "complete" if scores.get("all_thresholds_met") else f"repairing_{scores.get('weakest_dimension', 'structure_pipeline_score')}",
         }
     )
     progress["project_complete"] = bool(scores.get("all_thresholds_met"))
+    progress["all_targets_met"] = progress["project_complete"]
     write_json_if_changed(PROGRESS_PATH, progress)
     return progress

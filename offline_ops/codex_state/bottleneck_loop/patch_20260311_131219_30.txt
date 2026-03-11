@@ -1,0 +1,30 @@
+1. Changed files
+
+[data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv)
+
+2. Exact summary of changes
+
+Raised `early_02` `ellinia_lower_canopy` `throughput_bias` from `0.95` to `1.06`.
+Left `reward_bias` at `1.05`.
+Did not change `perion_rockfall_edge`, `lith_harbor_coast_road`, runtime files, or any non-listed file.
+
+3. Verification performed
+
+Checked `offline_ops/codex_state/simulation_runs/early02_rebalance_candidates.json` and confirmed the guard was not exhausted: recommendation is `use_best_candidate`, not `same-band early_02 rebalance exhausted`.
+Recomputed `early_02` spread floors from the edited CSV:
+- throughput spread = `1.07 - 0.95 = 0.12`
+- reward spread = `1.12 - 0.98 = 0.14`
+Confirmed `perion_rockfall_edge` still remains the top `early_02` node in the edited table:
+- `lith_harbor_coast_road`: `0.95 * 0.98 = 0.9310`
+- `ellinia_lower_canopy`: `1.06 * 1.05 = 1.1130`
+- `perion_rockfall_edge`: `1.07 * 1.12 = 1.1984`
+Confirmed `perion_rockfall_edge reward_bias` remains `1.12`.
+
+4. Unresolved risks
+
+I did not rerun the offline economy scoring/simulation loop, so `economy_coherence` improvement beyond the current `82~85` estimate is not newly validated in this turn.
+The repo’s offline candidate report uses a pressure model that is not identical to raw `throughput_bias * reward_bias`, so final pressure-gap confirmation still depends on the normal offline pass.
+
+5. Recommended next bottleneck
+
+`economy_coherence` again, but only after rerunning the offline pass to confirm this `ellinia_lower_canopy` uplift actually clears the `early_02` pressure gap enough; if it does not, the next cycle should pivot based on the refreshed map-scoped recommendation rather than broadening scope.

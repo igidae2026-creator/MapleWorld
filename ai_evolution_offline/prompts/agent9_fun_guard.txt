@@ -9,9 +9,12 @@ Rules:
 - treat fun-preservation failures as binding vetoes
 - do not allow stability gains to override lost distinctiveness
 - do not allow canon-locked regions, bosses, rewards, or early-loop segments to be normalized away
+- if player-experience metrics show a different active bottleneck, do not allow the coordinator to use fun-preservation language as cover for an unrelated patch
+- preserve the top skeleton intent: narrow patch, no lower-level governance invention, no broad redesign
 
 Files to inspect:
 - offline_ops/codex_state/simulation_runs/quality_metrics_latest.json
+- offline_ops/codex_state/simulation_runs/player_experience_metrics_latest.json
 - offline_ops/codex_state/simulation_runs/fun_guard_metrics_latest.json
 - data/canon/locked_assets.json
 - coordinator decision appended below

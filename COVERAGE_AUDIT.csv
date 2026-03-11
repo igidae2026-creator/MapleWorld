@@ -1,0 +1,22 @@
+audit_id,target,owner,status,notes
+A0001,Top-level objective exists,GOAL.md,covered,Goal authority anchored at repository root
+A0002,Highest invariants exist,METAOS_CONSTITUTION.md,covered,MSW-only no-backend server-authoritative invariants present
+A0003,Player-experience floor defined,QUALITY_GATES.md,covered,First-10 first-hour day1 gates defined
+A0004,Player bottleneck machine output,metrics_engine/player_experience_metrics.py,covered,Active bottleneck emitted to machine-readable JSON
+A0005,Autonomous execution entrypoint,auto_continue.sh,covered,Root entrypoint delegates to bottleneck loop
+A0006,Structural progress tracking,offline_ops/codex_state/progress.json,covered,Design progress is separated from architecture progress and includes player bottleneck summary
+A0007,Patch governance ordering,CHECKLIST_METHOD_패치.md,covered,Top-first patch sequence defined
+A0008,Conflict tracking,CONFLICT_LOG.csv,covered,Initial conflict register created
+A0009,Layer-to-repo mapping,CHECKLIST_LAYER3_REPO매핑.md,covered,Canonical files mapped
+A0010,Audit enforcement by code,python validators,covered,Top skeleton plus governance coverage/conflict audit are enforced by dedicated Python validators and status reports
+A0018,Governance coverage status artifact,scripts/run_coverage_conflict_audit.py,covered,A1 and A2 now emit machine-readable governance status and append-only history under offline_ops/codex_state/governance
+A0011,Constitution-to-layer linkage,METAOS_CONSTITUTION.md,covered,Constitution now explicitly defines Layer1 Layer2 Layer3 and patch protocol relationship
+A0012,Artifact competence floor,METAOS_CONSTITUTION.md,covered,Constitution now requires usable quality floor beyond structural validity
+A0013,Quality gradient enforcement,METAOS_CONSTITUTION.md,covered,Constitution now requires repeated-iteration quality improvement and repair when progress stalls
+A0014,Outer autonomy target,GOAL.md,covered,Goal now explicitly targets 24-hour high-quality autonomy with minimal human quality lift
+A0015,Outer-autonomy law,METAOS_CONSTITUTION.md,covered,Constitution now requires screening and promotion of new external materials beyond already-included scope
+A0016,Autonomy core architecture,EXECUTION_LOOP.md,covered,Execution loop now defines event log typed snapshots job queue supervisor plus policy as the preferred core
+A0017,Autonomy stack operating model,AUTONOMY_STACK.md,covered,Repository now contains a dedicated autonomy-stack design for supervisor queue snapshot and policy layering
+A0019,Universal final-threshold bundle,UNIVERSAL_FINAL_THRESHOLD_BUNDLE.md,covered,Repository now defines one bundled final-threshold evaluation shape instead of scattered local readiness claims
+A0020,Goal-to-bundle linkage,GOAL.md,covered,Top-level goal now requires bundled final-threshold judgment rather than disconnected threshold flags
+A0021,Execution-module bundle ownership,CHECKLIST_LAYER2_모듈책임.md,covered,Autonomous execution module now explicitly owns bundled threshold evaluation and repair generation

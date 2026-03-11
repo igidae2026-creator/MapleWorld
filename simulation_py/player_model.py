@@ -7,3 +7,4 @@ class PlayerState:
     mesos: int
     progression_stage: str
     play_style: str
+    archetype: str

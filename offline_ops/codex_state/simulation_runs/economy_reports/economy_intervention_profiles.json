@@ -1,0 +1,68 @@
+{
+  "active_profiles": [
+    {
+      "actions": {
+        "anti_loop_dampening": 0.94,
+        "dynamic_drop_adjustment": 0.98,
+        "scarcity_balancing": 1.02,
+        "sink_amplification": 1.1
+      },
+      "active": true,
+      "profile_id": "profile_guarded_stability",
+      "rollback_safe": true,
+      "trigger": {
+        "farming_loop_risk_max": 0.46,
+        "inflation_pressure_max": 0.14,
+        "reward_saturation_index_max": 0.72
+      }
+    }
+  ],
+  "all_profiles": [
+    {
+      "actions": {
+        "anti_loop_dampening": 0.94,
+        "dynamic_drop_adjustment": 0.98,
+        "scarcity_balancing": 1.02,
+        "sink_amplification": 1.1
+      },
+      "active": true,
+      "profile_id": "profile_guarded_stability",
+      "rollback_safe": true,
+      "trigger": {
+        "farming_loop_risk_max": 0.46,
+        "inflation_pressure_max": 0.14,
+        "reward_saturation_index_max": 0.72
+      }
+    },
+    {
+      "actions": {
+        "anti_loop_dampening": 0.88,
+        "dynamic_drop_adjustment": 0.9,
+        "scarcity_balancing": 0.95,
+        "sink_amplification": 1.35
+      },
+      "active": false,
+      "profile_id": "profile_inflation_crush",
+      "rollback_safe": true,
+      "trigger": {
+        "inflation_pressure_min": 0.15
+      }
+    },
+    {
+      "actions": {
+        "anti_loop_dampening": 0.82,
+        "dynamic_drop_adjustment": 0.86,
+        "regional_reward_redistribution": 1.18,
+        "scarcity_balancing": 0.92,
+        "sink_amplification": 1.22
+      },
+      "active": false,
+      "profile_id": "profile_hotspot_breaker",
+      "rollback_safe": true,
+      "trigger": {
+        "farming_loop_risk_min": 0.47,
+        "reward_saturation_index_min": 0.7
+      }
+    }
+  ]
+}

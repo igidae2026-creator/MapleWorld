@@ -1,0 +1,58 @@
+{
+  "domain": "world_graph_intelligence",
+  "nodes": [
+    {
+      "id": "world_graph_intelligence",
+      "layer": 1,
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.node_utilization",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.content_density",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.exploration_flow",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.path_entropy",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.travel_friction",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.dead_zone_detection",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.overcrowding_detection",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    },
+    {
+      "id": "world_graph_intelligence.bottleneck_detection",
+      "layer": 2,
+      "parent": "world_graph_intelligence",
+      "domain": "world_graph_intelligence"
+    }
+  ]
+}

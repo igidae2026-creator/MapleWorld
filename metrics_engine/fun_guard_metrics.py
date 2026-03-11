@@ -3,13 +3,29 @@ from __future__ import annotations
 import csv
 import json
 import re
+import time
 from dataclasses import dataclass
 from pathlib import Path
+
+from mvp_stability import (
+    compute_drop_ladder_metrics,
+    compute_early_progression_metrics,
+    compute_economy_drift_guard,
+    compute_exploit_scenarios,
+    compute_reward_identity_guard,
+    compute_strategy_diversity_guard,
+    load_canonical_anchors,
+    load_drop_rows,
+    validate_canonical_anchors,
+)
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 RUNS_DIR = ROOT_DIR / "offline_ops" / "codex_state" / "simulation_runs"
 OUTPUT_PATH = RUNS_DIR / "fun_guard_metrics_latest.json"
+HOTSPOT_REWARD_FLOORS = {
+    ("early_02", "perion_rockfall_edge"): 1.12,
+}
 
 
 def _clamp(value: int, floor: int = 60, ceiling: int = 95) -> int:
@@ -46,6 +62,7 @@ class FunGuardSources:
     runtime_tables_path: Path
     canon_lock_path: Path
     python_simulation_path: Path
+    canonical_anchors_path: Path
 
     @classmethod
     def default(cls) -> "FunGuardSources":
@@ -56,6 +73,7 @@ class FunGuardSources:
             runtime_tables_path=ROOT_DIR / "runtime_tables.lua",
             canon_lock_path=ROOT_DIR / "data" / "canon" / "locked_assets.json",
             python_simulation_path=RUNS_DIR / "python_simulation_latest.json",
+            canonical_anchors_path=ROOT_DIR / "data" / "canon" / "canonical_anchors.json",
         )
 
 
@@ -71,6 +89,7 @@ def _load_locked_assets(path: Path) -> dict[str, list[str]]:
         "bosses": [str(value) for value in payload.get("bosses", [])],
         "rewards": [str(value) for value in payload.get("rewards", [])],
         "early_loop_segments": [str(value) for value in payload.get("early_loop_segments", [])],
+        "anchors": [str(value) for value in payload.get("anchors", [])],
     }
 
 
@@ -144,8 +163,23 @@ def _parse_boss_groups(text: str) -> set[str]:
 
 
 def _load_map_role_distribution(path: Path) -> dict[str, dict[str, object]]:
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload = _read_json_with_retries(path)
     return dict(payload.get("world", {}).get("map_role_distribution", {}))
+
+
+def _read_json_with_retries(path: Path, attempts: int = 5, delay_seconds: float = 0.2) -> dict[str, object]:
+    last_error: json.JSONDecodeError | None = None
+    for attempt in range(attempts):
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            last_error = error
+            if attempt == attempts - 1:
+                break
+            time.sleep(delay_seconds)
+    if last_error is not None:
+        raise last_error
+    return {}
 
 
 def _score_distinctiveness(regions: list[dict[str, object]], equipment_weights: dict[str, dict[str, float]]) -> int:
@@ -232,6 +266,7 @@ def _map_role_risk_reasons(map_role_distribution: dict[str, dict[str, object]]) 
     reasons: list[str] = []
     patterns: dict[tuple[str, str, str], list[str]] = {}
     spread_floor = 0.12
+    reward_spread_floor = 0.14
     for band_id, band in sorted(map_role_distribution.items()):
         if int(band.get("population", 0)) <= 0:
             continue
@@ -250,6 +285,34 @@ def _map_role_risk_reasons(map_role_distribution: dict[str, dict[str, object]]) 
             reasons.append(
                 f"map role band {band_id} throughput spread below floor: "
                 f"{max(throughputs) - min(throughputs):.2f} < {spread_floor:.2f}"
+            )
+        reward_pressures = [
+            float(roles[role].get("reward_pressure_proxy", 0.0))
+            for role in ("safe", "alternative", "high_risk_high_reward")
+        ]
+        if (max(reward_pressures) - min(reward_pressures)) < reward_spread_floor:
+            reasons.append(
+                f"map role band {band_id} reward pressure spread below floor: "
+                f"{max(reward_pressures) - min(reward_pressures):.2f} < {reward_spread_floor:.2f}"
+            )
+        reward_identities = {
+            str(roles[role].get("reward_identity_tag", ""))
+            for role in ("safe", "alternative", "high_risk_high_reward")
+        }
+        reward_identities.discard("")
+        if len(reward_identities) <= 1:
+            reasons.append(
+                f"map role band {band_id} reward identity collapsed: "
+                f"{', '.join(sorted(reward_identities)) or 'missing identity tags'}"
+            )
+        high_risk_role = roles.get("high_risk_high_reward", {})
+        high_risk_map = str(high_risk_role.get("map_id", ""))
+        high_risk_reward = float(high_risk_role.get("reward_pressure_proxy", 0.0))
+        hotspot_floor = HOTSPOT_REWARD_FLOORS.get((band_id, high_risk_map))
+        if hotspot_floor is not None and high_risk_reward < hotspot_floor:
+            reasons.append(
+                f"map role band {band_id} hotspot reward floor broken at {high_risk_map}: "
+                f"{high_risk_reward:.2f} < {hotspot_floor:.2f}"
             )
     repeated = [bands for bands in patterns.values() if len(bands) >= 2]
     if repeated:
@@ -270,11 +333,13 @@ def validate_canon_locks(sources: FunGuardSources | None = None) -> dict[str, ob
     boss_ids = _parse_boss_groups(runtime_text)
     reward_suffixes = _parse_reward_suffixes(regional_text)
     loop_text = " ".join(str(region["loop"]).lower() for region in regions)
+    anchor_ids = set(load_canonical_anchors(active_sources.canonical_anchors_path).get("zones", {}).keys())
 
     missing_regions = [region for region in locked_assets["regions"] if region not in region_ids]
     missing_bosses = [boss for boss in locked_assets["bosses"] if boss not in boss_ids]
     missing_rewards = [reward for reward in locked_assets["rewards"] if reward not in reward_suffixes]
     missing_segments = [segment for segment in locked_assets["early_loop_segments"] if segment.lower() not in loop_text]
+    missing_anchors = [anchor for anchor in locked_assets["anchors"] if anchor not in anchor_ids]
 
     reasons = [
         reason
@@ -283,6 +348,7 @@ def validate_canon_locks(sources: FunGuardSources | None = None) -> dict[str, ob
             _missing_reason("bosses", missing_bosses),
             _missing_reason("rewards", missing_rewards),
             _missing_reason("early loop segments", missing_segments),
+            _missing_reason("anchors", missing_anchors),
         )
         if reason is not None
     ]
@@ -293,6 +359,7 @@ def validate_canon_locks(sources: FunGuardSources | None = None) -> dict[str, ob
             "bosses": missing_bosses,
             "rewards": missing_rewards,
             "early_loop_segments": missing_segments,
+            "anchors": missing_anchors,
         },
         "status": "ok" if not reasons else "reject",
         "reasons": reasons,
@@ -301,10 +368,12 @@ def validate_canon_locks(sources: FunGuardSources | None = None) -> dict[str, ob
 
 def build_fun_guard_metrics(sources: FunGuardSources | None = None) -> dict[str, object]:
     active_sources = sources or FunGuardSources.default()
-    drop_rows = _read_csv_rows(active_sources.drop_table_path)
+    raw_drop_rows = _read_csv_rows(active_sources.drop_table_path)
+    drop_rows = load_drop_rows(active_sources.drop_table_path)
     level_rows = _read_csv_rows(active_sources.level_curve_path)
     regional_text = active_sources.regional_progression_path.read_text(encoding="utf-8")
     runtime_text = active_sources.runtime_tables_path.read_text(encoding="utf-8")
+    python_data = _read_json_with_retries(active_sources.python_simulation_path)
 
     regions = _parse_regional_progression(regional_text)
     runtime_ranges = _parse_region_level_ranges(runtime_text)
@@ -313,11 +382,22 @@ def build_fun_guard_metrics(sources: FunGuardSources | None = None) -> dict[str,
     boss_ids = _parse_boss_groups(runtime_text)
     map_role_distribution = _load_map_role_distribution(active_sources.python_simulation_path)
     canon_status = validate_canon_locks(active_sources)
+    anchor_status = validate_canonical_anchors(
+        load_canonical_anchors(active_sources.canonical_anchors_path),
+        {str(region["id"]) for region in regions}.union(runtime_ranges.keys()),
+        boss_ids,
+    )
+    reward_identity_guard = compute_reward_identity_guard(drop_rows)
+    strategy_guard = compute_strategy_diversity_guard(dict(python_data.get("world", {})))
+    economy_guard = compute_economy_drift_guard(python_data, drop_rows)
+    exploit_guard = compute_exploit_scenarios(python_data, reward_identity_guard, strategy_guard, economy_guard)
+    ladder_metrics = compute_drop_ladder_metrics(drop_rows)
+    early_progression = compute_early_progression_metrics(level_rows)
 
     centers = {
         "distinctiveness": _score_distinctiveness(regions, equipment_weights),
-        "variance_health": _score_variance_health(drop_rows, level_rows),
-        "memorable_rewards": _score_memorable_rewards(drop_rows, reward_suffixes, boss_ids),
+        "variance_health": _score_variance_health(raw_drop_rows, level_rows),
+        "memorable_rewards": _score_memorable_rewards(raw_drop_rows, reward_suffixes, boss_ids),
         "early_loop_texture": _score_early_loop_texture(
             regions,
             runtime_ranges,
@@ -333,10 +413,19 @@ def build_fun_guard_metrics(sources: FunGuardSources | None = None) -> dict[str,
         "map_role_separation": 82,
     }
     reasons = list(canon_status["reasons"])
+    reasons.extend(anchor_status["reasons"])
     for key, floor in floors.items():
         if centers[key] < floor:
             reasons.append(f"{key} below floor: {centers[key]} < {floor}")
     reasons.extend(_map_role_risk_reasons(map_role_distribution))
+    if reward_identity_guard["reason"]:
+        reasons.append(str(reward_identity_guard["reason"]))
+    reasons.extend(strategy_guard["reasons"])
+    reasons.extend(economy_guard["reasons"])
+    reasons.extend(exploit_guard["reasons"])
+    reasons.extend(ladder_metrics["reasons"])
+    if early_progression["status"] != "allow":
+        reasons.extend(f"early progression issue: {issue}" for issue in early_progression["issues"])
 
     payload: dict[str, object] = {key: _range_string(value) for key, value in centers.items()}
     payload["floor_centers"] = floors
@@ -344,17 +433,34 @@ def build_fun_guard_metrics(sources: FunGuardSources | None = None) -> dict[str,
     payload["canon_lock_status"] = canon_status["status"]
     payload["canon_lock_reasons"] = canon_status["reasons"]
     payload["canon_lock_missing"] = canon_status["missing"]
+    payload["canonical_anchor_status"] = anchor_status["status"]
+    payload["canonical_anchor_reasons"] = anchor_status["reasons"]
+    payload["canonical_anchor_missing"] = anchor_status["missing"]
     payload["map_role_distribution"] = map_role_distribution
+    payload["reward_identity_diversity_guard"] = reward_identity_guard
+    payload["strategy_diversity_guard"] = strategy_guard
+    payload["economy_drift_guard"] = economy_guard
+    payload["exploit_scenario_tests"] = exploit_guard
+    payload["drop_ladder_metrics"] = ladder_metrics
+    payload["early_progression"] = early_progression
     payload["veto_rules"] = [
         "reject if variance_health center falls below 80",
         "reject if map_role_separation center falls below 82",
         "reject if memorable_rewards center falls below 82",
         "reject if early_loop_texture center falls below 80",
         "reject if distinctiveness center falls below 82",
+        "reject if reward identity entropy falls below 2.15",
+        "reject if any strategy category exceeds 68% dominance",
+        "reject if sink ratio falls below 0.75 or inflation ratio exceeds 1.20",
+        "reject if any exploit baseline scenario exceeds 0.60",
+        "reject if boss drop ladder ceiling fails to exceed field ceiling",
+        "reject if early progression develops stagnation, drought, or power-spike flags",
         "reject if any populated level band loses safe, alternative, or high_risk_high_reward map roles",
         "reject if multiple bands collapse into the same safe/alternative/high_risk_high_reward map pattern",
         "reject if any populated level band has throughput spread below 0.12 across safe, alternative, and high_risk_high_reward routes",
-        "reject if any locked region, boss, reward, or early loop segment disappears or is normalized away",
+        "reject if any populated level band has reward pressure spread below 0.14 across safe, alternative, and high_risk_high_reward routes",
+        "reject if any populated level band has fewer than two distinct reward_identity_tag values across safe, alternative, and high_risk_high_reward routes",
+        "reject if any locked region, boss, reward, early loop segment, or canonical anchor disappears or is normalized away",
     ]
     payload["patch_veto"] = "reject" if reasons else "allow"
     payload["reasons"] = reasons

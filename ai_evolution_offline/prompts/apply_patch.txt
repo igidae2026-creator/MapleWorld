@@ -19,6 +19,8 @@ Patch boundary:
 
 Rules:
 - do only this bounded improvement
+- edit only files listed under `Files`
+- treat files not listed under `Files` as read-only context, even if they appear relevant
 - do not redesign unrelated systems
 - do not expand architecture scope
 - do not preserve wrong standalone runtime ownership
@@ -26,6 +28,12 @@ Rules:
 - keep runtime gameplay-only inside MSW
 - prefer deletion/simplification over extra abstraction
 - update or add verification where needed
+- if editing `data/balance/maps/role_bands.csv`, preserve each populated band's throughput spread floor (`>= 0.12`) and reward pressure spread floor (`>= 0.14`)
+- if editing `data/balance/maps/role_bands.csv` for `economy_coherence`, keep the target map distinct enough that the high-risk/high-reward role still clearly exceeds the neighboring safe and alternative routes
+- if `early_02` already sits exactly on the spread floors, do not lower `perion_rockfall_edge`; prefer a compatible `early_02` rebalance that leaves `perion_rockfall_edge reward_bias >= 1.12`
+- if `early02_rebalance_candidates.json` says `same-band early_02 rebalance exhausted`, reject repeated `early_02` hotspot edits and leave the files unchanged so the next cycle can pivot to another map-scoped pressure node
+- if the chosen bottleneck is the post-`early_02` pivot, apply only the named next map-scoped node; reject generic all-band or all-high-risk smoothing inside `role_bands.csv`
+- if `next_map_rebalance_candidates.json` says `use_best_candidate`, apply only the exact map and biases from that report; do not widen into drops, bosses, runtime, or test-only patches
 
 Required output:
 1. changed files

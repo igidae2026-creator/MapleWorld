@@ -1,0 +1,23 @@
+{
+  "domain": "external_material_autonomy",
+  "nodes": [
+    {
+      "domain": "external_material_autonomy",
+      "id": "external_material_autonomy",
+      "layer": 1
+    },
+    {
+      "authority_fit": "top",
+      "domain": "external_material_autonomy",
+      "id": "external_material_autonomy.GOAL_md.4b26ac98df05",
+      "layer": 2,
+      "material_path": "GOAL.md",
+      "parent": "external_material_autonomy",
+      "promotion_state": "promoted",
+      "reason": "matches top-authority surface",
+      "scope_fit": "governance",
+      "source_job_type": "classify_external_material",
+      "upgrade_value": "high"
+    }
+  ]
+}

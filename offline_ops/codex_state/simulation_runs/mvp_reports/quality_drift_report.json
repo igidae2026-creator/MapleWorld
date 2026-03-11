@@ -1,0 +1,11 @@
+{
+  "economy_runaway_detected": false,
+  "iterations": 300,
+  "max_negative_drift": 0,
+  "max_positive_drift": 0,
+  "quality_center_end": 90,
+  "quality_center_start": 90,
+  "reward_flattening_detected": false,
+  "stable": true,
+  "strategy_monopoly_detected": false
+}

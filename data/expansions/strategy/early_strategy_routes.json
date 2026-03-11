@@ -1,0 +1,35 @@
+{
+  "pack_id": "early_strategy_routes_v1",
+  "scope": "level_1_30",
+  "archetypes": [
+    {
+      "archetype": "vanguard",
+      "class_group": ["warrior", "brawler"],
+      "preferred_routes": ["frontline_attrition", "elite_chain", "boss_entry"],
+      "route_weights": {"frontline_attrition": 0.44, "elite_chain": 0.33, "boss_entry": 0.23}
+    },
+    {
+      "archetype": "ranger",
+      "class_group": ["archer", "gunslinger"],
+      "preferred_routes": ["kiting_loop", "mobility_chain", "precision_burst"],
+      "route_weights": {"kiting_loop": 0.41, "mobility_chain": 0.35, "precision_burst": 0.24}
+    },
+    {
+      "archetype": "arcanist",
+      "class_group": ["mage", "support"],
+      "preferred_routes": ["control_rotation", "aoe_setup", "resource_loop"],
+      "route_weights": {"control_rotation": 0.39, "aoe_setup": 0.36, "resource_loop": 0.25}
+    },
+    {
+      "archetype": "shadow",
+      "class_group": ["thief", "assassin"],
+      "preferred_routes": ["burst_reset", "trap_route", "objective_chain"],
+      "route_weights": {"burst_reset": 0.43, "trap_route": 0.31, "objective_chain": 0.26}
+    }
+  ],
+  "anti_monopoly": {
+    "max_single_route_share": 0.47,
+    "min_route_entropy": 1.78,
+    "min_archetype_expression_score": 0.68
+  }
+}

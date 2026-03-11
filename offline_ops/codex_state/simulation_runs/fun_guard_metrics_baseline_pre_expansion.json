@@ -1,0 +1,372 @@
+{
+  "canon_lock_missing": {
+    "anchors": [],
+    "bosses": [],
+    "early_loop_segments": [],
+    "regions": [],
+    "rewards": []
+  },
+  "canon_lock_reasons": [],
+  "canon_lock_status": "ok",
+  "canonical_anchor_missing": [],
+  "canonical_anchor_reasons": [],
+  "canonical_anchor_status": "ok",
+  "centers": {
+    "distinctiveness": 94,
+    "early_loop_texture": 95,
+    "map_role_separation": 91,
+    "memorable_rewards": 95,
+    "variance_health": 94
+  },
+  "distinctiveness": "93~95",
+  "drop_ladder_metrics": {
+    "boss_average_tier": 4.3121,
+    "boss_distribution": {
+      "tier4": 0.6879285532887497,
+      "tier5": 0.3120714467112503
+    },
+    "distribution": {
+      "tier0": 0.4084235381718151,
+      "tier1": 0.2678251905413687,
+      "tier2": 0.24640164097254927,
+      "tier3": 0.06861327501008267,
+      "tier4": 0.007832805701051184,
+      "tier5": 0.0009035496031330242
+    },
+    "drop_excitement_score": "90~93",
+    "early_low_tier_share": 0.9253,
+    "field_average_tier": 0.9927,
+    "field_distribution": {
+      "tier0": 0.40960949253682183,
+      "tier1": 0.26860288434227714,
+      "tier2": 0.24711712642905417,
+      "tier3": 0.0688125098861132,
+      "tier4": 0.005857986805733681
+    },
+    "ladder_schema": {
+      "tier0": "junk",
+      "tier1": "useful",
+      "tier2": "progression",
+      "tier3": "rare",
+      "tier4": "chase",
+      "tier5": "mythic"
+    },
+    "mythic_share": 0.0009,
+    "reasons": [],
+    "status": "allow"
+  },
+  "early_loop_texture": "94~95",
+  "early_progression": {
+    "bands": [
+      {
+        "band": "1-10",
+        "combat_pacing": "fast_intro",
+        "drop_tier_limit": "tier1",
+        "exp_delta_average": 58.22,
+        "exp_delta_span": 138,
+        "flags": [],
+        "levels_per_hour": 4.1,
+        "minutes_to_clear_band": 146.3,
+        "reward_cadence_per_hour": 5.2
+      },
+      {
+        "band": "11-20",
+        "combat_pacing": "steady_rotation",
+        "drop_tier_limit": "tier2",
+        "exp_delta_average": 274.56,
+        "exp_delta_span": 423,
+        "flags": [],
+        "levels_per_hour": 3.0,
+        "minutes_to_clear_band": 200.0,
+        "reward_cadence_per_hour": 4.3
+      },
+      {
+        "band": "21-30",
+        "combat_pacing": "party_ready",
+        "drop_tier_limit": "tier2",
+        "exp_delta_average": 597.78,
+        "exp_delta_span": 575,
+        "flags": [],
+        "levels_per_hour": 2.3,
+        "minutes_to_clear_band": 260.9,
+        "reward_cadence_per_hour": 3.6
+      }
+    ],
+    "early_progression_metric": "85~88",
+    "issues": [],
+    "level_pacing_graph": "1-10:#### | 11-20:### | 21-30:##",
+    "progression_estimate_minutes": 607.2,
+    "reward_density": 4.37,
+    "starter_anchors": [
+      "starter_town",
+      "first_hunting_map",
+      "first_dungeon",
+      "first_boss"
+    ],
+    "status": "allow"
+  },
+  "economy_drift_guard": {
+    "inflation_ratio": 0.1093,
+    "item_generation": 816.2268,
+    "mesos_generation": 22330,
+    "rare_generation_share": 0.0423,
+    "reasons": [],
+    "score": "63~66",
+    "sink_ratio": 9.1483,
+    "status": "allow"
+  },
+  "exploit_scenario_tests": {
+    "max_score": 0.5319,
+    "reasons": [],
+    "scenarios": {
+      "infinite_farming_loops": 0.0009,
+      "progression_skipping": 0.5319,
+      "reward_abuse_loops": 0.0
+    },
+    "status": "allow",
+    "threshold": 0.6
+  },
+  "floor_centers": {
+    "distinctiveness": 82,
+    "early_loop_texture": 80,
+    "map_role_separation": 82,
+    "memorable_rewards": 82,
+    "variance_health": 80
+  },
+  "map_role_distribution": {
+    "early_01": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 15,
+        "min": 1
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "henesys_hunting_ground",
+          "reward_identity_tag": "vendor_loot",
+          "reward_pressure_proxy": 1.11,
+          "throughput_proxy": 1.08
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "starter_fields_boss_lane",
+          "reward_identity_tag": "rare_excitement",
+          "reward_pressure_proxy": 1.24,
+          "throughput_proxy": 1.18
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "starter_fields_town_approach",
+          "reward_identity_tag": "consumable_farming",
+          "reward_pressure_proxy": 1.0,
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "early_02": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 30,
+        "min": 16
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "ellinia_lower_canopy",
+          "reward_identity_tag": "gear_upgrade",
+          "reward_pressure_proxy": 1.12,
+          "throughput_proxy": 1.09
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "perion_rockfall_edge",
+          "reward_identity_tag": "rare_excitement",
+          "reward_pressure_proxy": 1.26,
+          "throughput_proxy": 1.2
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "lith_harbor_coast_road",
+          "reward_identity_tag": "consumable_farming",
+          "reward_pressure_proxy": 1.0,
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "late_01": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 95,
+        "min": 71
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "minar_lower_trail",
+          "reward_identity_tag": "rare_excitement",
+          "reward_pressure_proxy": 1.15,
+          "throughput_proxy": 1.11
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "ancient_hidden_domains_rift",
+          "reward_identity_tag": "jackpot_drop",
+          "reward_pressure_proxy": 1.31,
+          "throughput_proxy": 1.24
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "elnath_snowfield_patrol",
+          "reward_identity_tag": "gear_upgrade",
+          "reward_pressure_proxy": 1.0,
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "mid_01": {
+      "population": 2,
+      "recommended_levels": {
+        "max": 50,
+        "min": 31
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "coastal_harbors_docks",
+          "reward_identity_tag": "gear_upgrade",
+          "reward_pressure_proxy": 1.13,
+          "throughput_proxy": 1.1
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "sleepywood_sinkhole",
+          "reward_identity_tag": "jackpot_drop",
+          "reward_pressure_proxy": 1.28,
+          "throughput_proxy": 1.22
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "kerning_backstreet",
+          "reward_identity_tag": "vendor_loot",
+          "reward_pressure_proxy": 1.0,
+          "throughput_proxy": 1.0
+        }
+      }
+    },
+    "mid_02": {
+      "population": 1,
+      "recommended_levels": {
+        "max": 70,
+        "min": 51
+      },
+      "roles": {
+        "alternative": {
+          "efficiency_profile": "route_flex",
+          "map_id": "orbis_cloud_bridge",
+          "reward_identity_tag": "gear_upgrade",
+          "reward_pressure_proxy": 1.14,
+          "throughput_proxy": 1.1
+        },
+        "high_risk_high_reward": {
+          "efficiency_profile": "burst_reward",
+          "map_id": "dungeon_black_gate",
+          "reward_identity_tag": "jackpot_drop",
+          "reward_pressure_proxy": 1.29,
+          "throughput_proxy": 1.21
+        },
+        "safe": {
+          "efficiency_profile": "stable_grind",
+          "map_id": "ludibrium_outer_walk",
+          "reward_identity_tag": "vendor_loot",
+          "reward_pressure_proxy": 1.0,
+          "throughput_proxy": 1.0
+        }
+      }
+    }
+  },
+  "map_role_separation": "90~93",
+  "memorable_rewards": "94~95",
+  "patch_veto": "allow",
+  "reasons": [],
+  "reward_identity_diversity_guard": {
+    "distribution": {
+      "collection": 0.042221857027889206,
+      "cosmetic": 0.000957348365614429,
+      "craft": 0.2551422854719199,
+      "currency": 0.16997443272023577,
+      "equipment": 0.2651347622235629,
+      "rare": 0.04223509225875023,
+      "utility": 0.22433422193202754
+    },
+    "entropy": 2.3241,
+    "normalized_entropy": 0.8278,
+    "reason": null,
+    "score": "90~93",
+    "status": "allow",
+    "threshold": 2.15
+  },
+  "strategy_diversity_guard": {
+    "categories": {
+      "map_farming": {
+        "distribution": {
+          "alt_route": 0.3533,
+          "contested_lane": 0.3033,
+          "safe_loop": 0.3433
+        },
+        "dominant_share": 0.3533,
+        "dominant_strategy": "alt_route",
+        "entropy": 1.5819,
+        "normalized_entropy": 0.9981
+      },
+      "mob_combat": {
+        "distribution": {
+          "burst_window": 0.3433,
+          "objective_chain": 0.3133,
+          "party_pull": 0.1133,
+          "steady_grind": 0.23
+        },
+        "dominant_share": 0.3433,
+        "dominant_strategy": "burst_window",
+        "entropy": 1.8977,
+        "normalized_entropy": 0.9489
+      },
+      "skill_usage": {
+        "distribution": {
+          "aoe_cycle": 0.33,
+          "buff_window": 0.11,
+          "single_target": 0.35,
+          "utility_cast": 0.21
+        },
+        "dominant_share": 0.35,
+        "dominant_strategy": "single_target",
+        "entropy": 1.881,
+        "normalized_entropy": 0.9405
+      }
+    },
+    "dominance_threshold": 0.68,
+    "reasons": [],
+    "score": "91~94",
+    "status": "allow"
+  },
+  "variance_health": "93~95",
+  "veto_rules": [
+    "reject if variance_health center falls below 80",
+    "reject if map_role_separation center falls below 82",
+    "reject if memorable_rewards center falls below 82",
+    "reject if early_loop_texture center falls below 80",
+    "reject if distinctiveness center falls below 82",
+    "reject if reward identity entropy falls below 2.15",
+    "reject if any strategy category exceeds 68% dominance",
+    "reject if sink ratio falls below 0.75 or inflation ratio exceeds 1.20",
+    "reject if any exploit baseline scenario exceeds 0.60",
+    "reject if boss drop ladder ceiling fails to exceed field ceiling",
+    "reject if early progression develops stagnation, drought, or power-spike flags",
+    "reject if any populated level band loses safe, alternative, or high_risk_high_reward map roles",
+    "reject if multiple bands collapse into the same safe/alternative/high_risk_high_reward map pattern",
+    "reject if any populated level band has throughput spread below 0.12 across safe, alternative, and high_risk_high_reward routes",
+    "reject if any populated level band has reward pressure spread below 0.14 across safe, alternative, and high_risk_high_reward routes",
+    "reject if any populated level band has fewer than two distinct reward_identity_tag values across safe, alternative, and high_risk_high_reward routes",
+    "reject if any locked region, boss, reward, early loop segment, or canonical anchor disappears or is normalized away"
+  ]
+}

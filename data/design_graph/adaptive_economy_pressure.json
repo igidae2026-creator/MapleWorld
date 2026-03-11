@@ -1,0 +1,82 @@
+{
+  "domain": "adaptive_economy_pressure",
+  "nodes": [
+    {
+      "id": "adaptive_economy_pressure",
+      "layer": 1,
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.economy_flow_model",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.sink_source_tracking",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.drop_pressure",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.inflation_pressure",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.reward_scarcity_index",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.item_desirability_gradient",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.dynamic_drop_adjustments",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.sink_amplification",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.scarcity_balancing",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.inflation_spike_detection",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.farming_loop_detection",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    },
+    {
+      "id": "adaptive_economy_pressure.reward_saturation_detection",
+      "layer": 2,
+      "parent": "adaptive_economy_pressure",
+      "domain": "adaptive_economy_pressure"
+    }
+  ]
+}

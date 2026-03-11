@@ -15,6 +15,7 @@ Shared evaluation context:
 - Project: MapleWorld
 - Platform: MapleStory Worlds
 - Goal: efficiency point ~= 88
+- Governance authority: top skeleton first (`GOAL`, `METAOS_CONSTITUTION`, L0-L5, A1, A2)
 - Use range scoring, not fake precision
 - Choose one bottleneck per cycle
 - Prefer the smallest safe improvement with highest leverage
@@ -25,6 +26,7 @@ Your task:
 - compare the available proposed bottlenecks
 - choose exactly one bottleneck for the next cycle
 - choose the bottleneck that most limits the overall efficiency point (~88)
+- if player-experience metrics provide an `active_player_bottleneck`, treat it as the default bottleneck unless another choice is clearly higher leverage and you explain why
 - prefer the smallest safe improvement with highest leverage
 - reject broad redesign if a smaller bottleneck-first fix is available
 
@@ -43,19 +45,34 @@ Rules:
 - keep patch scope file-bounded and small
 - do not repeat the same bottleneck if the current efficiency estimate has not changed from the prior successful cycle
 - prefer the narrowest valid bottleneck that can be patched safely in one cycle
+- `FILES` must list only files intended to be edited by the next patch
+- do not list read-only evidence, simulation outputs, reports, or validation artifacts under `FILES`
+- keep evidence references inside `WHY_THIS_ONE`, `PATCH_BOUNDARY`, or `SUCCESS_CHECK`
+- top skeleton files are authority, not background context
+- do not invent governance below the top skeleton
+- if coverage or conflict records imply a safer narrower patch, prefer that narrower patch
 - prefer distinctive local variance, memorable anomalies, and canon-preserving route identity over generic smoothing
 - any decision that would trigger the fun guard veto is invalid even if stability metrics improve
 - before any patch is applied, the decision must survive all three guard layers: fun guard veto, canon lock, and variance guard
 - reject any patch that improves stability while reducing gameplay variance, rare reward structure, early-loop texture, or map-role separation
 - reject any patch that alters locked regions, bosses, rare drops, or early-loop segments into normalized equivalents
+- if the chosen file is `data/balance/maps/role_bands.csv`, preserve every populated band's throughput spread floor (`>= 0.12`) and reward pressure spread floor (`>= 0.14`) after the patch
+- for `early_02`, do not lower `perion_rockfall_edge` so far that it stops being the clearly distinct high-risk/high-reward lane above `ellinia_lower_canopy` and `lith_harbor_coast_road`
+- if `early_02` is already exactly at the throughput spread floor (`0.12`) and reward pressure spread floor (`0.14`), reject any one-map `perion_rockfall_edge` reduction as infeasible; instead prefer a compatible `early_02` rebalance that preserves `perion_rockfall_edge reward_bias >= 1.12`
+- if `early02_rebalance_candidates.json` says `same-band early_02 rebalance exhausted`, do not choose another `early_02` / `perion_rockfall_edge` / `ellinia_lower_canopy` / `lith_harbor_coast_road` edit in `role_bands.csv`; pivot to the next map-scoped pressure node instead
+- when pivoting after `early_02` exhaustion, name the exact next target map from the pressure report in `CHOSEN_BOTTLENECK` and `NEXT_PATCH_OBJECTIVE`; reject generic `all high_risk_high_reward rows` smoothing
+- if `next_map_rebalance_candidates.json` says `use_best_candidate`, keep the patch inside `data/balance/maps/role_bands.csv` and use the exact candidate map/biases from that report before inventing a wider patch surface
 
 Output format:
 
 CURRENT_EFFICIENCY_ESTIMATE:
 [range]
 
+BOTTLENECK_KEY:
+[exactly one of: first_10_minutes, first_hour_retention, day1_return_intent, economy_coherence, route_variance, social_density, authority_safety]
+
 CHOSEN_BOTTLENECK:
-[one sentence]
+[one sentence aligned with the top skeleton and player bottleneck signals]
 
 WHY_THIS_ONE:
 [short]
@@ -64,7 +81,7 @@ NEXT_PATCH_OBJECTIVE:
 [short]
 
 FILES:
-[list]
+[list of patch-target files only; no read-only metrics or reports]
 
 PATCH_BOUNDARY:
 [short]

@@ -1,0 +1,34 @@
+{
+  "zones": {
+    "starter_town": {
+      "anchor_zone": true,
+      "kind": "abstract",
+      "zone_identity": "social_reset_vendor_training"
+    },
+    "henesys": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "starter_town"
+    },
+    "starter_fields_town_approach": {
+      "anchor_zone": true,
+      "kind": "map",
+      "zone_identity": "early_field"
+    },
+    "lith_harbor": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "first_hunting_map"
+    },
+    "sleepywood": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "first_dungeon"
+    },
+    "mano": {
+      "anchor_zone": true,
+      "kind": "boss",
+      "zone_identity": "signature_early_boss"
+    }
+  }
+}

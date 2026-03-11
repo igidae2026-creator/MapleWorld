@@ -1,0 +1,119 @@
+{
+  "cycle": 819,
+  "consumers": [
+    "research_note",
+    "analytics_dash",
+    "code_patch",
+    "web_novel",
+    "ops_runbook",
+    "incident_postmortem",
+    "release_notes"
+  ],
+  "autonomous_health": {
+    "initial_accept_rate": 1.0,
+    "final_accept_rate": 1.0,
+    "best_accept_rate": 1.0,
+    "worst_accept_rate": 1.0,
+    "mean_accept_rate": 1.0,
+    "mean_repair_success_rate": 0.0
+  },
+  "autonomous_loop_stats": {
+    "generated": 7,
+    "selected": 7,
+    "executed": 7,
+    "accepted": 7,
+    "failed": 0,
+    "mean_accept_rate": 1.0,
+    "top_failure_reasons": []
+  },
+  "control_state": {
+    "global": {
+      "rollout_state": "open",
+      "migration_state": "idle"
+    },
+    "consumers": {}
+  },
+  "verdict_distribution": {
+    "promote": 7
+  },
+  "seed_bank_consumers": [
+    "analytics_dash",
+    "code_patch",
+    "incident_postmortem",
+    "ops_runbook",
+    "release_notes",
+    "research_note",
+    "web_novel"
+  ],
+  "human_lift": {
+    "per_consumer": [
+      {
+        "project_type": "research_note",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.9365,
+        "human_composite": 0.9251,
+        "quality_lift": 0.0
+      },
+      {
+        "project_type": "analytics_dash",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.896,
+        "human_composite": 0.9041,
+        "quality_lift": 0.0081
+      },
+      {
+        "project_type": "code_patch",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.903,
+        "human_composite": 0.9095,
+        "quality_lift": 0.0065
+      },
+      {
+        "project_type": "web_novel",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.856,
+        "human_composite": 0.8625,
+        "quality_lift": 0.0065
+      },
+      {
+        "project_type": "ops_runbook",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.904,
+        "human_composite": 0.9105,
+        "quality_lift": 0.0065
+      },
+      {
+        "project_type": "incident_postmortem",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.8985,
+        "human_composite": 0.9061,
+        "quality_lift": 0.0076
+      },
+      {
+        "project_type": "release_notes",
+        "autonomous_accept_rate": 1.0,
+        "human_accept_rate": 1.0,
+        "autonomous_composite": 0.904,
+        "human_composite": 0.9105,
+        "quality_lift": 0.0065
+      }
+    ],
+    "mean_quality_lift": 0.006,
+    "max_quality_lift": 0.0081
+  },
+  "threshold_progress": {
+    "flow_score": 1.0,
+    "gate_score": 1.0,
+    "stability_score": 1.0,
+    "human_lift_score": 0.719,
+    "steady_state_cycles": 6,
+    "threshold_progress_pct": 100.0,
+    "threshold_reached": true
+  }
+}

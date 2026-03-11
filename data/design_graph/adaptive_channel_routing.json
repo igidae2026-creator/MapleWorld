@@ -1,0 +1,70 @@
+{
+  "domain": "adaptive_channel_routing",
+  "nodes": [
+    {
+      "id": "adaptive_channel_routing",
+      "layer": 1,
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.node_concurrency",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.hotspot_score",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.channel_pressure",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.spawn_pressure",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.soft_rerouting_policy",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.spawn_redistribution_policy",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.dynamic_channel_balancing_policy",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.overcrowding_detection",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.hotspot_detection",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    },
+    {
+      "id": "adaptive_channel_routing.exploration_stagnation_detection",
+      "layer": 2,
+      "parent": "adaptive_channel_routing",
+      "domain": "adaptive_channel_routing"
+    }
+  ]
+}

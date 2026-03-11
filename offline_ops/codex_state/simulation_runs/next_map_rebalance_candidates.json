@@ -1,0 +1,247 @@
+{
+  "baseline": {
+    "alternative_biases": {
+      "map_id": "orbis_cloud_bridge",
+      "reward_bias": 1.14,
+      "throughput_bias": 1.1
+    },
+    "band_id": "mid_02",
+    "band_spreads": {
+      "reward_spread": 0.29,
+      "throughput_spread": 0.21
+    },
+    "current_biases": {
+      "reward_bias": 1.29,
+      "throughput_bias": 1.21
+    },
+    "economy_coherence": "82~85",
+    "economy_coherence_center": 83,
+    "target_pressure": 0.3355
+  },
+  "best_candidate": {
+    "alternative_map": "orbis_cloud_bridge",
+    "alternative_reward_bias": 1.16,
+    "alternative_throughput_bias": 1.1,
+    "band_id": "mid_02",
+    "band_spreads": {
+      "reward_spread": 0.29,
+      "throughput_spread": 0.18
+    },
+    "distance_from_baseline": 0.05,
+    "economy_coherence": "82~85",
+    "economy_coherence_center": 83,
+    "reward_bias": 1.29,
+    "target_map": "dungeon_black_gate",
+    "target_pressure": 0.3322,
+    "throughput_bias": 1.18
+  },
+  "candidate_count": 189,
+  "candidates": [
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.1,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.29,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.05,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.29,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.11,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.29,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.06,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.29,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.12,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.29,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.07,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.29,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.1,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.28,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.06,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.28,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.11,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.28,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.07,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.28,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.12,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.28,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.08,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.28,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.1,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.27,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.07,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.27,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.11,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.27,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.08,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.27,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.12,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.27,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.09,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.27,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.1,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.26,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.08,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.26,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.11,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.26,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.09,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.26,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward_bias": 1.16,
+      "alternative_throughput_bias": 1.12,
+      "band_id": "mid_02",
+      "band_spreads": {
+        "reward_spread": 0.26,
+        "throughput_spread": 0.18
+      },
+      "distance_from_baseline": 0.1,
+      "economy_coherence": "82~85",
+      "economy_coherence_center": 83,
+      "reward_bias": 1.26,
+      "target_map": "dungeon_black_gate",
+      "target_pressure": 0.3322,
+      "throughput_bias": 1.18
+    }
+  ],
+  "recommendation": "use_best_candidate",
+  "target_map": "dungeon_black_gate"
+}

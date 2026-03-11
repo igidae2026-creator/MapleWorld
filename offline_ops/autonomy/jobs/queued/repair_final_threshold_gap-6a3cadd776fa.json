@@ -1,0 +1,13 @@
+{
+  "attempts": 0,
+  "created_at": "2026-03-11T04:58:45.819014+00:00",
+  "job_id": "repair_final_threshold_gap-6a3cadd776fa",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "closed_loop_completion",
+    "repair_action": "repair loop closure, state logging, or next-task continuation"
+  },
+  "priority": 30,
+  "status": "queued",
+  "updated_at": "2026-03-11T04:58:45.819065+00:00"
+}

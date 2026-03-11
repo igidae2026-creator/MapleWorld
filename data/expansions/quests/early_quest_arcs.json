@@ -1,0 +1,113 @@
+{
+  "pack_id": "early_quest_arcs_v1",
+  "scope": "level_1_30",
+  "arcs": [
+    {
+      "arc_id": "arc_onboarding_1_10",
+      "level_band": {"min": 1, "max": 10},
+      "stage": "onboarding",
+      "quests": [
+        {
+          "quest_id": "q_henesys_scout_lines",
+          "pattern": "route_scout",
+          "target_region": "henesys_bloom_fields",
+          "objective_mix": {"kill": 0.32, "delivery": 0.20, "interaction": 0.48},
+          "estimated_minutes": 9,
+          "reward_density": 1.25,
+          "reward_bundle": {"mesos": 320, "exp_scale": 1.0, "identity_tags": ["starter consumables", "vendor loop materials"]}
+        },
+        {
+          "quest_id": "q_tidewalk_supply_chain",
+          "pattern": "delivery_loop",
+          "target_region": "lith_harbor_tidewalk",
+          "objective_mix": {"kill": 0.18, "delivery": 0.36, "interaction": 0.46},
+          "estimated_minutes": 11,
+          "reward_density": 1.18,
+          "reward_bundle": {"mesos": 360, "exp_scale": 1.02, "identity_tags": ["trade packs", "route cache vouchers"]}
+        },
+        {
+          "quest_id": "q_first_hunt_contract",
+          "pattern": "target_hunt",
+          "target_region": "henesys_bloom_fields",
+          "objective_mix": {"kill": 0.42, "delivery": 0.14, "interaction": 0.44},
+          "estimated_minutes": 10,
+          "reward_density": 1.22,
+          "reward_bundle": {"mesos": 350, "exp_scale": 1.03, "identity_tags": ["mobility token scraps", "starter consumables"]}
+        }
+      ]
+    },
+    {
+      "arc_id": "arc_commitment_11_20",
+      "level_band": {"min": 11, "max": 20},
+      "stage": "commitment",
+      "quests": [
+        {
+          "quest_id": "q_canopy_rune_repair",
+          "pattern": "interaction_chain",
+          "target_region": "ellinia_canopy_steps",
+          "objective_mix": {"kill": 0.28, "delivery": 0.16, "interaction": 0.56},
+          "estimated_minutes": 12,
+          "reward_density": 1.12,
+          "reward_bundle": {"mesos": 520, "exp_scale": 1.06, "identity_tags": ["spell components", "mp sustain kits"]}
+        },
+        {
+          "quest_id": "q_tidewalk_route_lock",
+          "pattern": "route_control",
+          "target_region": "lith_harbor_tidewalk",
+          "objective_mix": {"kill": 0.34, "delivery": 0.20, "interaction": 0.46},
+          "estimated_minutes": 13,
+          "reward_density": 1.08,
+          "reward_bundle": {"mesos": 540, "exp_scale": 1.05, "identity_tags": ["route cache vouchers", "accuracy accessories"]}
+        },
+        {
+          "quest_id": "q_quarry_pressure_test",
+          "pattern": "elite_hunt",
+          "target_region": "perion_ash_quarry",
+          "objective_mix": {"kill": 0.42, "delivery": 0.08, "interaction": 0.50},
+          "estimated_minutes": 14,
+          "reward_density": 1.10,
+          "reward_bundle": {"mesos": 580, "exp_scale": 1.07, "identity_tags": ["weapon cores", "armor plates"]}
+        }
+      ]
+    },
+    {
+      "arc_id": "arc_mastery_transition_21_30",
+      "level_band": {"min": 21, "max": 30},
+      "stage": "mastery_transition",
+      "quests": [
+        {
+          "quest_id": "q_shadow_market_entry",
+          "pattern": "infiltration_chain",
+          "target_region": "kerning_shadow_market",
+          "objective_mix": {"kill": 0.25, "delivery": 0.17, "interaction": 0.58},
+          "estimated_minutes": 15,
+          "reward_density": 0.98,
+          "reward_bundle": {"mesos": 760, "exp_scale": 1.10, "identity_tags": ["crit trinkets", "black-market writs"]}
+        },
+        {
+          "quest_id": "q_quarry_mastery_trial",
+          "pattern": "boss_prep_hunt",
+          "target_region": "perion_ash_quarry",
+          "objective_mix": {"kill": 0.38, "delivery": 0.10, "interaction": 0.52},
+          "estimated_minutes": 16,
+          "reward_density": 1.01,
+          "reward_bundle": {"mesos": 780, "exp_scale": 1.12, "identity_tags": ["weapon cores", "stamina tonics"]}
+        },
+        {
+          "quest_id": "q_canopy_focus_exam",
+          "pattern": "class_expression_trial",
+          "target_region": "ellinia_canopy_steps",
+          "objective_mix": {"kill": 0.24, "delivery": 0.10, "interaction": 0.66},
+          "estimated_minutes": 14,
+          "reward_density": 1.00,
+          "reward_bundle": {"mesos": 740, "exp_scale": 1.09, "identity_tags": ["casting staves", "mp sustain kits"]}
+        }
+      ]
+    }
+  ],
+  "pattern_caps": {
+    "max_single_pattern_share": 0.34,
+    "max_kill_fetch_combined_share": 0.58,
+    "drought_minutes_threshold": 22
+  }
+}

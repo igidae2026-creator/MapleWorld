@@ -1,0 +1,9 @@
+{
+  "payload": {
+    "last_error": null,
+    "regression_budget_remaining": 3,
+    "status": "active"
+  },
+  "snapshot_type": "system_health",
+  "updated_at": "2026-03-11T04:11:20.570390+00:00"
+}

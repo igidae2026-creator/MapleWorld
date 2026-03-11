@@ -1,0 +1,59 @@
+{
+  "pack_id": "early_chase_boss_pack_v1",
+  "scope": "level_10_30",
+  "bosses": [
+    {
+      "boss_id": "boss_tidebreaker_mano",
+      "name": "Tidebreaker Mano",
+      "region_id": "lith_harbor_tidewalk",
+      "recommended_level": 12,
+      "identity": "timed wave boss with knockback tides",
+      "chase_fantasy": "first signature accessory with movement utility",
+      "ladder_role": "tier3 gateway",
+      "field_reward_floor": 0.54,
+      "boss_reward_ceiling": 0.88,
+      "chase_items": [
+        {"item_id": "mano_foam_emblem", "drop_tier": "tier3", "desirability": 0.66, "drop_rate": 0.032},
+        {"item_id": "tidewalker_boots", "drop_tier": "tier3", "desirability": 0.82, "drop_rate": 0.022},
+        {"item_id": "saltguard_clasp", "drop_tier": "tier4", "desirability": 0.95, "drop_rate": 0.008}
+      ]
+    },
+    {
+      "boss_id": "boss_quarry_stumpy",
+      "name": "Quarry Warden Stumpy",
+      "region_id": "perion_ash_quarry",
+      "recommended_level": 22,
+      "identity": "armor-break bruiser with stagger checks",
+      "chase_fantasy": "durability set anchor for frontline classes",
+      "ladder_role": "tier4 bruiser spike",
+      "field_reward_floor": 0.57,
+      "boss_reward_ceiling": 0.92,
+      "chase_items": [
+        {"item_id": "stumpy_plate_core", "drop_tier": "tier4", "desirability": 0.68, "drop_rate": 0.024},
+        {"item_id": "quarry_ward_charm", "drop_tier": "tier4", "desirability": 0.84, "drop_rate": 0.017},
+        {"item_id": "ashen_guardian_crest", "drop_tier": "tier5", "desirability": 0.96, "drop_rate": 0.006}
+      ]
+    },
+    {
+      "boss_id": "boss_shadow_alcaster",
+      "name": "Shadow Broker Alcaster",
+      "region_id": "kerning_shadow_market",
+      "recommended_level": 29,
+      "identity": "phase-swap control fight with trap bursts",
+      "chase_fantasy": "crit/evasion hybrid trinket line",
+      "ladder_role": "tier4 precision chase",
+      "field_reward_floor": 0.60,
+      "boss_reward_ceiling": 0.95,
+      "chase_items": [
+        {"item_id": "alcaster_black_seal", "drop_tier": "tier4", "desirability": 0.70, "drop_rate": 0.022},
+        {"item_id": "nightcut_lens", "drop_tier": "tier4", "desirability": 0.86, "drop_rate": 0.015},
+        {"item_id": "shadow_market_writ", "drop_tier": "tier5", "desirability": 0.97, "drop_rate": 0.005}
+      ]
+    }
+  ],
+  "risk_caps": {
+    "max_single_item_share": 0.46,
+    "min_desirability_separation": 0.14,
+    "max_boss_to_field_flattening": 0.92
+  }
+}

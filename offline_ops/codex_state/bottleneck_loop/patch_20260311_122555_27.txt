@@ -1,0 +1,27 @@
+1. changed files
+
+- [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv)
+
+2. exact summary of changes
+
+- In `early_02`, increased `ellinia_lower_canopy` `throughput_bias` from `1.05` to `1.06`.
+- In `early_02`, increased `ellinia_lower_canopy` `reward_bias` from `1.08` to `1.09`.
+- Left `perion_rockfall_edge` unchanged at `throughput_bias=1.07` and `reward_bias=1.12` to respect the spread-floor guard and maintain the high-risk lane floor.
+- Left `lith_harbor_coast_road` unchanged.
+
+3. verification performed
+
+- Parsed [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv) with `python3` and verified:
+- `early_02` throughput spread = `0.12`
+- `early_02` reward pressure spread = `0.14`
+- `perion_rockfall_edge` reward floor remains `>= 1.12` (`1.12`)
+- `perion_rockfall_edge` remains above `ellinia_lower_canopy` and `lith_harbor_coast_road` on both throughput and reward
+
+4. unresolved risks
+
+- This is a data-only proxy for concentration relief; without a downstream simulation or live telemetry pass, the actual reduction in Perion extraction pressure is inferred rather than observed.
+- Perion’s lead over Ellinia is now narrower, so any future upward adjustment to `ellinia_lower_canopy` would risk route-identity flattening.
+
+5. recommended next bottleneck
+
+- `economy_coherence` again, but only if post-patch validation still shows concentrated extraction pressure in `early_02`; otherwise re-evaluate the next bound metric after telemetry/simulation confirms whether this local rebalance moved the gate above the current `82~85` band.

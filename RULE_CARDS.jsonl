@@ -1,0 +1,8 @@
+{"id":"R0001","layer":"L0","title":"TopSkeletonFirst","rule":"If a governance need appears, extend the top-level skeleton before creating subordinate governance artifacts.","owner":"GOAL.md","status":"active"}
+{"id":"R0002","layer":"L0","title":"NoInterimLowerSkeleton","rule":"Do not create replace-soon lightweight governance scaffolds beneath the intended top-level skeleton.","owner":"GOAL.md","status":"active"}
+{"id":"R0003","layer":"L0","title":"MSWNativeOnly","rule":"MapleWorld must remain within MapleStory Worlds-native runtime constraints and must not introduce an external backend.","owner":"AGENTS.md","status":"active"}
+{"id":"R0004","layer":"L0","title":"ServerAuthority","rule":"Gameplay mutation, reward mutation, and progression mutation must remain server-authoritative.","owner":"AGENTS.md","status":"active"}
+{"id":"R0005","layer":"L0","title":"BottleneckFirst","rule":"Autonomous work should optimize the current highest-cost player-experience bottleneck before broad feature expansion.","owner":"EXECUTION_LOOP.md","status":"active"}
+{"id":"R0006","layer":"L0","title":"PreservePlayerFeel","rule":"Structural or metric improvements must be rejected if they degrade first-session feel, route variance, or canon locks.","owner":"QUALITY_GATES.md","status":"active"}
+{"id":"R0007","layer":"L0","title":"DeterministicOfflineEvaluation","rule":"Simulation, scoring, merge, mutation, and progress updates must be deterministic and repository-local.","owner":"AGENTS.md","status":"active"}
+{"id":"R0008","layer":"L0","title":"TopLevelPatchAuthority","rule":"Governance-changing patches must first update the top-level skeleton documents and audits before relying on lower-level references.","owner":"CHECKLIST_METHOD_패치.md","status":"active"}

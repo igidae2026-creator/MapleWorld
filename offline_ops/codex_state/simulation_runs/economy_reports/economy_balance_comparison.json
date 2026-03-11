@@ -1,0 +1,27 @@
+{
+  "after": {
+    "anti_loop_economy_dampening": 0.74,
+    "currency_velocity_proxy": 0.111,
+    "drop_pressure": 1.2765,
+    "dynamic_drop_adjustments": 0.9926,
+    "economy_pressure_balance": "84~87",
+    "farming_loop_risk": 0.0,
+    "inflation_pressure": 0.0007,
+    "item_desirability_gradient": 0.1463,
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "reward_distribution_smoothing": 0.9739,
+    "reward_saturation_index": 0.2651,
+    "reward_scarcity_index": 0.8435,
+    "scarcity_balancing": 1.0582,
+    "sink_amplification": 1.0,
+    "sink_effectiveness": 1.8
+  },
+  "before": {
+    "inflation_ratio": 0.1093,
+    "progression_center": 88.5,
+    "quality_overall_center": 90.5,
+    "reward_entropy": 2.3241,
+    "sink_ratio": 9.1483
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "anchor_definitions": {
+    "zones": {
+      "henesys": {
+        "anchor_zone": true,
+        "kind": "region",
+        "zone_identity": "starter_town"
+      },
+      "lith_harbor": {
+        "anchor_zone": true,
+        "kind": "region",
+        "zone_identity": "first_hunting_map"
+      },
+      "mano": {
+        "anchor_zone": true,
+        "kind": "boss",
+        "zone_identity": "signature_early_boss"
+      },
+      "sleepywood": {
+        "anchor_zone": true,
+        "kind": "region",
+        "zone_identity": "first_dungeon"
+      },
+      "starter_fields_town_approach": {
+        "anchor_zone": true,
+        "kind": "map",
+        "zone_identity": "early_field"
+      },
+      "starter_town": {
+        "anchor_zone": true,
+        "kind": "abstract",
+        "zone_identity": "social_reset_vendor_training"
+      }
+    }
+  },
+  "anchor_status": "ok",
+  "zone_identity_profiles": {
+    "henesys": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "starter_town"
+    },
+    "lith_harbor": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "first_hunting_map"
+    },
+    "mano": {
+      "anchor_zone": true,
+      "kind": "boss",
+      "zone_identity": "signature_early_boss"
+    },
+    "sleepywood": {
+      "anchor_zone": true,
+      "kind": "region",
+      "zone_identity": "first_dungeon"
+    },
+    "starter_fields_town_approach": {
+      "anchor_zone": true,
+      "kind": "map",
+      "zone_identity": "early_field"
+    },
+    "starter_town": {
+      "anchor_zone": true,
+      "kind": "abstract",
+      "zone_identity": "social_reset_vendor_training"
+    }
+  }
+}

@@ -141,17 +141,17 @@ class FunVarianceGuardTest(unittest.TestCase):
                     "early_01": {
                         "population": 1,
                         "roles": {
-                            "safe": {"map_id": "starter_safe", "throughput_proxy": 1.00},
-                            "alternative": {"map_id": "starter_alt", "throughput_proxy": 1.04},
-                            "high_risk_high_reward": {"map_id": "starter_risk", "throughput_proxy": 1.07},
+                            "safe": {"map_id": "starter_safe", "throughput_proxy": 1.00, "reward_pressure_proxy": 1.00},
+                            "alternative": {"map_id": "starter_alt", "throughput_proxy": 1.04, "reward_pressure_proxy": 1.05},
+                            "high_risk_high_reward": {"map_id": "starter_risk", "throughput_proxy": 1.07, "reward_pressure_proxy": 1.08},
                         },
                     },
                     "early_02": {
                         "population": 1,
                         "roles": {
-                            "safe": {"map_id": "harbor_safe", "throughput_proxy": 1.00},
-                            "alternative": {"map_id": "forest_alt", "throughput_proxy": 1.03},
-                            "high_risk_high_reward": {"map_id": "cliff_risk", "throughput_proxy": 1.06},
+                            "safe": {"map_id": "harbor_safe", "throughput_proxy": 1.00, "reward_pressure_proxy": 1.00},
+                            "alternative": {"map_id": "forest_alt", "throughput_proxy": 1.03, "reward_pressure_proxy": 1.04},
+                            "high_risk_high_reward": {"map_id": "cliff_risk", "throughput_proxy": 1.06, "reward_pressure_proxy": 1.07},
                         },
                     },
                 },
@@ -165,6 +165,99 @@ class FunVarianceGuardTest(unittest.TestCase):
             self.assertEqual(payload["patch_veto"], "reject")
             self.assertTrue(
                 any("throughput spread below floor" in reason for reason in payload["reasons"])
+            )
+
+    def test_reward_pressure_collapse_is_rejected_even_when_throughput_spread_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            python_sim_path = _write_python_sim(
+                tmp_dir,
+                {
+                    "early_01": {
+                        "population": 1,
+                        "roles": {
+                            "safe": {"map_id": "starter_safe", "throughput_proxy": 1.00, "reward_pressure_proxy": 1.00, "reward_identity_tag": "consumable_farming"},
+                            "alternative": {"map_id": "starter_alt", "throughput_proxy": 1.13, "reward_pressure_proxy": 1.05, "reward_identity_tag": "vendor_loot"},
+                            "high_risk_high_reward": {"map_id": "starter_risk", "throughput_proxy": 1.25, "reward_pressure_proxy": 1.09, "reward_identity_tag": "rare_excitement"},
+                        },
+                    },
+                },
+            )
+            payload = build_fun_guard_metrics(
+                replace(
+                    FunGuardSources.default(),
+                    python_simulation_path=python_sim_path,
+                )
+            )
+            self.assertEqual(payload["patch_veto"], "reject")
+            self.assertTrue(
+                any("reward pressure spread below floor" in reason for reason in payload["reasons"])
+            )
+
+    def test_reward_identity_collapse_is_rejected_even_when_numeric_spreads_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            python_sim_path = _write_python_sim(
+                tmp_dir,
+                {
+                    "early_01": {
+                        "population": 1,
+                        "roles": {
+                            "safe": {"map_id": "starter_safe", "throughput_proxy": 1.00, "reward_pressure_proxy": 1.00, "reward_identity_tag": "vendor_loot"},
+                            "alternative": {"map_id": "starter_alt", "throughput_proxy": 1.14, "reward_pressure_proxy": 1.17, "reward_identity_tag": "vendor_loot"},
+                            "high_risk_high_reward": {"map_id": "starter_risk", "throughput_proxy": 1.27, "reward_pressure_proxy": 1.31, "reward_identity_tag": "vendor_loot"},
+                        },
+                    },
+                },
+            )
+            payload = build_fun_guard_metrics(
+                replace(
+                    FunGuardSources.default(),
+                    python_simulation_path=python_sim_path,
+                )
+            )
+            self.assertEqual(payload["patch_veto"], "reject")
+            self.assertTrue(
+                any("reward identity collapsed" in reason for reason in payload["reasons"])
+            )
+
+    def test_perion_hotspot_reward_floor_is_rejected_even_when_band_spread_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            python_sim_path = _write_python_sim(
+                tmp_dir,
+                {
+                    "early_02": {
+                        "population": 1,
+                        "roles": {
+                            "safe": {
+                                "map_id": "lith_harbor_coast_road",
+                                "throughput_proxy": 0.95,
+                                "reward_pressure_proxy": 0.97,
+                                "reward_identity_tag": "consumable_farming",
+                            },
+                            "alternative": {
+                                "map_id": "ellinia_lower_canopy",
+                                "throughput_proxy": 1.03,
+                                "reward_pressure_proxy": 1.04,
+                                "reward_identity_tag": "gear_upgrade",
+                            },
+                            "high_risk_high_reward": {
+                                "map_id": "perion_rockfall_edge",
+                                "throughput_proxy": 1.07,
+                                "reward_pressure_proxy": 1.11,
+                                "reward_identity_tag": "rare_excitement",
+                            },
+                        },
+                    },
+                },
+            )
+            payload = build_fun_guard_metrics(
+                replace(
+                    FunGuardSources.default(),
+                    python_simulation_path=python_sim_path,
+                )
+            )
+            self.assertEqual(payload["patch_veto"], "reject")
+            self.assertTrue(
+                any("hotspot reward floor broken at perion_rockfall_edge" in reason for reason in payload["reasons"])
             )
 
 

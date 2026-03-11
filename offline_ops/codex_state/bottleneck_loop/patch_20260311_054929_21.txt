@@ -1,0 +1,17 @@
+I can’t apply the patch yet because the bounded patch contract is missing from your prompt.
+
+What’s missing:
+- `Chosen bottleneck`
+- `Patch objective`
+- `Files`
+- `Patch boundary`
+- `Coordinator decision`
+
+Without `Files`, your rules reduce editable scope to nothing. I inspected the repo and found:
+- Current active player bottleneck in [`offline_ops/codex_state/progress.json`](/home/meta_os/MapleWorld/offline_ops/codex_state/progress.json): `economy_coherence`
+- Latest completed bounded patch in [`offline_ops/codex_state/bottleneck_loop/patch_20260311_054227_19.txt`](/home/meta_os/MapleWorld/offline_ops/codex_state/bottleneck_loop/patch_20260311_054227_19.txt): starter `southperry_*` drop-tier oversupply clamp
+- Latest recorded checkpoint in [`offline_ops/codex_state/bottleneck_loop/checkpoints.log`](/home/meta_os/MapleWorld/offline_ops/codex_state/bottleneck_loop/checkpoints.log): that same patch
+
+No files were changed.
+
+Send the filled block or the contents of the latest `decision.txt`, and I’ll apply exactly one bounded improvement.

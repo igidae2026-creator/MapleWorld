@@ -72,4 +72,5 @@ def run_economy(players: Iterable[object], loops: int) -> dict[str, object]:
         "total_mesos_created": total_mesos_created,
         "total_mesos_removed": total_mesos_removed,
         "net_inflation_signal": signal,
+        "sink_ratio": round(total_mesos_removed / max(1, total_mesos_created), 4),
     }

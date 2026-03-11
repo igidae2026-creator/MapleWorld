@@ -1,0 +1,7 @@
+{
+  "expansion_veto": "allow",
+  "fun_guard_veto": "allow",
+  "graph_soak_stable": true,
+  "status": "pass",
+  "world_graph_status": "allow"
+}

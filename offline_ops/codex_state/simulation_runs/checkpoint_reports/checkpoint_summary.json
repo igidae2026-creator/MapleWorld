@@ -1,0 +1,49 @@
+{
+  "artifacts": {
+    "history_jsonl": "/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/checkpoint_reports/checkpoint_history.jsonl",
+    "iterations_csv": "/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/checkpoint_reports/checkpoint_iterations.csv",
+    "status_json": "/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/checkpoint_reports/checkpoint_status_latest.json"
+  },
+  "checkpoint_status": {
+    "content_scale_out_stability": {
+      "score": 0.9352,
+      "stable": true,
+      "streak": 1
+    },
+    "economy_stability": {
+      "score": 0.9493,
+      "stable": true,
+      "streak": 1
+    },
+    "liveops_override_safety": {
+      "score": 0.85,
+      "stable": true,
+      "streak": 1
+    },
+    "meta_stability": {
+      "score": 1.0,
+      "stable": true,
+      "streak": 1
+    },
+    "player_flow_stability": {
+      "score": 0.6408,
+      "stable": true,
+      "streak": 1
+    },
+    "world_stability": {
+      "score": 1.0,
+      "stable": true,
+      "streak": 1
+    }
+  },
+  "cycles_executed": 1,
+  "finished_reason": "all_checkpoints_stable",
+  "required_streak": 1,
+  "stability_metrics": {
+    "checkpoint_pass_count": 6,
+    "checkpoint_stability_ratio": 1.0,
+    "checkpoint_total": 6,
+    "overall_stability_index": 0.8959
+  },
+  "stable_reached_at_cycle": 1
+}

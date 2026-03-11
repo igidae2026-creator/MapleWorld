@@ -1,0 +1,36 @@
+1. changed files
+
+- [data/balance/maps/role_bands.csv](/home/meta_os/MapleWorld/data/balance/maps/role_bands.csv#L7)
+
+2. exact summary of changes
+
+- Changed only the `early_02` `perion_rockfall_edge` row: `max_level` from `30` to `29`.
+- Left `role`, `efficiency_profile`, `throughput_bias`, `reward_bias`, and `reward_identity_tag` unchanged because lowering either bias field on this single row would break the hard `early_02` spread floors (`throughput` is exactly `0.12`, `reward` is exactly `0.14`).
+
+3. verification performed
+
+- Ran `lua simulation_lua/run_all.lua`
+- Ran `python3 simulation_py/run_all.py`
+- Ran `python3 metrics_engine/run_quality_eval.py`
+- Started `python3 scripts/run_economy_pressure_validation.py` but did not wait for the full soak loop to finish
+
+Post-run checks from the latest metric snapshots:
+- `map:perion_rockfall_edge` pressure: `1.2765`, below the prior cited `1.2815`
+- Top `early_02` ordering preserved: `perion_rockfall_edge 1.2765 > ellinia_lower_canopy 1.256 > lith_harbor_coast_road 1.2121`
+- `economy_pressure_balance`: `84~87`
+- `economy_coherence`: `82~85`
+- `first_10_minutes`: `88~91`
+- `first_hour_retention`: `87~90`
+- Fun guard status: `allow`
+- `early_02` throughput spread: `0.1200000000000001`
+- `early_02` reward spread: `0.14000000000000012`
+
+4. unresolved risks
+
+- The deterministic simulation population does not include a level-30 early-band player, so the `30 -> 29` trim is not materially exercised by the current replay; the observed `1.2765` result may reflect the rerun baseline rather than a measurable effect from this row edit.
+- `economy_coherence` did not move above `82~85`; the hotspot remains on `perion_rockfall_edge`.
+- The full `run_economy_pressure_validation.py` soak was started but not awaited to completion.
+
+5. recommended next bottleneck
+
+- `economy_coherence` again. The next safe improvement likely needs a widened boundary, because this single-row patch space is effectively exhausted by the `early_02` throughput and reward spread floors.

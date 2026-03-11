@@ -1,0 +1,88 @@
+{
+  "domain": "identity_expansion",
+  "nodes": [
+    {
+      "id": "identity_expansion",
+      "layer": 1,
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.starter_world_identity_pack",
+      "layer": 2,
+      "parent": "identity_expansion",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.quest_progression_scaffolding",
+      "layer": 2,
+      "parent": "identity_expansion",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.boss_chase_identity",
+      "layer": 2,
+      "parent": "identity_expansion",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.early_strategy_expression",
+      "layer": 2,
+      "parent": "identity_expansion",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.starter_world_identity_pack.region_differentiation",
+      "layer": 3,
+      "parent": "identity_expansion.starter_world_identity_pack",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.starter_world_identity_pack.route_identity_metrics",
+      "layer": 3,
+      "parent": "identity_expansion.starter_world_identity_pack",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.quest_progression_scaffolding.pattern_caps",
+      "layer": 3,
+      "parent": "identity_expansion.quest_progression_scaffolding",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.quest_progression_scaffolding.reward_density_control",
+      "layer": 3,
+      "parent": "identity_expansion.quest_progression_scaffolding",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.boss_chase_identity.desirability_separation",
+      "layer": 3,
+      "parent": "identity_expansion.boss_chase_identity",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.boss_chase_identity.field_vs_boss_clarity",
+      "layer": 3,
+      "parent": "identity_expansion.boss_chase_identity",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.early_strategy_expression.route_diversity_guard",
+      "layer": 3,
+      "parent": "identity_expansion.early_strategy_expression",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.early_strategy_expression.class_expression_guard",
+      "layer": 3,
+      "parent": "identity_expansion.early_strategy_expression",
+      "domain": "identity_expansion"
+    },
+    {
+      "id": "identity_expansion.early_strategy_expression.concentration_cap",
+      "layer": 3,
+      "parent": "identity_expansion.early_strategy_expression",
+      "domain": "identity_expansion"
+    }
+  ]
+}

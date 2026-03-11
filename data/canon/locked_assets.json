@@ -25,5 +25,13 @@
     "trade-heavy progression",
     "route onboarding",
     "mobility practice"
+  ],
+  "anchors": [
+    "starter_town",
+    "henesys",
+    "starter_fields_town_approach",
+    "lith_harbor",
+    "sleepywood",
+    "mano"
   ]
 }

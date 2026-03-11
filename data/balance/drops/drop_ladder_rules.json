@@ -1,0 +1,17 @@
+{
+  "tier_labels": {
+    "tier0": "junk",
+    "tier1": "useful",
+    "tier2": "progression",
+    "tier3": "rare",
+    "tier4": "chase",
+    "tier5": "mythic"
+  },
+  "field_caps": {
+    "early": "tier1",
+    "midgame": "tier3",
+    "endgame": "tier4"
+  },
+  "boss_floor": "tier4",
+  "mythic_share_cap": 0.02
+}

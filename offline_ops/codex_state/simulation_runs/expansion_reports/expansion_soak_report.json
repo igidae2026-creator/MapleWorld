@@ -1,0 +1,20 @@
+{
+  "artifacts": {
+    "iteration_csv": "/home/meta_os/MapleWorld/offline_ops/codex_state/simulation_runs/expansion_reports/expansion_soak_iterations.csv"
+  },
+  "failures": [],
+  "iterations": 120,
+  "metrics": {
+    "boss_desirability_max": 0.28,
+    "boss_desirability_min": 0.28,
+    "overall_quality_center_end": 90.5,
+    "overall_quality_center_start": 90.5,
+    "reward_entropy_max": 2.3241,
+    "reward_entropy_min": 2.3241,
+    "sink_ratio_max": 9.9279,
+    "sink_ratio_min": 9.9279,
+    "strategy_concentration_max": 0.25,
+    "strategy_concentration_min": 0.25
+  },
+  "stable": true
+}

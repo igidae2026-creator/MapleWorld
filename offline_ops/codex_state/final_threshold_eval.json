@@ -1,0 +1,125 @@
+{
+  "artifact": "offline_ops/codex_state/final_threshold_eval.json",
+  "blocking_evidence": [],
+  "criteria": [
+    {
+      "criterion": "closed_loop_completion",
+      "evidence": [
+        "execution=100.0",
+        "autonomy=100.0",
+        "recent_outcomes=12"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "quality_gate_fail_closed",
+      "evidence": [
+        "meta_stability=stable",
+        "recent_failure_count=10",
+        "patch_veto=allow"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "append_only_lineage_replayability",
+      "evidence": [
+        "autonomy_events=21",
+        "checkpoint_history=1",
+        "threshold_ledger_exists=True"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "msw_constraint_preservation",
+      "evidence": [
+        "governance_status=pass",
+        "msw_runtime_dir=True",
+        "shared_rules_dir=True",
+        "content_build_dir=True"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "progression_routing_stability",
+      "evidence": [
+        "first_10_minutes=88~91",
+        "first_hour_retention=87~90",
+        "route_variance=92~95",
+        "social_density=83~86",
+        "channel_routing_status=allow"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "economy_control_stability",
+      "evidence": [
+        "economy_coherence=82~85",
+        "economy_checkpoint=stable",
+        "currency_velocity_proxy=0.111",
+        "sink_ratio=9.9279"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "liveops_rollback_stability",
+      "evidence": [
+        "liveops_status=allow",
+        "rollback_readiness=True",
+        "active_rollback_safe=1"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "fault_input_absorption",
+      "evidence": [
+        "policy_rejection_path=1.0",
+        "external_promotion_path=1.0"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "long_soak_steady_state",
+      "evidence": [
+        "long_soak_ok=True",
+        "regression_free=True",
+        "steady_state_cycles=6"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "human_lift_negligible",
+      "evidence": [
+        "mean_quality_lift=0.006",
+        "max_quality_lift=0.0081"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "scoped_intake_and_promotion",
+      "evidence": [
+        "external_material_autonomy=True",
+        "governance_status=pass",
+        "external_promotion_path=1.0"
+      ],
+      "passed": true
+    }
+  ],
+  "enqueued_repairs": [],
+  "failed_criteria": [],
+  "final_threshold_ready": true,
+  "generated_at_utc": "2026-03-11T04:59:13.230190+00:00",
+  "next_required_repairs": [],
+  "quality_lift_if_human_intervenes": 0.0081,
+  "supporting_artifacts": {
+    "aux_long_soak": "offline_ops/codex_state/thresholds/metaos_aux/latest/long_soak_report.json",
+    "aux_regression_watch": "offline_ops/codex_state/thresholds/metaos_aux/latest/regression_watch.json",
+    "aux_threshold_status": "offline_ops/codex_state/thresholds/metaos_aux/latest/latest_status.json",
+    "checkpoint_stability": "offline_ops/codex_state/simulation_runs/checkpoint_stability_latest.json",
+    "economy_pressure": "offline_ops/codex_state/simulation_runs/economy_pressure_metrics_latest.json",
+    "governance_status": "offline_ops/codex_state/governance/coverage_conflict_status.json",
+    "liveops_override": "offline_ops/codex_state/simulation_runs/liveops_override_metrics_latest.json",
+    "player_metrics": "offline_ops/codex_state/simulation_runs/player_experience_metrics_latest.json",
+    "routing_metrics": "offline_ops/codex_state/simulation_runs/channel_routing_metrics_latest.json",
+    "threshold_status": "offline_ops/codex_state/thresholds/latest_status.json"
+  }
+}

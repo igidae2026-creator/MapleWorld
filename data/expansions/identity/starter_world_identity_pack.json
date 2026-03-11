@@ -1,0 +1,61 @@
+{
+  "pack_id": "starter_world_identity_pack_v1",
+  "scope": "level_1_30",
+  "regions": [
+    {
+      "region_id": "henesys_bloom_fields",
+      "level_band": {"min": 1, "max": 10},
+      "visual_theme": "sunlit meadows and windmill roads",
+      "monster_identity": ["slime packs", "stump scouts", "shroom rushers"],
+      "reward_identity": ["starter consumables", "vendor loop materials", "mobility token scraps"],
+      "pacing_role": "onboarding",
+      "combat_rhythm": "steady_intro",
+      "reward_expectation": "frequent_small_upgrades",
+      "traversal_tone": "safe_horizontal"
+    },
+    {
+      "region_id": "lith_harbor_tidewalk",
+      "level_band": {"min": 6, "max": 14},
+      "visual_theme": "coastal boardwalk and cargo alleys",
+      "monster_identity": ["bubble crab swarms", "dock rats", "shell sentries"],
+      "reward_identity": ["trade packs", "route cache vouchers", "accuracy accessories"],
+      "pacing_role": "route_commitment",
+      "combat_rhythm": "burst_windows",
+      "reward_expectation": "route_bonus_spikes",
+      "traversal_tone": "vertical_shortcuts"
+    },
+    {
+      "region_id": "ellinia_canopy_steps",
+      "level_band": {"min": 12, "max": 20},
+      "visual_theme": "arcane forest canopy and rope lifts",
+      "monster_identity": ["wisp casters", "vine wolves", "mana sprites"],
+      "reward_identity": ["spell components", "mp sustain kits", "casting staves"],
+      "pacing_role": "build_commitment",
+      "combat_rhythm": "kiting_control",
+      "reward_expectation": "targeted_build_parts",
+      "traversal_tone": "vertical_precision"
+    },
+    {
+      "region_id": "perion_ash_quarry",
+      "level_band": {"min": 18, "max": 26},
+      "visual_theme": "red-rock quarries and collapsed ridgelines",
+      "monster_identity": ["armored boars", "drake hatchlings", "ore golems"],
+      "reward_identity": ["weapon cores", "armor plates", "stamina tonics"],
+      "pacing_role": "durability_check",
+      "combat_rhythm": "attrition_frontline",
+      "reward_expectation": "durable_power_steps",
+      "traversal_tone": "hazardous_climbs"
+    },
+    {
+      "region_id": "kerning_shadow_market",
+      "level_band": {"min": 24, "max": 30},
+      "visual_theme": "night alleys and sewer break-ins",
+      "monster_identity": ["rogue smugglers", "toxic bats", "trap spiders"],
+      "reward_identity": ["crit trinkets", "evasion pieces", "black-market writs"],
+      "pacing_role": "mastery_transition",
+      "combat_rhythm": "risk_burst_reset",
+      "reward_expectation": "aspirational_chase_pieces",
+      "traversal_tone": "high_risk_detours"
+    }
+  ]
+}

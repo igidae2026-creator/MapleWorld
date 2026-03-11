@@ -15,4 +15,4 @@ Key runtime-connected support layers:
 
 - `content_build/` owns content preparation and validation.
 - `offline_ops/` owns replay, audit, telemetry, stability, and control-plane tooling.
-- `scripts/` remains temporary gameplay logic pending further extraction into `msw_runtime/` and `shared_rules/`.
+- `scripts/` is transitional runtime residue only. New economy-control, trading-policy, and reward-pressure logic should land in `msw_runtime/`, `shared_rules/`, or offline tooling based on ownership, not expand `scripts/` as a shadow runtime.

@@ -1,0 +1,9 @@
+{
+  "economy_soak_stable": true,
+  "economy_status": "allow",
+  "expansion_veto": "allow",
+  "fun_guard_veto": "allow",
+  "graph_status": "allow",
+  "routing_status": "allow",
+  "status": "pass"
+}

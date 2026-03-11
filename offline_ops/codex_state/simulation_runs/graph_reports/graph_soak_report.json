@@ -1,0 +1,11 @@
+{
+  "failures": [],
+  "iterations": 150,
+  "node_utilization_max": 0.4946,
+  "node_utilization_min": 0.4946,
+  "path_entropy_max": 0.925,
+  "path_entropy_min": 0.925,
+  "stable": true,
+  "travel_friction_max": 0.2372,
+  "travel_friction_min": 0.2372
+}
