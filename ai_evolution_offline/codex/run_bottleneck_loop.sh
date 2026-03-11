@@ -13,8 +13,10 @@ CHECKPOINT_LOG="$LOOP_DIR/checkpoints.log"
 SIMULATION_RUNS_DIR="$ROOT_DIR/offline_ops/codex_state/simulation_runs"
 PLAYER_EXPERIENCE_METRICS_FILE="$SIMULATION_RUNS_DIR/player_experience_metrics_latest.json"
 EARLY02_REBALANCE_REPORT="$SIMULATION_RUNS_DIR/early02_rebalance_candidates.json"
+EARLY02_SHADOW_RELIEF_REPORT="$SIMULATION_RUNS_DIR/early02_shadow_relief_candidates.json"
 NEXT_MAP_REBALANCE_REPORT="$SIMULATION_RUNS_DIR/next_map_rebalance_candidates.json"
 FINAL_THRESHOLD_EVAL_FILE="$ROOT_DIR/offline_ops/codex_state/final_threshold_eval.json"
+FINAL_THRESHOLD_REPAIRS_FILE="$ROOT_DIR/offline_ops/codex_state/final_threshold_repairs.jsonl"
 TOP_SKELETON_FILES=(
   "$ROOT_DIR/GOAL.md"
   "$ROOT_DIR/METAOS_CONSTITUTION.md"
@@ -95,6 +97,7 @@ run_simulation_pipeline() {
   python3 "$ROOT_DIR/simulation_py/run_all.py"
   python3 "$ROOT_DIR/metrics_engine/run_quality_eval.py"
   python3 "$ROOT_DIR/scripts/search_early02_rebalance.py"
+  python3 "$ROOT_DIR/scripts/search_early02_shadow_relief.py"
   python3 "$ROOT_DIR/scripts/search_next_map_rebalance.py"
   python3 "$ROOT_DIR/scripts/snapshot_metaos_aux_artifacts.py"
   python3 "$ROOT_DIR/scripts/run_coverage_conflict_audit.py"
@@ -107,6 +110,7 @@ ensure_simulation_outputs() {
     && [ -f "$SIMULATION_RUNS_DIR/python_simulation_latest.json" ] \
     && [ -f "$SIMULATION_RUNS_DIR/quality_metrics_latest.json" ] \
     && [ -f "$EARLY02_REBALANCE_REPORT" ] \
+    && [ -f "$EARLY02_SHADOW_RELIEF_REPORT" ] \
     && [ -f "$NEXT_MAP_REBALANCE_REPORT" ] \
     && [ -f "$FINAL_THRESHOLD_EVAL_FILE" ]
 }
@@ -299,7 +303,7 @@ build_map_pressure_pivot_directive() {
   if [ ! -f "$SIMULATION_RUNS_DIR/economy_pressure_metrics_latest.json" ] || [ ! -f "$EARLY02_REBALANCE_REPORT" ]; then
     return
   fi
-  python3 - "$SIMULATION_RUNS_DIR/economy_pressure_metrics_latest.json" "$EARLY02_REBALANCE_REPORT" "$NEXT_MAP_REBALANCE_REPORT" <<'PY'
+  python3 - "$SIMULATION_RUNS_DIR/economy_pressure_metrics_latest.json" "$EARLY02_REBALANCE_REPORT" "$EARLY02_SHADOW_RELIEF_REPORT" "$NEXT_MAP_REBALANCE_REPORT" <<'PY'
 from __future__ import annotations
 
 import json
@@ -308,12 +312,16 @@ from pathlib import Path
 
 pressure_path = Path(sys.argv[1])
 report_path = Path(sys.argv[2])
-next_map_report_path = Path(sys.argv[3])
+shadow_report_path = Path(sys.argv[3])
+next_map_report_path = Path(sys.argv[4])
 pressure = json.loads(pressure_path.read_text(encoding="utf-8"))
 report = json.loads(report_path.read_text(encoding="utf-8"))
+shadow_report = json.loads(shadow_report_path.read_text(encoding="utf-8")) if shadow_report_path.exists() else {}
 next_map_report = json.loads(next_map_report_path.read_text(encoding="utf-8")) if next_map_report_path.exists() else {}
 
-if str(report.get("recommendation", "")).strip() != "same-band early_02 rebalance exhausted":
+rebalance_exhausted = str(report.get("recommendation", "")).strip() == "same-band early_02 rebalance exhausted"
+shadow_exhausted = str(shadow_report.get("recommendation", "")).strip() == "same-band early_02 shadow relief exhausted"
+if not rebalance_exhausted and not shadow_exhausted:
     raise SystemExit(0)
 
 blocked = {
@@ -325,7 +333,10 @@ for item in pressure.get("top_pressure_nodes", []):
     node = str(dict(item).get("node", "")).strip()
     if node.startswith("map:") and node not in blocked:
         print("Map pressure pivot directive:")
-        print("- `early_02` same-band rebalance is exhausted for this cycle.")
+        if rebalance_exhausted:
+            print("- `early_02` same-band rebalance is exhausted for this cycle.")
+        if shadow_exhausted:
+            print("- `early_02` shadow-relief search is also exhausted for this cycle.")
         print(f"- Required next map-scoped pivot target: {node.split(':', 1)[1]}")
         print("- Do not choose generic all-high-risk smoothing.")
         print("- Name this exact map in `CHOSEN_BOTTLENECK` and `NEXT_PATCH_OBJECTIVE` if you keep `economy_coherence` on `role_bands.csv`.")
@@ -441,6 +452,10 @@ build_coordinator_input() {
     printf "\n=== early02_rebalance_candidates.json ===\n"
     cat "$EARLY02_REBALANCE_REPORT"
   fi
+  if [ -f "$EARLY02_SHADOW_RELIEF_REPORT" ]; then
+    printf "\n=== early02_shadow_relief_candidates.json ===\n"
+    cat "$EARLY02_SHADOW_RELIEF_REPORT"
+  fi
   if [ -f "$NEXT_MAP_REBALANCE_REPORT" ]; then
     printf "\n=== next_map_rebalance_candidates.json ===\n"
     cat "$NEXT_MAP_REBALANCE_REPORT"
@@ -448,6 +463,10 @@ build_coordinator_input() {
   if [ -f "$FINAL_THRESHOLD_EVAL_FILE" ]; then
     printf "\n=== final_threshold_eval.json ===\n"
     cat "$FINAL_THRESHOLD_EVAL_FILE"
+  fi
+  if [ -f "$FINAL_THRESHOLD_REPAIRS_FILE" ]; then
+    printf "\n=== final_threshold_repairs.jsonl ===\n"
+    tail -n 20 "$FINAL_THRESHOLD_REPAIRS_FILE"
   fi
   if [ -n "$rejection_reason" ]; then
     printf "\n\nDecision validation feedback:\n"

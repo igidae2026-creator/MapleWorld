@@ -1,0 +1,23 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-11T16:07:58.951457+00:00",
+  "job_id": "repair_final_threshold_gap-07aeab671552",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "content_authenticity_density",
+    "repair_action": "repair placeholder-heavy NPC, dialogue, and quest content into authored Korean-facing content"
+  },
+  "priority": 30,
+  "result": {
+    "handled_job_type": "repair_final_threshold_gap",
+    "job_id": "repair_final_threshold_gap-07aeab671552",
+    "next_action": "queued_final_threshold_repair",
+    "repair": {
+      "criterion": "content_authenticity_density",
+      "repair_action": "repair placeholder-heavy NPC, dialogue, and quest content into authored Korean-facing content"
+    }
+  },
+  "status": "done",
+  "updated_at": "2026-03-11T16:08:03.476554+00:00",
+  "worker_id": "autonomy-daemon-20260312_010755-1"
+}

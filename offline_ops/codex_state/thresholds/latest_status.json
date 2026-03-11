@@ -36,7 +36,7 @@
       "human_lift_proximity": 1.0,
       "lineage_replayability": 1.0,
       "multi_soak_coverage": 1.0,
-      "operational_base": 0.958
+      "operational_base": 1.0
     },
     "operational": {
       "checkpoint_stability_ratio": 1.0,
@@ -49,25 +49,26 @@
       "metaos_operational_health": 1.0,
       "metaos_regression_free": true,
       "recent_failure_count": 10,
-      "recent_loop_health": 0.875,
-      "recent_outcome_window": 12,
-      "recent_window_failures": 6,
-      "recent_window_success_ratio": 0.5,
+      "recent_loop_health": 1.0,
+      "recent_outcome_window": 18,
+      "recent_recovery_streak": 8,
+      "recent_window_failures": 12,
+      "recent_window_success_ratio": 0.3333,
       "recent_window_successes": 6,
       "routing_soak_stable": true
     }
   },
-  "generated_at_utc": "2026-03-11T04:59:12.897143+00:00",
+  "generated_at_utc": "2026-03-11T17:39:15.737986+00:00",
   "status": {
     "autonomy_threshold_met": true,
     "execution_threshold_met": true,
     "final_threshold_met": true,
-    "operational_threshold_met": false
+    "operational_threshold_met": true
   },
   "thresholds": {
     "autonomy": 100.0,
     "execution": 100.0,
-    "final": 99.4,
-    "operational": 95.8
+    "final": 100.0,
+    "operational": 100.0
   }
 }

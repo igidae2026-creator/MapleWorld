@@ -1,0 +1,168 @@
+{
+  "baseline": {
+    "economy_coherence_center": 78,
+    "patch_veto": "allow",
+    "top_pressure_concentration": 0.2685,
+    "top_pressure_gap": 0.9443
+  },
+  "best_candidate": {
+    "economy_coherence_center": 78,
+    "ellinia_pressure": 1.2765,
+    "ellinia_reward": 1.07,
+    "ellinia_throughput": 1.07,
+    "lith_pressure": 1.2121,
+    "lith_reward": 0.98,
+    "lith_throughput": 0.95,
+    "perion_pressure": 1.2765,
+    "top_pressure_concentration": 0.2682,
+    "top_pressure_gap": 0.9443
+  },
+  "candidate_count": 12,
+  "candidates": [
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2765,
+      "ellinia_reward": 1.07,
+      "ellinia_throughput": 1.07,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2682,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2765,
+      "ellinia_reward": 1.08,
+      "ellinia_throughput": 1.07,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2682,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2765,
+      "ellinia_reward": 1.09,
+      "ellinia_throughput": 1.07,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2682,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2715,
+      "ellinia_reward": 1.07,
+      "ellinia_throughput": 1.06,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2685,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2715,
+      "ellinia_reward": 1.08,
+      "ellinia_throughput": 1.06,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2685,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2715,
+      "ellinia_reward": 1.09,
+      "ellinia_throughput": 1.06,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2685,
+      "top_pressure_gap": 0.9443
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.07,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2178,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.96,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2687,
+      "top_pressure_gap": 0.9493
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.08,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2178,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.96,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2687,
+      "top_pressure_gap": 0.9493
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.09,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2178,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.96,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.2687,
+      "top_pressure_gap": 0.9493
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.07,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.269,
+      "top_pressure_gap": 0.9493
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.08,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.269,
+      "top_pressure_gap": 0.9493
+    },
+    {
+      "economy_coherence_center": 78,
+      "ellinia_pressure": 1.2815,
+      "ellinia_reward": 1.09,
+      "ellinia_throughput": 1.08,
+      "lith_pressure": 1.2121,
+      "lith_reward": 0.98,
+      "lith_throughput": 0.95,
+      "perion_pressure": 1.2765,
+      "top_pressure_concentration": 0.269,
+      "top_pressure_gap": 0.9493
+    }
+  ],
+  "recommendation": "same-band early_02 shadow relief exhausted"
+}

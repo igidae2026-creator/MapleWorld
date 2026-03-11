@@ -1,0 +1,41 @@
+{
+  "artifact": "offline_ops/codex_state/final_threshold_bundle_status.json",
+  "bundle_policy": {
+    "bundle_size": 20,
+    "candidate_bundles": "3_to_5",
+    "candidate_cycles": "60_to_100",
+    "strong_upper_bound_bundles": "5_to_8",
+    "strong_upper_bound_cycles": "100_to_160"
+  },
+  "current_bundle": {
+    "all_thresholds_met_cycles": 20,
+    "all_thresholds_met_ratio": 1.0,
+    "available_cycles": 20,
+    "reason": "ok",
+    "window_passed": true,
+    "window_size": 20
+  },
+  "generated_at_utc": "2026-03-11T17:39:15.997761+00:00",
+  "minimum_upper_bound_window": {
+    "all_thresholds_met_cycles": 100,
+    "all_thresholds_met_ratio": 1.0,
+    "available_cycles": 100,
+    "reason": "ok",
+    "window_passed": true,
+    "window_size": 100
+  },
+  "progress_summary": {
+    "candidate_bundle_progress": 1.0,
+    "minimum_upper_bound_progress": 1.0,
+    "strong_upper_bound_progress": 1.0
+  },
+  "strong_upper_bound_window": {
+    "all_thresholds_met_cycles": 160,
+    "all_thresholds_met_ratio": 1.0,
+    "available_cycles": 160,
+    "reason": "ok",
+    "window_passed": true,
+    "window_size": 160
+  },
+  "upper_bound_status": "near_ceiling"
+}

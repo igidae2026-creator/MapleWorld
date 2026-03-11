@@ -3,6 +3,12 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from typing import Iterable
 
+LOCKED_EARLY02_MAPS = {
+    "map:lith_harbor_coast_road",
+    "map:ellinia_lower_canopy",
+    "map:perion_rockfall_edge",
+}
+
 
 def _style_role_weights(style: str) -> dict[str, float]:
     if style == "party_grinder":
@@ -10,6 +16,22 @@ def _style_role_weights(style: str) -> dict[str, float]:
     if style == "quest_player":
         return {"alternative": 0.52, "safe": 0.30, "high_risk_high_reward": 0.18}
     return {"safe": 0.41, "alternative": 0.36, "high_risk_high_reward": 0.23}
+
+
+def _style_reward_weight(style: str) -> float:
+    if style == "party_grinder":
+        return 0.62
+    if style == "quest_player":
+        return 0.48
+    return 0.55
+
+
+def _style_throughput_weight(style: str) -> float:
+    if style == "party_grinder":
+        return 0.38
+    if style == "quest_player":
+        return 0.24
+    return 0.32
 
 
 def _active_band_for_level(level: int, map_nodes: list[dict[str, object]]) -> tuple[int, int]:
@@ -82,10 +104,16 @@ def _pick_map_for_player(
     if not maps:
         return None
     role_weights = _style_role_weights(style)
+    reward_weight = _style_reward_weight(style)
+    throughput_weight = _style_throughput_weight(style)
     ranked = sorted(
         maps,
         key=lambda node: (
-            -(role_weights.get(str(node.get("role", "safe")), 0.2) * float(node.get("throughput_bias", 1.0))),
+            -(
+                role_weights.get(str(node.get("role", "safe")), 0.2)
+                + (float(node.get("reward_bias", 1.0)) - 1.0) * reward_weight
+                + (float(node.get("throughput_bias", 1.0)) - 1.0) * throughput_weight
+            ),
             str(node.get("node_id", "")),
         ),
     )
@@ -100,6 +128,29 @@ def _least_loaded_channel(channels: dict[str, float]) -> str:
 
 def _map_pressure(state: dict[str, object]) -> float:
     return float(state["visit_total"]) / max(1.0, float(state["target_concurrency"]))
+
+
+def _cross_band_hotspot_destinations(
+    map_states: dict[str, dict[str, object]],
+    maps_by_region: dict[str, list[str]],
+) -> list[str]:
+    destinations: list[str] = []
+    for region, region_maps in sorted(maps_by_region.items()):
+        if region == "region:starter_fields":
+            continue
+        for map_id in region_maps:
+            state = map_states[map_id]
+            role = str(state.get("role", "safe"))
+            pressure = _map_pressure(state)
+            reward_bias = float(state.get("reward_bias", 1.0))
+            if role == "safe":
+                continue
+            if pressure >= 0.98:
+                continue
+            if reward_bias < 1.16:
+                continue
+            destinations.append(map_id)
+    return destinations
 
 
 def build_channel_routing_model(
@@ -206,6 +257,37 @@ def build_channel_routing_model(
             }
         )
 
+    hotspot_break_reroutes: list[dict[str, object]] = []
+    cross_band_destinations = _cross_band_hotspot_destinations(map_states, maps_by_region)
+    for map_id in sorted(LOCKED_EARLY02_MAPS):
+        if map_id not in map_states:
+            continue
+        state = map_states[map_id]
+        pressure = _map_pressure(state)
+        if pressure <= 1.12 or not cross_band_destinations:
+            continue
+        destination = min(
+            cross_band_destinations,
+            key=lambda candidate: (
+                _map_pressure(map_states[candidate]),
+                -float(map_states[candidate]["reward_bias"]),
+                candidate,
+            ),
+        )
+        excess = max(0.0, float(state["visit_total"]) - float(state["target_concurrency"]) * 1.02)
+        reroute_amount = round(excess * 0.3, 4)
+        if reroute_amount <= 0.0:
+            continue
+        state["visit_total"] = round(float(state["visit_total"]) - reroute_amount, 4)
+        map_states[destination]["visit_total"] = round(float(map_states[destination]["visit_total"]) + reroute_amount, 4)
+        hotspot_break_reroutes.append(
+            {
+                "from": map_id,
+                "to": destination,
+                "amount": reroute_amount,
+            }
+        )
+
     # policy 2: spawn redistribution based on post-reroute pressure
     spawn_redistribution: list[dict[str, object]] = []
     for map_id, state in sorted(map_states.items()):
@@ -288,6 +370,7 @@ def build_channel_routing_model(
         "exploration_stagnation_index": round(float(exploration_stagnation), 4),
         "adaptive_policies": {
             "soft_rerouting": soft_reroutes,
+            "hotspot_break_rerouting": hotspot_break_reroutes,
             "spawn_redistribution": spawn_redistribution,
             "dynamic_channel_balancing": dynamic_channel_balancing,
         },

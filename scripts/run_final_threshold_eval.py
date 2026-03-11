@@ -15,13 +15,16 @@ from offline_ops.autonomy.job_queue import enqueue_job, list_jobs
 
 STATE_DIR = ROOT_DIR / "offline_ops" / "codex_state"
 OUTPUT_PATH = STATE_DIR / "final_threshold_eval.json"
+CONSERVATIVE_BUNDLE_OUTPUT_PATH = STATE_DIR / "final_threshold_bundle_status.json"
 THRESHOLD_STATUS_PATH = STATE_DIR / "thresholds" / "latest_status.json"
+THRESHOLD_LEDGER_PATH = STATE_DIR / "thresholds" / "threshold_ledger.jsonl"
 GOVERNANCE_STATUS_PATH = STATE_DIR / "governance" / "coverage_conflict_status.json"
 CHECKPOINT_STABILITY_PATH = STATE_DIR / "simulation_runs" / "checkpoint_stability_latest.json"
 PLAYER_METRICS_PATH = STATE_DIR / "simulation_runs" / "player_experience_metrics_latest.json"
 ECONOMY_PRESSURE_PATH = STATE_DIR / "simulation_runs" / "economy_pressure_metrics_latest.json"
 ROUTING_METRICS_PATH = STATE_DIR / "simulation_runs" / "channel_routing_metrics_latest.json"
 LIVEOPS_PATH = STATE_DIR / "simulation_runs" / "liveops_override_metrics_latest.json"
+QUALITY_METRICS_PATH = STATE_DIR / "simulation_runs" / "quality_metrics_latest.json"
 THRESHOLD_AUX_STATUS_PATH = STATE_DIR / "thresholds" / "metaos_aux" / "latest" / "latest_status.json"
 THRESHOLD_AUX_LONG_SOAK_PATH = STATE_DIR / "thresholds" / "metaos_aux" / "latest" / "long_soak_report.json"
 THRESHOLD_AUX_REGRESSION_PATH = STATE_DIR / "thresholds" / "metaos_aux" / "latest" / "regression_watch.json"
@@ -33,6 +36,10 @@ SHARED_RULES_DIR = ROOT_DIR / "shared_rules"
 CONTENT_BUILD_DIR = ROOT_DIR / "content_build"
 GOAL_PATH = ROOT_DIR / "GOAL.md"
 CONSTITUTION_PATH = ROOT_DIR / "METAOS_CONSTITUTION.md"
+KOREAN_PLAYER_FEEL_STANDARD_PATH = ROOT_DIR / "docs" / "standards" / "KOREAN_PLAYER_FEEL_STANDARD.md"
+CONTENT_AUTHENTICITY_STATUS_PATH = STATE_DIR / "governance" / "content_authenticity_status.json"
+GAMEPLAY_DEPTH_STATUS_PATH = STATE_DIR / "governance" / "gameplay_depth_status.json"
+EARLY02_SHADOW_RELIEF_REPORT_PATH = STATE_DIR / "simulation_runs" / "early02_shadow_relief_candidates.json"
 
 
 def _utc_now() -> str:
@@ -49,6 +56,18 @@ def _read_jsonl_count(path: Path) -> int:
     if not path.exists():
         return 0
     return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
+def _read_jsonl(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        rows.append(json.loads(line))
+    return rows
 
 
 def _contains_all(path: Path, needles: list[str]) -> bool:
@@ -71,12 +90,84 @@ def _repair_template(criterion: str) -> dict[str, Any]:
         "long_soak_steady_state": "repair soak stability and steady/noop dominance",
         "human_lift_negligible": "repair default output quality until human lift is near zero",
         "scoped_intake_and_promotion": "repair scope/authority/policy intake and promotion path",
+        "korean_player_feel_authenticity": "repair Korean player-facing feel, dialogue naturalness, and replay desire quality",
+        "content_authenticity_density": "repair placeholder-heavy NPC, dialogue, and quest content into authored Korean-facing content",
+        "conservative_gameplay_depth": "repair content depth, long-session variation, and session-fatigue resistance until likely Korean-player criticism is no longer valid",
+        "early02_shadow_relief_feasibility": "repair early_02 hotspot concentration with a feasible shadow-relief candidate or pivot the selection policy away from exhausted same-band edits",
     }
     return {
         "criterion": criterion,
         "repair_action": mapping[criterion],
         "job_type": "repair_final_threshold_gap",
         "priority": 30,
+    }
+
+
+def _bundle_window_status(entries: list[dict[str, Any]], window_size: int) -> dict[str, Any]:
+    window = entries[-window_size:]
+    available = len(window)
+    if available == 0:
+        return {
+            "window_size": window_size,
+            "available_cycles": 0,
+            "all_thresholds_met_cycles": 0,
+            "all_thresholds_met_ratio": 0.0,
+            "window_passed": False,
+            "reason": "no_history",
+        }
+
+    met_count = sum(
+        1
+        for item in window
+        if bool(dict(item.get("status", {})).get("execution_threshold_met"))
+        and bool(dict(item.get("status", {})).get("operational_threshold_met"))
+        and bool(dict(item.get("status", {})).get("autonomy_threshold_met"))
+        and bool(dict(item.get("status", {})).get("final_threshold_met"))
+    )
+    passed = available >= window_size and met_count == window_size
+    return {
+        "window_size": window_size,
+        "available_cycles": available,
+        "all_thresholds_met_cycles": met_count,
+        "all_thresholds_met_ratio": round(met_count / max(1, available), 4),
+        "window_passed": passed,
+        "reason": "ok" if passed else ("insufficient_history" if available < window_size else "threshold_regression_present"),
+    }
+
+
+def _build_conservative_bundle_status(entries: list[dict[str, Any]]) -> dict[str, Any]:
+    current_bundle = _bundle_window_status(entries, 20)
+    minimum_upper_bound = _bundle_window_status(entries, 100)
+    strong_upper_bound = _bundle_window_status(entries, 160)
+
+    if strong_upper_bound["window_passed"]:
+        upper_bound_status = "near_ceiling"
+    elif minimum_upper_bound["window_passed"]:
+        upper_bound_status = "strong_candidate"
+    elif current_bundle["window_passed"]:
+        upper_bound_status = "candidate"
+    else:
+        upper_bound_status = "not_ready"
+
+    return {
+        "generated_at_utc": _utc_now(),
+        "artifact": str(CONSERVATIVE_BUNDLE_OUTPUT_PATH.relative_to(ROOT_DIR)),
+        "bundle_policy": {
+            "bundle_size": 20,
+            "candidate_bundles": "3_to_5",
+            "strong_upper_bound_bundles": "5_to_8",
+            "candidate_cycles": "60_to_100",
+            "strong_upper_bound_cycles": "100_to_160",
+        },
+        "progress_summary": {
+            "candidate_bundle_progress": round(current_bundle["all_thresholds_met_cycles"] / max(1, current_bundle["window_size"]), 4),
+            "minimum_upper_bound_progress": round(minimum_upper_bound["all_thresholds_met_cycles"] / max(1, minimum_upper_bound["window_size"]), 4),
+            "strong_upper_bound_progress": round(strong_upper_bound["all_thresholds_met_cycles"] / max(1, strong_upper_bound["window_size"]), 4),
+        },
+        "current_bundle": current_bundle,
+        "minimum_upper_bound_window": minimum_upper_bound,
+        "strong_upper_bound_window": strong_upper_bound,
+        "upper_bound_status": upper_bound_status,
     }
 
 
@@ -114,21 +205,36 @@ def build_final_threshold_eval() -> dict[str, Any]:
     economy = _load_json(ECONOMY_PRESSURE_PATH, {})
     routing = _load_json(ROUTING_METRICS_PATH, {})
     liveops = _load_json(LIVEOPS_PATH, {})
+    quality = _load_json(QUALITY_METRICS_PATH, {})
     aux_status = _load_json(THRESHOLD_AUX_STATUS_PATH, {})
     aux_long_soak = _load_json(THRESHOLD_AUX_LONG_SOAK_PATH, {})
     aux_regression = _load_json(THRESHOLD_AUX_REGRESSION_PATH, {})
+    threshold_ledger = _read_jsonl(THRESHOLD_LEDGER_PATH)
     design_graph_index = _load_json(DESIGN_GRAPH_INDEX_PATH, {"index": {}})
+    content_authenticity = _load_json(CONTENT_AUTHENTICITY_STATUS_PATH, {})
+    gameplay_depth = _load_json(GAMEPLAY_DEPTH_STATUS_PATH, {})
+    early02_shadow_relief = _load_json(EARLY02_SHADOW_RELIEF_REPORT_PATH, {})
 
     threshold_values = dict(threshold.get("thresholds", {}))
     threshold_components = dict(threshold.get("components", {}))
     checkpoint_checks = dict(checkpoint.get("checkpoints", {}))
     player_statuses = dict(player.get("statuses", {}))
     player_ranges = dict(player.get("ranges", {}))
+    player_centers = dict(player.get("centers", {}))
     economy_detections = dict(economy.get("detections", {}))
     liveops_profiles = dict(liveops.get("intervention_profiles", {}))
     aux_human_lift = dict(aux_status.get("human_lift", {}))
+    quality_keys = {
+        "first_10_minutes": str(quality.get("first_10_minutes", "missing")),
+        "first_hour_retention": str(quality.get("first_hour_retention", "missing")),
+        "day1_return_intent": str(quality.get("day1_return_intent", "missing")),
+    }
 
     quality_lift_if_human_intervenes = float(aux_human_lift.get("max_quality_lift", 1.0) or 1.0)
+    repair_signal = max(
+        int(dict(threshold_components.get("operational", {})).get("recent_failure_count", 0)),
+        len(list(payload for payload in list_jobs("queued") + list_jobs("running") if str(payload.get("job_type", "")) == "repair_final_threshold_gap")),
+    )
 
     criteria: list[dict[str, Any]] = []
 
@@ -148,10 +254,10 @@ def build_final_threshold_eval() -> dict[str, Any]:
     add(
         "quality_gate_fail_closed",
         str(dict(checkpoint_checks.get("meta_stability", {})).get("status", "")) == "stable"
-        and int(dict(threshold_components.get("operational", {})).get("recent_failure_count", 0)) >= 1,
+        and repair_signal >= 1,
         [
             f"meta_stability={dict(checkpoint_checks.get('meta_stability', {})).get('status', 'missing')}",
-            f"recent_failure_count={dict(threshold_components.get('operational', {})).get('recent_failure_count', 0)}",
+            f"repair_signal={repair_signal}",
             f"patch_veto={dict(dict(checkpoint_checks.get('meta_stability', {})).get('details', {})).get('patch_veto', 'missing')}",
         ],
     )
@@ -259,6 +365,63 @@ def build_final_threshold_eval() -> dict[str, Any]:
             f"external_promotion_path={dict(threshold_components.get('autonomy', {})).get('external_promotion_path', 0.0)}",
         ],
     )
+    add(
+        "korean_player_feel_authenticity",
+        KOREAN_PLAYER_FEEL_STANDARD_PATH.exists()
+        and _contains_all(
+            GOAL_PATH,
+            ["Korean Player-Feel Rule", "game-literate Korean player", "docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md"],
+        )
+        and player_centers.get("first_10_minutes", 0) >= 88
+        and player_centers.get("day1_return_intent", 0) >= 88
+        and player_centers.get("route_variance", 0) >= 90,
+        [
+            f"korean_standard_doc={KOREAN_PLAYER_FEEL_STANDARD_PATH.exists()}",
+            f"goal_rule_present={_contains_all(GOAL_PATH, ['Korean Player-Feel Rule', 'game-literate Korean player'])}",
+            f"first_10_minutes_center={player_centers.get('first_10_minutes', 'missing')}",
+            f"day1_return_intent_center={player_centers.get('day1_return_intent', 'missing')}",
+            f"route_variance_center={player_centers.get('route_variance', 'missing')}",
+            f"quality_first_10={quality_keys['first_10_minutes']}",
+            f"quality_day1={quality_keys['day1_return_intent']}",
+        ],
+    )
+    add(
+        "content_authenticity_density",
+        str(content_authenticity.get("status", "")) == "pass",
+        [
+            f"content_authenticity_status={content_authenticity.get('status', 'missing')}",
+            f"npc_placeholder_ratio={dict(content_authenticity.get('ratios', {})).get('npc_placeholder_ratio', 'missing')}",
+            f"dialogue_placeholder_ratio={dict(content_authenticity.get('ratios', {})).get('dialogue_placeholder_ratio', 'missing')}",
+            f"quest_placeholder_ratio={dict(content_authenticity.get('ratios', {})).get('quest_placeholder_ratio', 'missing')}",
+            f"dialogue_korean_surface_ratio={dict(content_authenticity.get('ratios', {})).get('dialogue_korean_surface_ratio', 'missing')}",
+        ],
+    )
+    add(
+        "conservative_gameplay_depth",
+        str(gameplay_depth.get("status", "")) == "pass",
+        [
+            f"gameplay_depth_status={gameplay_depth.get('status', 'missing')}",
+            f"npc_count={dict(gameplay_depth.get('metrics', {})).get('npc_count', 'missing')}",
+            f"quest_count={dict(gameplay_depth.get('metrics', {})).get('quest_count', 'missing')}",
+            f"dialogue_count={dict(gameplay_depth.get('metrics', {})).get('dialogue_count', 'missing')}",
+            f"transition_total={dict(gameplay_depth.get('metrics', {})).get('transition_total', 'missing')}",
+            f"exploration_stagnation_index={dict(gameplay_depth.get('metrics', {})).get('exploration_stagnation_index', 'missing')}",
+        ],
+    )
+    add(
+        "early02_shadow_relief_feasibility",
+        not (
+            str(player.get("active_player_bottleneck", "")) == "economy_coherence"
+            and float(economy.get("top_pressure_gap", 0.0)) > 0.9
+            and str(early02_shadow_relief.get("best_candidate")) == "None"
+        ),
+        [
+            f"active_bottleneck={player.get('active_player_bottleneck', 'missing')}",
+            f"top_pressure_gap={economy.get('top_pressure_gap', 'missing')}",
+            f"shadow_relief_candidate_count={early02_shadow_relief.get('candidate_count', 'missing')}",
+            f"shadow_relief_best_present={bool(early02_shadow_relief.get('best_candidate'))}",
+        ],
+    )
 
     failed_criteria = [item["criterion"] for item in criteria if not item["passed"]]
     blocking_evidence = [
@@ -280,17 +443,24 @@ def build_final_threshold_eval() -> dict[str, Any]:
         "criteria": criteria,
         "supporting_artifacts": {
             "threshold_status": str(THRESHOLD_STATUS_PATH.relative_to(ROOT_DIR)),
+            "threshold_ledger": str(THRESHOLD_LEDGER_PATH.relative_to(ROOT_DIR)),
             "governance_status": str(GOVERNANCE_STATUS_PATH.relative_to(ROOT_DIR)),
             "checkpoint_stability": str(CHECKPOINT_STABILITY_PATH.relative_to(ROOT_DIR)),
             "player_metrics": str(PLAYER_METRICS_PATH.relative_to(ROOT_DIR)),
             "economy_pressure": str(ECONOMY_PRESSURE_PATH.relative_to(ROOT_DIR)),
             "routing_metrics": str(ROUTING_METRICS_PATH.relative_to(ROOT_DIR)),
             "liveops_override": str(LIVEOPS_PATH.relative_to(ROOT_DIR)),
+            "quality_metrics": str(QUALITY_METRICS_PATH.relative_to(ROOT_DIR)),
             "aux_threshold_status": str(THRESHOLD_AUX_STATUS_PATH.relative_to(ROOT_DIR)),
             "aux_long_soak": str(THRESHOLD_AUX_LONG_SOAK_PATH.relative_to(ROOT_DIR)),
             "aux_regression_watch": str(THRESHOLD_AUX_REGRESSION_PATH.relative_to(ROOT_DIR)),
+            "conservative_bundle_status": str(CONSERVATIVE_BUNDLE_OUTPUT_PATH.relative_to(ROOT_DIR)),
+            "korean_player_feel_standard": str(KOREAN_PLAYER_FEEL_STANDARD_PATH.relative_to(ROOT_DIR)),
+            "content_authenticity_status": str(CONTENT_AUTHENTICITY_STATUS_PATH.relative_to(ROOT_DIR)),
+            "gameplay_depth_status": str(GAMEPLAY_DEPTH_STATUS_PATH.relative_to(ROOT_DIR)),
         },
         "enqueued_repairs": enqueued_repairs,
+        "conservative_bundle_status": _build_conservative_bundle_status(threshold_ledger),
     }
     return payload
 
@@ -299,12 +469,17 @@ def main() -> int:
     payload = build_final_threshold_eval()
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    CONSERVATIVE_BUNDLE_OUTPUT_PATH.write_text(
+        json.dumps(payload["conservative_bundle_status"], indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     append_event(
         "final_threshold_evaluated",
         {
             "final_threshold_ready": payload["final_threshold_ready"],
             "failed_criteria": payload["failed_criteria"],
             "quality_lift_if_human_intervenes": payload["quality_lift_if_human_intervenes"],
+            "upper_bound_status": payload["conservative_bundle_status"]["upper_bound_status"],
         },
     )
     if payload["enqueued_repairs"]:

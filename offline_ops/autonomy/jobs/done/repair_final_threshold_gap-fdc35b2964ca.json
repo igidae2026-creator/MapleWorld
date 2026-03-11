@@ -1,0 +1,23 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-11T16:20:32.645112+00:00",
+  "job_id": "repair_final_threshold_gap-fdc35b2964ca",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "closed_loop_completion",
+    "repair_action": "repair loop closure, state logging, or next-task continuation"
+  },
+  "priority": 30,
+  "result": {
+    "handled_job_type": "repair_final_threshold_gap",
+    "job_id": "repair_final_threshold_gap-fdc35b2964ca",
+    "next_action": "queued_final_threshold_repair",
+    "repair": {
+      "criterion": "closed_loop_completion",
+      "repair_action": "repair loop closure, state logging, or next-task continuation"
+    }
+  },
+  "status": "done",
+  "updated_at": "2026-03-11T16:20:36.108639+00:00",
+  "worker_id": "autonomy-daemon-20260312_012025-1"
+}

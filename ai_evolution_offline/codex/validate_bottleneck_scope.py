@@ -12,6 +12,7 @@ POLICY_PATH = ROOT / "ai_evolution_offline" / "codex" / "bottleneck_policy.json"
 PLAYER_METRICS_PATH = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "player_experience_metrics_latest.json"
 ECONOMY_PRESSURE_PATH = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "economy_pressure_metrics_latest.json"
 EARLY02_REBALANCE_REPORT = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "early02_rebalance_candidates.json"
+EARLY02_SHADOW_RELIEF_REPORT = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "early02_shadow_relief_candidates.json"
 
 
 def extract_field(text: str, field: str) -> str:
@@ -99,6 +100,13 @@ def early02_rebalance_exhausted() -> bool:
     return str(payload.get("recommendation", "")).strip() == "same-band early_02 rebalance exhausted"
 
 
+def early02_shadow_relief_exhausted() -> bool:
+    if not EARLY02_SHADOW_RELIEF_REPORT.exists():
+        return False
+    payload = json.loads(EARLY02_SHADOW_RELIEF_REPORT.read_text(encoding="utf-8"))
+    return str(payload.get("recommendation", "")).strip() == "same-band early_02 shadow relief exhausted"
+
+
 def next_non_early02_pressure_node() -> str:
     blocked = {
         "map:perion_rockfall_edge",
@@ -184,7 +192,7 @@ def main() -> int:
                 "reject one-map perion_rockfall_edge-only reduction and choose a compatible early_02 rebalance"
             )
             return 1
-        if top_node == "map:perion_rockfall_edge" and touched_map_balance and early02_rebalance_exhausted():
+        if top_node == "map:perion_rockfall_edge" and touched_map_balance and (early02_rebalance_exhausted() or early02_shadow_relief_exhausted()):
             next_node = next_non_early02_pressure_node()
             mentions_early02 = (
                 "early_02" in decision_text

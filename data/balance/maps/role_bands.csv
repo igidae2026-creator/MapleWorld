@@ -6,11 +6,11 @@ early_02,16,30,lith_harbor_coast_road,safe,stable_grind,0.95,0.98,consumable_far
 early_02,16,30,ellinia_lower_canopy,alternative,route_flex,1.06,1.07,gear_upgrade
 early_02,16,28,perion_rockfall_edge,high_risk_high_reward,burst_reward,1.07,1.12,rare_excitement
 mid_01,31,50,kerning_backstreet,safe,stable_grind,1.0,1.0,vendor_loot
-mid_01,31,50,coastal_harbors_docks,alternative,route_flex,1.1,1.13,gear_upgrade
-mid_01,31,50,sleepywood_sinkhole,high_risk_high_reward,burst_reward,1.21,1.22,jackpot_drop
+mid_01,31,50,coastal_harbors_docks,alternative,route_flex,1.15,1.16,gear_upgrade
+mid_01,31,50,sleepywood_sinkhole,high_risk_high_reward,burst_reward,1.16,1.22,jackpot_drop
 mid_02,51,70,ludibrium_outer_walk,safe,stable_grind,1.0,1.0,vendor_loot
-mid_02,51,70,orbis_cloud_bridge,alternative,route_flex,1.1,1.14,gear_upgrade
-mid_02,51,70,dungeon_black_gate,high_risk_high_reward,burst_reward,1.21,1.29,jackpot_drop
+mid_02,51,70,orbis_cloud_bridge,alternative,route_flex,1.15,1.17,gear_upgrade
+mid_02,51,70,dungeon_black_gate,high_risk_high_reward,burst_reward,1.16,1.24,jackpot_drop
 late_01,71,95,elnath_snowfield_patrol,safe,stable_grind,1.0,1.0,gear_upgrade
-late_01,71,95,minar_lower_trail,alternative,route_flex,1.11,1.15,rare_excitement
-late_01,71,95,ancient_hidden_domains_rift,high_risk_high_reward,burst_reward,1.18,1.25,jackpot_drop
+late_01,71,95,minar_lower_trail,alternative,route_flex,1.14,1.2,rare_excitement
+late_01,71,95,ancient_hidden_domains_rift,high_risk_high_reward,burst_reward,1.15,1.21,jackpot_drop

@@ -63,13 +63,13 @@
     },
     "player_flow_stability": {
       "details": {
-        "hotspot_score": 0.9789,
-        "overcrowded_maps": 2,
+        "hotspot_score": 0.9664,
+        "overcrowded_maps": 0,
         "progression_pacing_center": 88.5,
         "stagnation_index": 0.5455
       },
       "reasons": [],
-      "score": 0.6408,
+      "score": 0.6908,
       "stable": true,
       "status": "stable"
     },
@@ -79,8 +79,8 @@
         "dead_zones": 0,
         "exploration_flow": 0.8385,
         "overcrowded_nodes": 0,
-        "path_entropy": 0.9308,
-        "travel_friction": 0.2371
+        "path_entropy": 0.9306,
+        "travel_friction": 0.2369
       },
       "reasons": [],
       "score": 1.0,
@@ -92,7 +92,7 @@
     "checkpoint_pass_count": 6,
     "checkpoint_stability_ratio": 1.0,
     "checkpoint_total": 6,
-    "overall_stability_index": 0.8959
+    "overall_stability_index": 0.9042
   },
   "status": "stable"
 }

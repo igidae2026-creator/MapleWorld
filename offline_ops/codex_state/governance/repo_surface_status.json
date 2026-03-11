@@ -1,0 +1,120 @@
+{
+  "checks": {
+    "document_buckets_present": true,
+    "root_authority_surface_clean": true,
+    "surface_groups_present": true,
+    "transitional_boundaries_intact": true
+  },
+  "expected_docs": {
+    "ai_fun_guard": {
+      "path": "docs/guards/AI_FUN_GUARD.md",
+      "present": true
+    },
+    "autonomy_stack": {
+      "path": "docs/operations/AUTONOMY_STACK.md",
+      "present": true
+    },
+    "autonomy_target": {
+      "path": "docs/standards/AUTONOMY_TARGET.md",
+      "present": true
+    },
+    "canon_lock": {
+      "path": "docs/guards/CANON_LOCK.md",
+      "present": true
+    },
+    "documentation_map": {
+      "path": "docs/standards/DOCUMENTATION_MAP.md",
+      "present": true
+    },
+    "gameplay_variance_rules": {
+      "path": "docs/guards/GAMEPLAY_VARIANCE_RULES.md",
+      "present": true
+    },
+    "korean_player_feel": {
+      "path": "docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md",
+      "present": true
+    }
+  },
+  "generated_at_utc": "2026-03-11T16:23:44.762063+00:00",
+  "status": "pass",
+  "surface_groups": {
+    "data_and_design_graph": {
+      "all_present": true,
+      "paths": [
+        "data",
+        "data/design_graph",
+        "data/balance",
+        "data/liveops"
+      ]
+    },
+    "documentation": {
+      "all_present": true,
+      "paths": [
+        "docs/standards",
+        "docs/guards",
+        "docs/reference",
+        "docs/legacy",
+        "docs/operations"
+      ]
+    },
+    "evaluation": {
+      "all_present": true,
+      "paths": [
+        "metrics_engine",
+        "simulation_py",
+        "simulation_lua",
+        "tests"
+      ]
+    },
+    "generation_and_execution": {
+      "all_present": true,
+      "paths": [
+        "ai_evolution_offline",
+        "scripts",
+        "scripts/codex"
+      ]
+    },
+    "offline_control": {
+      "all_present": true,
+      "paths": [
+        "offline_ops",
+        "offline_ops/autonomy",
+        "offline_ops/codex_state"
+      ]
+    },
+    "runtime": {
+      "all_present": true,
+      "paths": [
+        "msw_runtime",
+        "shared_rules",
+        "content_build"
+      ]
+    }
+  },
+  "transitional_boundaries": {
+    "msw_runtime_has_entry_state": {
+      "all_present": true,
+      "paths": [
+        "msw_runtime/entry",
+        "msw_runtime/state"
+      ]
+    },
+    "offline_autonomy_has_event_queue_state": {
+      "all_present": true,
+      "paths": [
+        "offline_ops/autonomy/event_log.py",
+        "offline_ops/autonomy/job_queue.py",
+        "offline_ops/autonomy/snapshots.py",
+        "offline_ops/autonomy/supervisor.py"
+      ]
+    },
+    "ops_is_prompt_only": {
+      "all_present": true,
+      "paths": [
+        "ops/prompts",
+        "ops/codex_state"
+      ]
+    }
+  },
+  "unexpected_root_markdown": []
+}

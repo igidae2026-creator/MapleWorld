@@ -9,10 +9,10 @@
   "dead_zones": [],
   "exploration_bottlenecks": [],
   "exploration_flow": 0.8385,
-  "node_utilization": 0.4888,
+  "node_utilization": 0.4897,
   "overcrowded_nodes": [],
-  "path_entropy": 0.9308,
+  "path_entropy": 0.9306,
   "reasons": [],
   "status": "allow",
-  "travel_friction": 0.2371
+  "travel_friction": 0.2369
 }

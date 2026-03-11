@@ -1,0 +1,23 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-11T17:13:46.554446+00:00",
+  "job_id": "repair_final_threshold_gap-2240623eb15f",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "conservative_gameplay_depth",
+    "repair_action": "repair content depth, long-session variation, and session-fatigue resistance until likely Korean-player criticism is no longer valid"
+  },
+  "priority": 30,
+  "result": {
+    "handled_job_type": "repair_final_threshold_gap",
+    "job_id": "repair_final_threshold_gap-2240623eb15f",
+    "next_action": "queued_final_threshold_repair",
+    "repair": {
+      "criterion": "conservative_gameplay_depth",
+      "repair_action": "repair content depth, long-session variation, and session-fatigue resistance until likely Korean-player criticism is no longer valid"
+    }
+  },
+  "status": "done",
+  "updated_at": "2026-03-11T17:13:47.205590+00:00",
+  "worker_id": "autonomy-daemon-20260312_021337-1"
+}

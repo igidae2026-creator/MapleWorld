@@ -1,0 +1,23 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-11T15:56:37.105177+00:00",
+  "job_id": "repair_final_threshold_gap-99453d9b4ef8",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "korean_player_feel_authenticity",
+    "repair_action": "repair Korean player-facing feel, dialogue naturalness, and replay desire quality"
+  },
+  "priority": 30,
+  "result": {
+    "handled_job_type": "repair_final_threshold_gap",
+    "job_id": "repair_final_threshold_gap-99453d9b4ef8",
+    "next_action": "queued_final_threshold_repair",
+    "repair": {
+      "criterion": "korean_player_feel_authenticity",
+      "repair_action": "repair Korean player-facing feel, dialogue naturalness, and replay desire quality"
+    }
+  },
+  "status": "done",
+  "updated_at": "2026-03-11T15:56:37.673573+00:00",
+  "worker_id": "autonomy-daemon-20260312_005631-1"
+}

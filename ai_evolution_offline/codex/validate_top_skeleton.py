@@ -18,9 +18,12 @@ LAYER3_PATH = ROOT / "CHECKLIST_LAYER3_REPO매핑.md"
 PATCH_METHOD_PATH = ROOT / "CHECKLIST_METHOD_패치.md"
 COVERAGE_PATH = ROOT / "COVERAGE_AUDIT.csv"
 CONFLICT_PATH = ROOT / "CONFLICT_LOG.csv"
+KOREAN_PLAYER_FEEL_STANDARD_PATH = ROOT / "docs" / "standards" / "KOREAN_PLAYER_FEEL_STANDARD.md"
+DOCUMENTATION_MAP_PATH = ROOT / "docs" / "standards" / "DOCUMENTATION_MAP.md"
 PLAYER_EXPERIENCE_PATH = ROOT / "offline_ops" / "codex_state" / "simulation_runs" / "player_experience_metrics_latest.json"
 GOVERNANCE_STATUS_PATH = ROOT / "offline_ops" / "codex_state" / "governance" / "coverage_conflict_status.json"
 FINAL_THRESHOLD_EVAL_PATH = ROOT / "offline_ops" / "codex_state" / "final_threshold_eval.json"
+REPO_SURFACE_STATUS_PATH = ROOT / "offline_ops" / "codex_state" / "governance" / "repo_surface_status.json"
 
 
 def _check(condition: bool, code: str, detail: str) -> dict[str, object]:
@@ -59,7 +62,10 @@ def main() -> int:
         PATCH_METHOD_PATH,
         COVERAGE_PATH,
         CONFLICT_PATH,
+        KOREAN_PLAYER_FEEL_STANDARD_PATH,
+        DOCUMENTATION_MAP_PATH,
         FINAL_THRESHOLD_EVAL_PATH,
+        REPO_SURFACE_STATUS_PATH,
     ]
     for path in required_files:
         checks.append(_check(path.exists(), "required_file", f"{path.name} exists"))
@@ -108,6 +114,34 @@ def main() -> int:
                 ),
                 "final_threshold_bundle_contract",
                 "final threshold bundle artifact exists with the required contract",
+            ),
+            _check(
+                "Korean Player-Feel Rule" in goal_text and "game-literate Korean player" in goal_text,
+                "goal_korean_player_feel_rule",
+                "GOAL.md anchors Korean player-feel authority",
+            ),
+            _check(
+                "Korean player-facing standard" in layer1_text or "Korean player-feel authority" in layer1_text,
+                "layer1_korean_player_feel_mapping",
+                "Layer 1 maps Korean player-feel objective authority",
+            ),
+            _check(
+                "docs/standards/DOCUMENTATION_MAP.md" in layer3_text and "Documentation Authority" in layer3_text,
+                "layer3_documentation_authority_mapping",
+                "Layer 3 maps documentation authority files",
+            ),
+            _check(
+                DOCUMENTATION_MAP_PATH.exists()
+                and "Top Authority" in DOCUMENTATION_MAP_PATH.read_text(encoding="utf-8")
+                and "Legacy Or Session-Bound Material" in DOCUMENTATION_MAP_PATH.read_text(encoding="utf-8"),
+                "documentation_map_authority_split",
+                "documentation map classifies authority and legacy docs",
+            ),
+            _check(
+                REPO_SURFACE_STATUS_PATH.exists()
+                and json.loads(REPO_SURFACE_STATUS_PATH.read_text(encoding="utf-8")).get("status") == "pass",
+                "repo_surface_audit_passes",
+                "repo surface audit confirms MSW runtime, offline control, evaluation, and doc buckets are intact",
             ),
         ]
     )

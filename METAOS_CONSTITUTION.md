@@ -22,6 +22,8 @@ The system exists to improve actual player experience, not merely to accumulate 
 
 The repository must evolve toward MapleLand-class player feel with strong first-session readability, hour-one retention pressure, day-one return intent, stable economy coherence, and durable social density.
 
+Gameplay quality claims must be anchored to the Korean player-facing standard in `docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md`, not only to system closure or structural score stability.
+
 ## 4. Authority Order
 
 Authority flows in this order:

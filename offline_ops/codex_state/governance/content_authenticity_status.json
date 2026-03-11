@@ -1,0 +1,30 @@
+{
+  "blocking_hotspots": {
+    "dialogue_maps": [],
+    "npc_regions": [],
+    "quest_start_npcs": []
+  },
+  "counts": {
+    "dialogues": 18480,
+    "npcs": 947,
+    "placeholder_dialogues": 0,
+    "placeholder_npcs": 0,
+    "placeholder_quests": 0,
+    "quests": 1080
+  },
+  "generated_at_utc": "2026-03-11T17:39:14.318029+00:00",
+  "ratios": {
+    "dialogue_korean_surface_ratio": 1.0,
+    "dialogue_placeholder_ratio": 0.0,
+    "npc_korean_surface_ratio": 1.0,
+    "npc_placeholder_ratio": 0.0,
+    "quest_korean_surface_ratio": 1.0,
+    "quest_placeholder_ratio": 0.0
+  },
+  "repair_priorities": [
+    "replace template NPC names and personalities with authored Korean-facing identities",
+    "rewrite dialogue text away from schema filler and id-bearing English placeholders",
+    "rewrite quest names and narrative/guidance into lived Korean player motivation"
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,23 @@
+{
+  "attempts": 1,
+  "created_at": "2026-03-11T16:19:33.300022+00:00",
+  "job_id": "repair_final_threshold_gap-1e8b9561ae1f",
+  "job_type": "repair_final_threshold_gap",
+  "payload": {
+    "criterion": "scoped_intake_and_promotion",
+    "repair_action": "repair scope/authority/policy intake and promotion path"
+  },
+  "priority": 30,
+  "result": {
+    "handled_job_type": "repair_final_threshold_gap",
+    "job_id": "repair_final_threshold_gap-1e8b9561ae1f",
+    "next_action": "queued_final_threshold_repair",
+    "repair": {
+      "criterion": "scoped_intake_and_promotion",
+      "repair_action": "repair scope/authority/policy intake and promotion path"
+    }
+  },
+  "status": "done",
+  "updated_at": "2026-03-11T16:19:35.951761+00:00",
+  "worker_id": "autonomy-daemon-20260312_011935-4"
+}

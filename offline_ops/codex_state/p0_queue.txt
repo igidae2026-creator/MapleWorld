@@ -35,3 +35,12 @@
 [ ] P0-31 party_finder_viability
 
 [ ] P0-32 event_journal_replay_recovery_stabilization
+[ ] FINAL-closed_loop_completion repair loop closure, state logging, or next-task continuation
+[ ] FINAL-quality_gate_fail_closed repair fail-closed gate, veto, or validator path
+[ ] FINAL-msw_constraint_preservation repair MSW authority/topology boundary enforcement
+[ ] FINAL-fault_input_absorption repair fault hold/reject/recover and intake promotion routing
+[ ] FINAL-scoped_intake_and_promotion repair scope/authority/policy intake and promotion path
+[ ] FINAL-korean_player_feel_authenticity repair Korean player-facing feel, dialogue naturalness, and replay desire quality
+[ ] FINAL-content_authenticity_density repair placeholder-heavy NPC, dialogue, and quest content into authored Korean-facing content
+[ ] FINAL-economy_control_stability repair map-scoped economy coherence and sink/faucet pressure
+[ ] FINAL-conservative_gameplay_depth repair content depth, long-session variation, and session-fatigue resistance until likely Korean-player criticism is no longer valid

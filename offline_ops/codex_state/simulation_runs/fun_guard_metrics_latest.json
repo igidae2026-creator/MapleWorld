@@ -205,15 +205,15 @@
           "efficiency_profile": "route_flex",
           "map_id": "minar_lower_trail",
           "reward_identity_tag": "rare_excitement",
-          "reward_pressure_proxy": 1.15,
-          "throughput_proxy": 1.11
+          "reward_pressure_proxy": 1.2,
+          "throughput_proxy": 1.14
         },
         "high_risk_high_reward": {
           "efficiency_profile": "burst_reward",
           "map_id": "ancient_hidden_domains_rift",
           "reward_identity_tag": "jackpot_drop",
-          "reward_pressure_proxy": 1.25,
-          "throughput_proxy": 1.18
+          "reward_pressure_proxy": 1.21,
+          "throughput_proxy": 1.15
         },
         "safe": {
           "efficiency_profile": "stable_grind",
@@ -235,15 +235,15 @@
           "efficiency_profile": "route_flex",
           "map_id": "coastal_harbors_docks",
           "reward_identity_tag": "gear_upgrade",
-          "reward_pressure_proxy": 1.13,
-          "throughput_proxy": 1.1
+          "reward_pressure_proxy": 1.16,
+          "throughput_proxy": 1.15
         },
         "high_risk_high_reward": {
           "efficiency_profile": "burst_reward",
           "map_id": "sleepywood_sinkhole",
           "reward_identity_tag": "jackpot_drop",
           "reward_pressure_proxy": 1.22,
-          "throughput_proxy": 1.21
+          "throughput_proxy": 1.16
         },
         "safe": {
           "efficiency_profile": "stable_grind",
@@ -265,15 +265,15 @@
           "efficiency_profile": "route_flex",
           "map_id": "orbis_cloud_bridge",
           "reward_identity_tag": "gear_upgrade",
-          "reward_pressure_proxy": 1.14,
-          "throughput_proxy": 1.1
+          "reward_pressure_proxy": 1.17,
+          "throughput_proxy": 1.15
         },
         "high_risk_high_reward": {
           "efficiency_profile": "burst_reward",
           "map_id": "dungeon_black_gate",
           "reward_identity_tag": "jackpot_drop",
-          "reward_pressure_proxy": 1.29,
-          "throughput_proxy": 1.21
+          "reward_pressure_proxy": 1.24,
+          "throughput_proxy": 1.16
         },
         "safe": {
           "efficiency_profile": "stable_grind",

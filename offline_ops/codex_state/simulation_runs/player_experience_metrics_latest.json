@@ -5,7 +5,7 @@
   "centers": {
     "authority_safety": 95,
     "day1_return_intent": 90,
-    "economy_coherence": 83,
+    "economy_coherence": 84,
     "first_10_minutes": 89,
     "first_hour_retention": 88,
     "route_variance": 93,
@@ -24,7 +24,7 @@
   "ranges": {
     "authority_safety": "94~95",
     "day1_return_intent": "89~92",
-    "economy_coherence": "82~85",
+    "economy_coherence": "83~86",
     "first_10_minutes": "88~91",
     "first_hour_retention": "87~90",
     "route_variance": "92~95",
@@ -48,6 +48,7 @@
       "solo_grinder": 3
     },
     "anchor_zone_count": 6,
+    "exhausted_early02_shadow_relief": true,
     "fun_guard_centers": {
       "distinctiveness": 94,
       "early_loop_texture": 95,
@@ -55,6 +56,8 @@
       "memorable_rewards": 95,
       "variance_health": 94
     },
+    "locked_cluster_relief_bonus": 2.127,
+    "locked_early02_cluster": true,
     "quality_centers": {
       "boss_quality_proxy": 90,
       "channel_routing_balance": 82,

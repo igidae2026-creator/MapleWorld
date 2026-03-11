@@ -1,0 +1,33 @@
+{
+  "artifact": "offline_ops/codex_state/governance/gameplay_depth_status.json",
+  "failures": [],
+  "generated_at_utc": "2026-03-11T17:39:14.580057+00:00",
+  "metrics": {
+    "dialogue_count": 18480,
+    "dialogue_map_count": 900,
+    "dialogue_text_unique_ratio": 0.2797,
+    "exploration_stagnation_index": 0.5455,
+    "exploration_stagnation_status": "allow",
+    "npc_count": 947,
+    "npc_region_count": 12,
+    "quest_count": 1080,
+    "quest_guidance_unique_ratio": 0.1009,
+    "quest_narrative_unique_ratio": 0.3176,
+    "quest_start_npc_count": 26,
+    "transition_total": 77
+  },
+  "status": "pass",
+  "thresholds": {
+    "dialogue_count_min": 18000,
+    "dialogue_map_count_min": 800,
+    "dialogue_text_unique_ratio_min": 0.05,
+    "exploration_stagnation_max": 0.56,
+    "npc_count_min": 900,
+    "npc_region_count_min": 10,
+    "quest_count_min": 1000,
+    "quest_guidance_unique_ratio_min": 0.08,
+    "quest_narrative_unique_ratio_min": 0.22,
+    "quest_start_npc_count_min": 20,
+    "transition_total_min": 70
+  }
+}

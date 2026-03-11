@@ -169,6 +169,16 @@ def build_economy_pressure_metrics(python_data: dict[str, object] | None = None)
 
     top_pressure_nodes = [{"node": node, "pressure": round(value, 4)} for node, value in top_nodes]
     regional_reward_redistribution = dict(propagation.get("regional_reward_redistribution", {}))
+    top_pressure_gap = 0.0
+    top_pressure_ratio = 1.0
+    top_pressure_concentration = 0.0
+    if top_nodes:
+        strongest = float(top_nodes[0][1])
+        comparison = float(top_nodes[min(3, len(top_nodes) - 1)][1])
+        top_pressure_gap = max(0.0, strongest - comparison)
+        top_pressure_ratio = strongest / max(0.0001, comparison)
+        total_top = sum(value for _, value in top_nodes[:6]) or 1.0
+        top_pressure_concentration = strongest / total_top
 
     return {
         "drop_pressure": round(drop_pressure, 4),
@@ -188,6 +198,9 @@ def build_economy_pressure_metrics(python_data: dict[str, object] | None = None)
         },
         "sink_source_tracking": tracking,
         "top_pressure_nodes": top_pressure_nodes,
+        "top_pressure_gap": round(top_pressure_gap, 4),
+        "top_pressure_ratio": round(top_pressure_ratio, 4),
+        "top_pressure_concentration": round(top_pressure_concentration, 4),
         "regional_reward_redistribution": regional_reward_redistribution,
         "reward_pressure_propagation": {
             "top_pressure_nodes": top_pressure_nodes,

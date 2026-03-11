@@ -15,7 +15,7 @@ Responsibility:
 
 ## Player Experience Evaluation Module
 
-- `QUALITY_GATES.md`
+- `docs/reference/QUALITY_GATES.md`
 - `metrics_engine/player_experience_metrics.py`
 - `offline_ops/codex_state/simulation_runs/player_experience_metrics_latest.json`
 
@@ -26,8 +26,8 @@ Responsibility:
 
 ## Autonomous Execution Module
 
-- `EXECUTION_LOOP.md`
-- `AUTONOMY_STACK.md`
+- `docs/reference/EXECUTION_LOOP.md`
+- `docs/operations/AUTONOMY_STACK.md`
 - `UNIVERSAL_FINAL_THRESHOLD_BUNDLE.md`
 - `ai_evolution_offline/codex/run_bottleneck_loop.sh`
 - `auto_continue.sh`
@@ -76,7 +76,7 @@ Responsibility:
 
 ## Outer Intake and Promotion Module
 
-- `AUTONOMY_STACK.md`
+- `docs/operations/AUTONOMY_STACK.md`
 - `METAOS_CONSTITUTION.md`
 - `GOAL.md`
 

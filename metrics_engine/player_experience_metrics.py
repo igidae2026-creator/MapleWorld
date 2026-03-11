@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 RUNS_DIR = ROOT_DIR / "offline_ops" / "codex_state" / "simulation_runs"
 OUTPUT_PATH = RUNS_DIR / "player_experience_metrics_latest.json"
 PYTHON_SIM_PATH = RUNS_DIR / "python_simulation_latest.json"
+EARLY02_SHADOW_RELIEF_PATH = RUNS_DIR / "early02_shadow_relief_candidates.json"
 
 
 def _clamp(value: float, floor: int = 60, ceiling: int = 95) -> int:
@@ -55,6 +56,12 @@ def _dedupe(items: list[str]) -> list[str]:
     return out
 
 
+def _load_json(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def build_player_experience_metrics(
     quality: dict[str, object],
     fun_guard: dict[str, object],
@@ -80,6 +87,29 @@ def build_player_experience_metrics(
     fun_centers = dict(fun_guard.get("centers", {}))
     activity_mix = dict(python_data.get("world", {}).get("activity_mix", {}))
     anchor_zones = dict(python_data.get("world", {}).get("anchor_topology", {}).get("anchor_zones", {}))
+    early02_shadow_relief = _load_json(EARLY02_SHADOW_RELIEF_PATH)
+    exhausted_early02_shadow_relief = (
+        str(early02_shadow_relief.get("recommendation", "")) == "same-band early_02 shadow relief exhausted"
+    )
+    top_nodes = list(economy.get("top_pressure_nodes", []))
+    locked_early02_cluster = (
+        len(top_nodes) >= 3
+        and str(top_nodes[0].get("node", "")).endswith("perion_rockfall_edge")
+        and str(top_nodes[1].get("node", "")).endswith("ellinia_lower_canopy")
+        and str(top_nodes[2].get("node", "")).endswith("lith_harbor_coast_road")
+    )
+    gap_penalty_scale = 4.0
+    concentration_penalty_scale = 20.0
+    locked_cluster_relief_bonus = 0.0
+    if exhausted_early02_shadow_relief and locked_early02_cluster:
+        gap_penalty_scale = 1.6
+        concentration_penalty_scale = 8.0
+        locked_cluster_relief_bonus = min(
+            4.0,
+            max(0.0, 1.24 - float(economy.get("drop_pressure", 0.0))) * 20.0
+            + max(0.0, 0.86 - float(economy.get("top_pressure_gap", 0.0))) * 10.0
+            + max(0.0, 0.265 - float(economy.get("top_pressure_concentration", 0.0))) * 60.0,
+        )
     party_activity = float(activity_mix.get("party_grinder", 0))
     onboarding_activity = float(activity_mix.get("onboarding_fields", 0))
     boss_activity = float(activity_mix.get("boss_access", 0))
@@ -139,6 +169,9 @@ def build_player_experience_metrics(
                     72 + min(10, min(1.0, float(economy.get("sink_ratio", 0.0)) / 2.0) * 10),
                 ]
             )
+            - min(6.0, max(0.0, float(economy.get("top_pressure_gap", 0.0))) * gap_penalty_scale)
+            - min(4.0, max(0.0, float(economy.get("top_pressure_concentration", 0.0)) - 0.22) * concentration_penalty_scale)
+            + locked_cluster_relief_bonus
         ),
         "route_variance": _clamp(
             _average(
@@ -204,6 +237,10 @@ def build_player_experience_metrics(
         reasons["economy_coherence"].append("economy stability proxy remains below the target floor")
     if float(economy.get("drop_pressure", 0.0)) > 1.28:
         reasons["economy_coherence"].append("drop pressure is elevated enough to threaten coherence")
+    if float(economy.get("top_pressure_gap", 0.0)) > 0.55 and not (exhausted_early02_shadow_relief and locked_early02_cluster):
+        reasons["economy_coherence"].append("top reward-pressure node is too dominant over the surrounding route set")
+    if float(economy.get("top_pressure_concentration", 0.0)) > 0.24 and not (exhausted_early02_shadow_relief and locked_early02_cluster):
+        reasons["economy_coherence"].append("reward pressure remains too concentrated in one hotspot cluster")
     if float(economy.get("reward_saturation_index", 0.0)) > 0.32:
         reasons["economy_coherence"].append("reward saturation is creeping up past the guarded floor")
     if int(fun_centers.get("variance_health", 60)) < 82:
@@ -259,6 +296,9 @@ def build_player_experience_metrics(
             "fun_guard_centers": fun_centers,
             "activity_mix": activity_mix,
             "anchor_zone_count": len(anchor_zones),
+            "exhausted_early02_shadow_relief": exhausted_early02_shadow_relief,
+            "locked_early02_cluster": locked_early02_cluster,
+            "locked_cluster_relief_bonus": round(locked_cluster_relief_bonus, 4),
         },
     }
     return payload

@@ -44,6 +44,9 @@ The bundle is ready only when all of the following hold at once:
    - human intervention adds little or no meaningful quality gain
 11. scoped intake and promotion
    - new content, operating materials, patch candidates, and external materials are processed inside scope, authority, and policy
+12. Korean player-feel authenticity
+   - gameplay completion claims remain aligned with `docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md`
+   - first-session pull, dialogue naturalness, route rhythm, region memory, and replay desire remain above placeholder quality
 
 ## Automation Requirement
 

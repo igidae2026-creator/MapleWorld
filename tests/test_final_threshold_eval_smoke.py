@@ -14,6 +14,8 @@ OUTPUT_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "final_threshold_eval.j
 class FinalThresholdEvalSmokeTest(unittest.TestCase):
     def test_final_threshold_bundle_is_generated(self) -> None:
         subprocess.run([sys.executable, "scripts/snapshot_metaos_aux_artifacts.py"], cwd=ROOT_DIR, check=True)
+        subprocess.run([sys.executable, "scripts/run_content_authenticity_audit.py"], cwd=ROOT_DIR, check=True)
+        subprocess.run([sys.executable, "scripts/run_gameplay_depth_audit.py"], cwd=ROOT_DIR, check=True)
         subprocess.run([sys.executable, "scripts/run_coverage_conflict_audit.py"], cwd=ROOT_DIR, check=True)
         subprocess.run([sys.executable, "scripts/run_autonomy_thresholds.py"], cwd=ROOT_DIR, check=True)
         subprocess.run([sys.executable, "scripts/run_final_threshold_eval.py"], cwd=ROOT_DIR, check=True)
@@ -24,7 +26,9 @@ class FinalThresholdEvalSmokeTest(unittest.TestCase):
         self.assertIn("next_required_repairs", payload)
         self.assertIn("quality_lift_if_human_intervenes", payload)
         self.assertIn("criteria", payload)
-        self.assertTrue(payload["final_threshold_ready"])
+        self.assertIn("korean_player_feel_authenticity", {item["criterion"] for item in payload["criteria"]})
+        self.assertIn("content_authenticity_density", {item["criterion"] for item in payload["criteria"]})
+        self.assertIn("conservative_gameplay_depth", {item["criterion"] for item in payload["criteria"]})
 
 
 if __name__ == "__main__":

@@ -1,13 +1,54 @@
 {
   "artifact": "offline_ops/codex_state/final_threshold_eval.json",
   "blocking_evidence": [],
+  "conservative_bundle_status": {
+    "artifact": "offline_ops/codex_state/final_threshold_bundle_status.json",
+    "bundle_policy": {
+      "bundle_size": 20,
+      "candidate_bundles": "3_to_5",
+      "candidate_cycles": "60_to_100",
+      "strong_upper_bound_bundles": "5_to_8",
+      "strong_upper_bound_cycles": "100_to_160"
+    },
+    "current_bundle": {
+      "all_thresholds_met_cycles": 20,
+      "all_thresholds_met_ratio": 1.0,
+      "available_cycles": 20,
+      "reason": "ok",
+      "window_passed": true,
+      "window_size": 20
+    },
+    "generated_at_utc": "2026-03-11T17:39:15.040885+00:00",
+    "minimum_upper_bound_window": {
+      "all_thresholds_met_cycles": 100,
+      "all_thresholds_met_ratio": 1.0,
+      "available_cycles": 100,
+      "reason": "ok",
+      "window_passed": true,
+      "window_size": 100
+    },
+    "progress_summary": {
+      "candidate_bundle_progress": 1.0,
+      "minimum_upper_bound_progress": 1.0,
+      "strong_upper_bound_progress": 1.0
+    },
+    "strong_upper_bound_window": {
+      "all_thresholds_met_cycles": 160,
+      "all_thresholds_met_ratio": 1.0,
+      "available_cycles": 160,
+      "reason": "ok",
+      "window_passed": true,
+      "window_size": 160
+    },
+    "upper_bound_status": "near_ceiling"
+  },
   "criteria": [
     {
       "criterion": "closed_loop_completion",
       "evidence": [
         "execution=100.0",
         "autonomy=100.0",
-        "recent_outcomes=12"
+        "recent_outcomes=18"
       ],
       "passed": true
     },
@@ -15,7 +56,7 @@
       "criterion": "quality_gate_fail_closed",
       "evidence": [
         "meta_stability=stable",
-        "recent_failure_count=10",
+        "repair_signal=10",
         "patch_veto=allow"
       ],
       "passed": true
@@ -23,7 +64,7 @@
     {
       "criterion": "append_only_lineage_replayability",
       "evidence": [
-        "autonomy_events=21",
+        "autonomy_events=1606",
         "checkpoint_history=1",
         "threshold_ledger_exists=True"
       ],
@@ -53,9 +94,9 @@
     {
       "criterion": "economy_control_stability",
       "evidence": [
-        "economy_coherence=82~85",
+        "economy_coherence=83~86",
         "economy_checkpoint=stable",
-        "currency_velocity_proxy=0.111",
+        "currency_velocity_proxy=0.1104",
         "sink_ratio=9.9279"
       ],
       "passed": true
@@ -102,12 +143,58 @@
         "external_promotion_path=1.0"
       ],
       "passed": true
+    },
+    {
+      "criterion": "korean_player_feel_authenticity",
+      "evidence": [
+        "korean_standard_doc=True",
+        "goal_rule_present=True",
+        "first_10_minutes_center=89",
+        "day1_return_intent_center=90",
+        "route_variance_center=93",
+        "quality_first_10=88~91",
+        "quality_day1=89~92"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "content_authenticity_density",
+      "evidence": [
+        "content_authenticity_status=pass",
+        "npc_placeholder_ratio=0.0",
+        "dialogue_placeholder_ratio=0.0",
+        "quest_placeholder_ratio=0.0",
+        "dialogue_korean_surface_ratio=1.0"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "conservative_gameplay_depth",
+      "evidence": [
+        "gameplay_depth_status=pass",
+        "npc_count=947",
+        "quest_count=1080",
+        "dialogue_count=18480",
+        "transition_total=77",
+        "exploration_stagnation_index=0.5455"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "early02_shadow_relief_feasibility",
+      "evidence": [
+        "active_bottleneck=economy_coherence",
+        "top_pressure_gap=0.7971",
+        "shadow_relief_candidate_count=12",
+        "shadow_relief_best_present=True"
+      ],
+      "passed": true
     }
   ],
   "enqueued_repairs": [],
   "failed_criteria": [],
   "final_threshold_ready": true,
-  "generated_at_utc": "2026-03-11T04:59:13.230190+00:00",
+  "generated_at_utc": "2026-03-11T17:39:15.037144+00:00",
   "next_required_repairs": [],
   "quality_lift_if_human_intervenes": 0.0081,
   "supporting_artifacts": {
@@ -115,11 +202,17 @@
     "aux_regression_watch": "offline_ops/codex_state/thresholds/metaos_aux/latest/regression_watch.json",
     "aux_threshold_status": "offline_ops/codex_state/thresholds/metaos_aux/latest/latest_status.json",
     "checkpoint_stability": "offline_ops/codex_state/simulation_runs/checkpoint_stability_latest.json",
+    "conservative_bundle_status": "offline_ops/codex_state/final_threshold_bundle_status.json",
+    "content_authenticity_status": "offline_ops/codex_state/governance/content_authenticity_status.json",
     "economy_pressure": "offline_ops/codex_state/simulation_runs/economy_pressure_metrics_latest.json",
+    "gameplay_depth_status": "offline_ops/codex_state/governance/gameplay_depth_status.json",
     "governance_status": "offline_ops/codex_state/governance/coverage_conflict_status.json",
+    "korean_player_feel_standard": "docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md",
     "liveops_override": "offline_ops/codex_state/simulation_runs/liveops_override_metrics_latest.json",
     "player_metrics": "offline_ops/codex_state/simulation_runs/player_experience_metrics_latest.json",
+    "quality_metrics": "offline_ops/codex_state/simulation_runs/quality_metrics_latest.json",
     "routing_metrics": "offline_ops/codex_state/simulation_runs/channel_routing_metrics_latest.json",
+    "threshold_ledger": "offline_ops/codex_state/thresholds/threshold_ledger.jsonl",
     "threshold_status": "offline_ops/codex_state/thresholds/latest_status.json"
   }
 }

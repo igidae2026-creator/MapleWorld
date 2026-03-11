@@ -10,14 +10,14 @@
     "adaptive_controls": {
       "anti_loop_economy_dampening": 0.74,
       "boss_field_reward_separation_preservation": 1.08,
-      "dynamic_drop_adjustment": 0.9926,
+      "dynamic_drop_adjustment": 1.0157,
       "regional_reward_pressure_redistribution": {
-        "region:coastal_harbors": 1.0976,
-        "region:ellinia_forest": 1.0976,
-        "region:orbis_skyrealm": 1.0979,
+        "region:coastal_harbors": 1.0869,
+        "region:ellinia_forest": 1.0972,
+        "region:orbis_skyrealm": 1.0802,
         "region:starter_fields": 0.75
       },
-      "reward_distribution_smoothing": 0.9752,
+      "reward_distribution_smoothing": 0.9563,
       "rollback_safe_economy_intervention_profiles": [
         {
           "actions": {
@@ -70,9 +70,9 @@
       "sink_amplification": 1.0
     },
     "economy_flow": {
-      "adjusted_item_generation": 8018.4969,
+      "adjusted_item_generation": 8045.6966,
       "adjusted_mesos_removed": 237287.0,
-      "currency_velocity_proxy": 0.111,
+      "currency_velocity_proxy": 0.1104,
       "item_generation": 9794.7222,
       "mesos_generation": 23901.0,
       "mesos_removed": 237287.0,
@@ -80,7 +80,7 @@
       "sink_ratio": 9.9279
     },
     "pressure_context": {
-      "drop_pressure": 1.2765,
+      "drop_pressure": 1.1996,
       "farming_loop_risk": 0.0,
       "inflation_pressure": 0.0007,
       "item_desirability_gradient": 0.1463,
@@ -89,51 +89,51 @@
     },
     "reward_pressure_propagation": {
       "node_reward_pressure": {
-        "map:ancient_hidden_domains_rift": 0.3322,
-        "map:coastal_harbors_docks": 0.3228,
-        "map:dungeon_black_gate": 0.3355,
-        "map:ellinia_lower_canopy": 1.2715,
+        "map:ancient_hidden_domains_rift": 0.3804,
+        "map:coastal_harbors_docks": 0.3288,
+        "map:dungeon_black_gate": 0.3299,
+        "map:ellinia_lower_canopy": 1.196,
         "map:elnath_snowfield_patrol": 0.31,
         "map:kerning_backstreet": 0.31,
-        "map:lith_harbor_coast_road": 1.2121,
+        "map:lith_harbor_coast_road": 1.1545,
         "map:ludibrium_outer_walk": 0.31,
-        "map:minar_lower_trail": 0.324,
-        "map:orbis_cloud_bridge": 0.3228,
-        "map:perion_rockfall_edge": 1.2765,
-        "map:sleepywood_sinkhole": 0.3355
+        "map:minar_lower_trail": 0.3999,
+        "map:orbis_cloud_bridge": 0.4025,
+        "map:perion_rockfall_edge": 1.1996,
+        "map:sleepywood_sinkhole": 0.3299
       },
       "regional_reward_redistribution": {
-        "region:coastal_harbors": 1.0976,
-        "region:ellinia_forest": 1.0976,
-        "region:orbis_skyrealm": 1.0979,
+        "region:coastal_harbors": 1.0869,
+        "region:ellinia_forest": 1.0972,
+        "region:orbis_skyrealm": 1.0802,
         "region:starter_fields": 0.75
       }
     },
     "sink_source_tracking": {
       "item_sinks_by_route": {
-        "alternative": 2697.0619,
-        "high_risk_high_reward": 2743.5152,
-        "safe": 2577.9199
+        "alternative": 2814.9959,
+        "high_risk_high_reward": 2709.2763,
+        "safe": 2521.4244
       },
       "item_sources_by_boss_tier": {
         "tier_early": 1958.9444
       },
       "item_sources_by_route": {
-        "alternative": 3294.5042,
-        "high_risk_high_reward": 3351.2477,
-        "safe": 3148.9703
+        "alternative": 3426.9379,
+        "high_risk_high_reward": 3298.2363,
+        "safe": 3069.548
       },
       "mesos_sinks_by_region": {
-        "region:coastal_harbors": 34484.2339,
-        "region:ellinia_forest": 34484.2339,
-        "region:orbis_skyrealm": 34409.4462,
-        "region:starter_fields": 133909.0859
+        "region:coastal_harbors": 37186.7953,
+        "region:ellinia_forest": 34557.6061,
+        "region:orbis_skyrealm": 38895.5899,
+        "region:starter_fields": 126647.0087
       },
       "mesos_sources_by_region": {
-        "region:coastal_harbors": 3473.4633,
-        "region:ellinia_forest": 3473.4633,
-        "region:orbis_skyrealm": 3465.9302,
-        "region:starter_fields": 13488.1433
+        "region:coastal_harbors": 3745.6818,
+        "region:ellinia_forest": 3480.8537,
+        "region:orbis_skyrealm": 3917.802,
+        "region:starter_fields": 12756.6624
       }
     }
   },
@@ -330,23 +330,40 @@
             "new_channel_count": 2
           }
         ],
+        "hotspot_break_rerouting": [
+          {
+            "amount": 0.6239,
+            "from": "map:ellinia_lower_canopy",
+            "to": "map:minar_lower_trail"
+          },
+          {
+            "amount": 0.448,
+            "from": "map:lith_harbor_coast_road",
+            "to": "map:ancient_hidden_domains_rift"
+          },
+          {
+            "amount": 0.6399,
+            "from": "map:perion_rockfall_edge",
+            "to": "map:orbis_cloud_bridge"
+          }
+        ],
         "soft_rerouting": [],
         "spawn_redistribution": [
           {
             "map_id": "map:ancient_hidden_domains_rift",
-            "spawn_multiplier": 0.9301
+            "spawn_multiplier": 0.9407
           },
           {
             "map_id": "map:coastal_harbors_docks",
-            "spawn_multiplier": 0.928
+            "spawn_multiplier": 0.9293
           },
           {
             "map_id": "map:dungeon_black_gate",
-            "spawn_multiplier": 0.9308
+            "spawn_multiplier": 0.9296
           },
           {
             "map_id": "map:ellinia_lower_canopy",
-            "spawn_multiplier": 1.095
+            "spawn_multiplier": 1.0686
           },
           {
             "map_id": "map:elnath_snowfield_patrol",
@@ -358,7 +375,7 @@
           },
           {
             "map_id": "map:lith_harbor_coast_road",
-            "spawn_multiplier": 1.0742
+            "spawn_multiplier": 1.0541
           },
           {
             "map_id": "map:ludibrium_outer_walk",
@@ -366,19 +383,19 @@
           },
           {
             "map_id": "map:minar_lower_trail",
-            "spawn_multiplier": 0.9283
+            "spawn_multiplier": 0.945
           },
           {
             "map_id": "map:orbis_cloud_bridge",
-            "spawn_multiplier": 0.928
+            "spawn_multiplier": 0.9456
           },
           {
             "map_id": "map:perion_rockfall_edge",
-            "spawn_multiplier": 1.0968
+            "spawn_multiplier": 1.0699
           },
           {
             "map_id": "map:sleepywood_sinkhole",
-            "spawn_multiplier": 0.9308
+            "spawn_multiplier": 0.9296
           }
         ]
       },
@@ -387,38 +404,38 @@
         "map:ancient_hidden_domains_rift": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 2.9264
+            "ch_1": 2.852
           },
-          "reward_bias": 1.25,
+          "reward_bias": 1.21,
           "role": "high_risk_high_reward",
-          "spawn_capacity": 6.684,
-          "spawn_multiplier": 0.9301,
-          "target_concurrency": 8.81,
-          "visit_total": 2.9264
+          "spawn_capacity": 6.57,
+          "spawn_multiplier": 0.9407,
+          "target_concurrency": 8.675,
+          "visit_total": 3.3
         },
         "map:coastal_harbors_docks": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 2.728
+            "ch_1": 2.852
           },
-          "reward_bias": 1.13,
+          "reward_bias": 1.16,
           "role": "alternative",
-          "spawn_capacity": 6.38,
-          "spawn_multiplier": 0.928,
-          "target_concurrency": 8.45,
-          "visit_total": 2.728
+          "spawn_capacity": 6.57,
+          "spawn_multiplier": 0.9293,
+          "target_concurrency": 8.675,
+          "visit_total": 2.852
         },
         "map:dungeon_black_gate": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 3.0008
+            "ch_1": 2.8768
           },
-          "reward_bias": 1.29,
+          "reward_bias": 1.24,
           "role": "high_risk_high_reward",
-          "spawn_capacity": 6.798,
-          "spawn_multiplier": 0.9308,
-          "target_concurrency": 8.945,
-          "visit_total": 3.0008
+          "spawn_capacity": 6.608,
+          "spawn_multiplier": 0.9296,
+          "target_concurrency": 8.72,
+          "visit_total": 2.8768
         },
         "map:ellinia_lower_canopy": {
           "channel_count": 2,
@@ -429,9 +446,9 @@
           "reward_bias": 1.07,
           "role": "alternative",
           "spawn_capacity": 6.228,
-          "spawn_multiplier": 1.095,
+          "spawn_multiplier": 1.0686,
           "target_concurrency": 8.27,
-          "visit_total": 10.5152
+          "visit_total": 9.8913
         },
         "map:elnath_snowfield_patrol": {
           "channel_count": 1,
@@ -466,9 +483,9 @@
           "reward_bias": 0.98,
           "role": "safe",
           "spawn_capacity": 5.81,
-          "spawn_multiplier": 1.0742,
+          "spawn_multiplier": 1.0541,
           "target_concurrency": 7.775,
-          "visit_total": 9.424
+          "visit_total": 8.976
         },
         "map:ludibrium_outer_walk": {
           "channel_count": 1,
@@ -485,96 +502,93 @@
         "map:minar_lower_trail": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 2.7528
+            "ch_1": 3.4511
           },
-          "reward_bias": 1.15,
+          "reward_bias": 1.2,
           "role": "alternative",
-          "spawn_capacity": 6.418,
-          "spawn_multiplier": 0.9283,
-          "target_concurrency": 8.495,
-          "visit_total": 2.7528
+          "spawn_capacity": 6.532,
+          "spawn_multiplier": 0.945,
+          "target_concurrency": 8.63,
+          "visit_total": 3.4511
         },
         "map:orbis_cloud_bridge": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 2.728
+            "ch_1": 3.4919
           },
-          "reward_bias": 1.14,
+          "reward_bias": 1.17,
           "role": "alternative",
-          "spawn_capacity": 6.38,
-          "spawn_multiplier": 0.928,
-          "target_concurrency": 8.45,
-          "visit_total": 2.728
+          "spawn_capacity": 6.57,
+          "spawn_multiplier": 0.9456,
+          "target_concurrency": 8.675,
+          "visit_total": 3.4919
         },
         "map:perion_rockfall_edge": {
           "channel_count": 2,
           "channel_loads": {
-            "ch_1": 5.3072,
-            "ch_2": 5.3072
+            "ch_1": 4.9873,
+            "ch_2": 4.9873
           },
           "reward_bias": 1.12,
           "role": "high_risk_high_reward",
           "spawn_capacity": 6.266,
-          "spawn_multiplier": 1.0968,
+          "spawn_multiplier": 1.0699,
           "target_concurrency": 8.315,
-          "visit_total": 10.6144
+          "visit_total": 9.9745
         },
         "map:sleepywood_sinkhole": {
           "channel_count": 1,
           "channel_loads": {
-            "ch_1": 3.0008
+            "ch_1": 2.8768
           },
           "reward_bias": 1.22,
           "role": "high_risk_high_reward",
-          "spawn_capacity": 6.798,
-          "spawn_multiplier": 0.9308,
-          "target_concurrency": 8.945,
-          "visit_total": 3.0008
+          "spawn_capacity": 6.608,
+          "spawn_multiplier": 0.9296,
+          "target_concurrency": 8.72,
+          "visit_total": 2.8768
         }
       },
       "post_adaptation_pressure": {
-        "map:ancient_hidden_domains_rift": 0.3322,
-        "map:coastal_harbors_docks": 0.3228,
-        "map:dungeon_black_gate": 0.3355,
-        "map:ellinia_lower_canopy": 1.2715,
+        "map:ancient_hidden_domains_rift": 0.3804,
+        "map:coastal_harbors_docks": 0.3288,
+        "map:dungeon_black_gate": 0.3299,
+        "map:ellinia_lower_canopy": 1.196,
         "map:elnath_snowfield_patrol": 0.31,
         "map:kerning_backstreet": 0.31,
-        "map:lith_harbor_coast_road": 1.2121,
+        "map:lith_harbor_coast_road": 1.1545,
         "map:ludibrium_outer_walk": 0.31,
-        "map:minar_lower_trail": 0.324,
-        "map:orbis_cloud_bridge": 0.3228,
-        "map:perion_rockfall_edge": 1.2765,
-        "map:sleepywood_sinkhole": 0.3355
+        "map:minar_lower_trail": 0.3999,
+        "map:orbis_cloud_bridge": 0.4025,
+        "map:perion_rockfall_edge": 1.1996,
+        "map:sleepywood_sinkhole": 0.3299
       },
       "pre_adaptation_pressure": {
-        "map:ancient_hidden_domains_rift": 0.3322,
-        "map:coastal_harbors_docks": 0.3228,
-        "map:dungeon_black_gate": 0.3355,
+        "map:ancient_hidden_domains_rift": 0.3288,
+        "map:coastal_harbors_docks": 0.3288,
+        "map:dungeon_black_gate": 0.3299,
         "map:ellinia_lower_canopy": 1.2715,
         "map:elnath_snowfield_patrol": 0.31,
         "map:kerning_backstreet": 0.31,
         "map:lith_harbor_coast_road": 1.2121,
         "map:ludibrium_outer_walk": 0.31,
-        "map:minar_lower_trail": 0.324,
-        "map:orbis_cloud_bridge": 0.3228,
+        "map:minar_lower_trail": 0.3276,
+        "map:orbis_cloud_bridge": 0.3288,
         "map:perion_rockfall_edge": 1.2765,
-        "map:sleepywood_sinkhole": 0.3355
+        "map:sleepywood_sinkhole": 0.3299
       },
       "transition_counts": {
-        "map:ancient_hidden_domains_rift->map:elnath_snowfield_patrol": 3,
+        "map:ancient_hidden_domains_rift->map:minar_lower_trail": 3,
         "map:coastal_harbors_docks->map:kerning_backstreet": 4,
-        "map:dungeon_black_gate->map:orbis_cloud_bridge": 4,
-        "map:ellinia_lower_canopy->map:lith_harbor_coast_road": 8,
-        "map:ellinia_lower_canopy->map:perion_rockfall_edge": 8,
-        "map:elnath_snowfield_patrol->map:minar_lower_trail": 4,
+        "map:dungeon_black_gate->map:ludibrium_outer_walk": 3,
+        "map:ellinia_lower_canopy->map:lith_harbor_coast_road": 16,
+        "map:elnath_snowfield_patrol->map:ancient_hidden_domains_rift": 4,
         "map:kerning_backstreet->map:sleepywood_sinkhole": 4,
-        "map:lith_harbor_coast_road->map:ellinia_lower_canopy": 8,
-        "map:lith_harbor_coast_road->map:perion_rockfall_edge": 7,
-        "map:ludibrium_outer_walk->map:dungeon_black_gate": 3,
-        "map:minar_lower_trail->map:ancient_hidden_domains_rift": 4,
-        "map:orbis_cloud_bridge->map:ludibrium_outer_walk": 4,
-        "map:perion_rockfall_edge->map:ellinia_lower_canopy": 7,
-        "map:perion_rockfall_edge->map:lith_harbor_coast_road": 6,
+        "map:lith_harbor_coast_road->map:perion_rockfall_edge": 15,
+        "map:ludibrium_outer_walk->map:orbis_cloud_bridge": 4,
+        "map:minar_lower_trail->map:elnath_snowfield_patrol": 4,
+        "map:orbis_cloud_bridge->map:dungeon_black_gate": 4,
+        "map:perion_rockfall_edge->map:ellinia_lower_canopy": 13,
         "map:sleepywood_sinkhole->map:coastal_harbors_docks": 3
       }
     },
@@ -674,15 +688,15 @@
             "efficiency_profile": "route_flex",
             "map_id": "minar_lower_trail",
             "reward_identity_tag": "rare_excitement",
-            "reward_pressure_proxy": 1.15,
-            "throughput_proxy": 1.11
+            "reward_pressure_proxy": 1.2,
+            "throughput_proxy": 1.14
           },
           "high_risk_high_reward": {
             "efficiency_profile": "burst_reward",
             "map_id": "ancient_hidden_domains_rift",
             "reward_identity_tag": "jackpot_drop",
-            "reward_pressure_proxy": 1.25,
-            "throughput_proxy": 1.18
+            "reward_pressure_proxy": 1.21,
+            "throughput_proxy": 1.15
           },
           "safe": {
             "efficiency_profile": "stable_grind",
@@ -704,15 +718,15 @@
             "efficiency_profile": "route_flex",
             "map_id": "coastal_harbors_docks",
             "reward_identity_tag": "gear_upgrade",
-            "reward_pressure_proxy": 1.13,
-            "throughput_proxy": 1.1
+            "reward_pressure_proxy": 1.16,
+            "throughput_proxy": 1.15
           },
           "high_risk_high_reward": {
             "efficiency_profile": "burst_reward",
             "map_id": "sleepywood_sinkhole",
             "reward_identity_tag": "jackpot_drop",
             "reward_pressure_proxy": 1.22,
-            "throughput_proxy": 1.21
+            "throughput_proxy": 1.16
           },
           "safe": {
             "efficiency_profile": "stable_grind",
@@ -734,15 +748,15 @@
             "efficiency_profile": "route_flex",
             "map_id": "orbis_cloud_bridge",
             "reward_identity_tag": "gear_upgrade",
-            "reward_pressure_proxy": 1.14,
-            "throughput_proxy": 1.1
+            "reward_pressure_proxy": 1.17,
+            "throughput_proxy": 1.15
           },
           "high_risk_high_reward": {
             "efficiency_profile": "burst_reward",
             "map_id": "dungeon_black_gate",
             "reward_identity_tag": "jackpot_drop",
-            "reward_pressure_proxy": 1.29,
-            "throughput_proxy": 1.21
+            "reward_pressure_proxy": 1.24,
+            "throughput_proxy": 1.16
           },
           "safe": {
             "efficiency_profile": "stable_grind",
@@ -970,12 +984,12 @@
     },
     "world_graph_model": {
       "edge_traversals": {
-        "region:coastal_harbors->map:coastal_harbors_docks": 4.488,
-        "region:coastal_harbors->map:dungeon_black_gate": 3.7752,
+        "region:coastal_harbors->map:coastal_harbors_docks": 4.692,
+        "region:coastal_harbors->map:dungeon_black_gate": 3.6192,
         "region:coastal_harbors->map:kerning_backstreet": 3.36,
         "region:coastal_harbors->map:ludibrium_outer_walk": 2.64,
-        "region:coastal_harbors->map:orbis_cloud_bridge": 6.864,
-        "region:coastal_harbors->map:sleepywood_sinkhole": 5.5176,
+        "region:coastal_harbors->map:orbis_cloud_bridge": 7.176,
+        "region:coastal_harbors->map:sleepywood_sinkhole": 5.2896,
         "region:coastal_harbors->region:elnath_snowfield": 4.2,
         "region:coastal_harbors->region:orbis_skyrealm": 4.2,
         "region:henesys_plains->map:ellinia_lower_canopy": 19.3344,
@@ -984,9 +998,9 @@
         "region:henesys_plains->region:kerning_city_shadow": 4.2,
         "region:henesys_plains->region:kerning_shadow_market": 4.2,
         "region:henesys_plains->region:perion_rocklands": 8.4,
-        "region:orbis_skyrealm->map:ancient_hidden_domains_rift": 3.8232,
+        "region:orbis_skyrealm->map:ancient_hidden_domains_rift": 3.726,
         "region:orbis_skyrealm->map:elnath_snowfield_patrol": 4.8,
-        "region:orbis_skyrealm->map:minar_lower_trail": 4.3956,
+        "region:orbis_skyrealm->map:minar_lower_trail": 4.5144,
         "region:orbis_skyrealm->region:minar_mountain": 4.2
       },
       "edges": [
@@ -1034,7 +1048,7 @@
         },
         {
           "edge_type": "contains",
-          "friction": 0.192,
+          "friction": 0.188,
           "from": "region:ellinia_forest",
           "progression_weight": 0.45,
           "to": "map:coastal_harbors_docks"
@@ -1048,14 +1062,14 @@
         },
         {
           "edge_type": "contains",
-          "friction": 0.1832,
+          "friction": 0.1872,
           "from": "region:ellinia_forest",
           "progression_weight": 0.45,
           "to": "map:sleepywood_sinkhole"
         },
         {
           "edge_type": "contains",
-          "friction": 0.1832,
+          "friction": 0.1872,
           "from": "region:coastal_harbors",
           "progression_weight": 0.45,
           "to": "map:dungeon_black_gate"
@@ -1069,14 +1083,14 @@
         },
         {
           "edge_type": "contains",
-          "friction": 0.192,
+          "friction": 0.188,
           "from": "region:coastal_harbors",
           "progression_weight": 0.45,
           "to": "map:orbis_cloud_bridge"
         },
         {
           "edge_type": "contains",
-          "friction": 0.1856,
+          "friction": 0.188,
           "from": "region:orbis_skyrealm",
           "progression_weight": 0.45,
           "to": "map:ancient_hidden_domains_rift"
@@ -1090,7 +1104,7 @@
         },
         {
           "edge_type": "contains",
-          "friction": 0.1912,
+          "friction": 0.1888,
           "from": "region:orbis_skyrealm",
           "progression_weight": 0.45,
           "to": "map:minar_lower_trail"
@@ -1282,18 +1296,18 @@
         "region:orbis_skyrealm": 12
       },
       "node_visits": {
-        "map:ancient_hidden_domains_rift": 3.8232,
-        "map:coastal_harbors_docks": 4.488,
-        "map:dungeon_black_gate": 3.7752,
+        "map:ancient_hidden_domains_rift": 3.726,
+        "map:coastal_harbors_docks": 4.692,
+        "map:dungeon_black_gate": 3.6192,
         "map:ellinia_lower_canopy": 19.3344,
         "map:elnath_snowfield_patrol": 4.8,
         "map:kerning_backstreet": 3.36,
         "map:lith_harbor_coast_road": 14.82,
         "map:ludibrium_outer_walk": 2.64,
-        "map:minar_lower_trail": 4.3956,
-        "map:orbis_cloud_bridge": 6.864,
+        "map:minar_lower_trail": 4.5144,
+        "map:orbis_cloud_bridge": 7.176,
         "map:perion_rockfall_edge": 15.1512,
-        "map:sleepywood_sinkhole": 5.5176,
+        "map:sleepywood_sinkhole": 5.2896,
         "region:coastal_harbors": 24.0,
         "region:henesys_plains": 48.0,
         "region:orbis_skyrealm": 12.0
@@ -1501,9 +1515,9 @@
           "min_level": 31,
           "node_id": "map:coastal_harbors_docks",
           "node_type": "map",
-          "reward_bias": 1.13,
+          "reward_bias": 1.16,
           "role": "alternative",
-          "throughput_bias": 1.1
+          "throughput_bias": 1.15
         },
         {
           "content_slots": 1,
@@ -1523,7 +1537,7 @@
           "node_type": "map",
           "reward_bias": 1.22,
           "role": "high_risk_high_reward",
-          "throughput_bias": 1.21
+          "throughput_bias": 1.16
         },
         {
           "content_slots": 1,
@@ -1531,9 +1545,9 @@
           "min_level": 51,
           "node_id": "map:dungeon_black_gate",
           "node_type": "map",
-          "reward_bias": 1.29,
+          "reward_bias": 1.24,
           "role": "high_risk_high_reward",
-          "throughput_bias": 1.21
+          "throughput_bias": 1.16
         },
         {
           "content_slots": 1,
@@ -1551,9 +1565,9 @@
           "min_level": 51,
           "node_id": "map:orbis_cloud_bridge",
           "node_type": "map",
-          "reward_bias": 1.14,
+          "reward_bias": 1.17,
           "role": "alternative",
-          "throughput_bias": 1.1
+          "throughput_bias": 1.15
         },
         {
           "content_slots": 1,
@@ -1561,9 +1575,9 @@
           "min_level": 71,
           "node_id": "map:ancient_hidden_domains_rift",
           "node_type": "map",
-          "reward_bias": 1.25,
+          "reward_bias": 1.21,
           "role": "high_risk_high_reward",
-          "throughput_bias": 1.18
+          "throughput_bias": 1.15
         },
         {
           "content_slots": 1,
@@ -1581,9 +1595,9 @@
           "min_level": 71,
           "node_id": "map:minar_lower_trail",
           "node_type": "map",
-          "reward_bias": 1.15,
+          "reward_bias": 1.2,
           "role": "alternative",
-          "throughput_bias": 1.11
+          "throughput_bias": 1.14
         },
         {
           "content_slots": 2,
@@ -1769,14 +1783,14 @@
         "early_02:alternative": 19.3344,
         "early_02:high_risk_high_reward": 15.1512,
         "early_02:safe": 14.82,
-        "late_01:alternative": 4.3956,
-        "late_01:high_risk_high_reward": 3.8232,
+        "late_01:alternative": 4.5144,
+        "late_01:high_risk_high_reward": 3.726,
         "late_01:safe": 4.8,
-        "mid_01:alternative": 4.488,
-        "mid_01:high_risk_high_reward": 5.5176,
+        "mid_01:alternative": 4.692,
+        "mid_01:high_risk_high_reward": 5.2896,
         "mid_01:safe": 3.36,
-        "mid_02:alternative": 6.864,
-        "mid_02:high_risk_high_reward": 3.7752,
+        "mid_02:alternative": 7.176,
+        "mid_02:high_risk_high_reward": 3.6192,
         "mid_02:safe": 2.64,
         "progression:coastal_harbors->elnath_snowfield": 4.2,
         "progression:coastal_harbors->orbis_skyrealm": 4.2,

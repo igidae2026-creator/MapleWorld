@@ -1,0 +1,728 @@
+{
+  "baseline": {
+    "drop_pressure": 1.1996,
+    "economy_coherence": "83~86",
+    "economy_coherence_center": 84,
+    "economy_pressure_balance": "84~87",
+    "economy_pressure_balance_center": 86,
+    "top_pressure_concentration": 0.2535,
+    "top_pressure_gap": 0.7971
+  },
+  "best_candidate": {
+    "adjustments": [
+      {
+        "alternative_map": "orbis_cloud_bridge",
+        "alternative_reward": 1.18,
+        "alternative_throughput": 1.15,
+        "band_id": "mid_02",
+        "band_spreads": {
+          "reward_spread": 0.23,
+          "throughput_spread": 0.15
+        },
+        "target_map": "dungeon_black_gate",
+        "target_reward": 1.23,
+        "target_throughput": 1.15
+      },
+      {
+        "alternative_map": "coastal_harbors_docks",
+        "alternative_reward": 1.17,
+        "alternative_throughput": 1.15,
+        "band_id": "mid_01",
+        "band_spreads": {
+          "reward_spread": 0.21,
+          "throughput_spread": 0.15
+        },
+        "target_map": "sleepywood_sinkhole",
+        "target_reward": 1.21,
+        "target_throughput": 1.15
+      }
+    ],
+    "distance_from_baseline": 0.06,
+    "drop_pressure": 1.1996,
+    "economy_coherence": "83~86",
+    "economy_coherence_center": 84,
+    "economy_pressure_balance": "84~87",
+    "economy_pressure_balance_center": 86,
+    "target_pressures": {
+      "dungeon_black_gate": 0.3804,
+      "sleepywood_sinkhole": 0.3288
+    },
+    "top_pressure_concentration": 0.2535,
+    "top_pressure_gap": 0.7971,
+    "top_pressure_nodes": [
+      {
+        "node": "map:perion_rockfall_edge",
+        "pressure": 1.1996
+      },
+      {
+        "node": "map:ellinia_lower_canopy",
+        "pressure": 1.196
+      },
+      {
+        "node": "map:lith_harbor_coast_road",
+        "pressure": 1.1545
+      },
+      {
+        "node": "map:ancient_hidden_domains_rift",
+        "pressure": 0.4025
+      },
+      {
+        "node": "map:minar_lower_trail",
+        "pressure": 0.3999
+      },
+      {
+        "node": "map:dungeon_black_gate",
+        "pressure": 0.3804
+      },
+      {
+        "node": "map:coastal_harbors_docks",
+        "pressure": 0.3288
+      },
+      {
+        "node": "map:orbis_cloud_bridge",
+        "pressure": 0.3288
+      }
+    ]
+  },
+  "candidate_count": 36,
+  "candidates": [
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.17,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.06,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.07,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.17,
+          "alternative_throughput": 1.16,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.16
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.07,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3299
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.19,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.17,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.07,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.16,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.16
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.17,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.07,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3299
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.19,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.08,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.16,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.16
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.08,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3299
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    },
+    {
+      "adjustments": [
+        {
+          "alternative_map": "orbis_cloud_bridge",
+          "alternative_reward": 1.19,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_02",
+          "band_spreads": {
+            "reward_spread": 0.23,
+            "throughput_spread": 0.15
+          },
+          "target_map": "dungeon_black_gate",
+          "target_reward": 1.23,
+          "target_throughput": 1.15
+        },
+        {
+          "alternative_map": "coastal_harbors_docks",
+          "alternative_reward": 1.18,
+          "alternative_throughput": 1.15,
+          "band_id": "mid_01",
+          "band_spreads": {
+            "reward_spread": 0.21,
+            "throughput_spread": 0.15
+          },
+          "target_map": "sleepywood_sinkhole",
+          "target_reward": 1.21,
+          "target_throughput": 1.15
+        }
+      ],
+      "distance_from_baseline": 0.08,
+      "drop_pressure": 1.1996,
+      "economy_coherence": "83~86",
+      "economy_coherence_center": 84,
+      "economy_pressure_balance": "84~87",
+      "economy_pressure_balance_center": 86,
+      "target_pressures": {
+        "dungeon_black_gate": 0.3804,
+        "sleepywood_sinkhole": 0.3288
+      },
+      "top_pressure_concentration": 0.2535,
+      "top_pressure_gap": 0.7971,
+      "top_pressure_nodes": [
+        {
+          "node": "map:perion_rockfall_edge",
+          "pressure": 1.1996
+        },
+        {
+          "node": "map:ellinia_lower_canopy",
+          "pressure": 1.196
+        },
+        {
+          "node": "map:lith_harbor_coast_road",
+          "pressure": 1.1545
+        },
+        {
+          "node": "map:ancient_hidden_domains_rift",
+          "pressure": 0.4025
+        },
+        {
+          "node": "map:minar_lower_trail",
+          "pressure": 0.3999
+        },
+        {
+          "node": "map:dungeon_black_gate",
+          "pressure": 0.3804
+        },
+        {
+          "node": "map:coastal_harbors_docks",
+          "pressure": 0.3288
+        },
+        {
+          "node": "map:orbis_cloud_bridge",
+          "pressure": 0.3288
+        }
+      ]
+    }
+  ],
+  "evaluated_targets": [
+    {
+      "alternative_map": "minar_lower_trail",
+      "alternative_reward": 1.2,
+      "alternative_throughput": 1.14,
+      "band_id": "late_01",
+      "target_map": "ancient_hidden_domains_rift",
+      "target_reward": 1.21,
+      "target_throughput": 1.15
+    },
+    {
+      "alternative_map": "orbis_cloud_bridge",
+      "alternative_reward": 1.17,
+      "alternative_throughput": 1.15,
+      "band_id": "mid_02",
+      "target_map": "dungeon_black_gate",
+      "target_reward": 1.24,
+      "target_throughput": 1.16
+    },
+    {
+      "alternative_map": "coastal_harbors_docks",
+      "alternative_reward": 1.16,
+      "alternative_throughput": 1.15,
+      "band_id": "mid_01",
+      "target_map": "sleepywood_sinkhole",
+      "target_reward": 1.22,
+      "target_throughput": 1.16
+    }
+  ],
+  "recommendation": "cross-band rebalance exhausted"
+}

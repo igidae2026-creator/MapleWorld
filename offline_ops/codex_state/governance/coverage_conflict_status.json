@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-11T04:59:12.689782+00:00",
+  "generated_at_utc": "2026-03-11T17:39:15.547190+00:00",
   "layer_status": {
     "A1_coverage_audit": {
       "checks": {
@@ -94,6 +94,12 @@
         "weak_patch_rejections_visible": true
       },
       "status": "pass"
+    },
+    "repo_surface_audit": {
+      "checks": {
+        "repo_surface_status_present": true
+      },
+      "status": "pass"
     }
   },
   "status": "pass",
@@ -101,7 +107,7 @@
     "autonomy_threshold": 100.0,
     "coverage_partial_count": 0,
     "execution_threshold": 100.0,
-    "final_threshold": 99.4,
+    "final_threshold": 100.0,
     "open_conflict_count": 3
   }
 }

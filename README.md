@@ -2,17 +2,36 @@
 
 MapleWorld is a Codex-native autonomous game design and implementation repository for a MapleLand-class MMORPG under MapleStory Worlds constraints.
 
-The repository now treats a small set of markdown files as canonical authority. Start with:
+The repository no longer treats every root markdown file as equal authority.
+
+Start with the top authority set:
+
+- `GOAL.md`
+- `METAOS_CONSTITUTION.md`
+- `RULE_CARDS.jsonl`
+- `CHECKLIST_LAYER1_목표조건.md`
+- `CHECKLIST_LAYER2_모듈책임.md`
+- `CHECKLIST_LAYER3_REPO매핑.md`
+- `CHECKLIST_METHOD_패치.md`
+- `COVERAGE_AUDIT.csv`
+- `CONFLICT_LOG.csv`
+
+Then read the active standards and document map:
 
 - `AGENTS.md`
 - `README.md`
-- `ARCHITECTURE.md`
-- `GAME_DESIGN.md`
-- `EXECUTION_LOOP.md`
-- `QUALITY_GATES.md`
-- `TEST_STRATEGY.md`
-- `SECURITY_MODEL.md`
 - `DOCS_CANON.md`
+- `docs/standards/DOCUMENTATION_MAP.md`
+- `UNIVERSAL_FINAL_THRESHOLD_BUNDLE.md`
+- `docs/standards/AUTONOMY_TARGET.md`
+- `docs/standards/KOREAN_PLAYER_FEEL_STANDARD.md`
+- `docs/operations/AUTONOMY_STACK.md`
+
+Legacy and session-bound notes were moved under `docs/legacy/` to keep root authority clean.
+
+Active implementation reference documents live under `docs/reference/`.
+Cross-cutting standards live under `docs/standards/`.
+Cross-cutting guard rails live under `docs/guards/`.
 
 MapleWorld is organized around a strict boundary split:
 
@@ -34,6 +53,7 @@ Current development bias:
 - remove the current highest-cost player-experience bottleneck before adding new systems
 - preserve canon locks, route variance, and economy stability while raising player feel
 - treat reports as evidence, not design authority
+- judge gameplay completion from Korean player feel, not only system closure
 
 Run the remaining focused verification with:
 

@@ -105,6 +105,7 @@ def _distance_from_baseline(candidate: dict[str, object], current: dict[str, tup
 def main() -> int:
     fieldnames, original_rows = _read_role_bands()
     original_text = ROLE_BANDS_PATH.read_text(encoding="utf-8")
+    original_path_snapshot = ROLE_BANDS_PATH.read_text(encoding="utf-8")
     current = _extract_current(original_rows)
 
     current_player, current_economy = _run_simulation()
@@ -191,6 +192,8 @@ def main() -> int:
                         )
                         candidates.append(candidate)
     finally:
+        if ROLE_BANDS_PATH.read_text(encoding="utf-8") != original_path_snapshot:
+            raise RuntimeError("role_bands.csv changed during early_02 search; refusing to overwrite newer state")
         ROLE_BANDS_PATH.write_text(original_text, encoding="utf-8")
         _run_simulation()
 

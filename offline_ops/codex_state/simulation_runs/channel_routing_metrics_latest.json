@@ -1,5 +1,5 @@
 {
-  "channel_pressure": 0.5552,
+  "channel_pressure": 0.5611,
   "exploration_stagnation": {
     "index": 0.5455,
     "reasons": [],
@@ -9,31 +9,20 @@
   "farming_hotspots": [
     {
       "map_id": "map:perion_rockfall_edge",
-      "pressure": 1.2765,
+      "pressure": 1.1996,
       "reward_bias": 1.12,
-      "visit_share": 0.1925
+      "visit_share": 0.1809
     }
   ],
-  "hotspot_score": 0.9789,
-  "node_concurrency": 0.5552,
-  "overcrowded_maps": [
-    {
-      "map_id": "map:ellinia_lower_canopy",
-      "pressure": 1.2715,
-      "visit_total": 10.5152
-    },
-    {
-      "map_id": "map:perion_rockfall_edge",
-      "pressure": 1.2765,
-      "visit_total": 10.6144
-    }
-  ],
+  "hotspot_score": 0.9664,
+  "node_concurrency": 0.5543,
+  "overcrowded_maps": [],
   "policy_actions": {
     "dynamic_channel_balancing": 7,
     "soft_rerouting": 0,
     "spawn_redistribution": 12
   },
   "reasons": [],
-  "spawn_pressure": 0.7283,
+  "spawn_pressure": 0.7366,
   "status": "allow"
 }

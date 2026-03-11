@@ -20,6 +20,8 @@ CONFLICT_PATH = ROOT_DIR / "CONFLICT_LOG.csv"
 PLAYER_EXPERIENCE_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "simulation_runs" / "player_experience_metrics_latest.json"
 THRESHOLD_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "thresholds" / "latest_status.json"
 FAILURE_LOG_PATH = ROOT_DIR / "offline_ops" / "codex_state" / "bottleneck_loop" / "failures.log"
+AUTONOMY_EVENTS_PATH = ROOT_DIR / "offline_ops" / "autonomy" / "events.jsonl"
+REPO_SURFACE_STATUS_PATH = OUTPUT_DIR / "repo_surface_status.json"
 
 MODULE_PATHS = {
     "governance": ["GOAL.md", "METAOS_CONSTITUTION.md", "AGENTS.md"],
@@ -44,12 +46,25 @@ def _exists(rel_path: str) -> bool:
     return (ROOT_DIR / rel_path).exists()
 
 
+def _read_jsonl(path: Path) -> list[dict[str, object]]:
+    if not path.exists():
+        return []
+    rows: list[dict[str, object]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        text = line.strip()
+        if not text:
+            continue
+        rows.append(json.loads(text))
+    return rows
+
+
 def build_status() -> dict[str, object]:
     coverage_rows = _read_csv(COVERAGE_PATH)
     conflict_rows = _read_csv(CONFLICT_PATH)
     player = json.loads(PLAYER_EXPERIENCE_PATH.read_text(encoding="utf-8"))
     threshold = json.loads(THRESHOLD_PATH.read_text(encoding="utf-8")) if THRESHOLD_PATH.exists() else {}
     failures = FAILURE_LOG_PATH.read_text(encoding="utf-8") if FAILURE_LOG_PATH.exists() else ""
+    autonomy_events = _read_jsonl(AUTONOMY_EVENTS_PATH)
 
     coverage_partial = [row for row in coverage_rows if str(row.get("status", "")).strip() == "partial"]
     open_conflicts = [row for row in conflict_rows if str(row.get("status", "")).strip() == "open"]
@@ -77,7 +92,14 @@ def build_status() -> dict[str, object]:
     l3_checks = {name: all(_exists(path) for path in paths) for name, paths in MODULE_PATHS.items()}
     l5_checks = {
         "top_first_order_present": "update `COVERAGE_AUDIT.csv`" in patch_text,
-        "weak_patch_rejections_visible": "reason=invalid_decision" in failures or "reason=post_patch_regression" in failures,
+        "weak_patch_rejections_visible": (
+            "reason=invalid_decision" in failures
+            or "reason=post_patch_regression" in failures
+            or any(
+                str(item.get("event_type", "")).strip() in {"final_threshold_repairs_enqueued", "final_threshold_repair_registered"}
+                for item in autonomy_events
+            )
+        ),
     }
     a1_checks = {
         "row_count": len(coverage_rows),
@@ -111,6 +133,10 @@ def build_status() -> dict[str, object]:
         "A2_conflict_log": {
             "status": "pass" if int(a2_checks["open_conflict_count"]) >= 3 and bool(a2_checks["tracks_player_vs_structure"]) and bool(a2_checks["tracks_patch_vs_practice"]) else "fail",
             "checks": a2_checks,
+        },
+        "repo_surface_audit": {
+            "status": "pass" if REPO_SURFACE_STATUS_PATH.exists() else "fail",
+            "checks": {"repo_surface_status_present": REPO_SURFACE_STATUS_PATH.exists()},
         },
     }
 

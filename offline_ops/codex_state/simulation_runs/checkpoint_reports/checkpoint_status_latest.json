@@ -29,7 +29,7 @@
       "streak": 1
     },
     "player_flow_stability": {
-      "score": 0.6408,
+      "score": 0.6908,
       "stable": true,
       "streak": 1
     },
@@ -45,7 +45,7 @@
     "checkpoint_pass_count": 6,
     "checkpoint_stability_ratio": 1.0,
     "checkpoint_total": 6,
-    "overall_stability_index": 0.8959
+    "overall_stability_index": 0.9042
   },
   "stable_reached_at_cycle": 1
 }

@@ -4,7 +4,7 @@ The repository is a Codex-native autonomous architecture and operation evolution
 
 Permanent rules:
 - `GOAL.md` and `METAOS_CONSTITUTION.md` are top authority for repository governance.
-- `docs/AUTONOMY_TARGET.md` defines the unattended execution standard for operator involvement and quality preservation.
+- `docs/standards/AUTONOMY_TARGET.md` defines the unattended execution standard for operator involvement and quality preservation.
 - The repository governance skeleton is fixed to:
   - `L0  RULE_CARDS`
   - `L1  METAOS_CONSTITUTION`
